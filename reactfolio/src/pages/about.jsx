@@ -5,7 +5,7 @@ import NavBar from "../components/common/navBar";
 import Footer from "../components/common/footer";
 import Logo from "../components/common/logo";
 import Socials from "../components/about/socials";
-
+import { faGithub } from "@fortawesome/free-brands-svg-icons";
 import INFO from "../data/user";
 import SEO from "../data/seo";
 
@@ -54,7 +54,7 @@ const About = () => {
 								<div className="about-image-container">
 									<div className="about-image-wrapper">
 										<img
-											src="about.jpg"
+											src="logo-1.jpg"
 											alt="about"
 											className="about-image"
 										/>
@@ -71,6 +71,13 @@ const About = () => {
 						</div>
 					</div>
 					<div className="page-footer">
+						<div
+							className=""
+							style={{ fontSize: "16px", color: "green" }}
+						>
+							{/* All the code to the above is in my <faGithub />{" "}
+							github account */}
+						</div>
 						<Footer />
 					</div>
 				</div>

@@ -55,7 +55,14 @@ const Projects = () => {
 							learn and grow, and I'm always open to new ideas and
 							feedback.
 						</div>
-
+						<div
+							className=""
+							style={{ color: "green", fontWeight: "bold" }}
+						>
+							<a href="/project-previews">
+								&gt; Project's preview
+							</a>
+						</div>
 						<div className="projects-list">
 							<AllProjects />
 						</div>

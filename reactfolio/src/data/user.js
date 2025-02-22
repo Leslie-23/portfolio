@@ -2,16 +2,16 @@ const INFO = {
 	main: {
 		title: "Portfolio by Leslie Paul Ajayi",
 		name: "Leslie A.",
-		email: "leslieaayi27@gmail.com",
-		logo: "../logo.png",
+		email: "leslieajayi27@gmail.com",
+		logo: "../logo-2.jpg",
 	},
 
 	socials: {
-		twitter: "https://twitter.com/",
-		github: "https://github.com/",
+		twitter: "https://twitter.com/i_am.leslie",
+		github: "https://github.com/Leslie-23",
 		linkedin: "https://linkedin.com/",
-		instagram: "https://instagram.com/",
-		stackoverflow: "https://stackoverflow.com/",
+		instagram: "https://instagram.com/i_am.leslie",
+		stackoverflow: "https://stackoverflow.com/users/22732412/leslie-a",
 		facebook: "https://facebook.com/",
 	},
 
@@ -35,48 +35,88 @@ const INFO = {
 
 	projects: [
 		{
-			title: "Project 1",
+			title: "E-commerce App & Management System",
 			description:
-				"Lorem ipsum dolor sit amet. Et incidunt voluptatem ex tempore repellendus qui dicta nemo sit deleniti minima.",
+				"An e-commerce store with full functionality. Having an admin & user functionalities",
 			logo: "https://cdn.jsdelivr.net/npm/programming-languages-logos/src/javascript/javascript.png",
 			linkText: "View Project",
-			link: "https://github.com",
+			link: "https://paltech-e-commerce.netlify.app",
 		},
 
 		{
-			title: "Project 2",
+			title: "School Management System",
 			description:
-				"Lorem ipsum dolor sit amet. Et incidunt voluptatem ex tempore repellendus qui dicta nemo sit deleniti minima.",
-			logo: "https://cdn.jsdelivr.net/npm/programming-languages-logos/src/python/python.png",
+				"A School System to handle school operations. Highly scalable.",
+			logo: "https://cdn.jsdelivr.net/npm/programming-languages-logos/src/javascript/javascript.png",
 			linkText: "View Project",
-			link: "https://github.com",
+			link: "https://paltech-school-manangement-system.netlify.app",
 		},
 
 		{
-			title: "Project 3",
+			title: "Restaurant Website",
 			description:
-				"Lorem ipsum dolor sit amet. Et incidunt voluptatem ex tempore repellendus qui dicta nemo sit deleniti minima.",
+				"Responsive and Minimalistic restaurant website template.",
 			logo: "https://cdn.jsdelivr.net/npm/programming-languages-logos/src/html/html.png",
 			linkText: "View Project",
-			link: "https://github.com",
+			link: "https://grilli-web001.netlify.app",
 		},
 
 		{
-			title: "Project 4",
+			title: "Code Quiz & Game trivia",
 			description:
-				"Lorem ipsum dolor sit amet. Et incidunt voluptatem ex tempore repellendus qui dicta nemo sit deleniti minima.",
+				"`So you think you can code`: developd to test the knowledge of the developer in a quiz like manner.",
 			logo: "https://cdn.jsdelivr.net/npm/programming-languages-logos/src/javascript/javascript.png",
 			linkText: "View Project",
 			link: "https://github.com",
 		},
 
 		{
-			title: "Project 5",
+			title: "Dev EX",
 			description:
-				"Lorem ipsum dolor sit amet. Et incidunt voluptatem ex tempore repellendus qui dicta nemo sit deleniti minima.",
+				"A fun app to keep the developer up to date on key topics and technologies. Ensuring he stays motivated always.",
 			logo: "https://cdn.jsdelivr.net/npm/programming-languages-logos/src/javascript/javascript.png",
 			linkText: "View Project",
-			link: "https://github.com",
+			link: "https://leslie23-dev-experience2k25.netlify.app",
+		},
+		{
+			title: "Chrome Dino",
+			description:
+				"Basically the code to never lose (i messed with the classes and constructors on a boring day and got this).",
+			logo: "https://cdn.jsdelivr.net/npm/programming-languages-logos/src/javascript/javascript.png",
+			linkText: "View Project",
+			link: "https://github.com/Leslie-23/ChromeDino-cheatCode",
+		},
+		{
+			title: "Git helper",
+			description:
+				"A new way to add,commit & push on a single line. This is a package on npm you can download today.",
+			logo: "https://cdn.jsdelivr.net/npm/programming-languages-logos/src/javascript/javascript.png",
+			linkText: "View Project",
+			link: "https://github.com/Leslie-23/git-helper",
+		},
+		{
+			title: "Expense Tracker",
+			description:
+				"Part of earlier days of programming. A website to track basic daily expenses and save results to a pdf.",
+			logo: "https://cdn.jsdelivr.net/npm/programming-languages-logos/src/javascript/javascript.png",
+			linkText: "View Project",
+			link: "https://github.com/Leslie-23/fullstackExpenseTracker",
+		},
+		{
+			title: "Chess game",
+			description:
+				"Yes i made a chess game (I love chess). A nice chess game with  minimal functionality --WIP",
+			logo: "https://cdn.jsdelivr.net/npm/programming-languages-logos/src/javascript/javascript.png",
+			linkText: "View Project",
+			link: "https://github.com/Leslie-23/chessGame",
+		},
+		{
+			title: "Weather App",
+			description:
+				"Weather app to show info on various parts of the world. Learnt connection to APIs here",
+			logo: "https://cdn.jsdelivr.net/npm/programming-languages-logos/src/javascript/javascript.png",
+			linkText: "View Project",
+			link: "https://weather-app-vert-eta.vercel.app/",
 		},
 	],
 };
