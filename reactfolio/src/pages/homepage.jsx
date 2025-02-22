@@ -84,7 +84,7 @@ const Homepage = () => {
 				<div className="content-wrapper">
 					<div className="homepage-logo-container">
 						<div style={logoStyle}>
-							{/* <Logo width={logoSize} link={false} /> */}
+							<Logo width={logoSize} link={false} />
 						</div>
 					</div>
 
