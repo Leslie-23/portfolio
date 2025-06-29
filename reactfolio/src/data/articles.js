@@ -49,22 +49,24 @@ function article_1() {
 					From Curiosity to Career: My Software Engineering Journey
 				</h1>
 				<p>
-					My fascination with technology began at age 12 when I built
-					my first website using HTML and CSS. What started as a hobby
-					quickly evolved into a passion as I discovered the power of
-					programming to solve real-world problems.
+					My fascination with technology began at age 16 when I
+					realised the move of Technology will take the world by
+					storm. i built my first website using HTML and CSS. What
+					started as a hobby quickly evolved into a passion as I
+					discovered the power of programming to solve real-world
+					problems.
 				</p>
-				<img
+				{/* <img
 					src="/images/coding-journey.jpg"
 					alt="Timeline of my coding journey"
 					className="article-image"
-				/>
+				/> */}
 				<p>
-					During my computer science studies, I specialized in
+					During my Information Technology studies, I specialize in
 					full-stack development, mastering both frontend technologies
 					like React and backend systems using Node.js and Python. My
-					internship at TechSolutions Inc. gave me hands-on experience
-					with cloud platforms and CI/CD pipelines.
+					internship at Ironsyde Inc. gave me hands-on experience with
+					cloud platforms and CI/CD pipelines.
 				</p>
 				<p>
 					What excites me most about software engineering is the
@@ -100,25 +102,26 @@ function article_2() {
 					the collaborative nature of software development and the
 					importance of clear communication in technical projects.
 				</p>
-				<img
+				{/* <img
 					src="/images/open-source.jpg"
 					alt="GitHub contribution graph"
 					className="article-image"
-				/>
+				/> */}
 				<p>I've since published several npm packages including:</p>
 				<ul>
 					<li>
-						<strong>react-form-validator</strong>: A lightweight
-						form validation library
+						<strong>npm-igt-helper</strong>: A lightweight git
+						command line helper. to reduce multiple commandes into
+						one line
 					</li>
 					<li>
 						<strong>async-task-manager</strong>: For managing
 						concurrent asynchronous operations
 					</li>
-					<li>
+					{/* <li>
 						<strong>ui-animation-hooks</strong>: Custom React hooks
 						for common animations
-					</li>
+					</li> */}
 				</ul>
 				<p>
 					Beyond code, I actively participate in local developer
@@ -153,11 +156,11 @@ function article_3() {
 					AI solutions across various domains, from natural language
 					processing to computer vision systems.
 				</p>
-				<img
+				{/* <img
 					src="/images/ai-applications.jpg"
 					alt="AI model visualization"
 					className="article-image"
-				/>
+				/> */}
 				<p>
 					One notable project involved developing a content
 					recommendation engine that increased user engagement by 42%
@@ -193,17 +196,17 @@ function article_4() {
 			<div className="article-content">
 				<h1>AI's Transformative Impact on Healthcare</h1>
 				<p>
-					During my work with HealthTech Innovations, I contributed to
-					developing an AI system that analyzes medical images with
+					During my work with a Pharmaceutical Company, I contributed
+					to developing an AI system that analyzes medical images with
 					94% accuracy in detecting early-stage abnormalities. This
 					experience showed me firsthand how technology can save
 					lives.
 				</p>
-				<img
+				{/* <img
 					src="/images/ai-healthcare.jpg"
 					alt="AI analyzing medical scans"
 					className="article-image"
-				/>
+				/> */}
 				<p>
 					Beyond diagnostics, we implemented predictive models that
 					help hospitals anticipate patient admission rates, allowing
@@ -239,16 +242,16 @@ function article_5() {
 			<div className="article-content">
 				<h1>The Art of Computational Problem Solving</h1>
 				<p>
-					I dedicate at least 5 hours weekly to algorithmic problem
+					I dedicate at least 8 hours weekly to algorithmic problem
 					solving on platforms like LeetCode and Codeforces. This
 					practice has sharpened my ability to break down complex
 					problems and identify optimal solutions.
 				</p>
-				<img
+				{/* <img
 					src="/images/problem-solving.jpg"
 					alt="Code editor with algorithm solution"
 					className="article-image"
-				/>
+				/> */}
 				<p>My approach involves:</p>
 				<ul>
 					<li>Thoroughly understanding the problem before coding</li>
