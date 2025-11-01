@@ -4,9 +4,31 @@
 		<meta charset="utf-8" />
 		<link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
-		<meta name="theme-color" content="#000000" />
-		<title>Leslie Paul Ajayi</title>
-		<script src="https://unpkg.com/@tailwindcss/browser@4"></script>
+		<meta name="theme-color" content="#0a0a0a" />
+		<meta
+			name="description"
+			content="Leslie Paul Ajayi - Senior Full-Stack Software Engineer & IT Student specializing in MERN Stack, TypeScript, Docker, and Cloud Deployments"
+		/>
+		<meta
+			name="keywords"
+			content="Leslie Paul Ajayi, Full-Stack Developer, MERN Stack, React, Node.js, TypeScript, Software Engineer"
+		/>
+		<meta name="author" content="Leslie Paul Ajayi" />
+		<title>Leslie Paul Ajayi - Senior Full-Stack Software Engineer</title>
+		<script src="https://cdn.tailwindcss.com"></script>
+		<script>
+			tailwind.config = {
+				darkMode: "class",
+				theme: {
+					extend: {
+						fontFamily: {
+							sans: ["Inter", "system-ui", "sans-serif"],
+							mono: ["JetBrains Mono", "monospace"],
+						},
+					},
+				},
+			};
+		</script>
 	</head>
 	<body>
 		<noscript>You need to enable JavaScript to run this app.</noscript>
