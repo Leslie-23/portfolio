@@ -98,3 +98,4 @@
 
 ✅ **Tip:**  
 Store all your images, screen recordings, and documents in a `/public/assets/` folder or external CDN (Cloudinary, Firebase Storage, or AWS S3) for easy reference and optimization.
+k
