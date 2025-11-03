@@ -14,7 +14,6 @@ import {
 	SiNextdotjs,
 	SiC,
 	SiCplusplus,
-	SiJava,
 	SiPython,
 	SiExpress,
 	SiRedis,
@@ -22,7 +21,6 @@ import {
 	SiGooglecloud,
 	SiKubernetes,
 	SiNginx,
-	SiVisualstudiocode,
 	SiGit,
 	SiPostman,
 	SiPrisma,
@@ -30,7 +28,6 @@ import {
 	SiAdobeillustrator,
 	SiCanva,
 	SiVercel,
-	SiMicrosoftazure,
 	SiBootstrap,
 	SiMysql,
 	SiGraphql,
@@ -128,7 +125,7 @@ export default function SkillsCarousel() {
 		}, 30);
 
 		return () => clearInterval(interval);
-	}, []);
+	}, [isHovered]);
 
 	// Split skills into two rows
 	const topRowSkills = skills.slice(0, Math.ceil(skills.length / 2));
