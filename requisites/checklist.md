@@ -25,8 +25,41 @@
 ## 🧾 3. Written Content
 
 - [ ] **Short bio** (1–2 lines, for hero section)
+
+```
+I’m Leslie Paul, a Software Engineer and IT student passionate about transforming complex ideas into intelligent, data-driven products. I build modern web and mobile applications that blend clean architecture, strong backend logic, and elegant design — all with a focus on performance, usability, and real-world impact.
+```
+
+```
+Building intelligent, data-driven products with clean architecture and purposeful design.
+```
+
 - [ ] **Long bio / About section content**
+
+```
+I’m Leslie Paul, a Software Engineer and Information Technology student with a strong foundation in both software design and systems development. I thrive on building intelligent, efficient, and scalable digital solutions that bridge performance with clean, modern design.
+
+My technical background spans a wide range of languages and frameworks — including C, C++, C#, Java, Python, and JavaScript — giving me a deep understanding of software engineering principles across multiple paradigms. This versatility allows me to move fluidly between backend logic, API design, and frontend interfaces while maintaining a strong focus on architectural integrity and code quality.
+
+I’m passionate about problem-solving, performance optimization, and system scalability. Whether architecting an enterprise-grade backend or refining user interactions on the frontend, my approach is always rooted in clarity, maintainability, and precision.
+
+Beyond the syntax, I value design thinking, data-driven decisions, and clean architecture. I see code as both an art and an engineering discipline — a means to translate complex ideas into seamless digital experiences that actually make sense to the user.
+
+I continuously push to stay at the forefront of technology, exploring advancements in cloud systems, distributed computing, and AI-assisted development, while maintaining a strong focus on writing clean, purposeful code that stands the test of time.
+
+In essence, I’m a developer who builds with intent — combining technical depth, structured thinking, and a commitment to continuous improvement.
+```
+
 - [ ] **Mission statement / tagline**
+
+```
+My mission is to build scalable, intelligent, and user-centered software systems that merge technical precision with impactful design. I aim to engineer clean, performant, and resilient applications that solve real-world problems while embodying simplicity, scalability, and sustainability in every line of code.
+```
+
+```oneliner
+Building scalable, intelligent, and beautifully engineered systems that balance performance with purpose.
+```
+
 - [ ] **Resume / downloadable CV (PDF)**
 - [ ] **Project descriptions:**
   - [ ] Problem statement

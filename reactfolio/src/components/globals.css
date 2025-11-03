@@ -1,0 +1,74 @@
+/* Add these custom animations to your CSS */
+@keyframes pulse-slow {
+	0%,
+	100% {
+		opacity: 0.2;
+	}
+	50% {
+		opacity: 0.3;
+	}
+}
+
+@keyframes ping-slow {
+	75%,
+	100% {
+		transform: scale(1.1);
+		opacity: 0;
+	}
+}
+
+.animate-pulse-slow {
+	animation: pulse-slow 4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+.animate-ping-slow {
+	animation: ping-slow 2s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+
+/* Add to your globals.css or global CSS file */
+
+/* Button hover effect */
+.groupVid::before {
+	content: "";
+	position: absolute;
+	top: 0;
+	left: -100%;
+	width: 100%;
+	height: 100%;
+	background: linear-gradient(
+		90deg,
+		transparent,
+		rgba(255, 255, 255, 0.2),
+		transparent
+	);
+	transition: left 0.5s;
+}
+
+.groupVid:hover::before {
+	left: 100%;
+}
+
+/* Optional: Add a subtle glow effect */
+.groupVid:hover {
+	box-shadow: 0 10px 25px -5px rgba(168, 85, 247, 0.4),
+		0 10px 10px -5px rgba(168, 85, 247, 0.04);
+}
+
+/* Optional: Add a border animation */
+.groupVid {
+	background: linear-gradient(45deg, #8b5cf6, #a855f7, #c084fc);
+	background-size: 200% 200%;
+	animation: gradientShift 3s ease infinite;
+}
+
+@keyframes gradientShift {
+	0% {
+		background-position: 0% 50%;
+	}
+	50% {
+		background-position: 100% 50%;
+	}
+	100% {
+		background-position: 0% 50%;
+	}
+}
