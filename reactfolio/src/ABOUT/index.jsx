@@ -12,10 +12,8 @@ import {
 	Workflow,
 	Terminal,
 	BarChart3,
-	GitBranch,
 	Server,
 	Layout,
-	BracketsIcon,
 	Brain,
 } from "lucide-react";
 import Footer from "../components/Footer";

@@ -4,11 +4,6 @@ import {
 	Linkedin,
 	Twitter,
 	Mail,
-	// Alternative icons:
-	Code2,
-	Briefcase,
-	MessageCircle,
-	Send,
 } from "lucide-react";
 const Footer = () => {
 	const currentYear = new Date().getFullYear();
@@ -152,24 +147,15 @@ const Footer = () => {
 
 					{/* Legal Links */}
 					<div className="flex space-x-6 text-sm">
-						<a
-							href="#"
-							className="text-gray-500 hover:text-green-600 transition-colors duration-200"
-						>
+						<span className="text-gray-500">
 							Privacy Policy
-						</a>
-						<a
-							href="#"
-							className="text-gray-500 hover:text-green-600 transition-colors duration-200"
-						>
+						</span>
+						<span className="text-gray-500">
 							Terms of Service
-						</a>
-						<a
-							href="#"
-							className="text-gray-500 hover:text-green-600 transition-colors duration-200"
-						>
+						</span>
+						<span className="text-gray-500">
 							Cookies
-						</a>
+						</span>
 					</div>
 				</div>
 			</div>
