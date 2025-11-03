@@ -1,15 +1,82 @@
-import React from "react";
+import React, { useState } from "react";
 import Navbar from "../components/Navbar";
 import Hero from "../components/Hero";
 import Footer from "../components/Footer";
 import SkillsCarousel from "./SkillsCarousel";
+import FeaturedProjects from "./FeaturedProjects";
+import CTA from "./CTA";
+import Services from "./Services";
+import { ExternalLink, Info } from "lucide-react";
 
 const Home = () => {
+	const [showPopup, setShowPopup] = useState(false);
 	return (
 		<>
 			<Navbar />;
 			<Hero />
+			<div className="flex align-center justify-center gap-8 pt-4 pb-4">
+				<div>
+					<p className="text-3xl font-bold text-foreground">50+</p>
+					<p className="text-sm text-muted-foreground">
+						Projects Completed{" "}
+						<ExternalLink
+							className="inline"
+							size={16}
+							color="green"
+						/>
+					</p>
+				</div>
+				<div>
+					<p className="text-3xl font-bold text-foreground">30+</p>
+					<p className="text-sm text-muted-foreground">
+						Happy Clients{" "}
+						<ExternalLink
+							className="inline"
+							size={16}
+							color="green"
+						/>
+					</p>
+				</div>
+				<div>
+					<p className="text-3xl font-bold text-foreground">5+</p>
+					<p className="text-sm text-muted-foreground">
+						Years Experience{" "}
+						<Info
+							className="inline"
+							color="green"
+							size={16}
+							onClick={() => setShowPopup(true)}
+						/>
+					</p>{" "}
+					{/* Popup Component */}
+					{showPopup && (
+						<div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+							<div className="bg-white dark:bg-gray-800 rounded-lg p-6 max-w-sm mx-4 shadow-xl">
+								<h3 className="font-semibold text-lg mb-2">
+									Experience Level
+								</h3>
+								<p className="text-sm text-gray-600 dark:text-gray-300">
+									This represents the number of years I've
+									been professionally working with these
+									technologies. Some skills have been used for
+									the full duration, while others were adopted
+									more recently.
+								</p>
+								<button
+									onClick={() => setShowPopup(false)}
+									className="mt-4 px-4 py-2 bg-green-600 text-white rounded hover:bg-blue-700 transition-colors"
+								>
+									Close
+								</button>
+							</div>
+						</div>
+					)}
+				</div>
+			</div>
 			<SkillsCarousel />
+			<Services />
+			<FeaturedProjects />
+			<CTA />
 			<Footer />
 		</>
 	);

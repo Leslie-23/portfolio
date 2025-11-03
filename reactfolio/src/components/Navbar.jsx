@@ -37,7 +37,7 @@ const Navbar = () => {
 								<a
 									key={item.name}
 									href={item.href}
-									className="relative group"
+									className="relative group poppins-bold"
 									onMouseEnter={() =>
 										setActiveItem(item.name)
 									}
@@ -46,15 +46,19 @@ const Navbar = () => {
 									{/* Pill Background Animation */}
 									<div
 										className={`
-										absolute inset-0 bg-green-100 p-2 rounded-full transition-all duration-300 ease-out
-										${activeItem === item.name ? "scale-105 opacity-100" : "scale-95 opacity-0"}
+										absolute inset-0 bg-green-100 p-2 rounded-full transition-all duration-300 ease-out  poppins-bold
+										${
+											activeItem === item.name
+												? "scale-105 opacity-100 poppins-bold"
+												: "scale-95 opacity-0"
+										}
 									`}
 									/>
 
 									{/* Text with Slide Animation */}
 									<span
 										className={`
-										relative z-10 px-6 py-2 rounded-full text-sm font-medium transition-all duration-300
+										relative z-10 px-6 py-2 rounded-full text-sm font-medium transition-all duration-300 poppins-bold
 										${
 											activeItem === item.name
 												? "text-green-700 transform translate-x-1"

@@ -1,11 +1,23 @@
 import { Routes, Route } from "react-router-dom";
+import { useState, useEffect } from "react";
 import Home from "./HOME";
 import Projects from "./PROJECTS";
 import About from "./ABOUT";
 import Contact from "./CONTACT";
-
+import Loader from "./components/Loader";
 import "./app.css";
+import MovingLetters from "./components/preview";
 function App() {
+	const [isLoading, setIsLoading] = useState(true);
+	useEffect(() => {
+		// Simulate loading
+		setTimeout(() => setIsLoading(false), 3000);
+	}, []);
+
+	if (isLoading) {
+		return <Loader />;
+	}
+
 	return (
 		<div className="App">
 			<Routes>
@@ -14,6 +26,7 @@ function App() {
 				<Route path="/projects" element={<Projects />} />
 				<Route path="/about" element={<About />} />
 				<Route path="/contact" element={<Contact />} />
+				<Route path="/moving-letters" element={<MovingLetters />} />
 			</Routes>
 		</div>
 	);

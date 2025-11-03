@@ -1,10 +1,5 @@
 import React from "react";
-import {
-	Github,
-	Linkedin,
-	Twitter,
-	Mail,
-} from "lucide-react";
+import { Github, Linkedin, Twitter, Mail } from "lucide-react";
 const Footer = () => {
 	const currentYear = new Date().getFullYear();
 
@@ -71,9 +66,12 @@ const Footer = () => {
 						<ul className="space-y-2">
 							{["Home", "Projects", "About", "Contact"].map(
 								(item) => (
-									<li key={item}>
+									<li
+										key={item}
+										className="hover:text-green-600"
+									>
 										<a
-											href={`#${item.toLowerCase()}`}
+											href={`/${item.toLowerCase()}`}
 											className="text-gray-600 hover:text-green-600 transition-colors duration-200"
 										>
 											{item}
@@ -147,15 +145,9 @@ const Footer = () => {
 
 					{/* Legal Links */}
 					<div className="flex space-x-6 text-sm">
-						<span className="text-gray-500">
-							Privacy Policy
-						</span>
-						<span className="text-gray-500">
-							Terms of Service
-						</span>
-						<span className="text-gray-500">
-							Cookies
-						</span>
+						<span className="text-gray-500">Privacy Policy</span>
+						<span className="text-gray-500">Terms of Service</span>
+						<span className="text-gray-500">Cookies</span>
 					</div>
 				</div>
 			</div>

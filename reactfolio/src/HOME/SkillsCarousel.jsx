@@ -139,7 +139,7 @@ export default function SkillsCarousel() {
 			<div className="relative z-10 max-w-7xl mx-auto">
 				{/* Heading */}
 				<div className="mb-16 text-center">
-					<h2 className="text-3xl md:text-4xl font-light tracking-tight text-neutral-900 dark:text-neutral-50 mb-3">
+					<h2 className="text-4xl md:text-5xl font-bold mb-4 tracking-tight text-neutral-900 dark:text-neutral-50 mb-3">
 						Tools & Technologies I Use
 					</h2>
 					<p className="text-sm text-neutral-500 dark:text-neutral-400 font-light">
