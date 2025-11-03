@@ -106,9 +106,9 @@ const Contact = () => {
 							{/* Contact Methods */}
 							<div className="space-y-6">
 								<div className="flex items-start gap-4 p-4 bg-white rounded-xl shadow-sm border border-gray-200 hover:shadow-md transition-shadow duration-300">
-									<div className="p-3 bg-blue-100 rounded-lg">
+									<div className="p-3 bg-green-100 rounded-lg">
 										<Mail
-											className="text-blue-600"
+											className="text-green-600"
 											size={24}
 										/>
 									</div>
@@ -117,7 +117,9 @@ const Contact = () => {
 											Email
 										</h4>
 										<p className="text-gray-600">
-											lesliepaul@example.com
+											<a href="mailto:leslieajayi27@gmail.com">
+												lesliepaul@example.com
+											</a>
 										</p>
 										<p className="text-sm text-gray-500">
 											I'll respond within 24 hours
@@ -137,7 +139,9 @@ const Contact = () => {
 											Phone
 										</h4>
 										<p className="text-gray-600">
-											+1 (555) 123-4567
+											<a href="tel:+233271237965">
+												+233 (27) 123-7965
+											</a>
 										</p>
 										<p className="text-sm text-gray-500">
 											Mon - Fri, 9am - 6pm
@@ -146,9 +150,9 @@ const Contact = () => {
 								</div>
 
 								<div className="flex items-start gap-4 p-4 bg-white rounded-xl shadow-sm border border-gray-200 hover:shadow-md transition-shadow duration-300">
-									<div className="p-3 bg-purple-100 rounded-lg">
+									<div className="p-3 bg-green-100 rounded-lg">
 										<MapPin
-											className="text-purple-600"
+											className="text-green-600"
 											size={24}
 										/>
 									</div>
@@ -177,14 +181,14 @@ const Contact = () => {
 											Response Time
 										</span>
 										<span className="font-semibold text-green-600">
-											{"< 24 hours"}
+											{"In 24 hours"}
 										</span>
 									</div>
 									<div className="flex justify-between items-center">
 										<span className="text-gray-600">
 											Project Completion
 										</span>
-										<span className="font-semibold text-blue-600">
+										<span className="font-semibold text-green-600">
 											On Time
 										</span>
 									</div>
@@ -192,7 +196,7 @@ const Contact = () => {
 										<span className="text-gray-600">
 											Communication
 										</span>
-										<span className="font-semibold text-purple-600">
+										<span className="font-semibold text-green-600">
 											Daily Updates
 										</span>
 									</div>
@@ -333,7 +337,7 @@ const Contact = () => {
 									<button
 										type="submit"
 										disabled={isLoading}
-										className="w-full flex items-center justify-center gap-2 px-8 py-4 bg-blue-600 text-white rounded-xl font-semibold hover:shadow-lg transition-all duration-300 hover:scale-105 relative overflow-hidden group disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
+										className="w-full flex items-center justify-center gap-2 px-8 py-4 bg-green-600 text-white rounded-xl font-semibold hover:shadow-lg transition-all duration-300 hover:scale-105 relative overflow-hidden group disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
 									>
 										{isLoading ? (
 											<>

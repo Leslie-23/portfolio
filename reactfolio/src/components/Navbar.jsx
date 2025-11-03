@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-
+import "../components/globals.css";
 const Navbar = () => {
 	const [isMenuOpen, setIsMenuOpen] = useState(false);
 	const [activeItem, setActiveItem] = useState("");
@@ -25,14 +25,14 @@ const Navbar = () => {
 				<div className="flex justify-between items-center h-16">
 					{/* Logo */}
 					<div className="flex-shrink-0">
-						<span className="text-black text-xl font-bold">
+						<span className="text-black text-xl font-bold poppins-black ">
 							LESLIE PAUL
 						</span>
 					</div>
 
 					{/* Desktop Menu */}
 					<div className="hidden md:block">
-						<div className="ml-10 flex items-baseline space-x-2">
+						<div className="ml-10 flex items-baseline space-x-2 poppins-bold">
 							{navItems.map((item) => (
 								<a
 									key={item.name}

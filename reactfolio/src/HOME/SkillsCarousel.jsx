@@ -1,355 +1,263 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import {
-	// Core Languages
-	FileCode,
-	Cpu,
-	Hash,
-	Coffee,
-	FileJson,
-	Type,
-	Database as DbIcon,
-	// Web Development
-	Code,
-	Palette,
-	Wind,
-	Link,
-	Globe,
-	Server,
-	GitBranch,
-	// Backend & Databases
-	Database,
-	DatabaseBackup,
-	Box,
-	Brain,
-	KeyRound,
-	FolderSearch,
-	Flame,
-	// Mobile
-	Smartphone,
-	Monitor,
-	Tablet,
+	SiJavascript,
+	SiReact,
+	SiNodedotjs,
+	SiMongodb,
+	SiDocker,
+	SiAmazon,
+	SiFigma,
+	SiGithub,
+	SiTypescript,
+	SiTailwindcss,
+	SiPostgresql,
+	SiNextdotjs,
+	SiC,
+	SiCplusplus,
+	SiJava,
+	SiPython,
+	SiExpress,
+	SiRedis,
+	SiFirebase,
+	SiGooglecloud,
+	SiKubernetes,
+	SiNginx,
+	SiVisualstudiocode,
+	SiGit,
+	SiPostman,
+	SiPrisma,
+	SiAdobephotoshop,
+	SiAdobeillustrator,
+	SiCanva,
+	SiVercel,
+	SiMicrosoftazure,
+	SiBootstrap,
+	SiMysql,
+	SiGraphql,
+	SiJest,
+	SiWebpack,
+	SiCoffeescript,
+	SiCoder,
+} from "react-icons/si";
+
+const skills = [
+	// Programming Languages
+	{ name: "JavaScript", Icon: SiJavascript, color: "#F7DF1E" },
+	{ name: "TypeScript", Icon: SiTypescript, color: "#3178C6" },
+	{ name: "Python", Icon: SiPython, color: "#3776AB" },
+	{ name: "Java", Icon: SiCoffeescript, color: "#ED8B00" },
+	{ name: "C", Icon: SiC, color: "#A8B9CC" },
+	{ name: "C++", Icon: SiCplusplus, color: "#00599C" },
+
+	// Frontend Technologies
+	{ name: "React", Icon: SiReact, color: "#61DAFB" },
+	{ name: "Next.js", Icon: SiNextdotjs, color: "#000000" },
+	{ name: "Tailwind CSS", Icon: SiTailwindcss, color: "#06B6D4" },
+	{ name: "Bootstrap", Icon: SiBootstrap, color: "#7952B3" },
+
+	// Backend Technologies
+	{ name: "Node.js", Icon: SiNodedotjs, color: "#68A063" },
+	{ name: "Express.js", Icon: SiExpress, color: "#000000" },
+	{ name: "GraphQL", Icon: SiGraphql, color: "#E10098" },
+
+	// Databases
+	{ name: "MongoDB", Icon: SiMongodb, color: "#00ED64" },
+	{ name: "PostgreSQL", Icon: SiPostgresql, color: "#336791" },
+	{ name: "MySQL", Icon: SiMysql, color: "#4479A1" },
+	{ name: "Redis", Icon: SiRedis, color: "#DC382D" },
+
 	// Cloud & DevOps
-	Container,
-	GitCommit,
-	Train,
-	Rocket,
-	Cloud,
-	Cloudy,
-	Network,
-	// System Design
-	Workflow,
-	LayoutGrid,
-	GitMerge,
-	Scale,
-	Key,
-	Zap,
-	// Data & AI
-	BarChart3,
-	Table,
-	BrainCircuit,
-	Atom,
-	BarChart,
-	// Developer Tools
-	GitCommit as GitIcon,
-	Terminal,
-	Hammer,
-	TestTube,
-	Palette as FigmaIcon,
-	Calendar,
-	// Security
-	Shield,
-	Lock,
-	Filter,
-	Gauge,
-	UserCheck,
-	// UI/UX
-	Brush,
-	Move,
-	Component,
-	Layers,
-	Monitor as ResponsiveIcon,
-	// Integrations
-	Mail,
-	Image,
-	CreditCard,
-	MessageSquare,
-	BarChart as AnalyticsIcon,
-} from "lucide-react";
+	{ name: "AWS", Icon: SiAmazon, color: "#FF9900" },
+	{ name: "Docker", Icon: SiDocker, color: "#2496ED" },
+	{ name: "Kubernetes", Icon: SiKubernetes, color: "#326CE5" },
+	{ name: "Google Cloud", Icon: SiGooglecloud, color: "#4285F4" },
+	{ name: "Azure", Icon: SiGooglecloud, color: "#0078D4" },
+	{ name: "Firebase", Icon: SiFirebase, color: "#FFCA28" },
+	{ name: "Vercel", Icon: SiVercel, color: "#000000" },
+	{ name: "Nginx", Icon: SiNginx, color: "#009639" },
 
-const SkillsCarousel = () => {
-	const [activeCategory, setActiveCategory] = useState(0);
+	// Tools & IDEs
+	{ name: "VS Code", Icon: SiCoder, color: "#007ACC" },
+	{ name: "Git", Icon: SiGit, color: "#F05032" },
+	{ name: "GitHub", Icon: SiGithub, color: "#181717" },
+	{ name: "Postman", Icon: SiPostman, color: "#FF6C37" },
+	{ name: "Prisma", Icon: SiPrisma, color: "#2D3748" },
+	{ name: "Jest", Icon: SiJest, color: "#C21325" },
+	{ name: "Webpack", Icon: SiWebpack, color: "#8DD6F9" },
 
-	const skillCategories = [
-		{
-			name: "Core Languages",
-			icon: <FileCode size={24} />,
-			skills: [
-				{ name: "C", icon: <Cpu size={20} /> },
-				{ name: "C++", icon: <Hash size={20} /> },
-				{ name: "C#", icon: <FileCode size={20} /> },
-				{ name: "Java", icon: <Coffee size={20} /> },
-				{ name: "Python", icon: <FileCode size={20} /> }, // Using FileCode as fallback
-				{ name: "JavaScript", icon: <FileJson size={20} /> },
-				{ name: "TypeScript", icon: <Type size={20} /> },
-				{ name: "SQL", icon: <DbIcon size={20} /> },
-			],
-			color: "bg-blue-100 text-blue-700",
-		},
-		{
-			name: "Web Development",
-			icon: <Globe size={24} />,
-			skills: [
-				{ name: "HTML5", icon: <Code size={20} /> },
-				{ name: "CSS3/SCSS", icon: <Palette size={20} /> },
-				{ name: "Tailwind CSS", icon: <Wind size={20} /> },
-				{ name: "React.js", icon: <Link size={20} /> },
-				{ name: "Next.js", icon: <Link size={20} /> },
-				{ name: "Node.js", icon: <Server size={20} /> },
-				{ name: "Express.js", icon: <Server size={20} /> },
-				{ name: "RESTful APIs", icon: <Link size={20} /> },
-				{ name: "GraphQL", icon: <GitBranch size={20} /> },
-			],
-			color: "bg-green-100 text-green-700",
-		},
-		{
-			name: "Backend & Databases",
-			icon: <Database size={24} />,
-			skills: [
-				{ name: "MySQL", icon: <Database size={20} /> },
-				{ name: "PostgreSQL", icon: <DatabaseBackup size={20} /> },
-				{ name: "MongoDB", icon: <Box size={20} /> },
-				{ name: "Redis", icon: <Brain size={20} /> },
-				{ name: "Prisma ORM", icon: <KeyRound size={20} /> },
-				{ name: "Sequelize ORM", icon: <FolderSearch size={20} /> },
-				{ name: "Firebase", icon: <Flame size={20} /> },
-			],
-			color: "bg-purple-100 text-purple-700",
-		},
-		{
-			name: "Mobile Development",
-			icon: <Smartphone size={24} />,
-			skills: [
-				{ name: "React Native", icon: <Monitor size={20} /> },
-				{ name: "Expo", icon: <Smartphone size={20} /> },
-				{ name: "Flutter", icon: <Tablet size={20} /> },
-			],
-			color: "bg-pink-100 text-pink-700",
-		},
-		{
-			name: "Cloud & DevOps",
-			icon: <Cloud size={24} />,
-			skills: [
-				{ name: "Docker", icon: <Container size={20} /> },
-				{ name: "GitHub Actions", icon: <GitCommit size={20} /> },
-				{ name: "Railway/Render", icon: <Train size={20} /> },
-				{ name: "Vercel/Netlify", icon: <Rocket size={20} /> },
-				{ name: "AWS", icon: <Cloud size={20} /> },
-				{ name: "DigitalOcean", icon: <Cloudy size={20} /> },
-				{ name: "Nginx", icon: <Network size={20} /> },
-			],
-			color: "bg-orange-100 text-orange-700",
-		},
-		{
-			name: "System Design",
-			icon: <Workflow size={24} />,
-			skills: [
-				{ name: "Microservices", icon: <Workflow size={20} /> },
-				{ name: "MVC/MVVM", icon: <LayoutGrid size={20} /> },
-				{ name: "API Gateway", icon: <GitMerge size={20} /> },
-				{ name: "Load Balancing", icon: <Scale size={20} /> },
-				{ name: "JWT/OAuth2", icon: <Key size={20} /> },
-				{ name: "Performance Optimization", icon: <Zap size={20} /> },
-			],
-			color: "bg-red-100 text-red-700",
-		},
-		{
-			name: "Data & AI",
-			icon: <BarChart3 size={24} />,
-			skills: [
-				{ name: "NumPy", icon: <Table size={20} /> },
-				{ name: "Pandas", icon: <BarChart3 size={20} /> },
-				{ name: "TensorFlow", icon: <BrainCircuit size={20} /> },
-				{ name: "PyTorch", icon: <Atom size={20} /> },
-				{ name: "Data Visualization", icon: <BarChart size={20} /> },
-			],
-			color: "bg-indigo-100 text-indigo-700",
-		},
-		{
-			name: "Developer Tools",
-			icon: <Terminal size={24} />,
-			skills: [
-				{ name: "Git/GitHub", icon: <GitIcon size={20} /> },
-				{ name: "VS Code", icon: <Code size={20} /> },
-				{ name: "JetBrains IDEs", icon: <Hammer size={20} /> },
-				{ name: "Postman", icon: <TestTube size={20} /> },
-				{ name: "Figma", icon: <FigmaIcon size={20} /> },
-				{ name: "Notion/Trello", icon: <Calendar size={20} /> },
-			],
-			color: "bg-gray-100 text-gray-700",
-		},
-		{
-			name: "Security & Optimization",
-			icon: <Shield size={24} />,
-			skills: [
-				{ name: "HTTPS/SSL", icon: <Shield size={20} /> },
-				{ name: "CORS/CSRF", icon: <Filter size={20} /> },
-				{ name: "Input Validation", icon: <Lock size={20} /> },
-				{ name: "Performance Profiling", icon: <Gauge size={20} /> },
-				{
-					name: "Secure Authentication",
-					icon: <UserCheck size={20} />,
-				},
-			],
-			color: "bg-yellow-100 text-yellow-700",
-		},
-		{
-			name: "UI/UX & Styling",
-			icon: <Brush size={24} />,
-			skills: [
-				{ name: "Tailwind CSS", icon: <Wind size={20} /> },
-				{ name: "Framer Motion", icon: <Move size={20} /> },
-				{ name: "ShadCN/UI", icon: <Component size={20} /> },
-				{ name: "Material UI", icon: <Layers size={20} /> },
-				{
-					name: "Responsive Design",
-					icon: <ResponsiveIcon size={20} />,
-				},
-			],
-			color: "bg-cyan-100 text-cyan-700",
-		},
-		{
-			name: "Integrations",
-			icon: <Zap size={24} />,
-			skills: [
-				{ name: "Nodemailer/Resend", icon: <Mail size={20} /> },
-				{ name: "Cloudinary/S3", icon: <Image size={20} /> },
-				{ name: "Stripe/Paystack", icon: <CreditCard size={20} /> },
-				{ name: "WebSockets", icon: <MessageSquare size={20} /> },
-				{ name: "Analytics", icon: <AnalyticsIcon size={20} /> },
-			],
-			color: "bg-teal-100 text-teal-700",
-		},
-	];
+	// Design Tools
+	{ name: "Figma", Icon: SiFigma, color: "#F24E1E" },
+	{ name: "Photoshop", Icon: SiAdobephotoshop, color: "#31A8FF" },
+	{ name: "Illustrator", Icon: SiAdobeillustrator, color: "#FF9A00" },
+	{ name: "Canva", Icon: SiCanva, color: "#00C4CC" },
+];
 
-	// Auto-rotate categories
+export default function SkillsCarousel() {
+	const [isHovered, setIsHovered] = useState(false);
+	const topRowRef = useRef(null);
+	const bottomRowRef = useRef(null);
+
+	// Auto-scroll effect for both rows
 	useEffect(() => {
+		if (isHovered || !topRowRef.current || !bottomRowRef.current) return;
+
+		const topRow = topRowRef.current;
+		const bottomRow = bottomRowRef.current;
+
+		let topScrollPosition = 0;
+		let bottomScrollPosition = 0;
+		const scrollSpeed = 1;
+
+		const topMaxScroll = topRow.scrollWidth - topRow.clientWidth;
+		const bottomMaxScroll = bottomRow.scrollWidth - bottomRow.clientWidth;
+
 		const interval = setInterval(() => {
-			setActiveCategory((prev) => (prev + 1) % skillCategories.length);
-		}, 4000);
+			// Top row scrolls left to right
+			topScrollPosition += scrollSpeed;
+			if (topScrollPosition > topMaxScroll) {
+				topScrollPosition = 0;
+			}
+			topRow.scrollLeft = topScrollPosition;
+
+			// Bottom row scrolls right to left (reverse)
+			bottomScrollPosition -= scrollSpeed;
+			if (bottomScrollPosition < 0) {
+				bottomScrollPosition = bottomMaxScroll;
+			}
+			bottomRow.scrollLeft = bottomScrollPosition;
+		}, 30);
+
 		return () => clearInterval(interval);
-	}, [skillCategories.length]);
+	}, []);
+
+	// Split skills into two rows
+	const topRowSkills = skills.slice(0, Math.ceil(skills.length / 2));
+	const bottomRowSkills = skills.slice(Math.ceil(skills.length / 2));
 
 	return (
-		<section className="py-16 bg-gray-50">
-			<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-				{/* Header */}
-				<div className="text-center mb-12">
-					<h2 className="text-3xl sm:text-4xl font-bold text-black mb-4">
-						Tech Stack & Skills
+		<section className="relative w-full py-20 px-4 md:px-8 lg:px-16">
+			{/* Background gradient */}
+			<div className="absolute inset-0 bg-gradient-to-br from-neutral-50 via-white to-neutral-100 dark:from-neutral-950 dark:via-neutral-900 dark:to-neutral-800" />
+
+			<div className="relative z-10 max-w-7xl mx-auto">
+				{/* Heading */}
+				<div className="mb-16 text-center">
+					<h2 className="text-3xl md:text-4xl font-light tracking-tight text-neutral-900 dark:text-neutral-50 mb-3">
+						Tools & Technologies I Use
 					</h2>
-					<p className="text-lg text-gray-600 max-w-2xl mx-auto">
-						Comprehensive toolkit for building modern, scalable
-						applications
+					<p className="text-sm text-neutral-500 dark:text-neutral-400 font-light">
+						Comprehensive toolkit for full-stack development and
+						beyond
 					</p>
 				</div>
 
-				{/* Category Navigation */}
-				<div className="flex flex-wrap justify-center gap-2 mb-8">
-					{skillCategories.map((category, index) => (
-						<button
-							key={category.name}
-							onClick={() => setActiveCategory(index)}
-							className={`flex items-center gap-2 px-4 py-2 rounded-full transition-all duration-300 ${
-								activeCategory === index
-									? "bg-green-600 text-white shadow-lg transform scale-105"
-									: "bg-white text-gray-700 hover:bg-green-100 hover:text-green-700"
-							}`}
-						>
-							{category.icon}
-							<span className="text-sm font-medium">
-								{category.name}
-							</span>
-						</button>
-					))}
-				</div>
+				{/* Two Row Carousel Container */}
+				<div
+					className="relative space-y-8"
+					onMouseEnter={() => setIsHovered(true)}
+					onMouseLeave={() => setIsHovered(false)}
+				>
+					{/* Top Row - Scrolls Left to Right */}
+					<div className="relative">
+						{/* Left gradient fade */}
+						<div className="absolute left-0 top-0 bottom-0 w-12 bg-gradient-to-r from-neutral-50 via-neutral-50 to-transparent dark:from-neutral-950 dark:via-neutral-950 dark:to-transparent z-20 pointer-events-none" />
 
-				{/* Skills Carousel */}
-				<div className="relative bg-white rounded-2xl shadow-lg p-4 w-full">
-					{/* Active Category Display */}
-					<div className="text-center mb-8">
-						<div className="flex items-center justify-center gap-3 mb-4">
-							<div
-								className={`p-3 rounded-full ${
-									skillCategories[activeCategory].color.split(
-										" "
-									)[0]
-								}`}
-							>
-								{skillCategories[activeCategory].icon}
-							</div>
-							<h3 className="text-2xl font-bold text-black">
-								{skillCategories[activeCategory].name}
-							</h3>
+						{/* Right gradient fade */}
+						<div className="absolute right-0 top-0 bottom-0 w-12 bg-gradient-to-l from-neutral-50 via-neutral-50 to-transparent dark:from-neutral-950 dark:via-neutral-950 dark:to-transparent z-20 pointer-events-none" />
+
+						{/* Top Row Skills */}
+						<div
+							ref={topRowRef}
+							className="flex overflow-x-hidden scroll-smooth gap-8 px-4 py-6"
+						>
+							{/* Original skills */}
+							{topRowSkills.map((skill, index) => (
+								<SkillCard
+									key={`top-original-${index}`}
+									skill={skill}
+								/>
+							))}
+
+							{/* Duplicated skills for infinite loop effect */}
+							{topRowSkills.map((skill, index) => (
+								<SkillCard
+									key={`top-duplicate-${index}`}
+									skill={skill}
+								/>
+							))}
 						</div>
 					</div>
 
-					{/* Skills Grid */}
-					<div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
-						{skillCategories[activeCategory].skills.map(
-							(skill, index) => (
-								<div
-									key={skill.name}
-									className="group relative bg-gray-50 rounded-xl p-4 text-center transition-all duration-300 hover:shadow-md hover:scale-105"
-								>
-									<div
-										className={`w-12 h-12 mx-auto mb-3 rounded-lg ${
-											skillCategories[
-												activeCategory
-											].color.split(" ")[0]
-										} flex items-center justify-center group-hover:scale-110 transition-transform duration-300`}
-									>
-										{skill.icon}
-									</div>
-									<span className="text-sm font-medium text-gray-700 group-hover:text-green-600 transition-colors duration-300">
-										{skill.name}
-									</span>
-								</div>
-							)
-						)}
-					</div>
+					{/* Bottom Row - Scrolls Right to Left */}
+					<div className="relative">
+						{/* Left gradient fade */}
+						<div className="absolute left-0 top-0 bottom-0 w-12 bg-gradient-to-r from-neutral-50 via-neutral-50 to-transparent dark:from-neutral-950 dark:via-neutral-950 dark:to-transparent z-20 pointer-events-none" />
 
-					{/* Navigation Dots */}
-					<div className="flex justify-center mt-8 space-x-2">
-						{skillCategories.map((_, index) => (
-							<button
-								key={index}
-								onClick={() => setActiveCategory(index)}
-								className={`w-2 h-1 rounded-full transition-all duration-100 ${
-									activeCategory === index
-										? "bg-green-600 scale-125"
-										: "bg-gray-300 hover:bg-gray-400"
-								}`}
-							/>
-						))}
+						{/* Right gradient fade */}
+						<div className="absolute right-0 top-0 bottom-0 w-12 bg-gradient-to-l from-neutral-50 via-neutral-50 to-transparent dark:from-neutral-950 dark:via-neutral-950 dark:to-transparent z-20 pointer-events-none" />
+
+						{/* Bottom Row Skills */}
+						<div
+							ref={bottomRowRef}
+							className="flex overflow-x-hidden scroll-smooth gap-8 px-4 py-6"
+						>
+							{/* Original skills */}
+							{bottomRowSkills.map((skill, index) => (
+								<SkillCard
+									key={`bottom-original-${index}`}
+									skill={skill}
+								/>
+							))}
+
+							{/* Duplicated skills for infinite loop effect */}
+							{bottomRowSkills.map((skill, index) => (
+								<SkillCard
+									key={`bottom-duplicate-${index}`}
+									skill={skill}
+								/>
+							))}
+						</div>
 					</div>
 				</div>
 
-				{/* Progress Bar */}
-				<div className="mt-6 bg-gray-200 rounded-full h-0.5">
-					<div
-						className="bg-green-600 h-1 rounded-full transition-all duration-1000 ease-out"
-						style={{
-							width: `${
-								((activeCategory + 1) /
-									skillCategories.length) *
-								100
-							}%`,
-						}}
-					/>
-				</div>
+				{/* Info text */}
+				<p className="text-xs text-neutral-400 dark:text-neutral-600 text-center mt-12">
+					{/* Hover to pause • Top row scrolls right, bottom row scrolls
+					left */}
+				</p>
 			</div>
 		</section>
 	);
-};
+}
 
-export default SkillsCarousel;
+function SkillCard({ skill }) {
+	const { Icon, name, color } = skill;
+
+	return (
+		<div className="flex flex-col items-center justify-center gap-3 min-w-24 cursor-pointer group">
+			{/* Icon container */}
+			<div className="relative w-16 h-16 md:w-20 md:h-20 flex items-center justify-center rounded-xl bg-neutral-100 dark:bg-neutral-800 transition-all duration-500 group-hover:bg-neutral-200 dark:group-hover:bg-neutral-700 group-hover:scale-110 group-hover:rotate-3 border border-neutral-200 dark:border-neutral-700">
+				{/* Glow effect on hover */}
+				<div
+					className="absolute inset-0 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 "
+					style={{ backgroundColor: color }}
+				/>
+
+				{/* Icon - grayscale by default, full color on hover */}
+				<Icon
+					size={32}
+					className="relative z-10 transition-all duration-500 grayscale group-hover:grayscale-0 group-hover:scale-110"
+					style={{
+						filter: "grayscale(1)",
+						WebkitFilter: "grayscale(1)",
+					}}
+				/>
+			</div>
+
+			{/* Skill name */}
+			<p className="text-xs font-medium text-neutral-600 dark:text-neutral-300 text-center opacity-0 group-hover:opacity-100 transition-all duration-300 whitespace-nowrap group-hover:translate-y-1">
+				{name}
+			</p>
+		</div>
+	);
+}

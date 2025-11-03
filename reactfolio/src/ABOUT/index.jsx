@@ -190,7 +190,7 @@ const About = () => {
 								</h3>
 								<p className="text-lg text-gray-700 leading-relaxed">
 									I'm{" "}
-									<span className="font-semibold text-blue-600">
+									<span className="font-semibold text-green-600">
 										Leslie Paul
 									</span>
 									, a Software Engineer and Information
