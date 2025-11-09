@@ -2,43 +2,113 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
-		<link rel="preconnect" href="https://fonts.googleapis.com" />
-		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-		<link
-			href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
-			rel="stylesheet"
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+		<meta
+			name="viewport"
+			content="width=device-width, initial-scale=1, maximum-scale=1"
 		/>
-		<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+		<!-- Primary Meta Tags -->
+		<title>
+			Leslie Paul Ajayi | Senior Full-Stack Software Engineer | MERN
+			Stack, TypeScript, Cloud
+		</title>
+		<meta
+			name="title"
+			content="Leslie Paul Ajayi | Senior Full-Stack Software Engineer | MERN Stack, TypeScript, Cloud"
+		/>
+		<meta
+			name="description"
+			content="Senior Full-Stack Software Engineer specializing in MERN Stack, TypeScript, Docker, and scalable cloud deployments. Building performant web applications with React, Node.js, and modern cloud technologies."
+		/>
+		<meta
+			name="keywords"
+			content="Leslie Paul Ajayi, Full-Stack Developer, Software Engineer, MERN Stack, React, Node.js, TypeScript, Cloud Developer, Docker, Web Developer, Ghana Tech, Portfolio, Senior Developer, AWS, MongoDB, Express.js"
+		/>
+		<meta name="author" content="Leslie Paul Ajayi" />
+		<meta name="robots" content="index, follow" />
+		<meta name="language" content="English" />
+		<meta name="theme-color" content="#16a34a" />
+
+		<!-- Additional SEO Meta Tags -->
+		<meta name="revisit-after" content="7 days" />
+		<meta name="rating" content="general" />
+		<meta name="distribution" content="global" />
+		<meta name="geo.region" content="GH" />
+		<meta name="geo.placename" content="Ghana" />
+
+		<!-- Canonical URL -->
+		<link rel="canonical" href="https://lesliepaul.me/" />
+
+		<!-- Open Graph / Facebook -->
+		<meta property="og:type" content="website" />
+		<meta property="og:url" content="https://lesliepaul.me/" />
+		<meta
+			property="og:title"
+			content="Leslie Paul Ajayi | Senior Full-Stack Software Engineer"
+		/>
+		<meta
+			property="og:description"
+			content="Senior Full-Stack Software Engineer specializing in MERN Stack, TypeScript, Docker, and scalable cloud deployments. Building performant web applications with modern technologies."
+		/>
+		<meta
+			property="og:image"
+			content="https://lesliepaul.me/preview-image.jpg"
+		/>
+		<meta property="og:site_name" content="Leslie Paul Ajayi Portfolio" />
+		<meta property="og:locale" content="en_US" />
+
+		<!-- Twitter -->
+		<meta name="twitter:card" content="summary_large_image" />
+		<meta name="twitter:url" content="https://lesliepaul.me/" />
+		<meta
+			name="twitter:title"
+			content="Leslie Paul Ajayi | Senior Full-Stack Software Engineer"
+		/>
+		<meta
+			name="twitter:description"
+			content="Senior Full-Stack Software Engineer specializing in MERN Stack, TypeScript, Docker, and scalable cloud deployments."
+		/>
+		<meta
+			name="twitter:image"
+			content="https://lesliepaul.me/preview-image.jpg"
+		/>
+		<meta name="twitter:creator" content="@lesliepauldev" />
+
+		<!-- Favicon & Manifest -->
 		<link
 			rel="apple-touch-icon"
 			sizes="180x180"
-			href="./apple-touch-icon.png"
+			href="/apple-touch-icon.png"
 		/>
 		<link
 			rel="icon"
 			type="image/png"
 			sizes="32x32"
-			href="./favicon-32x32.png"
+			href="/favicon-32x32.png"
 		/>
 		<link
 			rel="icon"
 			type="image/png"
 			sizes="16x16"
-			href="./favicon-16x16.png"
+			href="/favicon-16x16.png"
 		/>
-		<link rel="manifest" href="./site.webmanifest" />
-		<meta name="theme-color" content="#0a0a0a" />
-		<meta
-			name="description"
-			content="Leslie Paul Ajayi - Senior Full-Stack Software Engineer & IT Student specializing in MERN Stack, TypeScript, Docker, and Cloud Deployments"
+		<link rel="manifest" href="/site.webmanifest" />
+		<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#16a34a" />
+		<meta name="msapplication-TileColor" content="#16a34a" />
+		<meta name="theme-color" content="#16a34a" />
+
+		<!-- Preconnect to external domains -->
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+		<!-- Fonts -->
+		<link
+			href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+			rel="stylesheet"
 		/>
-		<meta
-			name="keywords"
-			content="Leslie Paul Ajayi, Full-Stack Developer, MERN Stack, React, Node.js, TypeScript, Software Engineer"
-		/>
-		<meta name="author" content="Leslie Paul Ajayi" />
-		<title>Leslie Paul Ajayi - Senior Full-Stack Software Engineer</title>
+
+		<!-- TailwindCSS -->
 		<script src="https://cdn.tailwindcss.com"></script>
 		<script>
 			tailwind.config = {
@@ -46,15 +116,57 @@
 				theme: {
 					extend: {
 						fontFamily: {
-							sans: ["Inter", "system-ui", "sans-serif"],
+							sans: ["Poppins", "system-ui", "sans-serif"],
 							mono: ["JetBrains Mono", "monospace"],
+						},
+						colors: {
+							primary: "#16a34a",
+							dark: "#0a0a0a",
 						},
 					},
 				},
 			};
 		</script>
+
+		<!-- JSON-LD Structured Data (for Google Rich Results) -->
+		<script type="application/ld+json">
+			{
+				"@context": "https://schema.org",
+				"@type": "Person",
+				"name": "Leslie Paul Ajayi",
+				"url": "https://lesliepaul.me",
+				"image": "https://lesliepaul.me/profile-image.jpg", // TODO: Replace with your actual profile image URL
+				"jobTitle": "Senior Full-Stack Software Engineer",
+				"worksFor": {
+					"@type": "Organization",
+					"name": "Freelance / Independent Developer"
+				},
+				"sameAs": [
+					"https://github.com/leslie-23",
+					"https://linkedin.com/in/lesliepaulajayi",
+					"https://x.com/i_am.leslie"
+				],
+				"knowsAbout": [
+					"Web Development",
+					"App Development",
+					"System Design",
+					"Cloud Architecture",
+					"MERN Stack",
+					"TypeScript",
+					"Docker",
+					"React",
+					"Node.js"
+				],
+				"email": "mailto:lesliepaulajayi@gmail.com",
+				"address": {
+					"@type": "PostalAddress",
+					"addressCountry": "GH"
+				}
+			}
+		</script>
 	</head>
-	<body>
+
+	<body class="bg-dark text-white font-sans">
 		<noscript>You need to enable JavaScript to run this app.</noscript>
 		<div id="root"></div>
 	</body>
