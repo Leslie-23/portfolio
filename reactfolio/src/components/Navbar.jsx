@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "../components/globals.css";
-import TextShuffle from "./textShuffle";
+// import TextShuffle from "./textShuffle";
 const Navbar = () => {
 	const [isMenuOpen, setIsMenuOpen] = useState(false);
 	const [activeItem, setActiveItem] = useState("");
