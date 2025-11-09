@@ -7,6 +7,7 @@ import Contact from "./CONTACT";
 import Loader from "./components/Loader";
 import "./app.css";
 import MovingLetters from "./components/preview";
+import FloatingHelpButton from "./components/FloatingHelpButton";
 function App() {
 	const [isLoading, setIsLoading] = useState(true);
 	useEffect(() => {
@@ -20,6 +21,7 @@ function App() {
 
 	return (
 		<div className="App">
+			<FloatingHelpButton />
 			<Routes>
 				<Route path="/" element={<Home />} />
 				<Route path="/home" element={<Home />} />

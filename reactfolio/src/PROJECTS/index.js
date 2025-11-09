@@ -472,7 +472,7 @@ const Projects = () => {
 					</div>
 
 					{/* All Projects Grid */}
-					<div
+					{/* <div
 						id="projects-grid"
 						className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
 					>
@@ -523,6 +523,75 @@ const Projects = () => {
 											))}
 										{project.techStack.length > 3 && (
 											<span className="px-2 py-1 bg-gray-100 text-gray-600 rounded text-xs">
+												+{project.techStack.length - 3}
+											</span>
+										)}
+									</div>
+								</div>
+							</div>
+						))}
+					</div> */}
+					{/* All Projects Grid */}
+					<div
+						id="projects-grid"
+						className="grid grid-cols-3 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 sm:gap-4 md:gap-6"
+					>
+						{projects.map((project, index) => (
+							<div
+								key={project.id}
+								className={`group bg-white rounded-xl shadow-md overflow-hidden transition-all duration-300 hover:shadow-xl hover:scale-[1.02] cursor-pointer border-2 ${
+									activeProject === index
+										? "border-blue-500"
+										: "border-transparent"
+								}`}
+								onClick={() => setActiveProject(index)}
+							>
+								{/* Image Section */}
+								<div className="relative w-full aspect-square overflow-hidden">
+									<img
+										src={project.webScreenshot}
+										alt={project.title}
+										className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
+									/>
+									{/* Overlay on hover (optional) */}
+									<div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center text-white text-sm font-medium">
+										View Details
+									</div>
+								</div>
+
+								{/* Info Section (hidden on mobile for Instagram-like look) */}
+								<div className="hidden sm:block p-3">
+									<div className="flex items-center justify-between mb-2">
+										<span
+											className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(
+												project.status
+											)}`}
+										>
+											{project.status}
+										</span>
+										<span className="text-gray-500">
+											{project.icon}
+										</span>
+									</div>
+									<h4 className="text-sm font-semibold text-gray-900 mb-1 truncate">
+										{project.title}
+									</h4>
+									<p className="text-gray-600 text-xs line-clamp-2 mb-2">
+										{project.description}
+									</p>
+									<div className="flex flex-wrap gap-1">
+										{project.techStack
+											.slice(0, 3)
+											.map((tech, i) => (
+												<span
+													key={i}
+													className="px-2 py-[2px] bg-gray-100 text-gray-600 rounded text-[10px]"
+												>
+													{tech}
+												</span>
+											))}
+										{project.techStack.length > 3 && (
+											<span className="px-2 py-[2px] bg-gray-100 text-gray-600 rounded text-[10px]">
 												+{project.techStack.length - 3}
 											</span>
 										)}

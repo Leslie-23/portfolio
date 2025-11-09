@@ -1,4 +1,4 @@
-import { Code } from "lucide-react";
+// import { Code } from "lucide-react";
 import { useEffect, useRef } from "react";
 
 const Loader = () => {
@@ -86,14 +86,14 @@ const Loader = () => {
 				<div className="text-wrapper">
 					<div className="line line1"></div>
 					<span className="letters letters-left text-black">
-						Leslie  
+						Leslie
 					</span>
-					<span className="letters ampersand">
+					{/* <span className="letters ampersand">
 						{" "}
 						<Code />{" "}
-					</span>
+					</span> */}
 					<span className="letters letters-right text-black">
-						 Paul
+						Paul
 					</span>
 					<div className="line line2"></div>
 				</div>

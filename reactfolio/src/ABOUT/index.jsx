@@ -201,6 +201,9 @@ const About = () => {
 									solutions that bridge performance with
 									clean, modern design.
 								</p>
+								<span className="font-light text-xsm text-subs text-green-600">
+									<sub>PS i love the color green.</sub>
+								</span>
 							</div>
 
 							{/* Technical Background */}
