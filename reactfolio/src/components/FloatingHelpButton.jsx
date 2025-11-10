@@ -86,11 +86,23 @@ const FloatingHelpButton = () => {
 				setPopup("reminder");
 				playFeedback();
 				localStorage.setItem("popupShown", "true");
+			}, 20000);
+
+			const thirdTimer = setTimeout(() => {
+				const message =
+					ctaMessages.reminder[
+						Math.floor(Math.random() * ctaMessages.reminder.length)
+					];
+				setCta(message);
+				setPopup("reminder");
+				playFeedback();
+				localStorage.setItem("popupShown", "true");
 			}, 30000);
 
 			return () => {
 				clearTimeout(firstTimer);
 				clearTimeout(secondTimer);
+				clearTimeout(thirdTimer);
 			};
 		}
 		// eslint-disable-next-line
