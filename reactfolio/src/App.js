@@ -9,6 +9,8 @@ import "./app.css";
 import MovingLetters from "./components/preview";
 import FloatingHelpButton from "./components/FloatingHelpButton";
 import ProjectDetail from "./PROJECTS/projectDetail";
+import MinimalNavProgress from "./components/helpers/MinimalNavProgress";
+import NotFound from "./components/helpers/404";
 function App() {
 	const [isLoading, setIsLoading] = useState(true);
 	useEffect(() => {
@@ -23,6 +25,7 @@ function App() {
 	return (
 		<div className="App">
 			<FloatingHelpButton />
+			<MinimalNavProgress />
 			<Routes>
 				<Route path="/" element={<Home />} />
 				<Route path="/home" element={<Home />} />
@@ -34,6 +37,7 @@ function App() {
 				<Route path="/about" element={<About />} />
 				<Route path="/contact" element={<Contact />} />
 				<Route path="/moving-letters" element={<MovingLetters />} />
+				<Route path="*" element={<NotFound />} />
 			</Routes>
 		</div>
 	);
