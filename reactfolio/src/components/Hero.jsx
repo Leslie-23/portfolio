@@ -19,14 +19,24 @@ const Hero = () => {
 				{/* Profile Image */}
 				<div className="relative mb-8">
 					<div className="w-32 h-32 mx-auto mb-6 relative">
-						{/* Placeholder for profile image - you can replace this */}
-						<div className="w-full h-full bg-green-100 rounded-full flex items-center justify-center">
+						{/* Actual profile image with fallback */}
+						<img
+							src="/profile-image.png"
+							alt="Leslie Paul"
+							className="w-full h-full rounded-full object-cover border-4 border-white shadow-lg"
+							onError={(e) => {
+								e.target.style.display = "none";
+								e.target.nextSibling.style.display = "flex";
+							}}
+						/>
+						{/* Fallback in case image fails to load */}
+						<div className="w-full h-full bg-green-100 rounded-full flex items-center justify-center border-4 border-white shadow-lg hidden">
 							<span className="text-4xl font-bold text-green-600">
 								LP
 							</span>
 						</div>
 						{/* Animated ring */}
-						<div className="absolute inset-0 border-4 border-green-200 rounded-full animate-ping-slow opacity-20"></div>
+						<div className="absolute inset-0 border-4 border-green-600 rounded-full animate-ping-fast opacity-20"></div>
 					</div>
 				</div>
 
