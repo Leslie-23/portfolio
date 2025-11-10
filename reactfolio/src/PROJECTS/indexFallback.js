@@ -16,11 +16,9 @@ import {
 import Footer from "../components/Footer";
 import Navbar from "../components/Navbar";
 import "../components/globals.css";
-import { useNavigate } from "react-router-dom";
 
 const Projects = () => {
 	const [activeProject, setActiveProject] = useState(0);
-	const navigate = useNavigate();
 
 	const projects = [
 		{
@@ -55,10 +53,6 @@ const Projects = () => {
 			category: "Full Stack",
 			icon: <Database size={20} />,
 			color: "blue",
-			timeline: "3 months",
-			teamSize: "4 developers",
-			documentation:
-				"This project involved building a complete e-commerce solution from scratch. The frontend was built with React and state management with Context API, while the backend used Node.js with Express. MongoDB was chosen for its flexibility with product data.",
 		},
 		{
 			id: 2,
@@ -92,10 +86,6 @@ const Projects = () => {
 			category: "Web App",
 			icon: <Code size={20} />,
 			color: "green",
-			timeline: "4 months",
-			teamSize: "3 developers",
-			documentation:
-				"The task management app was built with Next.js for SSR and better SEO. Real-time features were handled by Socket.io, and the database used PostgreSQL for relational data integrity.",
 		},
 		{
 			id: 3,
@@ -123,10 +113,6 @@ const Projects = () => {
 			category: "Frontend",
 			icon: <Cloud size={20} />,
 			color: "purple",
-			timeline: "2 months",
-			teamSize: "2 developers",
-			documentation:
-				"A comprehensive weather dashboard built with Vue.js that provides real-time weather data and interactive maps using Mapbox integration.",
 		},
 		{
 			id: 4,
@@ -160,10 +146,6 @@ const Projects = () => {
 			category: "Mobile",
 			icon: <Zap size={20} />,
 			color: "red",
-			timeline: "5 months",
-			teamSize: "3 developers",
-			documentation:
-				"A cross-platform fitness tracking application built with React Native that integrates with health APIs and provides social features for user engagement.",
 		},
 		{
 			id: 5,
@@ -197,10 +179,6 @@ const Projects = () => {
 			category: "Design",
 			icon: <Palette size={20} />,
 			color: "yellow",
-			timeline: "1 month",
-			teamSize: "1 developer",
-			documentation:
-				"A modern portfolio website showcasing creative animations and responsive design principles with a focus on user experience and performance optimization.",
 		},
 		{
 			id: 6,
@@ -228,10 +206,6 @@ const Projects = () => {
 			category: "Data Visualization",
 			icon: <Monitor size={20} />,
 			color: "cyan",
-			timeline: "6 months",
-			teamSize: "5 developers",
-			documentation:
-				"A comprehensive social media analytics platform that processes data from multiple APIs and provides actionable insights through interactive data visualizations.",
 		},
 	];
 
@@ -295,48 +269,87 @@ const Projects = () => {
 					<div className="bg-white rounded-3xl shadow-2xl overflow-hidden mb-16">
 						<div className="grid grid-cols-1 lg:grid-cols-2 gap-8 p-8">
 							{/* Project Images */}
-							<div className="space-y-6">
-								{/* Web Screenshot */}
+							<div className="space-y-8">
+								{/* MacBook Pro Frame */}
 								<div className="relative group">
 									<div className="absolute -inset-1 bg-gradient-to-r from-green-500 to-green-600 rounded-2xl blur opacity-25 group-hover:opacity-75 transition duration-1000 group-hover:duration-200"></div>
-									<div className="relative bg-gray-900 rounded-2xl p-4">
-										<div className="flex items-center gap-2 mb-3">
-											<Monitor
-												size={16}
-												className="text-gray-400"
-											/>
-											<span className="text-sm text-gray-400">
-												Web Version
-											</span>
+									<div className="relative">
+										{/* MacBook Pro Frame */}
+										<div className="relative mx-auto w-full max-w-2xl">
+											{/* MacBook Top Bar */}
+											<div className="h-6 bg-gray-800 rounded-t-2xl border-t border-gray-700 relative">
+												<div className="absolute top-1/2 left-4 transform -translate-y-1/2 flex space-x-1.5">
+													<div className="w-2 h-2 bg-red-500 rounded-full"></div>
+													<div className="w-2 h-2 bg-yellow-500 rounded-full"></div>
+													<div className="w-2 h-2 bg-green-500 rounded-full"></div>
+												</div>
+											</div>
+
+											{/* MacBook Screen */}
+											<div className="bg-gray-800 p-2 border-x border-gray-700">
+												<div className="bg-gray-900 rounded-lg overflow-hidden">
+													<div className="flex items-center gap-2 p-3 bg-gray-800 border-b border-gray-700">
+														<Monitor
+															size={16}
+															className="text-gray-400"
+														/>
+														<span className="text-sm text-gray-400">
+															Web Version
+														</span>
+													</div>
+													<img
+														src={
+															currentProject.webScreenshot
+														}
+														alt={`${currentProject.title} Web Screenshot`}
+														className="w-full h-auto transition-transform duration-300 hover:scale-105"
+													/>
+												</div>
+											</div>
+
+											{/* MacBook Bottom */}
+											<div className="h-6 bg-gray-800 rounded-b-2xl border-b border-gray-700 relative">
+												<div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-32 h-1 bg-gray-700 rounded-b-lg"></div>
+											</div>
 										</div>
-										<img
-											src={currentProject.webScreenshot}
-											alt={`${currentProject.title} Web Screenshot`}
-											className="w-full h-auto rounded-lg shadow-lg transition-transform duration-300 hover:scale-105"
-										/>
 									</div>
 								</div>
 
-								{/* Mobile Screenshot */}
+								{/* iPhone Frame */}
 								<div className="relative group max-w-xs mx-auto">
-									<div className="absolute -inset-1 bg-gradient-to-r from-green-500 to-green-600 rounded-3xl blur opacity-25 group-hover:opacity-75 transition duration-1000 group-hover:duration-200"></div>
-									<div className="relative bg-gray-900 rounded-3xl p-4">
-										<div className="flex items-center gap-2 mb-3">
-											<Smartphone
-												size={16}
-												className="text-gray-400"
-											/>
-											<span className="text-sm text-gray-400">
-												Mobile Version
-											</span>
+									<div className="absolute -inset-1 bg-gradient-to-r from-green-500 to-green-600 rounded-[3rem] blur opacity-25 group-hover:opacity-75 transition duration-1000 group-hover:duration-200"></div>
+									<div className="relative">
+										{/* iPhone Frame */}
+										<div className="bg-gray-900 rounded-[3rem] p-4 border-[6px] border-gray-800 shadow-2xl">
+											{/* iPhone Notch */}
+											<div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-32 h-6 bg-gray-800 rounded-b-2xl z-10"></div>
+
+											{/* iPhone Screen */}
+											<div className="relative rounded-[2rem] overflow-hidden bg-gray-900">
+												<div className="absolute top-3 left-1/2 transform -translate-x-1/2 w-16 h-1 bg-gray-700 rounded-full z-20"></div>
+												<div className="pt-4 pb-2 px-2">
+													<div className="flex items-center gap-2 mb-2 px-2">
+														<Smartphone
+															size={14}
+															className="text-gray-400"
+														/>
+														<span className="text-xs text-gray-400">
+															Mobile Version
+														</span>
+													</div>
+													<img
+														src={
+															currentProject.mobileScreenshot
+														}
+														alt={`${currentProject.title} Mobile Screenshot`}
+														className="w-full h-auto rounded-2xl transition-transform duration-300 hover:scale-105"
+													/>
+												</div>
+											</div>
+
+											{/* iPhone Home Indicator */}
+											<div className="absolute bottom-3 left-1/2 transform -translate-x-1/2 w-20 h-1 bg-gray-600 rounded-full"></div>
 										</div>
-										<img
-											src={
-												currentProject.mobileScreenshot
-											}
-											alt={`${currentProject.title} Mobile Screenshot`}
-											className="w-full h-auto rounded-2xl shadow-lg transition-transform duration-300 hover:scale-105"
-										/>
 									</div>
 								</div>
 							</div>
@@ -367,6 +380,7 @@ const Projects = () => {
 									<h3 className="text-3xl font-bold text-gray-900 mb-4">
 										{currentProject.title}
 									</h3>
+
 									<p className="text-lg text-gray-600 mb-6 leading-relaxed">
 										{currentProject.fullDescription}
 									</p>
@@ -502,82 +516,69 @@ const Projects = () => {
 						id="projects-grid"
 						className="grid grid-cols-3 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 sm:gap-4 md:gap-6"
 					>
-						{projects.map((project, index) => {
-							const projectSlug = project.title
-								.toLowerCase()
-								.replace(/[^a-z0-9]+/g, "-")
-								.replace(/(^-|-$)+/g, "");
-
-							return (
-								<div
-									key={project.id}
-									className={`group bg-white rounded-xl shadow-md overflow-hidden transition-all duration-300 hover:shadow-xl hover:scale-[1.02] cursor-pointer border-2 ${
-										activeProject === index
-											? "border-blue-500"
-											: "border-transparent"
-									}`}
-									onClick={() =>
-										navigate(`/projects/${projectSlug}`, {
-											state: { project },
-										})
-									}
-								>
-									{/* Image Section */}
-									<div className="relative w-full aspect-square overflow-hidden">
-										<img
-											src={project.webScreenshot}
-											alt={project.title}
-											className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
-										/>
-										{/* Overlay on hover */}
-										<div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center text-white text-sm font-medium">
-											View Details
-										</div>
-									</div>
-
-									{/* Info Section */}
-									<div className="hidden sm:block p-3 ">
-										<div className="flex items-center justify-between mb-2">
-											<span
-												className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(
-													project.status
-												)}`}
-											>
-												{project.status}
-											</span>
-											<span className="text-gray-500">
-												{project.icon}
-											</span>
-										</div>
-										<h4 className="text-sm font-semibold text-gray-900 mb-1 truncate">
-											{project.title}
-										</h4>
-										<p className="text-gray-600 text-xs line-clamp-2 mb-2">
-											{project.description}
-										</p>
-										<div className="flex flex-wrap gap-1">
-											{project.techStack
-												.slice(0, 3)
-												.map((tech, i) => (
-													<span
-														key={i}
-														className="px-2 py-[2px] bg-gray-100 text-gray-600 rounded text-[10px]"
-													>
-														{tech}
-													</span>
-												))}
-											{project.techStack.length > 3 && (
-												<span className="px-2 py-[2px] bg-gray-100 text-gray-600 rounded text-[10px]">
-													+
-													{project.techStack.length -
-														3}
-												</span>
-											)}
-										</div>
+						{projects.map((project, index) => (
+							<div
+								key={project.id}
+								className={`group bg-white rounded-xl shadow-md overflow-hidden transition-all duration-300 hover:shadow-xl hover:scale-[1.02] cursor-pointer border-2 ${
+									activeProject === index
+										? "border-blue-500"
+										: "border-transparent"
+								}`}
+								onClick={() => setActiveProject(index)}
+							>
+								{/* Image Section */}
+								<div className="relative w-full aspect-square overflow-hidden">
+									<img
+										src={project.webScreenshot}
+										alt={project.title}
+										className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
+									/>
+									{/* Overlay on hover */}
+									<div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center text-white text-sm font-medium">
+										View Details
 									</div>
 								</div>
-							);
-						})}
+
+								{/* Info Section */}
+								<div className="hidden sm:block p-3">
+									<div className="flex items-center justify-between mb-2">
+										<span
+											className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(
+												project.status
+											)}`}
+										>
+											{project.status}
+										</span>
+										<span className="text-gray-500">
+											{project.icon}
+										</span>
+									</div>
+									<h4 className="text-sm font-semibold text-gray-900 mb-1 truncate">
+										{project.title}
+									</h4>
+									<p className="text-gray-600 text-xs line-clamp-2 mb-2">
+										{project.description}
+									</p>
+									<div className="flex flex-wrap gap-1">
+										{project.techStack
+											.slice(0, 3)
+											.map((tech, i) => (
+												<span
+													key={i}
+													className="px-2 py-[2px] bg-gray-100 text-gray-600 rounded text-[10px]"
+												>
+													{tech}
+												</span>
+											))}
+										{project.techStack.length > 3 && (
+											<span className="px-2 py-[2px] bg-gray-100 text-gray-600 rounded text-[10px]">
+												+{project.techStack.length - 3}
+											</span>
+										)}
+									</div>
+								</div>
+							</div>
+						))}
 					</div>
 				</div>
 			</section>

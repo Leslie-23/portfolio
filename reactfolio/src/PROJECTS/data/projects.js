@@ -1,0 +1,251 @@
+// src/data/projectsData.js
+export const projectsData = {
+	"e-commerce-platform": {
+		id: 1,
+		title: "E-Commerce Platform",
+		description:
+			"A full-stack e-commerce solution with real-time inventory management, payment processing, and admin dashboard.",
+		fullDescription:
+			"Built with modern web technologies, this e-commerce platform features user authentication, product catalog, shopping cart, checkout process, and order management. Includes an admin panel for inventory control and analytics.",
+		techStack: ["React", "Node.js", "MongoDB", "Stripe", "Tailwind CSS"],
+		webScreenshot:
+			"https://placehold.co/800x450/3B82F6/FFFFFF?text=E-Commerce+Web+App",
+		mobileScreenshot:
+			"https://placehold.co/300x600/3B82F6/FFFFFF?text=E-Commerce+Mobile",
+		liveLink: "https://example.com",
+		githubLink: "https://github.com",
+		demoLink: "https://demo.com",
+		features: [
+			"User Authentication",
+			"Payment Processing",
+			"Admin Dashboard",
+			"Real-time Updates",
+			"Responsive Design",
+		],
+		status: "Live",
+		category: "Full Stack",
+		timeline: "3 months",
+		teamSize: "4 developers",
+		challenges: [
+			"Implementing secure payment processing",
+			"Real-time inventory synchronization",
+			"Scalable user authentication system",
+		],
+		solutions: [
+			"Integrated Stripe with webhook verification",
+			"Used Redis for real-time updates",
+			"Implemented JWT with refresh tokens",
+		],
+		documentation:
+			"This project involved building a complete e-commerce solution from scratch. The frontend was built with React and state management with Context API, while the backend used Node.js with Express. MongoDB was chosen for its flexibility with product data.",
+	},
+	"task-management-app": {
+		id: 2,
+		title: "Task Management App",
+		description:
+			"Collaborative task management application with drag-and-drop functionality and team collaboration features.",
+		fullDescription:
+			"A productivity app that helps teams organize tasks, set deadlines, and track progress. Features include real-time collaboration, file attachments, comments, and progress tracking.",
+		techStack: [
+			"Next.js",
+			"TypeScript",
+			"PostgreSQL",
+			"Socket.io",
+			"Framer Motion",
+		],
+		webScreenshot:
+			"https://placehold.co/800x450/10B981/FFFFFF?text=Task+Manager+Web",
+		mobileScreenshot:
+			"https://placehold.co/300x600/10B981/FFFFFF?text=Task+Manager+Mobile",
+		liveLink: "https://taskapp.com",
+		githubLink: "https://github.com",
+		demoLink: "https://demo.com",
+		features: [
+			"Drag & Drop",
+			"Real-time Chat",
+			"File Sharing",
+			"Progress Analytics",
+			"Team Collaboration",
+		],
+		status: "In Development",
+		category: "Web App",
+		timeline: "4 months",
+		teamSize: "3 developers",
+		challenges: [
+			"Real-time synchronization across multiple clients",
+			"Drag and drop performance with large datasets",
+			"File upload and storage optimization",
+		],
+		solutions: [
+			"Implemented Socket.io for real-time updates",
+			"Used React DnD with virtualization",
+			"Integrated AWS S3 with CDN for files",
+		],
+		documentation:
+			"The task management app was built with Next.js for SSR and better SEO. Real-time features were handled by Socket.io, and the database used PostgreSQL for relational data integrity.",
+	},
+	"weather-dashboard": {
+		id: 3,
+		title: "Weather Dashboard",
+		description:
+			"Real-time weather application with interactive maps, forecasts, and location-based services.",
+		fullDescription:
+			"A comprehensive weather dashboard that provides current conditions, extended forecasts, and severe weather alerts. Features interactive maps and personalized location tracking.",
+		techStack: ["Vue.js", "Express", "Redis", "Chart.js", "Mapbox"],
+		webScreenshot:
+			"https://placehold.co/800x450/8B5CF6/FFFFFF?text=Weather+Dashboard",
+		mobileScreenshot:
+			"https://placehold.co/300x600/8B5CF6/FFFFFF?text=Weather+Mobile",
+		liveLink: "https://weatherapp.com",
+		githubLink: "https://github.com",
+		demoLink: "https://demo.com",
+		features: [
+			"Live Weather Maps",
+			"Location Services",
+			"Weather Alerts",
+			"Historical Data",
+			"Interactive Charts",
+		],
+		status: "Live",
+		category: "Frontend",
+		timeline: "2 months",
+		teamSize: "2 developers",
+		challenges: [
+			"Real-time data synchronization",
+			"Map integration and performance",
+			"Location accuracy optimization",
+		],
+		solutions: [
+			"Implemented WebSocket connections for live updates",
+			"Used Mapbox GL for efficient map rendering",
+			"Integrated multiple geolocation APIs for accuracy",
+		],
+		documentation:
+			"A comprehensive weather dashboard built with Vue.js that provides real-time weather data and interactive maps using Mapbox integration. Features include location-based forecasts and severe weather alerts.",
+	},
+	"fitness-tracker": {
+		id: 4,
+		title: "Fitness Tracker",
+		description:
+			"Mobile fitness application with workout plans, progress tracking, and social features.",
+		fullDescription:
+			"A comprehensive fitness app that helps users track workouts, set goals, and connect with friends. Includes exercise library, progress photos, and achievement system.",
+		techStack: ["React Native", "Firebase", "Redux", "Chart.js", "Expo"],
+		webScreenshot:
+			"https://placehold.co/800x450/EF4444/FFFFFF?text=Fitness+Web+Portal",
+		mobileScreenshot:
+			"https://placehold.co/300x600/EF4444/FFFFFF?text=Fitness+Mobile+App",
+		liveLink: "https://fitnessapp.com",
+		githubLink: "https://github.com",
+		demoLink: "https://demo.com",
+		features: [
+			"Workout Plans",
+			"Progress Tracking",
+			"Social Feed",
+			"Achievement System",
+			"Health Integration",
+		],
+		status: "Live",
+		category: "Mobile",
+		timeline: "5 months",
+		teamSize: "3 developers",
+		challenges: [
+			"Cross-platform performance optimization",
+			"Real-time social features implementation",
+			"Health API integration complexity",
+		],
+		solutions: [
+			"Used React Native with platform-specific optimizations",
+			"Implemented Firebase for real-time social features",
+			"Created custom bridge for health API integrations",
+		],
+		documentation:
+			"A cross-platform fitness tracking application built with React Native that integrates with health APIs and provides social features for user engagement. The app includes workout planning, progress tracking, and community features.",
+	},
+	"portfolio-website": {
+		id: 5,
+		title: "Portfolio Website",
+		description:
+			"Modern portfolio website with smooth animations, dark mode, and project showcase.",
+		fullDescription:
+			"A beautifully designed portfolio website featuring smooth scroll animations, interactive elements, and a comprehensive project gallery. Built with performance and accessibility in mind.",
+		techStack: [
+			"React",
+			"GSAP",
+			"Tailwind CSS",
+			"Framer Motion",
+			"Three.js",
+		],
+		webScreenshot:
+			"https://placehold.co/800x450/F59E0B/FFFFFF?text=Portfolio+Website",
+		mobileScreenshot:
+			"https://placehold.co/300x600/F59E0B/FFFFFF?text=Portfolio+Mobile",
+		liveLink: "https://portfolio.com",
+		githubLink: "https://github.com",
+		demoLink: "https://demo.com",
+		features: [
+			"Smooth Animations",
+			"Dark Mode",
+			"Responsive Design",
+			"Performance Optimized",
+			"Accessibility",
+		],
+		status: "Live",
+		category: "Design",
+		timeline: "1 month",
+		teamSize: "1 developer",
+		challenges: [
+			"Animation performance on low-end devices",
+			"SEO optimization for SPAs",
+			"Cross-browser compatibility",
+		],
+		solutions: [
+			"Implemented lazy loading and code splitting",
+			"Used Next.js for SSR and better SEO",
+			"Extensive browser testing and fallbacks",
+		],
+		documentation:
+			"A modern portfolio website showcasing creative animations and responsive design principles with a focus on user experience and performance optimization. Built with React and featuring advanced animations using GSAP and Framer Motion.",
+	},
+	"social-media-analytics": {
+		id: 6,
+		title: "Social Media Analytics",
+		description:
+			"Analytics dashboard for social media performance tracking and insights.",
+		fullDescription:
+			"A powerful analytics platform that aggregates data from multiple social media platforms. Provides detailed insights, engagement metrics, and growth recommendations.",
+		techStack: ["Angular", "Python", "MySQL", "D3.js", "FastAPI"],
+		webScreenshot:
+			"https://placehold.co/800x450/06B6D4/FFFFFF?text=Analytics+Dashboard",
+		mobileScreenshot:
+			"https://placehold.co/300x600/06B6D4/FFFFFF?text=Analytics+Mobile",
+		liveLink: "https://analytics.com",
+		githubLink: "https://github.com",
+		demoLink: "https://demo.com",
+		features: [
+			"Multi-platform Analytics",
+			"Real-time Data",
+			"Custom Reports",
+			"Team Collaboration",
+			"Data Export",
+		],
+		status: "In Development",
+		category: "Data Visualization",
+		timeline: "6 months",
+		teamSize: "5 developers",
+		challenges: [
+			"Handling large datasets efficiently",
+			"Real-time data processing",
+			"Multiple API rate limiting",
+		],
+		solutions: [
+			"Implemented data aggregation with Redis caching",
+			"Used WebSocket for real-time dashboard updates",
+			"Created intelligent API rate limit management",
+		],
+		documentation:
+			"A comprehensive social media analytics platform that processes data from multiple APIs and provides actionable insights through interactive data visualizations. The platform supports real-time data processing and team collaboration features.",
+	},
+};
+
+export const projectsArray = Object.values(projectsData);
