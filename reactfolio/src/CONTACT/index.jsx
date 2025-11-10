@@ -17,12 +17,20 @@ const Contact = () => {
 	const [isLoading, setIsLoading] = useState(false);
 	const [isSuccess, setIsSuccess] = useState(false);
 	const [isError, setIsError] = useState(false);
+	const [errorMessage, setErrorMessage] = useState("");
 	const [formData, setFormData] = useState({
 		name: "",
 		email: "",
 		subject: "",
 		message: "",
 	});
+
+	// EmailJS Configuration - Updated with your credentials
+	const EMAILJS_CONFIG = {
+		serviceID: "service_h5sh46p",
+		templateID: "template_3s06bzm",
+		publicKey: "vVFDGGcpq9wK7RD83",
+	};
 
 	const handleChange = (e) => {
 		setFormData({
@@ -31,41 +39,76 @@ const Contact = () => {
 		});
 	};
 
-	const handleSubmit = (e) => {
+	const handleSubmit = async (e) => {
 		e.preventDefault();
 		setIsLoading(true);
 		setIsError(false);
 		setIsSuccess(false);
+		setErrorMessage("");
 
-		// EmailJS service parameters - replace with your actual values
-		const serviceID = "YOUR_SERVICE_ID";
-		const templateID = "YOUR_TEMPLATE_ID";
-		const publicKey = "YOUR_PUBLIC_KEY";
+		try {
+			// Validate form data
+			if (
+				!formData.name ||
+				!formData.email ||
+				!formData.subject ||
+				!formData.message
+			) {
+				throw new Error("Please fill in all required fields");
+			}
 
-		emailjs
-			.sendForm(serviceID, templateID, form.current, publicKey)
-			.then((result) => {
-				console.log("Email sent successfully:", result.text);
-				setIsLoading(false);
-				setIsSuccess(true);
-				setFormData({
-					name: "",
-					email: "",
-					subject: "",
-					message: "",
-				});
+			// Add timestamp to form data
+			const timestamp = new Date().toLocaleString();
 
-				// Reset success message after 5 seconds
-				setTimeout(() => setIsSuccess(false), 5000);
-			})
-			.catch((error) => {
-				console.error("Error sending email:", error);
-				setIsLoading(false);
-				setIsError(true);
+			// Send using EmailJS
+			const result = await emailjs.sendForm(
+				EMAILJS_CONFIG.serviceID,
+				EMAILJS_CONFIG.templateID,
+				form.current,
+				EMAILJS_CONFIG.publicKey,
+				{
+					timestamp: timestamp,
+					to_email: "leslieajayi27@gmail.com", // Add recipient email
+				}
+			);
 
-				// Reset error message after 5 seconds
-				setTimeout(() => setIsError(false), 5000);
+			console.log("Email sent successfully:", result);
+
+			setIsLoading(false);
+			setIsSuccess(true);
+
+			// Reset form
+			setFormData({
+				name: "",
+				email: "",
+				subject: "",
+				message: "",
 			});
+
+			// Reset success message after 5 seconds
+			setTimeout(() => setIsSuccess(false), 5000);
+		} catch (error) {
+			console.error("Error sending email:", error);
+			setIsLoading(false);
+			setIsError(true);
+
+			// Provide specific error messages
+			if (error.text) {
+				setErrorMessage(error.text);
+			} else if (error.message) {
+				setErrorMessage(error.message);
+			} else {
+				setErrorMessage(
+					"Failed to send message. Please try again or contact me directly."
+				);
+			}
+
+			// Reset error message after 5 seconds
+			setTimeout(() => {
+				setIsError(false);
+				setErrorMessage("");
+			}, 5000);
+		}
 	};
 
 	return (
@@ -117,8 +160,11 @@ const Contact = () => {
 											Email
 										</h4>
 										<p className="text-gray-600">
-											<a href="mailto:leslieajayi27@gmail.com">
-												lesliepaul@example.com
+											<a
+												href="mailto:leslieajayi27@gmail.com"
+												className="hover:text-green-600 transition-colors"
+											>
+												leslieajayi27@gmail.com
 											</a>
 										</p>
 										<p className="text-sm text-gray-500">
@@ -139,7 +185,10 @@ const Contact = () => {
 											Phone
 										</h4>
 										<p className="text-gray-600">
-											<a href="tel:+233271237965">
+											<a
+												href="tel:+233271237965"
+												className="hover:text-green-600 transition-colors"
+											>
 												+233 (27) 123-7965
 											</a>
 										</p>
@@ -181,7 +230,7 @@ const Contact = () => {
 											Response Time
 										</span>
 										<span className="font-semibold text-green-600">
-											{"In 24 hours"}
+											{"< 24 hours"}
 										</span>
 									</div>
 									<div className="flex justify-between items-center">
@@ -245,8 +294,7 @@ const Contact = () => {
 												Failed to send message
 											</p>
 											<p className="text-red-700 text-sm">
-												Please try again or contact me
-												directly via email.
+												{errorMessage}
 											</p>
 										</div>
 									</div>
@@ -272,7 +320,7 @@ const Contact = () => {
 												value={formData.name}
 												onChange={handleChange}
 												required
-												className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-300"
+												className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all duration-300"
 												placeholder="Your full name"
 											/>
 										</div>
@@ -290,7 +338,7 @@ const Contact = () => {
 												value={formData.email}
 												onChange={handleChange}
 												required
-												className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-300"
+												className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all duration-300"
 												placeholder="your.email@example.com"
 											/>
 										</div>
@@ -310,7 +358,7 @@ const Contact = () => {
 											value={formData.subject}
 											onChange={handleChange}
 											required
-											className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-300"
+											className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all duration-300"
 											placeholder="What's this about?"
 										/>
 									</div>
@@ -329,7 +377,7 @@ const Contact = () => {
 											onChange={handleChange}
 											required
 											rows={6}
-											className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-300 resize-vertical"
+											className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all duration-300 resize-vertical"
 											placeholder="Tell me about your project, timeline, and any specific requirements..."
 										/>
 									</div>
