@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { MessageCircle, Github, Linkedin, Folder, Mail } from "lucide-react";
-
+import "../components/globals.css";
 // small "ping" sound encoded as base64 so no external file needed
 const PING_SOUND =
 	"data:audio/mp3;base64,//uQxAAAD8AAAAnEAAAN0AAABEQAAAZQAAAGaAAACVgAAAZ4AAA..."; // (short ping; replace with your own if needed)
@@ -117,7 +117,7 @@ const FloatingHelpButton = () => {
 	}, [popup]);
 
 	return (
-		<div className="fixed bottom-6 right-6 z-50 flex flex-col items-end">
+		<div className="fixed bottom-6 right-6 z-50 flex flex-col items-end roboto-condensed-regular">
 			{/* Timed Popups */}
 			<AnimatePresence>
 				{popup && (

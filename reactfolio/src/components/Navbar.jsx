@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "../components/globals.css";
-// import TextShuffle from "./textShuffle";
+
 const Navbar = () => {
 	const [isMenuOpen, setIsMenuOpen] = useState(false);
 	const [activeItem, setActiveItem] = useState("");
@@ -27,63 +27,61 @@ const Navbar = () => {
 					<div className="flex justify-between items-center h-16">
 						{/* Logo */}
 						<div className="flex-shrink-0">
-							<span className="text-black text-xl font-bold poppins-black ">
+							<span className="text-black text-xl font-bold roboto-condensed-black">
 								LESLIE PAUL
 							</span>
 						</div>
 
-						{/* Desktop Menu */}
+						{/* Desktop Menu - FIXED */}
 						<div className="hidden md:block">
-							<div className="ml-10 flex items-baseline space-x-2 poppins-bold">
+							<div className="ml-10 flex items-baseline space-x-2">
 								{navItems.map((item) => (
 									<a
 										key={item.name}
 										href={item.href}
-										className="relative group poppins-bold"
+										className="relative group"
 										onMouseEnter={() =>
 											setActiveItem(item.name)
 										}
 										onMouseLeave={() => setActiveItem("")}
 									>
-										{/* Pill Background Animation */}
+										{/* Pill Background Animation - FIXED PADDING */}
 										<div
 											className={`
-										absolute inset-0 bg-green-100 p-2 rounded-full transition-all duration-300 ease-out  poppins-bold
-										${
-											activeItem === item.name
-												? "scale-105 opacity-100 poppins-bold"
-												: "scale-95 opacity-0"
-										}
-									`}
+                        absolute inset-0 bg-green-100 rounded-full transition-all duration-300 ease-out
+                        ${
+							activeItem === item.name
+								? "scale-105 opacity-100"
+								: "scale-95 opacity-0"
+						}
+                      `}
 										/>
 
-										{/* Text with Slide Animation */}
+										{/* Text with Better Vertical Alignment */}
 										<span
 											className={`
-										relative z-10 px-6 py-2 rounded-full text-sm font-medium transition-all duration-300 poppins-bold
-										${
-											activeItem === item.name
-												? "text-green-700 transform translate-x-1"
-												: "text-black transform hover:translate-x-0.5"
-										}
-									`}
+                        relative z-10 px-5 py-2.5 rounded-full text-sm font-medium transition-all duration-300 roboto-condensed-medium
+                        ${
+							activeItem === item.name
+								? "text-green-700 transform translate-x-0.5"
+								: "text-black hover:text-green-600"
+						}
+                        leading-tight
+                      `}
 										>
-											{/* <TextShuffle
-												text={item.name}
-												trigger={
-													activeItem === item.name
-												}
-												/> */}
-											{/* next push */}
 											{item.name}
 										</span>
 
 										{/* Underline Animation */}
 										<div
 											className={`
-										absolute bottom-0 left-1/2 w-0 h-0.5 bg-green-500 transition-all duration-300
-										${activeItem === item.name ? "w-3/4 -translate-x-1/2" : "w-0 -translate-x-1/2"}
-									`}
+                        absolute bottom-0 left-1/2 w-0 h-0.5 bg-green-500 transition-all duration-300
+                        ${
+							activeItem === item.name
+								? "w-3/4 -translate-x-1/2"
+								: "w-0 -translate-x-1/2"
+						}
+                      `}
 										/>
 									</a>
 								))}
@@ -127,7 +125,7 @@ const Navbar = () => {
 					</div>
 				</div>
 
-				{/* Mobile Menu Overlay */}
+				{/* Mobile Menu Overlay - FIXED */}
 				<div
 					className={`fixed inset-0 bg-white z-40 md:hidden transition-all duration-300 ease-in-out ${
 						isMenuOpen
@@ -135,8 +133,8 @@ const Navbar = () => {
 							: "opacity-0 pointer-events-none"
 					}`}
 				>
-					<div className="flex flex-col items-center justify-center h-full space-y-8 bg-green-100">
-						{/* Mobile Menu Items with Enhanced Animations */}
+					<div className="flex flex-col items-center justify-center h-full space-y-6 bg-green-100">
+						{/* Mobile Menu Items with Better Typography */}
 						{navItems.map((item, index) => (
 							<a
 								key={item.name}
@@ -145,11 +143,11 @@ const Navbar = () => {
 								className="relative group"
 							>
 								{/* Mobile Pill Background */}
-								<div className="absolute inset-0 bg-green-100 rounded-full scale-0 group-hover:scale-105 transition-transform duration-300 ease-out" />
+								<div className="absolute inset-0 bg-green-200 rounded-full scale-0 group-hover:scale-105 transition-transform duration-300 ease-out" />
 
-								{/* Mobile Text with Staggered Animation */}
+								{/* Mobile Text with Better Vertical Spacing */}
 								<span
-									className="relative z-10 px-8 py-4 text-2xl font-medium text-black group-hover:text-green-700 transition-all duration-300 transform group-hover:scale-105"
+									className="relative z-10 px-8 py-3 text-xl font-medium text-black group-hover:text-green-700 transition-all duration-300 roboto-condensed-medium leading-relaxed"
 									style={{
 										transitionDelay: isMenuOpen
 											? `${index * 100}ms`
@@ -158,9 +156,6 @@ const Navbar = () => {
 								>
 									{item.name}
 								</span>
-
-								{/* Mobile Bounce Animation */}
-								<div className="absolute inset-0 border-2 border-green-300 rounded-full scale-0 group-hover:scale-110 opacity-0 group-hover:opacity-100 transition-all duration-500" />
 							</a>
 						))}
 					</div>

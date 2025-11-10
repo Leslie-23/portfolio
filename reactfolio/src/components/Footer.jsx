@@ -1,5 +1,6 @@
 import React from "react";
 import { Github, Linkedin, Twitter, Mail } from "lucide-react";
+import "./globals.css";
 const Footer = () => {
 	const currentYear = new Date().getFullYear();
 
@@ -59,8 +60,8 @@ const Footer = () => {
 					</div>
 
 					{/* Quick Links */}
-					<div>
-						<h3 className="text-black font-semibold mb-4">
+					<div className="roboto-condensed-regular">
+						<h3 className="text-2xl text-black font-semibold mb-4 roboto-condensed-bold">
 							Navigation
 						</h3>
 						<ul className="space-y-2">
@@ -83,8 +84,8 @@ const Footer = () => {
 					</div>
 
 					{/* Contact Info */}
-					<div>
-						<h3 className="text-black font-semibold mb-4">
+					<div className="roboto-condensed-regular">
+						<h3 className="text-2xl text-black font-semibold mb-4">
 							Get In Touch
 						</h3>
 						<ul className="space-y-2 text-gray-600">
@@ -114,7 +115,7 @@ const Footer = () => {
 					<h3 className="text-black font-semibold mb-4 text-center">
 						Technologies & Skills
 					</h3>
-					<div className="flex flex-wrap justify-center gap-3">
+					<div className="flex flex-wrap justify-center gap-3 roboto-condensed-regular">
 						{[
 							"React",
 							"Node.js",
@@ -139,12 +140,12 @@ const Footer = () => {
 
 				{/* Bottom Bar */}
 				<div className="border-t border-gray-200 pt-8 flex flex-col md:flex-row justify-between items-center">
-					<div className="text-gray-500 text-sm mb-4 md:mb-0">
+					<div className="text-gray-500 text-sm mb-4 md:mb-0 roboto-condensed-regular">
 						© {currentYear} Leslie Paul. All rights reserved.
 					</div>
 
 					{/* Legal Links */}
-					<div className="flex space-x-6 text-sm">
+					<div className="flex space-x-6 text-sm roboto-condensed-regular">
 						<span className="text-gray-500">Privacy Policy</span>
 						<span className="text-gray-500">Terms of Service</span>
 						<span className="text-gray-500">Cookies</span>

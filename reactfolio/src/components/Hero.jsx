@@ -43,7 +43,7 @@ const Hero = () => {
 				{/* Introduction Text */}
 				<div className="relative space-y-6">
 					{/* Greeting */}
-					<div className="overflow-hidden">
+					<div className="overflow-hidden roboto-condensed-bold">
 						<h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-black mb-4 transform transition-all duration-500 hover:scale-105">
 							Hi, I'm{" "}
 							<span className="text-green-600 relative inline-block">
@@ -90,11 +90,13 @@ const Hero = () => {
 							onClick={() => (window.location.href = "/projects")}
 							className="group relative bg-green-600 text-white px-8 py-3 rounded-full font-medium transition-all duration-300 hover:bg-green-700 hover:shadow-lg hover:scale-105"
 						>
-							<span className="relative z-10">View My Work</span>
+							<span className="relative z-10 roboto-condensed-light">
+								View My Work
+							</span>
 							<div className="absolute inset-0 bg-green-700 rounded-full scale-0 group-hover:scale-100 transition-transform duration-300"></div>
 						</button>
 
-						<button className="group relative border-2 border-green-600 text-green-600 px-8 py-3 rounded-full font-medium transition-all duration-300 hover:bg-green-600 hover:text-white hover:shadow-lg hover:scale-105">
+						<button className="group relative border-2 border-green-600 text-green-600 px-8 py-3 rounded-full font-medium transition-all duration-300 hover:bg-green-600 hover:text-white hover:shadow-lg hover:scale-105 roboto-condensed-light">
 							<span className="relative z-10">Get In Touch</span>
 							<div className="absolute inset-0 bg-green-600 rounded-full scale-0 group-hover:scale-100 transition-transform duration-300"></div>
 						</button>
@@ -104,7 +106,7 @@ const Hero = () => {
 				</div>
 
 				{/* Tech Stack Indicators */}
-				<div className="mt-16 flex flex-col sm:flex-row justify-center items-center gap-4 text-sm text-gray-500">
+				<div className="mt-16 flex flex-col sm:flex-row justify-center items-center gap-4 text-sm text-gray-500 roboto-condensed-black">
 					<div className="flex items-center gap-2 bg-green-50 px-4 py-2 rounded-full transition-all duration-300 hover:bg-green-100 hover:scale-105">
 						<div className="w-2 h-2 bg-green-500 rounded-full"></div>
 						Full-Stack Development

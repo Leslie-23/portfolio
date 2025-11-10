@@ -67,7 +67,7 @@ const MinimalNavProgress = () => {
 	];
 
 	return (
-		<div className="fixed bottom-6 left-6 z-50 flex flex-col items-start">
+		<div className="fixed bottom-6 left-6 z-50 flex flex-col items-start roboto-condensed-regular">
 			{/* Floating menu items */}
 			<AnimatePresence>
 				{open &&

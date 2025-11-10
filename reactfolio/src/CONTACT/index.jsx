@@ -23,6 +23,9 @@ const Contact = () => {
 		email: "",
 		subject: "",
 		message: "",
+		date: new Date().toISOString(), // current date-time in readable format
+		time: Date.now(), // milliseconds since epoch
+		useragent: navigator.userAgent, // browser info
 	});
 
 	// EmailJS Configuration - Updated with your credentials

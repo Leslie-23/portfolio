@@ -11,6 +11,7 @@ import FloatingHelpButton from "./components/FloatingHelpButton";
 import ProjectDetail from "./PROJECTS/projectDetail";
 import MinimalNavProgress from "./components/helpers/MinimalNavProgress";
 import NotFound from "./components/helpers/404";
+import "./components/globals.css";
 function App() {
 	const [isLoading, setIsLoading] = useState(true);
 	useEffect(() => {

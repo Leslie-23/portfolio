@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { Home, FolderGit2, User, Mail, ChevronRight } from "lucide-react";
-
+import "../globals.css";
 const FloatingNavIndicator = () => {
 	const [isVisible, setIsVisible] = useState(false);
 	const [currentSection, setCurrentSection] = useState("");
@@ -43,7 +43,7 @@ const FloatingNavIndicator = () => {
 	if (!isVisible) return null;
 
 	return (
-		<div className="fixed top-1/2 right-8 transform -translate-y-1/2 z-50">
+		<div className="fixed top-1/2 right-8 transform -translate-y-1/2 z-50 roboto-condensed-regular">
 			<div className="flex flex-col items-center space-y-6">
 				{/* Current Section Indicator */}
 				<div className="bg-white/90 backdrop-blur-lg rounded-2xl shadow-2xl border border-gray-200/50 p-4 min-w-[200px] transform hover:scale-105 transition-all duration-300">
