@@ -21,7 +21,7 @@ const Hero = () => {
 					<div className="w-32 h-32 mx-auto mb-6 relative">
 						{/* Actual profile image with fallback */}
 						<img
-							src="/profile-image.png"
+							src="/profile-image.webp"
 							alt="Leslie Paul"
 							className="w-full h-full rounded-full object-cover border-4 border-white shadow-lg"
 							onError={(e) => {
