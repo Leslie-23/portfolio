@@ -1,5 +1,14 @@
 import React, { useState } from "react";
-import "../components/globals.css";
+import {
+	Home,
+	FolderGit2,
+	User,
+	Mail,
+	Menu,
+	X,
+	ChevronRight,
+} from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 
 const Navbar = () => {
 	const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -14,11 +23,66 @@ const Navbar = () => {
 	};
 
 	const navItems = [
-		{ name: "Home", href: "/home" },
-		{ name: "Projects", href: "/projects" },
-		{ name: "About", href: "/about" },
-		{ name: "Contact", href: "/contact" },
+		{ name: "Home", href: "/home", icon: Home },
+		{ name: "Projects", href: "/projects", icon: FolderGit2 },
+		{ name: "About", href: "/about", icon: User },
+		{ name: "Contact", href: "/contact", icon: Mail },
 	];
+
+	// Animation variants
+	const mobileMenuVariants = {
+		closed: {
+			opacity: 0,
+			scale: 0.95,
+			transition: {
+				duration: 0.2,
+				ease: "easeOut",
+			},
+		},
+		open: {
+			opacity: 1,
+			scale: 1,
+			transition: {
+				duration: 0.3,
+				ease: "easeOut",
+			},
+		},
+	};
+
+	const mobileItemVariants = {
+		closed: {
+			opacity: 0,
+			x: -20,
+			scale: 0.9,
+		},
+		open: (index) => ({
+			opacity: 1,
+			x: 0,
+			scale: 1,
+			transition: {
+				delay: index * 0.1,
+				duration: 0.4,
+				ease: "backOut",
+			},
+		}),
+	};
+
+	const iconVariants = {
+		hover: {
+			scale: 1.2,
+			rotate: 5,
+			transition: {
+				duration: 0.2,
+				ease: "easeOut",
+			},
+		},
+		tap: {
+			scale: 0.9,
+			transition: {
+				duration: 0.1,
+			},
+		},
+	};
 
 	return (
 		<>
@@ -26,159 +90,243 @@ const Navbar = () => {
 				<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 					<div className="flex justify-between items-center h-16">
 						{/* Logo */}
-						<div className="flex-shrink-0">
+						<motion.div
+							className="flex-shrink-0"
+							whileHover={{ scale: 1.05 }}
+							whileTap={{ scale: 0.95 }}
+						>
 							<span className="text-black text-xl font-bold roboto-condensed-black">
 								LESLIE PAUL
 							</span>
-						</div>
+						</motion.div>
 
-						{/* Desktop Menu - FIXED */}
+						{/* Desktop Menu */}
 						<div className="hidden md:block">
 							<div className="ml-10 flex items-baseline space-x-2">
-								{navItems.map((item) => (
-									<a
-										key={item.name}
-										href={item.href}
-										className="relative group"
-										onMouseEnter={() =>
-											setActiveItem(item.name)
-										}
-										onMouseLeave={() => setActiveItem("")}
-									>
-										{/* Pill Background Animation - FIXED PADDING */}
-										<div
-											className={`
-                        absolute inset-0 bg-green-100 rounded-full transition-all duration-300 ease-out
-                        ${
-							activeItem === item.name
-								? "scale-105 opacity-100"
-								: "scale-95 opacity-0"
-						}
-                      `}
-										/>
-
-										{/* Text with Better Vertical Alignment */}
-										<span
-											className={`
-                        relative z-10 px-5 py-2.5 rounded-full text-sm font-medium transition-all duration-300 roboto-condensed-medium
-                        ${
-							activeItem === item.name
-								? "text-green-700 transform translate-x-0.5"
-								: "text-black hover:text-green-600"
-						}
-                        leading-tight
-                      `}
+								{navItems.map((item) => {
+									const Icon = item.icon;
+									return (
+										<motion.a
+											key={item.name}
+											href={item.href}
+											className="relative group"
+											onMouseEnter={() =>
+												setActiveItem(item.name)
+											}
+											onMouseLeave={() =>
+												setActiveItem("")
+											}
+											whileHover="hover"
+											whileTap="tap"
 										>
-											{item.name}
-										</span>
+											{/* Animated Background Pill */}
+											<motion.div
+												className="absolute inset-0 bg-green-100 rounded-full"
+												initial={{
+													scale: 0.8,
+													opacity: 0,
+												}}
+												animate={{
+													scale:
+														activeItem === item.name
+															? 1
+															: 0.8,
+													opacity:
+														activeItem === item.name
+															? 1
+															: 0,
+												}}
+												transition={{
+													duration: 0.3,
+													ease: "easeOut",
+												}}
+											/>
 
-										{/* Underline Animation */}
-										<div
-											className={`
-                        absolute bottom-0 left-1/2 w-0 h-0.5 bg-green-500 transition-all duration-300
-                        ${
-							activeItem === item.name
-								? "w-3/4 -translate-x-1/2"
-								: "w-0 -translate-x-1/2"
-						}
-                      `}
-										/>
-									</a>
-								))}
+											{/* Content */}
+											<div className="relative z-10 px-5 py-2.5 rounded-full flex items-center gap-2">
+												{/* Icon */}
+												<motion.div
+													variants={iconVariants}
+													className="flex-shrink-0"
+												>
+													<Icon
+														size={16}
+														className={
+															activeItem ===
+															item.name
+																? "text-green-700"
+																: "text-gray-600 group-hover:text-green-600"
+														}
+													/>
+												</motion.div>
+
+												{/* Text */}
+												<span
+													className={`
+                            text-sm font-medium roboto-condensed-medium leading-tight
+                            ${
+								activeItem === item.name
+									? "text-green-700"
+									: "text-black group-hover:text-green-600"
+							}
+                          `}
+												>
+													{item.name}
+												</span>
+											</div>
+
+											{/* Underline Animation */}
+											<motion.div
+												className="absolute bottom-0 left-1/2 h-0.5 bg-green-500"
+												initial={{
+													width: 0,
+													x: "-50%",
+												}}
+												animate={{
+													width:
+														activeItem === item.name
+															? "75%"
+															: 0,
+													x: "-50%",
+												}}
+												transition={{
+													duration: 0.3,
+													ease: "easeOut",
+												}}
+											/>
+										</motion.a>
+									);
+								})}
 							</div>
 						</div>
 
 						{/* Mobile menu button */}
 						<div className="md:hidden">
-							<button
+							<motion.button
 								onClick={toggleMenu}
 								className="inline-flex items-center justify-center p-2 rounded-md text-black hover:text-green-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-green-500 transition-colors duration-200"
 								aria-expanded="false"
+								whileHover={{ scale: 1.1 }}
+								whileTap={{ scale: 0.9 }}
 							>
 								<span className="sr-only">Open main menu</span>
-								{/* Hamburger icon */}
-								<div className="w-6 h-6 flex flex-col justify-center items-center">
-									<span
-										className={`block h-0.5 w-6 bg-current transform transition duration-300 ease-in-out ${
-											isMenuOpen
-												? "rotate-45 translate-y-0.5"
-												: "-translate-y-1"
-										}`}
-									/>
-									<span
-										className={`block h-0.5 w-6 bg-current transition duration-300 ease-in-out ${
-											isMenuOpen
-												? "opacity-0"
-												: "opacity-100"
-										}`}
-									/>
-									<span
-										className={`block h-0.5 w-6 bg-current transform transition duration-300 ease-in-out ${
-											isMenuOpen
-												? "-rotate-45 -translate-y-0.5"
-												: "translate-y-1"
-										}`}
-									/>
-								</div>
-							</button>
+								<AnimatePresence mode="wait">
+									{isMenuOpen ? (
+										<motion.div
+											key="close"
+											initial={{
+												rotate: -90,
+												opacity: 0,
+											}}
+											animate={{ rotate: 0, opacity: 1 }}
+											exit={{ rotate: 90, opacity: 0 }}
+											transition={{ duration: 0.2 }}
+										>
+											<X size={24} />
+										</motion.div>
+									) : (
+										<motion.div
+											key="menu"
+											initial={{ rotate: 90, opacity: 0 }}
+											animate={{ rotate: 0, opacity: 1 }}
+											exit={{ rotate: -90, opacity: 0 }}
+											transition={{ duration: 0.2 }}
+										>
+											<Menu size={24} />
+										</motion.div>
+									)}
+								</AnimatePresence>
+							</motion.button>
 						</div>
 					</div>
 				</div>
 
-				{/* Mobile Menu Overlay - FIXED */}
-				<div
-					className={`fixed inset-0 bg-white z-40 md:hidden transition-all duration-300 ease-in-out ${
-						isMenuOpen
-							? "opacity-100 pointer-events-auto"
-							: "opacity-0 pointer-events-none"
-					}`}
-				>
-					<div className="flex flex-col items-center justify-center h-full space-y-6 bg-green-100">
-						{/* Mobile Menu Items with Better Typography */}
-						{navItems.map((item, index) => (
-							<a
-								key={item.name}
-								href={item.href}
-								onClick={closeMenu}
-								className="relative group"
-							>
-								{/* Mobile Pill Background */}
-								<div className="absolute inset-0 bg-green-200 rounded-full scale-0 group-hover:scale-105 transition-transform duration-300 ease-out" />
-
-								{/* Mobile Text with Better Vertical Spacing */}
-								<span
-									className="relative z-10 px-8 py-3 text-xl font-medium text-black group-hover:text-green-700 transition-all duration-300 roboto-condensed-medium leading-relaxed"
-									style={{
-										transitionDelay: isMenuOpen
-											? `${index * 100}ms`
-											: "0ms",
-									}}
-								>
-									{item.name}
-								</span>
-							</a>
-						))}
-					</div>
-					{/* Close button for mobile */}
-					<button
-						onClick={closeMenu}
-						className="absolute top-4 right-4 p-2 text-black hover:text-green-500 transition-colors duration-200"
-					>
-						<svg
-							className="w-8 h-8"
-							fill="none"
-							stroke="currentColor"
-							viewBox="0 0 24 24"
+				{/* Mobile Menu Overlay */}
+				<AnimatePresence>
+					{isMenuOpen && (
+						<motion.div
+							className="fixed inset-0 bg-white z-40 md:hidden"
+							variants={mobileMenuVariants}
+							initial="closed"
+							animate="open"
+							exit="closed"
 						>
-							<path
-								strokeLinecap="round"
-								strokeLinejoin="round"
-								strokeWidth={2}
-								d="M6 18L18 6M6 6l12 12"
-							/>
-						</svg>
-					</button>
-				</div>
+							{/* Background Pattern */}
+							<div className="absolute inset-0 bg-gradient-to-br from-green-200/50 to-white/50" />
+
+							{/* Content */}
+							{/* Content */}
+							<div className="relative flex flex-col items-center justify-center h-full space-y-6 p-8">
+								{navItems.map((item, index) => {
+									const Icon = item.icon;
+									return (
+										<motion.a
+											key={item.name}
+											href={item.href}
+											onClick={closeMenu}
+											className="relative group w-full max-w-xs"
+											variants={mobileItemVariants}
+											initial="closed"
+											animate="open"
+											exit="closed"
+											custom={index}
+											whileHover={{ scale: 1.02 }}
+											whileTap={{ scale: 0.98 }}
+										>
+											{/* Clean content without backgrounds */}
+											<div className="flex items-center justify-between px-2 py-3">
+												<div className="flex items-center gap-3">
+													<motion.div
+														whileHover={{
+															scale: 1.1,
+															rotate: 5,
+														}}
+													>
+														<Icon
+															size={20}
+															className="text-green-600"
+														/>
+													</motion.div>
+													<span className="text-lg font-medium text-gray-800 roboto-condensed-medium">
+														{item.name}
+													</span>
+												</div>
+												<ChevronRight
+													size={20}
+													className="text-green-400"
+												/>
+											</div>
+										</motion.a>
+									);
+								})}
+							</div>
+							{/* Close button */}
+							<motion.button
+								onClick={closeMenu}
+								className="absolute top-6 right-6 p-3 bg-transparent rounded-full shadow-lg border border-green-100 hover:shadow-xl transition-all duration-300"
+								whileHover={{ scale: 1.1, rotate: 90 }}
+								whileTap={{ scale: 0.9 }}
+								initial={{ opacity: 0, scale: 0.8 }}
+								animate={{ opacity: 1, scale: 1 }}
+								transition={{ delay: 0.5 }}
+							>
+								<X size={20} className="text-gray-600" />
+							</motion.button>
+
+							{/* Footer Text */}
+							<motion.div
+								className="absolute bottom-8 left-0 right-0 text-center"
+								initial={{ opacity: 0, y: 20 }}
+								animate={{ opacity: 1, y: 0 }}
+								transition={{ delay: 0.6 }}
+							>
+								<p className="text-sm text-gray-500 roboto-condensed-light">
+									Let's build something amazing
+								</p>
+							</motion.div>
+						</motion.div>
+					)}
+				</AnimatePresence>
 			</nav>
 		</>
 	);

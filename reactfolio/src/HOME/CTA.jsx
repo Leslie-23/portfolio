@@ -9,16 +9,16 @@ export default function CTA() {
 					I'm always excited to discuss new projects and
 					opportunities. Let's create something amazing together!
 				</p>
-				<div className="flex flex-col sm:flex-row gap-4 justify-center">
+				<div className="flex flex-col sm:flex-row gap-4 justify-center roboto-condensed-regular">
 					<button
 						onClick={() => (window.location.href = "/contact")}
-						className="px-8 py-3 bg-black text-white font-semibold rounded-lg hover:shadow-lg transition-shadow"
+						className="px-8 py-3 bg-black text-white font-semibold rounded-lg hover:shadow-lg transition-shadow roboto-condensed-regular hover:shadow-black/10 hover:scale-105 hover:text-white"
 					>
 						Get In Touch
 					</button>
 					<button
 						onClick={() => (window.location.href = "/projects")}
-						className="px-8 py-3 border-2 border-primary-foreground text-primary-foreground font-semibold rounded-lg hover:bg-primary-foreground/10 transition-colors"
+						className="px-8 py-3 border-2 border-primary-foreground text-primary-foreground font-semibold rounded-lg bg-white hover:text-black hover:shadow-lg hover:shadow-black/10 transition-colors hover:scale-105 roboto-condensed-regular"
 					>
 						View My Work
 					</button>

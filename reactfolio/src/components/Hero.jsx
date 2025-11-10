@@ -1,5 +1,6 @@
 import React from "react";
 import "./globals.css";
+import TechStackScroller from "./helpers/techStackIndicators";
 const Hero = () => {
 	return (
 		<section
@@ -103,22 +104,7 @@ const Hero = () => {
 					</div>
 
 					{/* Scroll Indicator: still to come */}
-				</div>
-
-				{/* Tech Stack Indicators */}
-				<div className="mt-16 flex flex-col sm:flex-row justify-center items-center gap-4 text-sm text-gray-500 roboto-condensed-black">
-					<div className="flex items-center gap-2 bg-green-50 px-4 py-2 rounded-full transition-all duration-300 hover:bg-green-100 hover:scale-105">
-						<div className="w-2 h-2 bg-green-500 rounded-full"></div>
-						Full-Stack Development
-					</div>
-					<div className="flex items-center gap-2 bg-green-50 px-4 py-2 rounded-full transition-all duration-300 hover:bg-green-100 hover:scale-105">
-						<div className="w-2 h-2 bg-green-500 rounded-full"></div>
-						Data-Driven Solutions
-					</div>
-					<div className="flex items-center gap-2 bg-green-50 px-4 py-2 rounded-full transition-all duration-300 hover:bg-green-100 hover:scale-105">
-						<div className="w-2 h-2 bg-green-500 rounded-full"></div>
-						Modern Architecture
-					</div>
+					<TechStackScroller />
 				</div>
 			</div>
 		</section>

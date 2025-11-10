@@ -393,34 +393,33 @@ const About = () => {
 							</div>
 						</div>
 					</div>
-
-					{/* Call to Action */}
-					<div className="text-center mt-16 bg-gray-50 rounded-2xl p-8 border border-gray-200">
-						<h3 className="text-2xl font-bold text-gray-900 mb-4">
-							Let's Build Something Amazing Together
-						</h3>
-						<p className="text-gray-600 max-w-2xl mx-auto mb-6">
-							Whether you need a robust backend system, a modern
-							web application, or a complete digital solution, I'm
-							ready to bring your ideas to life with clean,
-							efficient code and thoughtful architecture.
-						</p>
-						<div className="flex flex-wrap justify-center gap-4">
-							<a
-								href="/contact"
-								className="flex items-center gap-2 px-8 py-3 bg-green-600 text-white rounded-xl font-semibold hover:shadow-lg transition-all duration-300 hover:scale-105 relative overflow-hidden group"
-							>
-								<span className="relative z-10">
-									Start a Project
-								</span>
-							</a>
-							<a
-								href="/projects"
-								className="flex items-center gap-2 px-8 py-3 bg-white text-gray-700 rounded-xl font-semibold hover:shadow-lg transition-all duration-300 hover:scale-105 border border-gray-300"
-							>
-								View My Work
-							</a>
-						</div>
+				</div>
+				{/* Call to Action */}
+				<div className="z-2 text-center w-full mt-16 bg-green-600  p-8 border border-gray-200 ">
+					<h2 className="text-2xl font-bold text-white mb-4">
+						Let's Build Something Amazing Together
+					</h2>
+					<p className="text-white max-w-2xl mx-auto mb-6">
+						Whether you need a robust backend system, a modern web
+						application, or a complete digital solution, I'm ready
+						to bring your ideas to life with clean, efficient code
+						and thoughtful architecture.
+					</p>
+					<div className="flex flex-wrap justify-center gap-4">
+						<a
+							href="/contact"
+							className="flex items-center gap-2 px-8 py-3 bg-black text-white rounded-xl font-semibold hover:shadow-lg transition-all duration-300 hover:scale-105 relative overflow-hidden group"
+						>
+							<span className="relative z-10">
+								Start a Project
+							</span>
+						</a>
+						<a
+							href="/projects"
+							className="flex items-center gap-2 px-8 py-3 bg-white text-gray-700 rounded-xl font-semibold hover:shadow-lg transition-all duration-300 hover:scale-105 border border-gray-300"
+						>
+							View My Work
+						</a>
 					</div>
 				</div>
 			</section>
