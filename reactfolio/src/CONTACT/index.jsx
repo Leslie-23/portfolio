@@ -83,6 +83,9 @@ const Contact = () => {
 				email: "",
 				subject: "",
 				message: "",
+				date: new Date().toISOString(), // current date-time in readable format
+				time: Date.now(), // milliseconds since epoch
+				useragent: navigator.userAgent, // browser info
 			});
 
 			// Reset success message after 5 seconds
