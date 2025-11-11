@@ -12,6 +12,7 @@ import {
 	Palette,
 	Database,
 	Cloud,
+	Coffee,
 } from "lucide-react";
 import Footer from "../components/Footer";
 import Navbar from "../components/Navbar";
@@ -27,29 +28,32 @@ const Projects = () => {
 			id: 1,
 			title: "E-Commerce Platform",
 			description:
-				"A full-stack e-commerce solution with real-time inventory management, payment processing, and admin dashboard.",
+				"A full-stack MERN e-commerce solution with real-time inventory, secure payments, and admin dashboard.",
 			fullDescription:
-				"Built with modern web technologies, this e-commerce platform features user authentication, product catalog, shopping cart, checkout process, and order management. Includes an admin panel for inventory control and analytics.",
+				"MERN Ecommerce is a complete shopping platform built with MongoDB, Express, React, Node.js, Redux Toolkit, and Material UI. Features include user authentication with OTP, product catalog, shopping cart, wishlist, checkout with Stripe, order management, and an admin panel for inventory and analytics.",
 			techStack: [
 				"React",
 				"Node.js",
 				"MongoDB",
 				"Stripe",
 				"Tailwind CSS",
+				"Redux Toolkit",
+				"Material UI",
 			],
-			webScreenshot:
-				"https://placehold.co/800x450/3B82F6/FFFFFF?text=E-Commerce+Web+App",
-			mobileScreenshot:
-				"https://placehold.co/300x600/3B82F6/FFFFFF?text=E-Commerce+Mobile",
-			liveLink: "https://example.com",
-			githubLink: "https://github.com",
-			demoLink: "https://demo.com",
+			webScreenshot: "/images/webScreenshots/e-commerce-web.png",
+			mobileScreenshot: "/images/mobileScreenshots/e-commerce-mobile.png",
+			liveLink: "https://e-comm-app-517g.vercel.app/",
+			githubLink: "https://github.com/Leslie-23/eComm-app",
+			demoLink: "https://e-comm-app-517g.vercel.app/",
 			features: [
-				"User Authentication",
-				"Payment Processing",
-				"Admin Dashboard",
-				"Real-time Updates",
-				"Responsive Design",
+				"User Authentication with OTP and password reset",
+				"Product Catalog with Reviews and Wishlist",
+				"Shopping Cart with Quantity Adjustments",
+				"Checkout with Stripe Payment Integration",
+				"Order Management & History",
+				"Admin Dashboard for Product & Order Control",
+				"Responsive UI with Material UI",
+				"Real-time Updates using Redux Toolkit",
 			],
 			status: "Live",
 			category: "Full Stack",
@@ -58,8 +62,9 @@ const Projects = () => {
 			timeline: "3 months",
 			teamSize: "4 developers",
 			documentation:
-				"This project involved building a complete e-commerce solution from scratch. The frontend was built with React and state management with Context API, while the backend used Node.js with Express. MongoDB was chosen for its flexibility with product data.",
+				"Frontend built with React, Redux Toolkit, and Material UI; backend with Node.js, Express, and MongoDB. Includes seeding, demo account, and modular routes. Live on Vercel at https://e-comm-app-517g.vercel.app/",
 		},
+
 		{
 			id: 2,
 			title: "Task Management App",
@@ -232,6 +237,42 @@ const Projects = () => {
 			teamSize: "5 developers",
 			documentation:
 				"A comprehensive social media analytics platform that processes data from multiple APIs and provides actionable insights through interactive data visualizations.",
+		},
+		{
+			id: 7,
+			title: "Restaurant Website",
+			description:
+				"A high-end restaurant website with in-house ordering and elegant UI.",
+			fullDescription:
+				"Grilli is a responsive, visually stunning restaurant website built with React and Node.js. Features include menu browsing, online ordering, reservation system, and admin management of dishes and orders. Tailored for a high-end restaurant experience.",
+			techStack: [
+				"React",
+				"Node.js",
+				"MongoDB",
+				"Tailwind CSS",
+				"Stripe",
+			],
+			webScreenshot: "/images/webScreenshots/grilli-web.png",
+			mobileScreenshot: "/images/mobileScreenshots/grilli-mobile.png",
+			liveLink: "https://grilli-restaurant.vercel.app/",
+			githubLink: "https://github.com/Leslie-23/grilli",
+			demoLink: "https://grilli-restaurant.vercel.app/",
+			features: [
+				"Responsive UI with Tailwind CSS",
+				"In-house ordering system",
+				"Reservation management",
+				"Menu browsing with categories",
+				"Admin panel for dish and order management",
+				"Payment integration with Stripe",
+			],
+			status: "Live",
+			category: "Frontend + Backend",
+			icon: <Coffee size={20} />,
+			color: "red",
+			timeline: "2 months",
+			teamSize: "3 developers",
+			documentation:
+				"Frontend built with React and Tailwind CSS for responsiveness. Backend handled with Node.js and MongoDB. Includes in-house ordering, menu management, and Stripe integration for payments. Live on Vercel at https://grilli-restaurant.vercel.app/",
 		},
 	];
 
