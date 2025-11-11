@@ -16,8 +16,6 @@ import Testimonials from "./components/helpers/testimonials";
 import ProjectsCompletion from "./components/helpers/projectsCompletion";
 import PrivacyPolicy from "./components/helpers/privacyPolicy";
 import TermsOfService from "./components/helpers/termsOfService";
-import ThemeToggle from "./context/themeToggle";
-import { ThemeProvider } from "./context/themeContext";
 function App() {
 	const [isLoading, setIsLoading] = useState(true);
 	useEffect(() => {
@@ -31,34 +29,28 @@ function App() {
 
 	return (
 		<div className="App">
-			<ThemeProvider>
-				<FloatingHelpButton />
-				<MinimalNavProgress />
-				<ThemeToggle />
-				<Routes>
-					<Route path="/" element={<Home />} />
-					<Route path="/home" element={<Home />} />
-					<Route
-						path="/projects/:projectId"
-						element={<ProjectDetail />}
-					/>
-					<Route path="/projects" element={<Projects />} />
-					<Route path="/about" element={<About />} />
-					<Route path="/contact" element={<Contact />} />
-					<Route path="/moving-letters" element={<MovingLetters />} />
-					<Route path="testimonials" element={<Testimonials />} />
-					<Route
-						path="projects-completed"
-						element={<ProjectsCompletion />}
-					/>
-					<Route path="privacy-policy" element={<PrivacyPolicy />} />
-					<Route
-						path="terms-of-service"
-						element={<TermsOfService />}
-					/>
-					<Route path="*" element={<NotFound />} />
-				</Routes>
-			</ThemeProvider>
+			<FloatingHelpButton />
+			<MinimalNavProgress />
+			<Routes>
+				<Route path="/" element={<Home />} />
+				<Route path="/home" element={<Home />} />
+				<Route
+					path="/projects/:projectId"
+					element={<ProjectDetail />}
+				/>
+				<Route path="/projects" element={<Projects />} />
+				<Route path="/about" element={<About />} />
+				<Route path="/contact" element={<Contact />} />
+				<Route path="/moving-letters" element={<MovingLetters />} />
+				<Route path="testimonials" element={<Testimonials />} />
+				<Route
+					path="projects-completed"
+					element={<ProjectsCompletion />}
+				/>
+				<Route path="privacy-policy" element={<PrivacyPolicy />} />
+				<Route path="terms-of-service" element={<TermsOfService />} />
+				<Route path="*" element={<NotFound />} />
+			</Routes>
 		</div>
 	);
 }
