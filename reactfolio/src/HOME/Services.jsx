@@ -88,6 +88,56 @@ export default function Services() {
 				],
 			},
 		},
+		{
+			title: "AI & Machine Learning",
+			description:
+				"Developing intelligent systems that learn, adapt, and automate processes with precision.",
+			icon: "https://images.unsplash.com/photo-1677442136019-21780ecad995?ixlib=rb-4.1.0&auto=format&fit=crop&q=60&w=500",
+			category: ["Artificial Intelligence & Data Science"],
+			details: {
+				overview:
+					"I build and integrate ML-driven solutions that power predictive analytics, recommendation systems, and intelligent automation. My approach combines clean data pipelines with robust model deployment strategies.",
+				projects: [
+					{
+						name: "Smart Transit Predictor",
+						tech: ["Python", "TensorFlow", "Flask", "MySQL"],
+						link: "https://smarttransit.ai",
+					},
+					{
+						name: "Campus Connect AI Matchmaker",
+						tech: ["PyTorch", "FastAPI", "React"],
+						link: "https://campusconnect.ai",
+					},
+				],
+			},
+		},
+		{
+			title: "Photo & Video Editing",
+			description:
+				"Transforming raw visuals into captivating, high-quality digital experiences.",
+			icon: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?ixlib=rb-4.1.0&auto=format&fit=crop&q=60&w=500",
+			category: ["Media Production & Creative Editing"],
+			details: {
+				overview:
+					"I offer professional-grade editing and compositing services that enhance visual storytelling. From retouching to cinematic video edits, every project aims to evoke emotion and engagement.",
+				projects: [
+					{
+						name: "NeneCollectionz Product Reel",
+						tech: [
+							"Premiere Pro",
+							"After Effects",
+							"DaVinci Resolve",
+						],
+						link: "https://nenecreatives.com/reel",
+					},
+					{
+						name: "Campus Connect Promo Edits",
+						tech: ["Photoshop", "Lightroom", "CapCut Pro"],
+						link: "https://campusconnect.app/media",
+					},
+				],
+			},
+		},
 	];
 
 	return (
@@ -105,7 +155,7 @@ export default function Services() {
 				</div>
 
 				{/* Cards */}
-				<div className="grid md:grid-cols-2 gap-8">
+				<div className="grid md:grid-cols-3  gap-8">
 					{services.map((service, idx) => (
 						<motion.div
 							key={idx}

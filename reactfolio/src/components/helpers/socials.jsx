@@ -19,7 +19,7 @@ const Socials = () => {
 			bgColor: "bg-blue-500",
 			hoverColor: "hover:bg-blue-600",
 			description: "Daily thoughts & industry insights",
-			image: "/socials/twitter-placeholder.jpg",
+			image: "https://images.unsplash.com/photo-1525770041010-2a1233dd8152?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8dHdpdHRlcnxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&q=60&w=500",
 		},
 		{
 			name: "GitHub",
@@ -37,7 +37,7 @@ const Socials = () => {
 			bgColor: "bg-gray-900",
 			hoverColor: "hover:bg-gray-800",
 			description: "Open source contributions & projects",
-			image: "/socials/github-placeholder.jpg",
+			image: "https://images.unsplash.com/photo-1556075798-4825dfaaf498?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8Z2l0fGVufDB8fDB8fHww&auto=format&fit=crop&q=60&w=500",
 		},
 		{
 			name: "LinkedIn",
@@ -55,7 +55,7 @@ const Socials = () => {
 			bgColor: "bg-blue-700",
 			hoverColor: "hover:bg-blue-800",
 			description: "Professional journey & connections",
-			image: "/socials/linkedin-placeholder.jpg",
+			image: "https://media.licdn.com/dms/image/v2/D5616AQH-QLuqk_-9Yg/profile-displaybackgroundimage-shrink_350_1400/B56ZW6iB.7GoAY-/0/1742591272796?e=1764201600&v=beta&t=4uQACOrdQYOHQOBdL6L5JPFjyKK7ELPs5xKcqItDLfY",
 		},
 		{
 			name: "Instagram",
@@ -73,26 +73,26 @@ const Socials = () => {
 			bgColor: "bg-pink-600",
 			hoverColor: "hover:bg-pink-700",
 			description: "Creative moments & behind the scenes",
-			image: "/socials/instagram-placeholder.jpg",
+			image: "https://images.unsplash.com/photo-1596526131090-bcbe09e432d3?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8aW5zdGFncmFtfGVufDB8fDB8fHww&auto=format&fit=crop&q=60&w=500",
 		},
-		{
-			name: "Dribbble",
-			handle: "lesliepaul",
-			url: "https://dribbble.com/lesliepaul",
-			icon: (
-				<svg
-					className="w-6 h-6"
-					fill="currentColor"
-					viewBox="0 0 24 24"
-				>
-					<path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm9.747 10.657c-.364-.134-2.247-.827-4.5-.827-1.352 0-2.458.21-2.654.448-.144.17-.046.656.046.955.115.336.477.83 1.171.83.827 0 1.667-.433 2.654-.974.134-.078.302-.056.404.067.403.49.74 1.095.962 1.786-1.351.672-3.08 1.078-4.99 1.078-1.935 0-3.682-.406-5.038-1.078.222-.69.56-1.295.963-1.786.102-.123.27-.145.404-.067.987.54 1.827.974 2.654.974.694 0 1.056-.494 1.17-.83.093-.3.19-.785.047-.955-.196-.238-1.302-.448-2.654-.448-2.253 0-4.136.693-4.5.827-.538-1.383-.538-2.79 0-4.173.364-.134 2.247-.827 4.5-.827 1.352 0 2.458.21 2.654.448.144.17.046.656-.046.955-.115.336-.477.83-1.171.83-.827 0-1.667-.433-2.654-.974-.134-.078-.302-.056-.404.067-.403.49-.74 1.095-.962 1.786 1.351.672 3.08 1.078 4.99 1.078 1.935 0 3.682-.406 5.038-1.078-.222-.69-.56-1.295-.963-1.786-.102-.123-.27-.145-.404-.067-.987.54-1.827.974-2.654.974-.694 0-1.056-.494-1.17-.83-.093-.3-.19-.785-.047-.955.196-.238 1.302-.448 2.654-.448 2.253 0 4.136.693 4.5.827.538 1.383.538 2.79 0 4.173z" />
-				</svg>
-			),
-			bgColor: "bg-pink-500",
-			hoverColor: "hover:bg-pink-600",
-			description: "Design work & creative process",
-			image: "/socials/dribbble-placeholder.jpg",
-		},
+		// {
+		// 	name: "Dribbble",
+		// 	handle: "lesliepaul",
+		// 	url: "https://dribbble.com/lesliepaul",
+		// 	icon: (
+		// 		<svg
+		// 			className="w-6 h-6"
+		// 			fill="currentColor"
+		// 			viewBox="0 0 24 24"
+		// 		>
+		// 			<path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm9.747 10.657c-.364-.134-2.247-.827-4.5-.827-1.352 0-2.458.21-2.654.448-.144.17-.046.656.046.955.115.336.477.83 1.171.83.827 0 1.667-.433 2.654-.974.134-.078.302-.056.404.067.403.49.74 1.095.962 1.786-1.351.672-3.08 1.078-4.99 1.078-1.935 0-3.682-.406-5.038-1.078.222-.69.56-1.295.963-1.786.102-.123.27-.145.404-.067.987.54 1.827.974 2.654.974.694 0 1.056-.494 1.17-.83.093-.3.19-.785.047-.955-.196-.238-1.302-.448-2.654-.448-2.253 0-4.136.693-4.5.827-.538-1.383-.538-2.79 0-4.173.364-.134 2.247-.827 4.5-.827 1.352 0 2.458.21 2.654.448.144.17.046.656-.046.955-.115.336-.477.83-1.171.83-.827 0-1.667-.433-2.654-.974-.134-.078-.302-.056-.404.067-.403.49-.74 1.095-.962 1.786 1.351.672 3.08 1.078 4.99 1.078 1.935 0 3.682-.406 5.038-1.078-.222-.69-.56-1.295-.963-1.786-.102-.123-.27-.145-.404-.067-.987.54-1.827.974-2.654.974-.694 0-1.056-.494-1.17-.83-.093-.3-.19-.785-.047-.955.196-.238 1.302-.448 2.654-.448 2.253 0 4.136.693 4.5.827.538 1.383.538 2.79 0 4.173z" />
+		// 		</svg>
+		// 	),
+		// 	bgColor: "bg-pink-500",
+		// 	hoverColor: "hover:bg-pink-600",
+		// 	description: "Design work & creative process",
+		// 	image: "/socials/dribbble-placeholder.jpg",
+		// },
 		{
 			name: "WhatsApp",
 			handle: "+233-27-123-7965",
@@ -109,7 +109,7 @@ const Socials = () => {
 			bgColor: "bg-green-500",
 			hoverColor: "hover:bg-green-600",
 			description: "Quick chats & instant collaboration",
-			image: "/socials/whatsapp-placeholder.jpg",
+			image: "/profile-image-2.jpg",
 		},
 		{
 			name: "Slack",
@@ -127,7 +127,7 @@ const Socials = () => {
 			bgColor: "bg-purple-500",
 			hoverColor: "hover:bg-purple-600",
 			description: "Team collaboration & workspace chats",
-			image: "/socials/slack-placeholder.jpg",
+			image: "https://images.unsplash.com/photo-1632488507942-b638eecc151a?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTZ8fHNsYWNrfGVufDB8fDB8fHww&auto=format&fit=crop&q=60&w=500",
 		},
 		{
 			name: "Snapchat",
@@ -145,7 +145,7 @@ const Socials = () => {
 			bgColor: "bg-yellow-400",
 			hoverColor: "hover:bg-yellow-500",
 			description: "Moments & behind-the-scenes stories",
-			image: "/socials/snapchat-placeholder.jpg",
+			image: "https://images.unsplash.com/photo-1627512322769-85cb8e944bef?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTR8fHNuYXBjaGF0fGVufDB8fDB8fHww&auto=format&fit=crop&q=60&w=500",
 		},
 	];
 

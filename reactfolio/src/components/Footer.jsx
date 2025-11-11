@@ -14,7 +14,7 @@ const Footer = () => {
 					{/* Brand Section */}
 					<div className="md:col-span-2">
 						<div className="flex items-center mb-4">
-							<span className="text-2xl font-bold text-black">
+							<span className="text-2xl font-bold text-black roboto-condensed-black">
 								LESLIE PAUL
 							</span>
 						</div>
@@ -29,22 +29,22 @@ const Footer = () => {
 								{
 									name: "GitHub",
 									icon: <Github size={20} />,
-									href: "https://github.com/yourusername",
+									href: "https://github.com/leslie-23",
 								},
 								{
 									name: "LinkedIn",
 									icon: <Linkedin size={20} />,
-									href: "https://linkedin.com/in/yourusername",
+									href: "https://www.linkedin.com/in/leslie-paul-ajayi-409b16356?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=ios_app",
 								},
 								{
 									name: "Twitter",
 									icon: <Twitter size={20} />,
-									href: "https://twitter.com/yourusername",
+									href: "https://x.com/_iam_leslie",
 								},
 								{
 									name: "Email",
 									icon: <Mail size={20} />,
-									href: "mailto:hello@lesliepaul.com",
+									href: "mailto:leslieajayi27@gmail.com",
 								},
 							].map((social) => (
 								<a
@@ -129,6 +129,7 @@ const Footer = () => {
 							"Docker",
 							"Git",
 							"REST APIs",
+							"among others...",
 						].map((tech) => (
 							<span
 								key={tech}
@@ -149,18 +150,25 @@ const Footer = () => {
 					{/* Legal Links */}
 					<div className="flex space-x-6 text-sm roboto-condensed-regular">
 						<span
-							className="text-gray-500"
+							className="text-gray-500 hover:cursor-pointer
+"
 							onClick={() => navigate("/privacy-policy")}
 						>
 							Privacy Policy
 						</span>
 						<span
-							className="text-gray-500"
+							className="text-gray-500 hover:cursor-pointer
+"
 							onClick={() => navigate("/terms-of-service")}
 						>
 							Terms of Service
 						</span>
-						<span className="text-gray-500">Cookies</span>
+						<span
+							className="text-gray-500 hover:cursor-pointer
+"
+						>
+							Cookies
+						</span>
 					</div>
 				</div>
 			</div>

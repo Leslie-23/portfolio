@@ -246,6 +246,43 @@ export const projectsData = {
 		documentation:
 			"A comprehensive social media analytics platform that processes data from multiple APIs and provides actionable insights through interactive data visualizations. The platform supports real-time data processing and team collaboration features.",
 	},
+	"restaurant-website": {
+		id: 7,
+		title: "Restaurant Website",
+		description:
+			"A high-end restaurant web platform with an elegant UI, real-time reservations, and in-house ordering.",
+		fullDescription:
+			"A full-stack restaurant management platform designed for premium dining establishments. It features a responsive frontend for customers to explore the menu, book tables, and place orders, while the backend allows admins to manage reservations, menu items, and analytics. The system prioritizes performance, scalability, and seamless UX.",
+		techStack: ["React", "Node.js", "Express", "MongoDB", "TailwindCSS"],
+		webScreenshot: "/images/webScreenshots/grilli-web.png",
+		mobileScreenshot: "/images/mobileScreenshots/grilli-mobile.png",
+		liveLink: "ttps://web-plusplus.vercel.app",
+		githubLink: "https://github.com/leslie-23/web-plusplus",
+		demoLink: "https://web-plusplus.vercel.app",
+		features: [
+			"Online table reservation with email confirmations",
+			"In-house order management system",
+			"Admin dashboard for menu and analytics",
+			"Dynamic menu updates with categories and pricing",
+			"Integrated payment support for online orders",
+		],
+		status: "Completed",
+		category: "Full-Stack Web Development",
+		timeline: "2 months",
+		teamSize: "1 developer",
+		challenges: [
+			"Maintaining fast load times with dynamic content",
+			"Implementing real-time reservation updates",
+			"Ensuring consistent design across devices",
+		],
+		solutions: [
+			"Implemented server-side caching for menu data",
+			"Used WebSocket for live updates on reservations",
+			"Adopted a modular responsive design system with TailwindCSS",
+		],
+		documentation:
+			"This project showcases a robust restaurant web solution built with the MERN stack. It includes real-time reservation handling, a beautiful menu interface, and an admin dashboard for operations. Focused on performance, usability, and elegant design, it reflects modern restaurant tech infrastructure.",
+	},
 };
 
 export const projectsArray = Object.values(projectsData);

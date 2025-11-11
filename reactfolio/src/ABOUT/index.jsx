@@ -200,8 +200,15 @@ const About = () => {
 									intelligent, efficient, and scalable digital
 									solutions that bridge performance with
 									clean, modern design.
+									<br />
+									<a
+										href="/socials"
+										className="text-blue-500 underline"
+									>
+										My Socials
+									</a>
 								</p>
-								<span className="font-light text-xsm text-subs text-green-600">
+								<span className="font-light text-xs text-subs text-green-600">
 									<sub>PS i love the color green.</sub>
 								</span>
 							</div>
@@ -395,17 +402,17 @@ const About = () => {
 					</div>
 				</div>
 				{/* Call to Action */}
-				<div className="z-2 text-center w-full mt-16 bg-green-600  p-8 border border-gray-200 ">
-					<h2 className="text-2xl font-bold text-white mb-4">
+				<div className="z-2 text-center w-full mt-16 bg-green-500  p-8 border border-gray-200 ">
+					<h2 className="text-4xl font-bold text-white mb-4">
 						Let's Build Something Amazing Together
 					</h2>
-					<p className="text-white max-w-2xl mx-auto mb-6">
+					<p className="text-xl text-white max-w-2xl mx-auto mb-6">
 						Whether you need a robust backend system, a modern web
 						application, or a complete digital solution, I'm ready
 						to bring your ideas to life with clean, efficient code
 						and thoughtful architecture.
 					</p>
-					<div className="flex flex-wrap justify-center gap-4">
+					<div className="flex flex-wrap justify-center gap-4 roboto-condensed-regular">
 						<a
 							href="/contact"
 							className="flex items-center gap-2 px-8 py-3 bg-black text-white rounded-xl font-semibold hover:shadow-lg transition-all duration-300 hover:scale-105 relative overflow-hidden group"

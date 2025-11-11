@@ -1,3 +1,15 @@
+body {
+	font-family: "Roboto Condensed", sans-serif;
+	font-optical-sizing: auto;
+	font-weight: 400;
+	font-style: normal;
+}
+
+::selection {
+	background-color: #22c55e96;
+	color: black;
+}
+
 /* Add these custom animations to your CSS */
 @keyframes pulse-slow {
 	0%,

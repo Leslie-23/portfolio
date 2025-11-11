@@ -17,6 +17,7 @@ import ProjectsCompletion from "./components/helpers/projectsCompletion";
 import PrivacyPolicy from "./components/helpers/privacyPolicy";
 import TermsOfService from "./components/helpers/termsOfService";
 import Socials from "./components/helpers/socials";
+import ScrollToTop from "./components/helpers/scrollToTop";
 function App() {
 	const [isLoading, setIsLoading] = useState(true);
 	useEffect(() => {
@@ -30,6 +31,7 @@ function App() {
 
 	return (
 		<div className="App">
+			<ScrollToTop />
 			<FloatingHelpButton />
 			<MinimalNavProgress />
 			<Routes>
