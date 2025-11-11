@@ -258,7 +258,7 @@ export const projectsData = {
 		mobileScreenshot: "/images/mobileScreenshots/grilli-mobile.png",
 		liveLink: "ttps://web-plusplus.vercel.app",
 		githubLink: "https://github.com/leslie-23/web-plusplus",
-		demoLink: "https://web-plusplus.vercel.app",
+		demoLink: "/images/general/grilli-video.mp4",
 		features: [
 			"Online table reservation with email confirmations",
 			"In-house order management system",
