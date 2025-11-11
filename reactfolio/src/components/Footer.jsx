@@ -1,8 +1,10 @@
 import React from "react";
 import { Github, Linkedin, Twitter, Mail } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import "./globals.css";
 const Footer = () => {
 	const currentYear = new Date().getFullYear();
+	const navigate = useNavigate();
 
 	return (
 		<footer className="bg-white border-t border-gray-200">
@@ -146,8 +148,18 @@ const Footer = () => {
 
 					{/* Legal Links */}
 					<div className="flex space-x-6 text-sm roboto-condensed-regular">
-						<span className="text-gray-500">Privacy Policy</span>
-						<span className="text-gray-500">Terms of Service</span>
+						<span
+							className="text-gray-500"
+							onClick={() => navigate("/privacy-policy")}
+						>
+							Privacy Policy
+						</span>
+						<span
+							className="text-gray-500"
+							onClick={() => navigate("/terms-of-service")}
+						>
+							Terms of Service
+						</span>
 						<span className="text-gray-500">Cookies</span>
 					</div>
 				</div>

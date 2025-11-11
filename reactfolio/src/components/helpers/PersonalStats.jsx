@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { ExternalLink, Info } from "lucide-react";
-
+import { useNavigate } from "react-router-dom";
 export const PersonalStats = () => {
+	const navigate = useNavigate();
 	const [showPopup, setShowPopup] = useState(false);
 
 	return (
@@ -10,14 +11,24 @@ export const PersonalStats = () => {
 				<p className="text-3xl font-bold text-foreground">50+</p>
 				<p className="text-sm text-muted-foreground">
 					Projects Completed{" "}
-					<ExternalLink className="inline" size={16} color="green" />
+					<ExternalLink
+						className="inline"
+						size={16}
+						color="green"
+						onClick={() => navigate("/projects-completed")}
+					/>
 				</p>
 			</div>
 			<div>
 				<p className="text-3xl font-bold text-foreground">30+</p>
 				<p className="text-sm text-muted-foreground">
 					Happy Clients{" "}
-					<ExternalLink className="inline" size={16} color="green" />
+					<ExternalLink
+						className="inline"
+						size={16}
+						color="green"
+						onClick={() => navigate("/testimonials")}
+					/>
 				</p>
 			</div>
 			<div>

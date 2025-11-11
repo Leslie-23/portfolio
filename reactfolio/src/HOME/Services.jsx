@@ -10,8 +10,8 @@ export default function Services() {
 			title: "Web Design",
 			description:
 				"Creating stunning, user-centered designs that engage and convert.",
-			icon: "🎨",
-			category: "UI/UX",
+			icon: "https://images.unsplash.com/photo-1547658719-da2b51169166?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8d2ViJTIwZGV2ZWxvcG1lbnR8ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&q=60&w=500",
+			category: ["UI/UX"],
 			details: {
 				overview:
 					"I specialize in crafting visually compelling, responsive, and accessible web interfaces. Each design is backed by UX principles and a focus on conversion.",
@@ -33,7 +33,7 @@ export default function Services() {
 			title: "Development",
 			description:
 				"Building fast, scalable, and maintainable web applications.",
-			icon: "⚙️",
+			icon: "https://images.unsplash.com/photo-1587440871875-191322ee64b0?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OHx8d2ViJTIwZGVzaWdufGVufDB8fDB8fHww&auto=format&fit=crop&q=60&w=500",
 			category: "Full Stack",
 			details: {
 				overview:
@@ -56,7 +56,7 @@ export default function Services() {
 			title: "Consulting",
 			description:
 				"Strategic guidance for digital transformation and product strategy.",
-			icon: "💡",
+			icon: "https://plus.unsplash.com/premium_photo-1733353204288-ba5c8ba3ad7d?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NXx8c29mdHdhcmUlMjBjb25zdWx0YXRpb258ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&q=60&w=500",
 			category: "Advisory",
 			details: {
 				overview:
@@ -74,7 +74,7 @@ export default function Services() {
 			title: "Optimization",
 			description:
 				"Performance tuning and SEO to maximize your web presence.",
-			icon: "⚡",
+			icon: "https://plus.unsplash.com/premium_photo-1661270415926-37a9d24aff30?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NXx8b3B0aW1pemF0aW9ufGVufDB8fDB8fHww&auto=format&fit=crop&q=60&w=500",
 			category: "Performance",
 			details: {
 				overview:
@@ -91,7 +91,7 @@ export default function Services() {
 	];
 
 	return (
-		<section className="py-20 bg-green-50 px-4 md:px-8">
+		<section className="py-20 bg-white px-4 md:px-8">
 			<div className="max-w-6xl mx-auto">
 				{/* Header */}
 				<div className="text-center mb-16">
@@ -113,14 +113,21 @@ export default function Services() {
 							onClick={() => setSelectedService(service)}
 							className="p-8 bg-background rounded-lg border border-border hover:shadow-lg transition-shadow cursor-pointer"
 						>
-							<div className="text-5xl mb-4">{service.icon}</div>
+							{/* Service Image */}
+							<div className="mb-4 rounded-lg overflow-hidden h-48 bg-gray-200">
+								<img
+									src={service.icon}
+									alt={service.title}
+									className="w-full h-full object-cover"
+								/>
+							</div>
 							<h3 className="text-2xl font-bold mb-2 text-foreground">
 								{service.title}
 							</h3>
 							<p className="text-muted-foreground leading-relaxed">
 								{service.description}
 							</p>
-							<div className="mt-3 inline-block text-xs font-semibold text-green-700 bg-green-100 px-2 py-1 rounded-md">
+							<div className="mt-3 inline-block text-xs font-semibold text-green-700 bg-green-100 px-2 py-1 rounded-md roboto-condensed-regular">
 								{service.category}
 							</div>
 						</motion.div>
@@ -139,21 +146,28 @@ export default function Services() {
 						onClick={() => setSelectedService(null)}
 					>
 						<motion.div
-							className="bg-white rounded-xl p-6 md:p-8 max-w-lg w-full shadow-xl relative"
+							className="bg-white rounded-xl p-6 md:p-8 max-w-2xl w-full shadow-xl relative max-h-[90vh] overflow-y-auto"
 							initial={{ scale: 0.8, opacity: 0 }}
 							animate={{ scale: 1, opacity: 1 }}
 							exit={{ scale: 0.8, opacity: 0 }}
 							onClick={(e) => e.stopPropagation()}
 						>
 							<button
-								className="absolute top-4 right-4 text-gray-600 hover:text-black"
+								className="absolute top-4 right-4 text-gray-600 hover:text-black z-10 bg-white rounded-full p-1"
 								onClick={() => setSelectedService(null)}
 							>
 								<X size={22} />
 							</button>
-							<div className="text-4xl mb-4">
-								{selectedService.icon}
+
+							{/* Modal Image */}
+							<div className="mb-6 rounded-lg overflow-hidden h-64 bg-gray-200">
+								<img
+									src={selectedService.icon}
+									alt={selectedService.title}
+									className="w-full h-full object-cover"
+								/>
 							</div>
+
 							<h3 className="text-2xl font-bold mb-2 text-foreground">
 								{selectedService.title}
 							</h3>
@@ -175,7 +189,7 @@ export default function Services() {
 												href={proj.link}
 												target="_blank"
 												rel="noopener noreferrer"
-												className="font-semibold text-green-700 hover:underline"
+												className="font-semibold text-green-700 hover:underline roboto-condensed-regular"
 											>
 												{proj.name}
 											</a>
