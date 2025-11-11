@@ -16,6 +16,7 @@ import Testimonials from "./components/helpers/testimonials";
 import ProjectsCompletion from "./components/helpers/projectsCompletion";
 import PrivacyPolicy from "./components/helpers/privacyPolicy";
 import TermsOfService from "./components/helpers/termsOfService";
+import Socials from "./components/helpers/socials";
 function App() {
 	const [isLoading, setIsLoading] = useState(true);
 	useEffect(() => {
@@ -47,6 +48,7 @@ function App() {
 					path="projects-completed"
 					element={<ProjectsCompletion />}
 				/>
+				<Route path="/socials" element={<Socials />} />
 				<Route path="privacy-policy" element={<PrivacyPolicy />} />
 				<Route path="terms-of-service" element={<TermsOfService />} />
 				<Route path="*" element={<NotFound />} />

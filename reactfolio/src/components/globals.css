@@ -351,3 +351,78 @@ header,
 	font-weight: 900;
 	font-style: italic;
 }
+
+@keyframes ping {
+	0% {
+		transform: scale(1);
+		opacity: 0.8;
+	}
+	75%,
+	100% {
+		transform: scale(1.1);
+		opacity: 0;
+	}
+}
+.animate-ping {
+	animation: ping 1.5s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+
+.option-wrapper {
+	position: absolute;
+	inset: 0;
+}
+
+.option-item {
+	position: absolute;
+	transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+	opacity: 0;
+	transform: translate(-50%, -50%) scale(0.5);
+	top: 50%;
+	left: 50%;
+}
+
+.tooltip {
+	position: absolute;
+	background: #1f2937;
+	color: white;
+	font-size: 0.75rem;
+	padding: 0.25rem 0.5rem;
+	border-radius: 0.25rem;
+	white-space: nowrap;
+	top: 100%;
+	left: 50%;
+	transform: translate(-50%, 0.5rem);
+	opacity: 0;
+	transition: opacity 0.3s ease;
+}
+
+.option-item:hover .tooltip {
+	opacity: 1;
+}
+
+/* Active Animations */
+#profileContainer.active .option-item {
+	opacity: 1;
+	transform: translate(-50%, -50%) scale(1);
+}
+
+/* Perfect circle symmetry around center */
+#profileContainer.active .opt-portfolio {
+	transform: translate(-50%, -300%) scale(1); /* top */
+}
+
+#profileContainer.active .opt-projects {
+	transform: translate(200%, -50%) scale(1); /* right */
+}
+
+#profileContainer.active .opt-contact {
+	transform: translate(-50%, 200%) scale(1); /* bottom */
+}
+
+#profileContainer.active .opt-blog {
+	transform: translate(-305%, -50%) scale(1); /* left */
+}
+
+#profileContainer.active .opt-resume {
+	transform: translate(150%, -200%) scale(1); /* top-right diagonal */
+}
