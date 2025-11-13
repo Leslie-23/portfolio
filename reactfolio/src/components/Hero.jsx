@@ -213,13 +213,13 @@ const Hero = () => {
 							onClick={() => (window.location.href = "/projects")}
 							className="group relative bg-green-600 text-white px-8 py-3 rounded-full font-medium transition-all duration-300 hover:bg-green-700 hover:shadow-lg hover:scale-105"
 						>
-							<span className="relative z-10 roboto-condensed-light">
+							<span className="relative z-10 roboto-condensed-bold">
 								View My Work
 							</span>
 							<div className="absolute inset-0 bg-green-700 rounded-full scale-0 group-hover:scale-100 transition-transform duration-300"></div>
 						</button>
 
-						<button className="group relative border-2 border-green-600 text-green-600 px-8 py-3 rounded-full font-medium transition-all duration-300 hover:bg-green-600 hover:text-white hover:shadow-lg hover:scale-105 roboto-condensed-light">
+						<button className="group relative border-2 border-green-600 text-green-600 px-8 py-3 rounded-full font-medium transition-all duration-300 hover:bg-green-600 hover:text-white hover:shadow-lg hover:scale-105 roboto-condensed-bold">
 							<span className="relative z-10">Get In Touch</span>
 							<div className="absolute inset-0 bg-green-600 rounded-full scale-0 group-hover:scale-100 transition-transform duration-300"></div>
 						</button>
