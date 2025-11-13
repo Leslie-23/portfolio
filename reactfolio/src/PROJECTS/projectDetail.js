@@ -22,7 +22,7 @@ const ProjectDetail = () => {
 	if (!project) {
 		return (
 			<>
-				<Navbar />
+				<Navbar className="" />
 				<div className="min-h-screen bg-gray-50 flex items-center justify-center">
 					<div className="text-center">
 						<h1 className="text-4xl font-bold text-gray-900 mb-4">
@@ -52,7 +52,7 @@ const ProjectDetail = () => {
 					{/* Back Button */}
 					<button
 						onClick={() => navigate("/projects")}
-						className="flex items-center gap-2 text-gray-600 hover:text-gray-900 mb-8 transition-colors"
+						className="flex items-center gap-2 mt-8 text-gray-600 hover:text-gray-900 mb-8 transition-colors"
 					>
 						<ArrowLeft size={20} />
 						Back to Projects
