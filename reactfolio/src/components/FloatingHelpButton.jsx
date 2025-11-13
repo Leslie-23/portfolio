@@ -48,6 +48,13 @@ const FloatingHelpButton = () => {
 			"🔥 Still here? Let’s make something great together.",
 			"🧠 You clearly have taste — imagine what we could build!",
 		],
+		welcomeReminder: [
+			"👋 Back again? Love the dedication — let’s finally build that project.",
+			"🚀 Welcome back! Clearly, something here inspired you last time.",
+			"💼 Ready to turn those ideas into code this time?",
+			"🔥 You keep coming back — maybe it’s time we make something real.",
+			"🧠 Still thinking about that project? Let’s make it happen together.",
+		],
 	};
 
 	// Utility: play ping sound + optional vibration
@@ -65,6 +72,24 @@ const FloatingHelpButton = () => {
 	// 🧠 Timed Popups with Session Memory
 	useEffect(() => {
 		const hasSeen = localStorage.getItem("popupShown");
+
+		// if (hasSeen) {
+		// 	const welcomeReminder = setTimeout(() => {
+		// 		const message =
+		// 			ctaMessages.welcomeReminder[
+		// 				Math.floor(
+		// 					Math.random() * ctaMessages.welcomeReminder.length
+		// 				)
+		// 			];
+		// 		setCta(message);
+		// 		setPopup("initial");
+		// 		playFeedback();
+		// 	}, 10000);
+
+		// 	return () => {
+		// 		clearTimeout(welcomeReminder);
+		// 	};
+		// }
 
 		if (!hasSeen) {
 			const firstTimer = setTimeout(() => {

@@ -1,6 +1,7 @@
 import React from "react";
 import "./globals.css";
 import TechStackScroller from "./helpers/techStackIndicators";
+import AnimatedRoleCycler from "./helpers/AnimatedRoleCycler";
 const Hero = () => {
 	return (
 		<section
@@ -175,7 +176,10 @@ const Hero = () => {
 					{/* Title */}
 					<div className="overflow-hidden">
 						<h2 className="text-xl sm:text-2xl text-gray-600 font-medium mb-8 transform transition-all duration-500 delay-100">
-							Software Engineer & IT Student
+							Software Engineer —{" "}
+							<span className="inline-block min-w-[150px]">
+								<AnimatedRoleCycler />
+							</span>
 						</h2>
 					</div>
 
