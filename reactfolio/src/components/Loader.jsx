@@ -97,7 +97,7 @@ const Loader = () => {
 					{/* Subtitle animated as part of sequence */}
 					<div className="subtitle-wrapper mt-3">
 						<span className="subtitle text-gray-600 dark:text-gray-400 roboto-condensed-light text-lg tracking-wide opacity-0 block">
-							software engineer & designer
+							SOFTWARE ENGINEER,DEVELOPER & DESIGNER
 						</span>
 					</div>
 				</div>
