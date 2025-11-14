@@ -70,13 +70,13 @@ const skills = [
 	{ name: "Google Cloud", Icon: SiGooglecloud, color: "#4285F4" },
 	{ name: "Azure", Icon: SiGooglecloud, color: "#0078D4" },
 	{ name: "Firebase", Icon: SiFirebase, color: "#FFCA28" },
-	{ name: "Vercel", Icon: SiVercel, color: "#000000" },
+	{ name: "Vercel", Icon: SiVercel, color: "#d8d8d8ff" },
 	{ name: "Nginx", Icon: SiNginx, color: "#009639" },
 
 	// Tools & IDEs
 	{ name: "VS Code", Icon: SiCoder, color: "#007ACC" },
 	{ name: "Git", Icon: SiGit, color: "#F05032" },
-	{ name: "GitHub", Icon: SiGithub, color: "#181717" },
+	{ name: "GitHub", Icon: SiGithub, color: "#404040ff" },
 	{ name: "Postman", Icon: SiPostman, color: "#FF6C37" },
 	{ name: "Prisma", Icon: SiPrisma, color: "#2D3748" },
 	{ name: "Jest", Icon: SiJest, color: "#C21325" },

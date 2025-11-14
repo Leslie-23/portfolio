@@ -11,6 +11,7 @@ import {
 import emailjs from "@emailjs/browser";
 import Footer from "../components/Footer";
 import Navbar from "../components/Navbar";
+import Map from "../components/Map";
 
 const Contact = () => {
 	const form = useRef();
@@ -204,23 +205,37 @@ const Contact = () => {
 									</div>
 								</div>
 
-								<div className="flex items-start gap-4 p-4 bg-white rounded-xl shadow-sm border border-gray-200 hover:shadow-md transition-shadow duration-300">
-									<div className="p-3 bg-green-100 rounded-lg">
-										<MapPin
-											className="text-green-600"
-											size={24}
-										/>
-									</div>
-									<div>
-										<h4 className="font-semibold text-gray-900 mb-1">
-											Location
-										</h4>
-										<p className="text-gray-600">
-											Available Worldwide
-										</p>
-										<p className="text-sm text-gray-500">
-											Remote & On-site Projects
-										</p>
+								<div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+									<div className="flex items-start gap-4 p-4">
+										<div className="p-3 bg-green-100 rounded-lg">
+											<MapPin
+												className="text-green-600"
+												size={24}
+											/>
+										</div>
+										<div className="flex-1">
+											<h4 className="font-semibold text-gray-900 mb-1">
+												Location
+											</h4>
+											<p className="text-gray-600">
+												Accra, Ghana
+											</p>
+											<p className="text-sm text-gray-500 mb-3">
+												Remote & On-site Projects
+											</p>
+
+											{/* Map Container */}
+											<div className="mt-2">
+												<Map />
+											</div>
+
+											<div className="mt-3 text-xs text-gray-500">
+												<p>
+													📍 Based in Accra, serving
+													clients worldwide
+												</p>
+											</div>
+										</div>
 									</div>
 								</div>
 							</div>

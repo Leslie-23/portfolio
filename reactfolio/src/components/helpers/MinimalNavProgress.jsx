@@ -57,7 +57,7 @@ const MinimalNavProgress = () => {
 		{
 			label: "Resume",
 			icon: <FileText size={18} />,
-			action: () => window.open("/resume.pdf", "_blank"),
+			action: () => window.open("/resume"),
 		},
 		{
 			label: "Contact",

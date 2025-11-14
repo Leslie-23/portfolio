@@ -1,6 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { MessageCircle, Github, Linkedin, Folder, Mail } from "lucide-react";
+import {
+	MessageCircle,
+	Github,
+	Linkedin,
+	Mail,
+	FolderGit2,
+} from "lucide-react";
 import "../components/globals.css";
 // small "ping" sound encoded as base64 so no external file needed
 const PING_SOUND =
@@ -17,22 +23,22 @@ const FloatingHelpButton = () => {
 		{
 			label: "Contact Me",
 			icon: <Mail size={20} />,
-			link: "mailto:lesliepaul@example.com",
+			link: "mailto:leslieajayi27@gmail.com",
 		},
 		{
 			label: "Projects",
-			icon: <Folder size={20} />,
+			icon: <FolderGit2 size={20} />,
 			link: "/projects",
 		},
 		{
 			label: "GitHub",
 			icon: <Github size={20} />,
-			link: "https://github.com/lesliepaulajayi",
+			link: "https://github.com/leslie-23",
 		},
 		{
 			label: "LinkedIn",
 			icon: <Linkedin size={20} />,
-			link: "https://linkedin.com/in/lesliepaulajayi",
+			link: "https://www.linkedin.com/in/leslie-paul-ajayi-409b16356?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=ios_app",
 		},
 	];
 
