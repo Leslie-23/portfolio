@@ -62,7 +62,7 @@ const MinimalNavProgress = () => {
 		{
 			label: "Contact",
 			icon: <Phone size={18} />,
-			action: () => navigate("/contact"),
+			action: () => navigate("/contact#contact-form"),
 		},
 	];
 

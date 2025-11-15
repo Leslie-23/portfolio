@@ -325,6 +325,7 @@ const Contact = () => {
 									ref={form}
 									onSubmit={handleSubmit}
 									className="space-y-6"
+									id="contact-form"
 								>
 									<div className="grid grid-cols-1 md:grid-cols-2 gap-6">
 										<div>
