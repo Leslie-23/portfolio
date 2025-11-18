@@ -9,10 +9,11 @@ import {
 	ChevronRight,
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-
+import { useTerminal } from "./helpers/terminal";
 const Navbar = () => {
 	const [isMenuOpen, setIsMenuOpen] = useState(false);
 	const [activeItem, setActiveItem] = useState("");
+	const { openTerminal, Terminal } = useTerminal();
 
 	const toggleMenu = () => {
 		setIsMenuOpen(!isMenuOpen);
@@ -95,10 +96,35 @@ const Navbar = () => {
 							whileHover={{ scale: 1.05 }}
 							whileTap={{ scale: 0.95 }}
 						>
-							<span className="text-black text-xl font-bold roboto-condensed-black">
+							{/* <span
+								className="text-black text-xl font-bold roboto-condensed-black cursor-pointer"
+								onClick={openTerminal}
+							>
 								LESLIE PAUL
-							</span>
+							</span> */}
+							<div className="relative group">
+								<img
+									className="cursor-pointer"
+									src="/ascii-art-text.png"
+									alt="Leslie Paul"
+									width={200}
+									height={200}
+									onClick={openTerminal}
+								/>
+
+								{/* Desktop-only hover button */}
+								<div className="hidden md:block absolute top-full left-1/2 transform -translate-x-1/2 mt-2 opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 ease-out">
+									<button
+										onClick={openTerminal}
+										className="terminal-launcher bg-gray-800 text-white px-4 hover:bg-gray-700 transition-colors whitespace-nowrap shadow-lg"
+									>
+										🖥️ Open Terminal
+									</button>
+								</div>
+							</div>
 						</motion.div>
+						{/* Render the terminal at root level */}
+						<Terminal />
 
 						{/* Desktop Menu */}
 						<div className="hidden md:block">
