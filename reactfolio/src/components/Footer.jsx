@@ -14,16 +14,16 @@ const Footer = () => {
 					{/* Brand Section */}
 					<div className="md:col-span-2">
 						<div className="flex items-center mb-4">
-							{/* <span className="text-2xl font-bold text-black roboto-condensed-black">
+							<span className="text-2xl font-bold text-black roboto-condensed-black">
 								LESLIE PAUL
-							</span> */}
-							<img
+							</span>
+							{/* <img
 								className="cursor-pointer"
 								src="/ascii-art-text.png"
 								alt="Leslie Paul"
 								width={200}
 								height={200}
-							/>
+							/> */}
 						</div>
 						<p className="text-gray-600 max-w-md mb-4">
 							Software Engineer & IT Student passionate about

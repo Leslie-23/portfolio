@@ -96,13 +96,13 @@ const Navbar = () => {
 							whileHover={{ scale: 1.05 }}
 							whileTap={{ scale: 0.95 }}
 						>
-							{/* <span
-								className="text-black text-xl font-bold roboto-condensed-black cursor-pointer"
+							<span
+								className="text-black text-2xl font-bold roboto-condensed-black cursor-pointer"
 								onClick={openTerminal}
 							>
 								LESLIE PAUL
-							</span> */}
-							<div className="relative group">
+							</span>
+							{/* <div className="relative group">
 								<img
 									className="cursor-pointer"
 									src="/ascii-art-text.png"
@@ -112,7 +112,6 @@ const Navbar = () => {
 									onClick={openTerminal}
 								/>
 
-								{/* Desktop-only hover button */}
 								<div className="hidden md:block absolute top-full left-1/2 transform -translate-x-1/2 mt-2 opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 ease-out">
 									<button
 										onClick={openTerminal}
@@ -121,7 +120,7 @@ const Navbar = () => {
 										🖥️ Open Terminal
 									</button>
 								</div>
-							</div>
+							</div> */}
 						</motion.div>
 						{/* Render the terminal at root level */}
 						<Terminal />

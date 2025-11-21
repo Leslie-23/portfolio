@@ -132,7 +132,7 @@ const Hero = () => {
 										/>
 									</svg>
 								</a>
-								<div className="tooltip">Read My Blog</div>
+								<div className="tooltip">View my Socials</div>
 							</div>
 
 							{/* Resume */}
