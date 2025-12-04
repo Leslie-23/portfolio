@@ -19,6 +19,7 @@ import TermsOfService from "./components/helpers/termsOfService";
 import Socials from "./components/helpers/socials";
 import ScrollToTop from "./components/helpers/scrollToTop";
 import Resume from "./CONTACT/resume";
+import CookieConsent from "./components/helpers/cookies";
 function App() {
 	const [isLoading, setIsLoading] = useState(true);
 	useEffect(() => {
@@ -55,6 +56,7 @@ function App() {
 				<Route path="/socials" element={<Socials />} />
 				<Route path="privacy-policy" element={<PrivacyPolicy />} />
 				<Route path="terms-of-service" element={<TermsOfService />} />
+				<Route path="cookies" element={<CookieConsent />} />
 				<Route path="*" element={<NotFound />} />
 			</Routes>
 		</div>

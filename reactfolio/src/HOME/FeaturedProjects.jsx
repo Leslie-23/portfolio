@@ -51,7 +51,7 @@ export default function FeaturedProjects() {
 	];
 
 	return (
-		<section className="py-20 bg-background px-4 md:px-8">
+		<section className="py-20 bg-white px-4 md:px-8">
 			<div className="max-w-6xl mx-auto">
 				<div className="text-center mb-16">
 					<h2 className="text-4xl md:text-5xl font-bold mb-4 text-foreground">

@@ -173,6 +173,7 @@ const Footer = () => {
 						<span
 							className="text-gray-500 hover:cursor-pointer
 "
+							onClick={() => navigate("/cookies")}
 						>
 							Cookies
 						</span>

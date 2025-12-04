@@ -6,10 +6,12 @@ export const PersonalStats = () => {
 	const [showPopup, setShowPopup] = useState(false);
 
 	return (
-		<div className="flex align-center justify-center gap-8 pt-4 pb-4 z-1">
+		<div className="flex align-center bg-white justify-center gap-8 pt-4 pb-4 z-1">
 			<div>
-				<p className="text-3xl font-bold text-foreground">50+</p>
-				<p className="text-sm text-muted-foreground">
+				<p className="text-5xl font-bold text-black roboto-condensed-extrabold">
+					50+
+				</p>
+				<p className="text-sm text-muted-black">
 					Projects Completed{" "}
 					<ExternalLink
 						className="inline"
@@ -20,8 +22,8 @@ export const PersonalStats = () => {
 				</p>
 			</div>
 			<div>
-				<p className="text-3xl font-bold text-foreground">30+</p>
-				<p className="text-sm text-muted-foreground">
+				<p className="text-5xl font-bold text-black">30+</p>
+				<p className="text-sm text-muted-black">
 					Happy Clients{" "}
 					<ExternalLink
 						className="inline"
@@ -32,8 +34,8 @@ export const PersonalStats = () => {
 				</p>
 			</div>
 			<div>
-				<p className="text-3xl font-bold text-foreground">5+</p>
-				<p className="text-sm text-muted-foreground">
+				<p className="text-5xl font-bold text-black">5+</p>
+				<p className="text-sm text-muted-black">
 					Years Experience{" "}
 					<Info
 						className="inline"
