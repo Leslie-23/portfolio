@@ -13,6 +13,22 @@ import Footer from "../components/Footer";
 import Navbar from "../components/Navbar";
 import Map from "../components/Map";
 
+// Sanitize input to prevent XSS and email injection
+const sanitizeInput = (str, maxLength = 1000) => {
+	if (typeof str !== "string") return "";
+	return str
+		.replace(/<[^>]*>/g, "") // Strip HTML tags
+		.replace(/[<>]/g, "") // Remove angle brackets
+		.trim()
+		.slice(0, maxLength);
+};
+
+// Validate email format
+const isValidEmail = (email) => {
+	const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+	return emailRegex.test(email);
+};
+
 const Contact = () => {
 	const form = useRef();
 	const [isLoading, setIsLoading] = useState(false);
@@ -24,9 +40,6 @@ const Contact = () => {
 		email: "",
 		subject: "",
 		message: "",
-		date: new Date().toISOString(), // current date-time in readable format
-		time: Date.now(), // milliseconds since epoch
-		useragent: navigator.userAgent, // browser info
 	});
 
 	// EmailJS Configuration - Updated with your credentials
@@ -51,14 +64,32 @@ const Contact = () => {
 		setErrorMessage("");
 
 		try {
-			// Validate form data
+			// Sanitize all inputs before validation
+			const sanitizedData = {
+				name: sanitizeInput(formData.name, 100),
+				email: sanitizeInput(formData.email, 254),
+				subject: sanitizeInput(formData.subject, 200),
+				message: sanitizeInput(formData.message, 5000),
+			};
+
+			// Validate required fields
 			if (
-				!formData.name ||
-				!formData.email ||
-				!formData.subject ||
-				!formData.message
+				!sanitizedData.name ||
+				!sanitizedData.email ||
+				!sanitizedData.subject ||
+				!sanitizedData.message
 			) {
 				throw new Error("Please fill in all required fields");
+			}
+
+			// Validate email format
+			if (!isValidEmail(sanitizedData.email)) {
+				throw new Error("Please enter a valid email address");
+			}
+
+			// Validate minimum message length
+			if (sanitizedData.message.length < 10) {
+				throw new Error("Message must be at least 10 characters");
 			}
 
 			// Add timestamp to form data
@@ -72,11 +103,13 @@ const Contact = () => {
 				EMAILJS_CONFIG.publicKey,
 				{
 					timestamp: timestamp,
-					to_email: "leslieajayi27@gmail.com", // Add recipient email
+					to_email: "leslieajayi27@gmail.com",
 				}
 			);
 
-			console.log("Email sent successfully:", result);
+			if (process.env.NODE_ENV === "development") {
+				console.log("Email sent successfully:", result);
+			}
 
 			setIsLoading(false);
 			setIsSuccess(true);
@@ -87,15 +120,11 @@ const Contact = () => {
 				email: "",
 				subject: "",
 				message: "",
-				date: new Date().toISOString(), // current date-time in readable format
-				time: Date.now(), // milliseconds since epoch
-				useragent: navigator.userAgent, // browser info
 			});
 
 			// Reset success message after 5 seconds
 			setTimeout(() => setIsSuccess(false), 5000);
 		} catch (error) {
-			console.error("Error sending email:", error);
 			setIsLoading(false);
 			setIsError(true);
 
@@ -342,6 +371,7 @@ const Contact = () => {
 												value={formData.name}
 												onChange={handleChange}
 												required
+												maxLength={100}
 												className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all duration-300"
 												placeholder="Your full name"
 											/>
@@ -360,6 +390,7 @@ const Contact = () => {
 												value={formData.email}
 												onChange={handleChange}
 												required
+												maxLength={254}
 												className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all duration-300"
 												placeholder="your.email@example.com"
 											/>
@@ -380,6 +411,7 @@ const Contact = () => {
 											value={formData.subject}
 											onChange={handleChange}
 											required
+											maxLength={200}
 											className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all duration-300"
 											placeholder="What's this about?"
 										/>
@@ -399,6 +431,7 @@ const Contact = () => {
 											onChange={handleChange}
 											required
 											rows={6}
+											maxLength={5000}
 											className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all duration-300 resize-vertical"
 											placeholder="Tell me about your project, timeline, and any specific requirements..."
 										/>

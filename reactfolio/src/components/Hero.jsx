@@ -32,6 +32,8 @@ const Hero = () => {
 						<img
 							src="/profile-image.webp"
 							alt="Leslie Paul"
+							loading="eager"
+							fetchPriority="high"
 							className="w-full h-full rounded-full object-cover border-4 border-white shadow-lg"
 							onError={(e) => {
 								e.target.style.display = "none";

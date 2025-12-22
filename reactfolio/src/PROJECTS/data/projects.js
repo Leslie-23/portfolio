@@ -268,7 +268,7 @@ export const projectsData = {
 		techStack: ["React", "Node.js", "Express", "MongoDB", "TailwindCSS"],
 		webScreenshot: "/images/webScreenshots/grilli-web.png",
 		mobileScreenshot: "/images/mobileScreenshots/grilli-mobile.png",
-		liveLink: "ttps://web-plusplus.vercel.app",
+		liveLink: "https://web-plusplus.vercel.app",
 		githubLink: "https://github.com/leslie-23/web-plusplus",
 		demoLink: "/images/general/grilli-video.mp4",
 		features: [

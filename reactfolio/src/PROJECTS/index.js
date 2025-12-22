@@ -354,6 +354,7 @@ const Projects = () => {
 										<img
 											src={currentProject.webScreenshot}
 											alt={`${currentProject.title} Web Screenshot`}
+											loading="eager"
 											className="w-full h-auto rounded-lg shadow-lg transition-transform duration-300 hover:scale-105"
 										/>
 									</div>
@@ -377,6 +378,7 @@ const Projects = () => {
 												currentProject.mobileScreenshot
 											}
 											alt={`${currentProject.title} Mobile Screenshot`}
+											loading="lazy"
 											className="w-full h-auto rounded-2xl shadow-lg transition-transform duration-300 hover:scale-105"
 										/>
 									</div>
@@ -569,6 +571,7 @@ const Projects = () => {
 										<img
 											src={project.webScreenshot}
 											alt={project.title}
+											loading="lazy"
 											className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
 										/>
 										{/* Overlay on hover */}

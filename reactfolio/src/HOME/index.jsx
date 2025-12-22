@@ -11,7 +11,7 @@ import { PersonalStats } from "../components/helpers/PersonalStats";
 const Home = () => {
 	return (
 		<>
-			<Navbar />;
+			<Navbar />
 			<Hero />
 			<PersonalStats />
 			<SkillsCarousel />
