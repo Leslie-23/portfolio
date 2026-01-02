@@ -341,35 +341,35 @@ const Projects = () => {
 								{/* Web Screenshot */}
 								<div className="relative group">
 									<div className="absolute -inset-1 bg-gradient-to-r from-green-500 to-green-600 rounded-2xl blur opacity-25 group-hover:opacity-75 transition duration-1000 group-hover:duration-200"></div>
-									<div className="relative bg-gray-900 rounded-2xl p-4">
-										<div className="flex items-center gap-2 mb-3">
+									<div className="relative bg-gray-900 rounded-2xl p-3">
+										<div className="flex items-center gap-2 mb-2">
 											<Monitor
-												size={16}
+												size={14}
 												className="text-gray-400"
 											/>
-											<span className="text-sm text-gray-400">
+											<span className="text-xs text-gray-400">
 												Web Version
 											</span>
 										</div>
 										<img
 											src={currentProject.webScreenshot}
 											alt={`${currentProject.title} Web Screenshot`}
-											className="w-full h-auto rounded-lg shadow-lg transition-transform duration-300 hover:scale-105"
+											className="w-full max-h-48 object-cover rounded-lg shadow-lg transition-transform duration-300 hover:scale-105"
 										/>
 									</div>
 								</div>
 
 								{/* Mobile Screenshot */}
-								<div className="relative group max-w-xs mx-auto">
+								<div className="relative group max-w-[150px] mx-auto">
 									<div className="absolute -inset-1 bg-gradient-to-r from-green-500 to-green-600 rounded-3xl blur opacity-25 group-hover:opacity-75 transition duration-1000 group-hover:duration-200"></div>
-									<div className="relative bg-gray-900 rounded-3xl p-4">
-										<div className="flex items-center gap-2 mb-3">
+									<div className="relative bg-gray-900 rounded-3xl p-2">
+										<div className="flex items-center gap-2 mb-2">
 											<Smartphone
-												size={16}
+												size={12}
 												className="text-gray-400"
 											/>
-											<span className="text-sm text-gray-400">
-												Mobile Version
+											<span className="text-xs text-gray-400">
+												Mobile
 											</span>
 										</div>
 										<img
@@ -377,7 +377,7 @@ const Projects = () => {
 												currentProject.mobileScreenshot
 											}
 											alt={`${currentProject.title} Mobile Screenshot`}
-											className="w-full h-auto rounded-2xl shadow-lg transition-transform duration-300 hover:scale-105"
+											className="w-full max-h-48 object-cover rounded-2xl shadow-lg transition-transform duration-300 hover:scale-105"
 										/>
 									</div>
 								</div>
@@ -505,9 +505,9 @@ const Projects = () => {
 					<div className="flex items-center justify-between mb-16">
 						<button
 							onClick={prevProject}
-							className="flex items-center gap-2 px-6 py-3 bg-white text-gray-700 rounded-xl font-semibold hover:shadow-lg transition-all duration-300 hover:scale-105 border border-gray-200"
+							className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-gray-800 to-gray-900 text-white rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 border-2 border-green-500"
 						>
-							<ChevronLeft size={20} />
+							<ChevronLeft size={24} />
 							Previous
 						</button>
 
@@ -517,7 +517,7 @@ const Projects = () => {
 								<button
 									key={index}
 									onClick={() => setActiveProject(index)}
-									className={`w-3 h-1 rounded-full transition-all duration-300 ${
+									className={`w-3 h-3 rounded-full transition-all duration-300 ${
 										activeProject === index
 											? `${
 													getColorClasses(
@@ -532,10 +532,10 @@ const Projects = () => {
 
 						<button
 							onClick={nextProject}
-							className="flex items-center gap-2 px-6 py-3 bg-white text-gray-700 rounded-xl font-semibold hover:shadow-lg transition-all duration-300 hover:scale-105 border border-gray-200"
+							className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-green-500 to-green-600 text-white rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 border-2 border-green-600"
 						>
 							Next
-							<ChevronRight size={20} />
+							<ChevronRight size={24} />
 						</button>
 					</div>
 

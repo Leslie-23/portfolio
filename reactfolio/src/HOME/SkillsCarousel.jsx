@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState } from "react";
 import {
 	SiJavascript,
 	SiReact,
@@ -91,41 +91,6 @@ const skills = [
 
 export default function SkillsCarousel() {
 	const [isHovered, setIsHovered] = useState(false);
-	const topRowRef = useRef(null);
-	const bottomRowRef = useRef(null);
-
-	// Auto-scroll effect for both rows
-	useEffect(() => {
-		if (isHovered || !topRowRef.current || !bottomRowRef.current) return;
-
-		const topRow = topRowRef.current;
-		const bottomRow = bottomRowRef.current;
-
-		let topScrollPosition = 0;
-		let bottomScrollPosition = 0;
-		const scrollSpeed = 1;
-
-		const topMaxScroll = topRow.scrollWidth - topRow.clientWidth;
-		const bottomMaxScroll = bottomRow.scrollWidth - bottomRow.clientWidth;
-
-		const interval = setInterval(() => {
-			// Top row scrolls left to right
-			topScrollPosition += scrollSpeed;
-			if (topScrollPosition > topMaxScroll) {
-				topScrollPosition = 0;
-			}
-			topRow.scrollLeft = topScrollPosition;
-
-			// Bottom row scrolls right to left (reverse)
-			bottomScrollPosition -= scrollSpeed;
-			if (bottomScrollPosition < 0) {
-				bottomScrollPosition = bottomMaxScroll;
-			}
-			bottomRow.scrollLeft = bottomScrollPosition;
-		}, 30);
-
-		return () => clearInterval(interval);
-	}, [isHovered]);
 
 	// Split skills into two rows
 	const topRowSkills = skills.slice(0, Math.ceil(skills.length / 2));
@@ -155,30 +120,25 @@ export default function SkillsCarousel() {
 					onMouseLeave={() => setIsHovered(false)}
 				>
 					{/* Top Row - Scrolls Left to Right */}
-					<div className="relative">
+					<div className="relative overflow-hidden">
 						{/* Left gradient fade */}
 						<div className="absolute left-0 top-0 bottom-0 w-12 bg-gradient-to-r from-neutral-50 via-neutral-50 to-transparent dark:from-neutral-950 dark:via-neutral-950 dark:to-transparent z-20 pointer-events-none" />
 
 						{/* Right gradient fade */}
 						<div className="absolute right-0 top-0 bottom-0 w-12 bg-gradient-to-l from-neutral-50 via-neutral-50 to-transparent dark:from-neutral-950 dark:via-neutral-950 dark:to-transparent z-20 pointer-events-none" />
 
-						{/* Top Row Skills */}
+						{/* Top Row Skills - CSS animation */}
 						<div
-							ref={topRowRef}
-							className="flex overflow-x-hidden scroll-smooth gap-8 px-4 py-6"
+							className="flex gap-8 px-4 py-6"
+							style={{
+								animation: isHovered ? 'none' : 'scrollLeft 30s linear infinite',
+								width: 'max-content',
+							}}
 						>
-							{/* Original skills */}
-							{topRowSkills.map((skill, index) => (
+							{/* Triple the skills for seamless loop */}
+							{[...topRowSkills, ...topRowSkills, ...topRowSkills].map((skill, index) => (
 								<SkillCard
-									key={`top-original-${index}`}
-									skill={skill}
-								/>
-							))}
-
-							{/* Duplicated skills for infinite loop effect */}
-							{topRowSkills.map((skill, index) => (
-								<SkillCard
-									key={`top-duplicate-${index}`}
+									key={`top-${index}`}
 									skill={skill}
 								/>
 							))}
@@ -186,35 +146,42 @@ export default function SkillsCarousel() {
 					</div>
 
 					{/* Bottom Row - Scrolls Right to Left */}
-					<div className="relative">
+					<div className="relative overflow-hidden">
 						{/* Left gradient fade */}
 						<div className="absolute left-0 top-0 bottom-0 w-12 bg-gradient-to-r from-neutral-50 via-neutral-50 to-transparent dark:from-neutral-950 dark:via-neutral-950 dark:to-transparent z-20 pointer-events-none" />
 
 						{/* Right gradient fade */}
 						<div className="absolute right-0 top-0 bottom-0 w-12 bg-gradient-to-l from-neutral-50 via-neutral-50 to-transparent dark:from-neutral-950 dark:via-neutral-950 dark:to-transparent z-20 pointer-events-none" />
 
-						{/* Bottom Row Skills */}
+						{/* Bottom Row Skills - CSS animation (reverse) */}
 						<div
-							ref={bottomRowRef}
-							className="flex overflow-x-hidden scroll-smooth gap-8 px-4 py-6"
+							className="flex gap-8 px-4 py-6"
+							style={{
+								animation: isHovered ? 'none' : 'scrollRight 30s linear infinite',
+								width: 'max-content',
+							}}
 						>
-							{/* Original skills */}
-							{bottomRowSkills.map((skill, index) => (
+							{/* Triple the skills for seamless loop */}
+							{[...bottomRowSkills, ...bottomRowSkills, ...bottomRowSkills].map((skill, index) => (
 								<SkillCard
-									key={`bottom-original-${index}`}
-									skill={skill}
-								/>
-							))}
-
-							{/* Duplicated skills for infinite loop effect */}
-							{bottomRowSkills.map((skill, index) => (
-								<SkillCard
-									key={`bottom-duplicate-${index}`}
+									key={`bottom-${index}`}
 									skill={skill}
 								/>
 							))}
 						</div>
 					</div>
+
+					{/* CSS Keyframes */}
+					<style>{`
+						@keyframes scrollLeft {
+							0% { transform: translateX(0); }
+							100% { transform: translateX(-33.33%); }
+						}
+						@keyframes scrollRight {
+							0% { transform: translateX(-33.33%); }
+							100% { transform: translateX(0); }
+						}
+					`}</style>
 				</div>
 
 				{/* Info text */}
