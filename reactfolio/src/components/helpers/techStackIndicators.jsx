@@ -12,7 +12,7 @@ const techItems = [
 
 const TechStackScroller = () => {
 	return (
-		<div className="overflow-hidden max-w-xs mt-5  mx-auto px-4 z-3">
+		<div className="overflow-hidden w-screen mt-5 z-3">
 			<motion.div
 				className="flex gap-4 whitespace-nowrap"
 				animate={{ x: ["0%", "-50%"] }}
