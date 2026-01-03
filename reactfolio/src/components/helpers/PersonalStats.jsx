@@ -35,7 +35,7 @@ export const PersonalStats = () => {
 			</div>
 			<div>
 				<p className="text-5xl font-bold text-black">2+</p>
-				<p className="text-sm text-muted-black">Countries</p>
+				<p className="text-sm text-muted-black">Countries served</p>
 			</div>
 			<div>
 				<p className="text-5xl font-bold text-black">5+</p>
