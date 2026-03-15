@@ -12,18 +12,17 @@ const techItems = [
 
 const TechStackScroller = () => {
 	return (
-		<div className="overflow-hidden w-screen mt-5 z-3">
+		<div className="overflow-hidden w-full mt-5 z-3">
 			<motion.div
 				className="flex gap-4 whitespace-nowrap"
 				animate={{ x: ["0%", "-50%"] }}
 				transition={{
 					repeat: Infinity,
 					ease: "linear",
-					duration: 15, // speed of scroll
+					duration: 15,
 				}}
-				style={{ width: "max-content" }} // Add this line
+				style={{ width: "max-content" }}
 			>
-				{/* duplicate list for seamless looping */}
 				{[...techItems, ...techItems].map((item, index) => (
 					<div
 						key={index}
