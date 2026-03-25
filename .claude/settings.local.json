@@ -15,7 +15,8 @@
       "Bash(rm -f postcss.config.js)",
       "Bash(grep -c \"tailwind\" build/static/css/*.css)",
       "Bash(grep -c \"min-h-screen\" build/static/css/*.css)",
-      "Bash(ls:*)"
+      "Bash(ls:*)",
+      "Bash(node -e \"const drei = require\\(''@react-three/drei''\\); console.log\\(Object.keys\\(drei\\).filter\\(k => k.toLowerCase\\(\\).includes\\(''text''\\)\\).join\\('', ''\\)\\)\")"
     ]
   }
 }

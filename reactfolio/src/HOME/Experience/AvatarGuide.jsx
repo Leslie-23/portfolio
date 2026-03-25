@@ -1,7 +1,9 @@
-import React, { useState, useEffect, useRef, useCallback } from "react";
+import React, { useState, useEffect, useRef, useCallback, Suspense } from "react";
+import { Canvas } from "@react-three/fiber";
 import { motion, AnimatePresence } from "framer-motion";
 import { useGame } from "./GameUI";
 import SpeechBubble from "./SpeechBubble";
+import Avatar from "./Avatar";
 
 const GUIDE_MESSAGES = [
 	{ zone: 0, message: "Hey! I'm Leslie. Welcome to my world. Scroll down — I'll show you around.", action: "wave" },
@@ -12,6 +14,25 @@ const GUIDE_MESSAGES = [
 ];
 
 const TOTAL_ZONES = GUIDE_MESSAGES.length;
+
+// Mini 3D avatar canvas for the guide
+function MiniAvatarCanvas({ action = "idle" }) {
+	return (
+		<Canvas
+			camera={{ position: [0, 1.2, 3.2], fov: 35 }}
+			dpr={[1, 2]}
+			gl={{ antialias: true, alpha: true }}
+			style={{ background: "transparent" }}
+		>
+			<ambientLight intensity={0.5} />
+			<directionalLight position={[2, 3, 3]} intensity={0.8} color="#ffffff" />
+			<pointLight position={[-1, 2, 2]} intensity={0.4} color="#22c55e" />
+			<Suspense fallback={null}>
+				<Avatar position={[0, 0, 0]} action={action} scale={0.5} />
+			</Suspense>
+		</Canvas>
+	);
+}
 
 export default function AvatarGuide({ scrollProgress = 0 }) {
 	// Persist tour completion + seen zones in localStorage
@@ -44,7 +65,6 @@ export default function AvatarGuide({ scrollProgress = 0 }) {
 
 	// Track which zone we're in based on scroll
 	useEffect(() => {
-		// If tour is already complete, don't show zone messages
 		if (tourComplete) return;
 
 		let closest = GUIDE_MESSAGES[0];
@@ -59,18 +79,15 @@ export default function AvatarGuide({ scrollProgress = 0 }) {
 			setCurrentMessage(closest);
 			setShowBubble(true);
 
-			// Mark zone as seen
 			setSeenZones((prev) => {
 				if (prev.includes(closest.zone)) return prev;
 				return [...prev, closest.zone];
 			});
 
-			// Auto-hide after 6 seconds
 			if (hideTimerRef.current) clearTimeout(hideTimerRef.current);
 			hideTimerRef.current = setTimeout(() => setShowBubble(false), 6000);
 		}
 
-		// Explorer achievement at bottom
 		if (scrollProgress > 0.9) {
 			unlock("explorer");
 		}
@@ -79,7 +96,6 @@ export default function AvatarGuide({ scrollProgress = 0 }) {
 	const handleAvatarClick = useCallback(() => {
 		unlock("greeted");
 
-		// Always show a fun response on click, even after tour is done
 		setCurrentMessage({
 			zone: -1,
 			message: getRandomResponse(),
@@ -94,7 +110,6 @@ export default function AvatarGuide({ scrollProgress = 0 }) {
 	// Compute avatar vertical position based on scroll
 	const avatarY = Math.max(120, Math.min(window.innerHeight - 200, 120 + scrollProgress * (window.innerHeight - 320)));
 
-	// Dormant state: smaller, subtle, no ping — just the avatar chilling
 	const isDormant = tourComplete && !showBubble;
 
 	return (
@@ -102,81 +117,43 @@ export default function AvatarGuide({ scrollProgress = 0 }) {
 			initial={{ x: -80, opacity: 0 }}
 			animate={{ x: 0, opacity: 1 }}
 			transition={{ delay: 2.5, duration: 0.8, ease: "easeOut" }}
-			className="fixed left-6 lg:left-14 z-40"
+			className="fixed left-2 lg:left-6 z-40"
 			style={{ top: avatarY }}
 		>
 			<div className="relative flex items-center">
-				{/* Avatar container */}
+				{/* 3D Avatar container */}
 				<motion.div
 					className="relative cursor-pointer"
 					onClick={handleAvatarClick}
-					whileHover={{ scale: 1.1 }}
+					whileHover={{ scale: 1.08 }}
 					whileTap={{ scale: 0.95 }}
 					animate={{
-						y: isDormant ? [0, -2, 0] : [0, -4, 0],
-						opacity: isDormant ? 0.6 : 1,
+						y: isDormant ? [0, -2, 0] : [0, -5, 0],
+						opacity: isDormant ? 0.5 : 1,
 					}}
 					transition={{
 						y: { repeat: Infinity, duration: isDormant ? 3 : 2, ease: "easeInOut" },
 						opacity: { duration: 0.5 },
 					}}
 				>
-					{/* Avatar visual */}
-					<div className="w-12 h-12 relative">
-						{/* Head */}
-						<div className="absolute top-0 left-1/2 -translate-x-1/2 w-10 h-10 rounded-full bg-[#8B6914] border-2 border-[#7A5C12] overflow-hidden">
-							{/* Hair */}
-							<div className="absolute top-0 left-0 right-0 h-4 bg-[#1a1a1a] rounded-t-full" />
-							{/* Eyes */}
-							<div className="absolute top-[14px] left-[10px] w-2 h-2 bg-white rounded-full">
-								<div className="absolute top-0.5 left-0.5 w-1 h-1 bg-black rounded-full" />
-							</div>
-							<div className="absolute top-[14px] right-[10px] w-2 h-2 bg-white rounded-full">
-								<div className="absolute top-0.5 left-0.5 w-1 h-1 bg-black rounded-full" />
-							</div>
-							{/* Smile */}
-							<div className="absolute bottom-[8px] left-1/2 -translate-x-1/2 w-3 h-1.5 border-b-2 border-[#7A5C12] rounded-b-full" />
-						</div>
+					{/* Mini 3D Canvas — renders the actual avatar */}
+					<div className="w-16 h-20 lg:w-20 lg:h-24 rounded-2xl overflow-hidden"
+						style={{ background: "radial-gradient(ellipse at center, rgba(22,163,74,0.12) 0%, transparent 70%)" }}
+					>
+						<MiniAvatarCanvas action={currentMessage.action} />
 					</div>
 
 					{/* Green glow ring — only when active */}
 					{!isDormant && (
-						<div className="absolute inset-0 rounded-full border border-green-400/20 animate-ping opacity-30" />
+						<div className="absolute -inset-1 rounded-2xl border border-green-400/20 animate-ping opacity-20" />
 					)}
 
-					{/* Action indicator — only when active */}
-					{!isDormant && (
-						<AnimatePresence>
-							{currentMessage.action === "wave" && (
-								<motion.div
-									initial={{ scale: 0 }}
-									animate={{ scale: 1, rotate: [0, 20, -20, 0] }}
-									exit={{ scale: 0 }}
-									transition={{ rotate: { repeat: 2, duration: 0.4 } }}
-									className="absolute -top-1 -right-1 text-sm"
-								>
-									👋
-								</motion.div>
-							)}
-							{currentMessage.action === "point" && (
-								<motion.div
-									initial={{ scale: 0 }}
-									animate={{ scale: 1 }}
-									exit={{ scale: 0 }}
-									className="absolute -top-1 -right-1 text-sm"
-								>
-									👉
-								</motion.div>
-							)}
-						</AnimatePresence>
-					)}
-
-					{/* Dormant indicator — small "zzz" or subtle glow */}
+					{/* Dormant indicator */}
 					{isDormant && (
 						<motion.div
 							animate={{ opacity: [0.3, 0.6, 0.3] }}
 							transition={{ repeat: Infinity, duration: 2 }}
-							className="absolute -top-1 -right-1 font-mono text-[8px] text-green-400/50"
+							className="absolute -top-1 -right-1 font-mono text-[9px] text-green-400/50"
 						>
 							z
 						</motion.div>
@@ -190,7 +167,6 @@ export default function AvatarGuide({ scrollProgress = 0 }) {
 	);
 }
 
-// Random responses when clicking the avatar
 function getRandomResponse() {
 	const responses = [
 		"Fun fact: I love the color green. You can probably tell.",

@@ -16,6 +16,7 @@
 		"@fortawesome/free-regular-svg-icons": "^6.4.0",
 		"@fortawesome/free-solid-svg-icons": "^6.4.0",
 		"@fortawesome/react-fontawesome": "^0.2.0",
+		"@react-three/cannon": "^6.6.0",
 		"@react-three/drei": "^9.93.0",
 		"@react-three/fiber": "^8.15.12",
 		"@react-three/postprocessing": "^2.16.2",

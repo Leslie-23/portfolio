@@ -174,7 +174,6 @@ function ConnectionLines() {
 // Camera rig that follows mouse
 function CameraRig() {
 	useFrame((state) => {
-		const t = state.clock.elapsedTime * 0.1;
 		state.camera.position.x = THREE.MathUtils.lerp(
 			state.camera.position.x,
 			state.pointer.x * 2,
@@ -250,7 +249,6 @@ export default function Scene({ scrollProgress = 0 }) {
 					penumbra={0.8}
 					intensity={1.5}
 					color="#22c55e"
-					target-position={[0, 0, 0]}
 				/>
 				<pointLight position={[0, 2, 2]} intensity={0.6} color="#ffffff" />
 				<Avatar position={[0, 0, 0]} action="wave" scale={0.65} />
