@@ -7,8 +7,7 @@ import {
 	CheckCircle2,
 	ArrowRight,
 } from "lucide-react";
-import Footer from "../Footer";
-import Navbar from "../Navbar";
+import PageLayout from "../PageLayout";
 
 export default function ProjectsCompletion() {
 	const [selectedProject, setSelectedProject] = useState(null);
@@ -186,13 +185,13 @@ export default function ProjectsCompletion() {
 	};
 
 	return (
-		<>
-			<Navbar />
-			<section className="py-20 bg-white px-4 md:px-8 roboto-condensed-regualar">
+		<PageLayout>
+			<section className="py-20 px-4 md:px-8">
 				<div className="max-w-7xl mx-auto">
 					{/* Header */}
 					<div className="text-center mb-16">
-						<h2 className="text-4xl md:text-5xl font-bold mb-4 text-gray-900">
+						<div className="font-mono text-green-400/60 text-xs tracking-[0.3em] mb-4">// COMPLETED</div>
+						<h2 className="text-4xl md:text-5xl font-bold mb-4 text-white" style={{ fontFamily: "'Roboto Condensed', system-ui, sans-serif" }}>
 							Completed Projects
 						</h2>
 						<p className="text-lg text-gray-600 max-w-2xl mx-auto">
@@ -447,7 +446,6 @@ export default function ProjectsCompletion() {
 					)}
 				</AnimatePresence>
 			</section>
-			<Footer />
-		</>
+		</PageLayout>
 	);
 }

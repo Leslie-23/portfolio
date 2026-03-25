@@ -1,17 +1,11 @@
 import React, { useState, useRef } from "react";
+import { motion } from "framer-motion";
 import {
-	Mail,
-	Phone,
-	MapPin,
-	Send,
-	Loader2,
-	CheckCircle,
-	AlertCircle,
+	Mail, Phone, MapPin, Send, Loader2, CheckCircle,
+	AlertCircle, Terminal, ArrowRight
 } from "lucide-react";
 import emailjs from "@emailjs/browser";
-import Footer from "../components/Footer";
-import Navbar from "../components/Navbar";
-import Map from "../components/Map";
+import PageLayout from "../components/PageLayout";
 
 const Contact = () => {
 	const form = useRef();
@@ -24,12 +18,11 @@ const Contact = () => {
 		email: "",
 		subject: "",
 		message: "",
-		date: new Date().toISOString(), // current date-time in readable format
-		time: Date.now(), // milliseconds since epoch
-		useragent: navigator.userAgent, // browser info
+		date: new Date().toISOString(),
+		time: Date.now(),
+		useragent: navigator.userAgent,
 	});
 
-	// EmailJS Configuration - Updated with your credentials
 	const EMAILJS_CONFIG = {
 		serviceID: "service_h5sh46p",
 		templateID: "template_3s06bzm",
@@ -37,10 +30,7 @@ const Contact = () => {
 	};
 
 	const handleChange = (e) => {
-		setFormData({
-			...formData,
-			[e.target.name]: e.target.value,
-		});
+		setFormData({ ...formData, [e.target.name]: e.target.value });
 	};
 
 	const handleSubmit = async (e) => {
@@ -51,393 +41,254 @@ const Contact = () => {
 		setErrorMessage("");
 
 		try {
-			// Validate form data
-			if (
-				!formData.name ||
-				!formData.email ||
-				!formData.subject ||
-				!formData.message
-			) {
+			if (!formData.name || !formData.email || !formData.subject || !formData.message) {
 				throw new Error("Please fill in all required fields");
 			}
 
-			// Add timestamp to form data
 			const timestamp = new Date().toLocaleString();
-
-			// Send using EmailJS
-			const result = await emailjs.sendForm(
+			await emailjs.sendForm(
 				EMAILJS_CONFIG.serviceID,
 				EMAILJS_CONFIG.templateID,
 				form.current,
 				EMAILJS_CONFIG.publicKey,
-				{
-					timestamp: timestamp,
-					to_email: "leslieajayi27@gmail.com", // Add recipient email
-				}
+				{ timestamp, to_email: "leslieajayi27@gmail.com" }
 			);
-
-			console.log("Email sent successfully:", result);
 
 			setIsLoading(false);
 			setIsSuccess(true);
-
-			// Reset form
 			setFormData({
-				name: "",
-				email: "",
-				subject: "",
-				message: "",
-				date: new Date().toISOString(), // current date-time in readable format
-				time: Date.now(), // milliseconds since epoch
-				useragent: navigator.userAgent, // browser info
+				name: "", email: "", subject: "", message: "",
+				date: new Date().toISOString(), time: Date.now(), useragent: navigator.userAgent,
 			});
-
-			// Reset success message after 5 seconds
 			setTimeout(() => setIsSuccess(false), 5000);
 		} catch (error) {
-			console.error("Error sending email:", error);
 			setIsLoading(false);
 			setIsError(true);
-
-			// Provide specific error messages
-			if (error.text) {
-				setErrorMessage(error.text);
-			} else if (error.message) {
-				setErrorMessage(error.message);
-			} else {
-				setErrorMessage(
-					"Failed to send message. Please try again or contact me directly."
-				);
-			}
-
-			// Reset error message after 5 seconds
-			setTimeout(() => {
-				setIsError(false);
-				setErrorMessage("");
-			}, 5000);
+			setErrorMessage(error.text || error.message || "Failed to send. Try again or contact me directly.");
+			setTimeout(() => { setIsError(false); setErrorMessage(""); }, 5000);
 		}
 	};
 
+	const inputClasses = "w-full px-4 py-3 bg-white/[0.03] border border-white/10 rounded-sm text-white placeholder:text-white/20 focus:outline-none focus:border-green-400/50 focus:bg-white/[0.05] transition-all duration-300 font-mono text-sm";
+
 	return (
-		<>
-			<Navbar />
-			<section
-				id="contact"
-				className="py-20 bg-gradient-to-br from-gray-50 to-blue-50"
-			>
-				<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+		<PageLayout>
+			<section className="py-20 md:py-28 px-6 md:px-12">
+				<div className="max-w-5xl mx-auto">
 					{/* Header */}
-					<div className="text-center mb-16">
-						<h2 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-4">
-							Get In Touch
-						</h2>
-						<p className="text-xl text-gray-600 max-w-2xl mx-auto">
-							Ready to bring your ideas to life? Let's discuss
-							your project and create something amazing together.
+					<motion.div
+						initial={{ opacity: 0, y: 20 }}
+						animate={{ opacity: 1, y: 0 }}
+						transition={{ duration: 0.6 }}
+					>
+						<div className="font-mono text-green-400/60 text-xs tracking-[0.3em] mb-4">
+							// CONTACT
+						</div>
+						<h1
+							className="text-4xl md:text-6xl font-bold text-white mb-4 tracking-tight"
+							style={{ fontFamily: "'Roboto Condensed', system-ui, sans-serif" }}
+						>
+							Let's <span className="text-green-400">connect</span>
+						</h1>
+						<p className="text-white/40 text-lg max-w-xl mb-16">
+							Have a project in mind? Need an engineer? Or just want to talk tech.
+							I'm always open to new opportunities.
 						</p>
-					</div>
+					</motion.div>
 
 					<div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
-						{/* Contact Information */}
-						<div className="lg:col-span-1 space-y-8">
-							<div>
-								<h3 className="text-2xl font-bold text-gray-900 mb-6">
-									Let's Connect
-								</h3>
-								<p className="text-gray-600 mb-8">
-									I'm always interested in new opportunities,
-									collaborative projects, and innovative
-									ideas. Whether you have a specific project
-									in mind or just want to chat about
-									technology, feel free to reach out.
-								</p>
-							</div>
-
-							{/* Contact Methods */}
-							<div className="space-y-6">
-								<div className="flex items-start gap-4 p-4 bg-white rounded-xl shadow-sm border border-gray-200 hover:shadow-md transition-shadow duration-300">
-									<div className="p-3 bg-green-100 rounded-lg">
-										<Mail
-											className="text-green-600"
-											size={24}
-										/>
-									</div>
-									<div>
-										<h4 className="font-semibold text-gray-900 mb-1">
-											Email
-										</h4>
-										<p className="text-gray-600">
-											<a
-												href="mailto:leslieajayi27@gmail.com"
-												className="hover:text-green-600 transition-colors"
-											>
-												leslieajayi27@gmail.com
-											</a>
-										</p>
-										<p className="text-sm text-gray-500">
-											I'll respond within 24 hours
-										</p>
-									</div>
-								</div>
-
-								<div className="flex items-start gap-4 p-4 bg-white rounded-xl shadow-sm border border-gray-200 hover:shadow-md transition-shadow duration-300">
-									<div className="p-3 bg-green-100 rounded-lg">
-										<Phone
-											className="text-green-600"
-											size={24}
-										/>
-									</div>
-									<div>
-										<h4 className="font-semibold text-gray-900 mb-1">
-											Phone
-										</h4>
-										<p className="text-gray-600">
-											<a
-												href="tel:+233271237965"
-												className="hover:text-green-600 transition-colors"
-											>
-												+233 (27) 123-7965
-											</a>
-										</p>
-										<p className="text-sm text-gray-500">
-											Mon - Fri, 9am - 6pm
-										</p>
-									</div>
-								</div>
-
-								<div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-									<div className="flex items-start gap-4 p-4">
-										<div className="p-3 bg-green-100 rounded-lg">
-											<MapPin
-												className="text-green-600"
-												size={24}
-											/>
-										</div>
-										<div className="flex-1">
-											<h4 className="font-semibold text-gray-900 mb-1">
-												Location
-											</h4>
-											<p className="text-gray-600">
-												Accra, Ghana
-											</p>
-											<p className="text-sm text-gray-500 mb-3">
-												Remote & On-site Projects
-											</p>
-
-											{/* Map Container */}
-											<div className="mt-2">
-												<Map />
-											</div>
-
-											<div className="mt-3 text-xs text-gray-500">
-												<p>
-													📍 Based in Accra, serving
-													clients worldwide
-												</p>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-
-							{/* Quick Stats */}
-							<div className="bg-white rounded-xl p-6 border border-gray-200">
-								<h4 className="font-semibold text-gray-900 mb-4">
-									Why Work With Me?
-								</h4>
-								<div className="space-y-3">
-									<div className="flex justify-between items-center">
-										<span className="text-gray-600">
-											Response Time
-										</span>
-										<span className="font-semibold text-green-600">
-											{"< 24 hours"}
-										</span>
-									</div>
-									<div className="flex justify-between items-center">
-										<span className="text-gray-600">
-											Project Completion
-										</span>
-										<span className="font-semibold text-green-600">
-											On Time
-										</span>
-									</div>
-									<div className="flex justify-between items-center">
-										<span className="text-gray-600">
-											Communication
-										</span>
-										<span className="font-semibold text-green-600">
-											Daily Updates
-										</span>
-									</div>
-								</div>
-							</div>
-						</div>
-
-						{/* Contact Form */}
-						<div className="lg:col-span-2">
-							<div className="bg-white rounded-2xl shadow-lg p-8 border border-gray-200">
-								<h3 className="text-2xl font-bold text-gray-900 mb-2">
-									Send a Message
-								</h3>
-								<p className="text-gray-600 mb-8">
-									Fill out the form below and I'll get back to
-									you as soon as possible.
-								</p>
-
-								{/* Status Messages */}
-								{isSuccess && (
-									<div className="mb-6 p-4 bg-green-50 border border-green-200 rounded-lg flex items-center gap-3">
-										<CheckCircle
-											className="text-green-600"
-											size={20}
-										/>
+						{/* Contact info sidebar */}
+						<motion.div
+							initial={{ opacity: 0, x: -20 }}
+							animate={{ opacity: 1, x: 0 }}
+							transition={{ delay: 0.2, duration: 0.6 }}
+							className="space-y-6"
+						>
+							{/* Contact methods */}
+							{[
+								{
+									icon: Mail,
+									label: "EMAIL",
+									value: "leslieajayi27@gmail.com",
+									href: "mailto:leslieajayi27@gmail.com",
+									sub: "Response within 24 hours",
+								},
+								{
+									icon: Phone,
+									label: "PHONE",
+									value: "+233 (27) 123-7965",
+									href: "tel:+233271237965",
+									sub: "Mon - Fri, 9am - 6pm",
+								},
+								{
+									icon: MapPin,
+									label: "LOCATION",
+									value: "Accra, Ghana",
+									sub: "Remote & on-site available",
+								},
+							].map((item) => (
+								<div
+									key={item.label}
+									className="p-5 rounded-lg border border-white/5 bg-white/[0.02] hover:border-green-400/20 transition-all duration-300"
+								>
+									<div className="flex items-start gap-4">
+										<item.icon size={18} className="text-green-400 mt-0.5" />
 										<div>
-											<p className="font-medium text-green-800">
-												Message sent successfully!
-											</p>
-											<p className="text-green-700 text-sm">
-												I'll get back to you within 24
-												hours.
-											</p>
+											<div className="font-mono text-xs text-white/30 tracking-wider mb-1">
+												{item.label}
+											</div>
+											{item.href ? (
+												<a
+													href={item.href}
+													className="text-white/80 text-sm hover:text-green-400 transition-colors"
+												>
+													{item.value}
+												</a>
+											) : (
+												<div className="text-white/80 text-sm">{item.value}</div>
+											)}
+											<div className="text-white/30 text-xs mt-1">{item.sub}</div>
+										</div>
+									</div>
+								</div>
+							))}
+
+							{/* Quick stats */}
+							<div className="p-5 rounded-lg border border-white/5 bg-white/[0.02]">
+								<div className="font-mono text-xs text-white/30 tracking-wider mb-4">
+									WHY_WORK_WITH_ME
+								</div>
+								<div className="space-y-3 font-mono text-xs">
+									{[
+										{ label: "response_time", value: "< 24h" },
+										{ label: "delivery", value: "on_time" },
+										{ label: "communication", value: "daily_updates" },
+										{ label: "status", value: "available", highlight: true },
+									].map((stat) => (
+										<div key={stat.label} className="flex justify-between">
+											<span className="text-white/30">{stat.label}:</span>
+											<span className={stat.highlight ? "text-green-400" : "text-white/60"}>
+												{stat.value}
+											</span>
+										</div>
+									))}
+								</div>
+							</div>
+						</motion.div>
+
+						{/* Contact form */}
+						<motion.div
+							initial={{ opacity: 0, y: 20 }}
+							animate={{ opacity: 1, y: 0 }}
+							transition={{ delay: 0.3, duration: 0.6 }}
+							className="lg:col-span-2"
+						>
+							<div className="p-6 md:p-8 rounded-lg border border-white/5 bg-white/[0.02]">
+								<div className="flex items-center gap-3 mb-6">
+									<Terminal className="w-5 h-5 text-green-400" />
+									<span className="font-mono text-sm text-white/60">~/contact/send-message</span>
+								</div>
+
+								{/* Status messages */}
+								{isSuccess && (
+									<div className="mb-6 p-4 border border-green-400/20 bg-green-400/[0.05] rounded-sm flex items-center gap-3">
+										<CheckCircle className="text-green-400" size={18} />
+										<div>
+											<p className="text-green-400 text-sm font-mono">Message sent successfully.</p>
+											<p className="text-green-400/60 text-xs font-mono">I'll respond within 24 hours.</p>
 										</div>
 									</div>
 								)}
 
 								{isError && (
-									<div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg flex items-center gap-3">
-										<AlertCircle
-											className="text-red-600"
-											size={20}
-										/>
+									<div className="mb-6 p-4 border border-red-400/20 bg-red-400/[0.05] rounded-sm flex items-center gap-3">
+										<AlertCircle className="text-red-400" size={18} />
 										<div>
-											<p className="font-medium text-red-800">
-												Failed to send message
-											</p>
-											<p className="text-red-700 text-sm">
-												{errorMessage}
-											</p>
+											<p className="text-red-400 text-sm font-mono">Error: failed to send</p>
+											<p className="text-red-400/60 text-xs font-mono">{errorMessage}</p>
 										</div>
 									</div>
 								)}
 
-								<form
-									ref={form}
-									onSubmit={handleSubmit}
-									className="space-y-6"
-									id="contact-form"
-								>
-									<div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+								<form ref={form} onSubmit={handleSubmit} className="space-y-5" id="contact-form">
+									<div className="grid grid-cols-1 md:grid-cols-2 gap-5">
 										<div>
-											<label
-												htmlFor="name"
-												className="block text-sm font-medium text-gray-700 mb-2"
-											>
-												Full Name *
+											<label className="block font-mono text-xs text-white/30 mb-2 tracking-wider">
+												NAME *
 											</label>
 											<input
-												type="text"
-												id="name"
-												name="name"
-												value={formData.name}
-												onChange={handleChange}
-												required
-												className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all duration-300"
-												placeholder="Your full name"
+												type="text" name="name" value={formData.name}
+												onChange={handleChange} required
+												className={inputClasses} placeholder="your_name"
 											/>
 										</div>
 										<div>
-											<label
-												htmlFor="email"
-												className="block text-sm font-medium text-gray-700 mb-2"
-											>
-												Email Address *
+											<label className="block font-mono text-xs text-white/30 mb-2 tracking-wider">
+												EMAIL *
 											</label>
 											<input
-												type="email"
-												id="email"
-												name="email"
-												value={formData.email}
-												onChange={handleChange}
-												required
-												className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all duration-300"
-												placeholder="your.email@example.com"
+												type="email" name="email" value={formData.email}
+												onChange={handleChange} required
+												className={inputClasses} placeholder="you@domain.com"
 											/>
 										</div>
 									</div>
 
 									<div>
-										<label
-											htmlFor="subject"
-											className="block text-sm font-medium text-gray-700 mb-2"
-										>
-											Subject *
+										<label className="block font-mono text-xs text-white/30 mb-2 tracking-wider">
+											SUBJECT *
 										</label>
 										<input
-											type="text"
-											id="subject"
-											name="subject"
-											value={formData.subject}
-											onChange={handleChange}
-											required
-											className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all duration-300"
-											placeholder="What's this about?"
+											type="text" name="subject" value={formData.subject}
+											onChange={handleChange} required
+											className={inputClasses} placeholder="project_inquiry"
 										/>
 									</div>
 
 									<div>
-										<label
-											htmlFor="message"
-											className="block text-sm font-medium text-gray-700 mb-2"
-										>
-											Message *
+										<label className="block font-mono text-xs text-white/30 mb-2 tracking-wider">
+											MESSAGE *
 										</label>
 										<textarea
-											id="message"
-											name="message"
-											value={formData.message}
-											onChange={handleChange}
-											required
-											rows={6}
-											className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all duration-300 resize-vertical"
-											placeholder="Tell me about your project, timeline, and any specific requirements..."
+											name="message" value={formData.message}
+											onChange={handleChange} required rows={6}
+											className={`${inputClasses} resize-vertical`}
+											placeholder="Tell me about your project, timeline, and requirements..."
 										/>
 									</div>
 
+									<input type="hidden" name="date" value={formData.date} />
+									<input type="hidden" name="time" value={formData.time} />
+									<input type="hidden" name="useragent" value={formData.useragent} />
+
 									<button
-										type="submit"
-										disabled={isLoading}
-										className="w-full flex items-center justify-center gap-2 px-8 py-4 bg-green-600 text-white rounded-xl font-semibold hover:shadow-lg transition-all duration-300 hover:scale-105 relative overflow-hidden group disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
+										type="submit" disabled={isLoading}
+										className="group w-full flex items-center justify-center gap-3 px-8 py-3 bg-green-500/10 border border-green-400/30 text-green-400 font-mono text-sm tracking-wider hover:bg-green-500/20 hover:border-green-400/60 transition-all duration-300 rounded-sm disabled:opacity-40 disabled:cursor-not-allowed"
 									>
 										{isLoading ? (
 											<>
-												<Loader2
-													className="animate-spin"
-													size={20}
-												/>
-												Sending Message...
+												<Loader2 className="animate-spin" size={16} />
+												SENDING...
 											</>
 										) : (
 											<>
-												<Send size={20} />
-												Send Message
+												<Send size={16} />
+												SEND_MESSAGE
+												<ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
 											</>
 										)}
 									</button>
 
-									<p className="text-center text-sm text-gray-500">
-										* Required fields. Your information is
-										secure and will only be used to respond
-										to your inquiry.
+									<p className="text-center font-mono text-xs text-white/20">
+										* required fields — your data is only used to respond to this message
 									</p>
 								</form>
 							</div>
-						</div>
+						</motion.div>
 					</div>
 				</div>
 			</section>
-			<Footer />
-		</>
+		</PageLayout>
 	);
 };
 

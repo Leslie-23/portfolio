@@ -1,61 +1,70 @@
 import React, { useState } from "react";
 import { ExternalLink, Info } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+
 export const PersonalStats = () => {
 	const navigate = useNavigate();
 	const [showPopup, setShowPopup] = useState(false);
 
 	return (
-		<div className="flex align-center bg-white justify-center gap-8 pt-4 pb-4 z-1">
-			<div>
-				<p className="text-5xl font-bold text-black roboto-condensed-extrabold">
+		<div className="flex flex-wrap items-center bg-surface justify-center gap-8 pt-4 pb-4 transition-colors duration-300">
+			<div className="text-center">
+				<p className="text-5xl font-bold text-heading font-heading">
 					50+
 				</p>
-				<p className="text-sm text-muted-black">
+				<p className="text-sm text-muted">
 					Projects Completed{" "}
 					<ExternalLink
-						className="inline"
+						className="inline cursor-pointer"
 						size={16}
-						color="green"
+						color="currentColor"
 						onClick={() => navigate("/projects-completed")}
+						aria-label="View completed projects"
 					/>
 				</p>
 			</div>
-			<div>
-				<p className="text-5xl font-bold text-black">30+</p>
-				<p className="text-sm text-muted-black">
+			<div className="text-center">
+				<p className="text-5xl font-bold text-heading font-heading">
+					30+
+				</p>
+				<p className="text-sm text-muted">
 					Happy Clients{" "}
 					<ExternalLink
-						className="inline"
+						className="inline cursor-pointer"
 						size={16}
-						color="green"
+						color="currentColor"
 						onClick={() => navigate("/testimonials")}
+						aria-label="View testimonials"
 					/>
 				</p>
 			</div>
-			<div>
-				<p className="text-5xl font-bold text-black">2+</p>
-				<p className="text-sm text-muted-black">Countries served</p>
+			<div className="text-center">
+				<p className="text-5xl font-bold text-heading font-heading">
+					2+
+				</p>
+				<p className="text-sm text-muted">Countries served</p>
 			</div>
-			<div>
-				<p className="text-5xl font-bold text-black">5+</p>
-				<p className="text-sm text-muted-black">
+			<div className="text-center">
+				<p className="text-5xl font-bold text-heading font-heading">
+					5+
+				</p>
+				<p className="text-sm text-muted">
 					Years Experience{" "}
 					<Info
-						className="inline"
-						color="green"
+						className="inline cursor-pointer"
 						size={16}
+						color="currentColor"
 						onClick={() => setShowPopup(true)}
+						aria-label="More info about experience"
 					/>
-				</p>{" "}
-				{/* Popup Component */}
+				</p>
 				{showPopup && (
-					<div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-						<div className="bg-white dark:bg-gray-800 rounded-lg p-6 max-w-sm mx-4 shadow-xl">
-							<h3 className="font-semibold text-lg mb-2">
+					<div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+						<div className="bg-card rounded-lg p-6 max-w-sm mx-4 shadow-xl border border-border">
+							<h3 className="font-semibold text-lg mb-2 text-heading">
 								Experience Level
 							</h3>
-							<p className="text-sm text-gray-600 dark:text-gray-300">
+							<p className="text-sm text-body">
 								This represents the number of years I've been
 								professionally working with these technologies.
 								Some skills have been used for the full
@@ -64,7 +73,7 @@ export const PersonalStats = () => {
 							</p>
 							<button
 								onClick={() => setShowPopup(false)}
-								className="mt-4 px-4 py-2 bg-green-600 text-white rounded hover:bg-blue-700 transition-colors"
+								className="mt-4 px-4 py-2 bg-primary text-white rounded hover:bg-primary-dark transition-colors"
 							>
 								Close
 							</button>

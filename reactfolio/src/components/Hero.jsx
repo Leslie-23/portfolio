@@ -1,19 +1,23 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import "./globals.css";
 import TechStackScroller from "./helpers/techStackIndicators";
 import AnimatedRoleCycler from "./helpers/AnimatedRoleCycler";
+
 const Hero = () => {
+	const navigate = useNavigate();
+
 	return (
 		<section
 			id="home"
-			className="min-h-screen bg-white flex items-center justify-center px-4 sm:px-6 lg:px-8 pt-16"
+			className="min-h-screen bg-surface flex items-center justify-center px-4 sm:px-6 lg:px-8 pt-16"
 		>
 			<div className="max-w-4xl mx-auto text-center">
 				{/* Animated Background Elements */}
 				<div className="absolute inset-0 overflow-hidden pointer-events-none">
-					<div className="absolute -top-24 -right-24 w-96 h-96 bg-green-100 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-pulse-slow"></div>
+					<div className="absolute -top-24 -right-24 w-96 h-96 bg-green-100 dark:bg-green-900/30 rounded-full mix-blend-multiply dark:mix-blend-screen filter blur-3xl opacity-20 animate-pulse-slow"></div>
 					<div
-						className="absolute -bottom-24 -left-24 w-96 h-96 bg-green-50 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-pulse-slow"
+						className="absolute -bottom-24 -left-24 w-96 h-96 bg-green-50 dark:bg-green-900/20 rounded-full mix-blend-multiply dark:mix-blend-screen filter blur-3xl opacity-20 animate-pulse-slow"
 						style={{ animationDelay: "2s" }}
 					></div>
 				</div>
@@ -32,28 +36,24 @@ const Hero = () => {
 						<img
 							src="/profile-image.webp"
 							alt="Leslie Paul"
-							className="w-full h-full rounded-full object-cover border-4 border-white shadow-lg"
-							onError={(e) => {
-								e.target.style.display = "none";
-								e.target.nextSibling.style.display = "flex";
-							}}
+							className="w-full h-full rounded-full object-cover border-4 border-surface shadow-lg"
 						/>
 						{/* Fallback */}
-						<div className="w-full h-full bg-green-100 rounded-full flex items-center justify-center border-4 border-white shadow-lg hidden">
-							<span className="text-4xl font-bold text-green-600">
+						<div className="w-full h-full bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center border-4 border-surface shadow-lg hidden">
+							<span className="text-4xl font-bold text-primary">
 								LP
 							</span>
 						</div>
 
 						{/* Animated Ring */}
-						<div className="absolute inset-0 border-4 border-green-600 rounded-full animate-ping opacity-20"></div>
+						<div className="absolute inset-0 border-4 border-primary rounded-full animate-ping opacity-20"></div>
 
 						{/* Interactive Options */}
 						<div className="option-wrapper">
-							{/* Portfolio */}
+							{/* Projects */}
 							<div className="option-item opt-portfolio">
-								<a
-									href="/projects"
+								<button
+									onClick={() => navigate("/projects")}
 									className="bg-indigo-500 text-white p-2 rounded-full shadow-lg flex items-center justify-center hover:bg-indigo-600 transition-colors"
 								>
 									<svg
@@ -68,36 +68,14 @@ const Hero = () => {
 											clipRule="evenodd"
 										/>
 									</svg>
-								</a>
+								</button>
 								<div className="tooltip">View Projects</div>
-							</div>
-
-							{/* Projects */}
-							<div className="option-item opt-projects">
-								<a
-									href="/projects"
-									className="bg-purple-500 text-white p-2 rounded-full shadow-lg flex items-center justify-center hover:bg-purple-600 transition-colors"
-								>
-									<svg
-										xmlns="http://www.w3.org/2000/svg"
-										className="h-4 w-4"
-										viewBox="0 0 20 20"
-										fill="currentColor"
-									>
-										<path
-											fillRule="evenodd"
-											d="M12.586 4.586a2 2 0 112.828 2.828l-3 3a2 2 0 01-2.828 0 1 1 0 00-1.414 1.414 4 4 0 005.656 0l3-3a4 4 0 00-5.656-5.656l-1.5 1.5a1 1 0 101.414 1.414l1.5-1.5zm-5 5a2 2 0 012.828 0 1 1 0 101.414-1.414 4 4 0 00-5.656 0l-3 3a4 4 0 105.656 5.656l1.5-1.5a1 1 0 10-1.414-1.414l-1.5 1.5a2 2 0 11-2.828-2.828l3-3z"
-											clipRule="evenodd"
-										/>
-									</svg>
-								</a>
-								<div className="tooltip">Latest Projects</div>
 							</div>
 
 							{/* Contact */}
 							<div className="option-item opt-contact">
-								<a
-									href="/contact"
+								<button
+									onClick={() => navigate("/contact")}
 									className="bg-pink-500 text-white p-2 rounded-full shadow-lg flex items-center justify-center hover:bg-pink-600 transition-colors"
 								>
 									<svg
@@ -109,14 +87,14 @@ const Hero = () => {
 										<path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
 										<path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
 									</svg>
-								</a>
+								</button>
 								<div className="tooltip">Get In Touch</div>
 							</div>
 
-							{/* Blog */}
+							{/* Socials */}
 							<div className="option-item opt-blog">
-								<a
-									href="/socials"
+								<button
+									onClick={() => navigate("/socials")}
 									className="bg-yellow-500 text-white p-2 rounded-full shadow-lg flex items-center justify-center hover:bg-yellow-600 transition-colors"
 								>
 									<svg
@@ -131,31 +109,9 @@ const Hero = () => {
 											clipRule="evenodd"
 										/>
 									</svg>
-								</a>
+								</button>
 								<div className="tooltip">View my Socials</div>
 							</div>
-
-							{/* Resume */}
-							{/* <div className="option-item opt-resume">
-								<a
-									href="#resume"
-									className="bg-green-500 text-white p-2 rounded-full shadow-lg flex items-center justify-center hover:bg-green-600 transition-colors"
-								>
-									<svg
-										xmlns="http://www.w3.org/2000/svg"
-										className="h-4 w-4"
-										viewBox="0 0 20 20"
-										fill="currentColor"
-									>
-										<path
-											fillRule="evenodd"
-											d="M6 2a2 2 0 00-2 2v12a2 2 0 002 2h8a2 2 0 002-2V7.414A2 2 0 0015.414 6L12 2.586A2 2 0 0010.586 2H6zm2 10a1 1 0 10-2 0v3a1 1 0 102 0v-3zm2-3a1 1 0 011 1v5a1 1 0 11-2 0v-5a1 1 0 011-1zm4-1a1 1 0 10-2 0v7a1 1 0 102 0V8z"
-											clipRule="evenodd"
-										/>
-									</svg>
-								</a>
-								<div className="tooltip">Download Resume</div>
-							</div> */}
 						</div>
 					</div>
 				</div>
@@ -163,19 +119,19 @@ const Hero = () => {
 				{/* Introduction Text */}
 				<div className="relative space-y-6">
 					{/* Greeting */}
-					<div className="overflow-hidden roboto-condensed-bold">
-						<h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-black mb-4 transform transition-all duration-500 hover:scale-105">
+					<div className="overflow-hidden font-heading font-bold">
+						<h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-heading mb-4 transform transition-all duration-500 hover:scale-105">
 							Hi, I'm{" "}
-							<span className="text-green-600 relative inline-block">
+							<span className="text-primary relative inline-block">
 								Leslie Paul
-								<span className="absolute -bottom-1 left-0 w-0 h-1 bg-green-600 group-hover:w-full transition-all duration-300"></span>
+								<span className="absolute -bottom-1 left-0 w-0 h-1 bg-primary group-hover:w-full transition-all duration-300"></span>
 							</span>
 						</h1>
 					</div>
 
 					{/* Title */}
 					<div className="overflow-hidden">
-						<h2 className="text-xl sm:text-2xl text-gray-600 font-medium mb-8 transform transition-all duration-500 delay-100">
+						<h2 className="text-xl sm:text-2xl text-muted font-medium mb-8 transform transition-all duration-500 delay-100">
 							Software Engineer —{" "}
 							<span className="inline-block min-w-[150px]">
 								<AnimatedRoleCycler />
@@ -185,21 +141,21 @@ const Hero = () => {
 
 					{/* Main Description */}
 					<div className="overflow-hidden">
-						<p className="text-lg sm:text-xl text-gray-700 leading-relaxed max-w-3xl mx-auto transform transition-all duration-500 delay-200">
+						<p className="text-lg sm:text-xl text-body leading-relaxed max-w-3xl mx-auto transform transition-all duration-500 delay-200">
 							I'm passionate about transforming complex ideas into
 							intelligent, data-driven products. I build modern
 							web and mobile applications that blend clean
 							architecture, strong backend logic, and elegant
 							design — all with a focus on{" "}
-							<span className="text-green-600 font-semibold">
+							<span className="text-primary font-semibold">
 								performance
 							</span>
 							,{" "}
-							<span className="text-green-600 font-semibold">
+							<span className="text-primary font-semibold">
 								usability
 							</span>
 							, and{" "}
-							<span className="text-green-600 font-semibold">
+							<span className="text-primary font-semibold">
 								real-world impact
 							</span>
 							.
@@ -210,22 +166,25 @@ const Hero = () => {
 					<div className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-8 transform transition-all duration-500 delay-300">
 						<button
 							type="button"
-							onClick={() => (window.location.href = "/projects")}
-							className="group relative bg-green-600 text-white px-8 py-3 rounded-full font-medium transition-all duration-300 hover:bg-green-700 hover:shadow-lg hover:scale-105"
+							onClick={() => navigate("/projects")}
+							className="group relative bg-primary text-white px-8 py-3 rounded-full font-medium transition-all duration-300 hover:bg-primary-dark hover:shadow-lg hover:scale-105"
 						>
-							<span className="relative z-10 roboto-condensed-bold">
+							<span className="relative z-10 font-heading font-bold">
 								View My Work
 							</span>
-							<div className="absolute inset-0 bg-green-700 rounded-full scale-0 group-hover:scale-100 transition-transform duration-300"></div>
+							<div className="absolute inset-0 bg-primary-dark rounded-full scale-0 group-hover:scale-100 transition-transform duration-300"></div>
 						</button>
 
-						<button className="group relative border-2 border-green-600 text-green-600 px-8 py-3 rounded-full font-medium transition-all duration-300 hover:bg-green-600 hover:text-white hover:shadow-lg hover:scale-105 roboto-condensed-bold">
+						<button
+							onClick={() => navigate("/contact")}
+							className="group relative border-2 border-primary text-primary px-8 py-3 rounded-full font-medium transition-all duration-300 hover:bg-primary hover:text-white hover:shadow-lg hover:scale-105 font-heading font-bold"
+						>
 							<span className="relative z-10">Get In Touch</span>
-							<div className="absolute inset-0 bg-green-600 rounded-full scale-0 group-hover:scale-100 transition-transform duration-300"></div>
+							<div className="absolute inset-0 bg-primary rounded-full scale-0 group-hover:scale-100 transition-transform duration-300"></div>
 						</button>
 					</div>
 
-					{/* Scroll Indicator: still to come */}
+					{/* Scroll Indicator */}
 					<TechStackScroller />
 				</div>
 			</div>

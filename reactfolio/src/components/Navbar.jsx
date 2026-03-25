@@ -10,6 +10,8 @@ import {
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useTerminal } from "./helpers/terminal";
+import ThemeToggle from "./ThemeToggle";
+
 const Navbar = () => {
 	const [isMenuOpen, setIsMenuOpen] = useState(false);
 	const [activeItem, setActiveItem] = useState("");
@@ -30,32 +32,21 @@ const Navbar = () => {
 		{ name: "Contact", href: "/contact", icon: Mail },
 	];
 
-	// Animation variants
 	const mobileMenuVariants = {
 		closed: {
 			opacity: 0,
 			scale: 0.95,
-			transition: {
-				duration: 0.2,
-				ease: "easeOut",
-			},
+			transition: { duration: 0.2, ease: "easeOut" },
 		},
 		open: {
 			opacity: 1,
 			scale: 1,
-			transition: {
-				duration: 0.3,
-				ease: "easeOut",
-			},
+			transition: { duration: 0.3, ease: "easeOut" },
 		},
 	};
 
 	const mobileItemVariants = {
-		closed: {
-			opacity: 0,
-			x: -20,
-			scale: 0.9,
-		},
+		closed: { opacity: 0, x: -20, scale: 0.9 },
 		open: (index) => ({
 			opacity: 1,
 			x: 0,
@@ -72,22 +63,17 @@ const Navbar = () => {
 		hover: {
 			scale: 1.2,
 			rotate: 5,
-			transition: {
-				duration: 0.2,
-				ease: "easeOut",
-			},
+			transition: { duration: 0.2, ease: "easeOut" },
 		},
 		tap: {
 			scale: 0.9,
-			transition: {
-				duration: 0.1,
-			},
+			transition: { duration: 0.1 },
 		},
 	};
 
 	return (
 		<>
-			<nav className="bg-white shadow-sm fixed w-full top-0 z-50">
+			<nav className="bg-surface border-b border-border shadow-sm fixed w-full top-0 z-50 transition-colors duration-300">
 				<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 					<div className="flex justify-between items-center h-16">
 						{/* Logo */}
@@ -97,37 +83,17 @@ const Navbar = () => {
 							whileTap={{ scale: 0.95 }}
 						>
 							<span
-								className="text-black text-2xl font-bold roboto-condensed-black cursor-pointer"
+								className="text-heading text-2xl font-bold font-heading cursor-pointer"
 								onClick={openTerminal}
 							>
 								LESLIE PAUL
 							</span>
-							{/* <div className="relative group">
-								<img
-									className="cursor-pointer"
-									src="/ascii-art-text.png"
-									alt="Leslie Paul"
-									width={200}
-									height={200}
-									onClick={openTerminal}
-								/>
-
-								<div className="hidden md:block absolute top-full left-1/2 transform -translate-x-1/2 mt-2 opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 ease-out">
-									<button
-										onClick={openTerminal}
-										className="terminal-launcher bg-gray-800 text-white px-4 hover:bg-gray-700 transition-colors whitespace-nowrap shadow-lg"
-									>
-										🖥️ Open Terminal
-									</button>
-								</div>
-							</div> */}
 						</motion.div>
-						{/* Render the terminal at root level */}
 						<Terminal />
 
 						{/* Desktop Menu */}
-						<div className="hidden md:block">
-							<div className="ml-10 flex items-baseline space-x-2">
+						<div className="hidden md:flex items-center gap-2">
+							<div className="flex items-baseline space-x-2">
 								{navItems.map((item) => {
 									const Icon = item.icon;
 									return (
@@ -146,7 +112,7 @@ const Navbar = () => {
 										>
 											{/* Animated Background Pill */}
 											<motion.div
-												className="absolute inset-0 bg-green-100 rounded-full"
+												className="absolute inset-0 bg-green-100 dark:bg-green-900/30 rounded-full"
 												initial={{
 													scale: 0.8,
 													opacity: 0,
@@ -169,7 +135,6 @@ const Navbar = () => {
 
 											{/* Content */}
 											<div className="relative z-10 px-5 py-2.5 rounded-full flex items-center gap-2">
-												{/* Icon */}
 												<motion.div
 													variants={iconVariants}
 													className="flex-shrink-0"
@@ -179,22 +144,18 @@ const Navbar = () => {
 														className={
 															activeItem ===
 															item.name
-																? "text-green-700"
-																: "text-gray-600 group-hover:text-green-600"
+																? "text-green-700 dark:text-green-400"
+																: "text-muted group-hover:text-primary"
 														}
 													/>
 												</motion.div>
 
-												{/* Text */}
 												<span
-													className={`
-                            text-sm font-medium roboto-condensed-medium leading-tight
-                            ${
-								activeItem === item.name
-									? "text-green-700"
-									: "text-black group-hover:text-green-600"
-							}
-                          `}
+													className={`text-sm font-medium font-heading leading-tight ${
+														activeItem === item.name
+															? "text-green-700 dark:text-green-400"
+															: "text-heading group-hover:text-primary"
+													}`}
 												>
 													{item.name}
 												</span>
@@ -202,7 +163,7 @@ const Navbar = () => {
 
 											{/* Underline Animation */}
 											<motion.div
-												className="absolute bottom-0 left-1/2 h-0.5 bg-green-500"
+												className="absolute bottom-0 left-1/2 h-0.5 bg-primary"
 												initial={{
 													width: 0,
 													x: "-50%",
@@ -223,18 +184,22 @@ const Navbar = () => {
 									);
 								})}
 							</div>
+							<div className="ml-4">
+								<ThemeToggle />
+							</div>
 						</div>
 
-						{/* Mobile menu button */}
-						<div className="md:hidden">
+						{/* Mobile: theme toggle + hamburger */}
+						<div className="md:hidden flex items-center gap-2">
+							<ThemeToggle />
 							<motion.button
 								onClick={toggleMenu}
-								className="inline-flex items-center justify-center p-2 rounded-md text-black hover:text-green-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-green-500 transition-colors duration-200"
-								aria-expanded="false"
+								className="inline-flex items-center justify-center p-2 rounded-md text-heading hover:text-primary focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary transition-colors duration-200"
+								aria-expanded={isMenuOpen}
+								aria-label="Toggle navigation menu"
 								whileHover={{ scale: 1.1 }}
 								whileTap={{ scale: 0.9 }}
 							>
-								<span className="sr-only">Open main menu</span>
 								<AnimatePresence mode="wait">
 									{isMenuOpen ? (
 										<motion.div
@@ -270,16 +235,15 @@ const Navbar = () => {
 				<AnimatePresence>
 					{isMenuOpen && (
 						<motion.div
-							className="fixed inset-0 bg-white z-40 md:hidden"
+							className="fixed inset-0 bg-surface z-40 md:hidden"
 							variants={mobileMenuVariants}
 							initial="closed"
 							animate="open"
 							exit="closed"
 						>
 							{/* Background Pattern */}
-							<div className="absolute inset-0 bg-gradient-to-br from-green-200/50 to-white/50" />
+							<div className="absolute inset-0 bg-gradient-to-br from-green-200/50 dark:from-green-900/20 to-transparent" />
 
-							{/* Content */}
 							{/* Content */}
 							<div className="relative flex flex-col items-center justify-center h-full space-y-6 p-8">
 								{navItems.map((item, index) => {
@@ -298,7 +262,6 @@ const Navbar = () => {
 											whileHover={{ scale: 1.02 }}
 											whileTap={{ scale: 0.98 }}
 										>
-											{/* Clean content without backgrounds */}
 											<div className="flex items-center justify-between px-2 py-3">
 												<div className="flex items-center gap-3">
 													<motion.div
@@ -309,16 +272,16 @@ const Navbar = () => {
 													>
 														<Icon
 															size={20}
-															className="text-green-600"
+															className="text-primary"
 														/>
 													</motion.div>
-													<span className="text-lg font-medium text-gray-800 roboto-condensed-medium">
+													<span className="text-lg font-medium text-heading font-heading">
 														{item.name}
 													</span>
 												</div>
 												<ChevronRight
 													size={20}
-													className="text-green-400"
+													className="text-primary/50"
 												/>
 											</div>
 										</motion.a>
@@ -328,14 +291,15 @@ const Navbar = () => {
 							{/* Close button */}
 							<motion.button
 								onClick={closeMenu}
-								className="absolute top-6 right-6 p-3 bg-transparent rounded-full shadow-lg border border-green-100 hover:shadow-xl transition-all duration-300"
+								className="absolute top-6 right-6 p-3 bg-transparent rounded-full shadow-lg border border-border hover:shadow-xl transition-all duration-300"
 								whileHover={{ scale: 1.1, rotate: 90 }}
 								whileTap={{ scale: 0.9 }}
 								initial={{ opacity: 0, scale: 0.8 }}
 								animate={{ opacity: 1, scale: 1 }}
 								transition={{ delay: 0.5 }}
+								aria-label="Close menu"
 							>
-								<X size={20} className="text-gray-600" />
+								<X size={20} className="text-muted" />
 							</motion.button>
 
 							{/* Footer Text */}
@@ -345,7 +309,7 @@ const Navbar = () => {
 								animate={{ opacity: 1, y: 0 }}
 								transition={{ delay: 0.6 }}
 							>
-								<p className="text-sm text-gray-500 roboto-condensed-light">
+								<p className="text-sm text-muted font-heading">
 									Let's build something amazing
 								</p>
 							</motion.div>

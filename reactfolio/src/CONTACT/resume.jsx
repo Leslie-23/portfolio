@@ -1,411 +1,264 @@
-import React, { useState, useRef } from "react";
+import React, { useRef } from "react";
+import { motion, useInView } from "framer-motion";
 import {
-	Download,
-	Mail,
-	Phone,
-	MapPin,
-	ExternalLink,
-	Calendar,
-	Award,
-	Code,
-	Database,
-	Smartphone,
+	Download, Mail, Phone, MapPin, ExternalLink, Calendar,
+	Award, Code2, Database, Smartphone, Terminal, Github,
+	ArrowRight
 } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import PageLayout from "../components/PageLayout";
+
+function Reveal({ children, delay = 0, className = "" }) {
+	const ref = useRef(null);
+	const isInView = useInView(ref, { once: true, margin: "-60px" });
+	return (
+		<motion.div
+			ref={ref}
+			initial={{ opacity: 0, y: 25 }}
+			animate={isInView ? { opacity: 1, y: 0 } : {}}
+			transition={{ duration: 0.6, delay, ease: "easeOut" }}
+			className={className}
+		>
+			{children}
+		</motion.div>
+	);
+}
 
 const Resume = () => {
-	const resumeRef = useRef();
-	const [isDownloading, setIsDownloading] = useState(false);
+	const navigate = useNavigate();
 
-	// Resume data - easily customizable
-	const resumeData = {
-		personalInfo: {
-			name: "Leslie Paul Ajayi",
-			title: "Software Engineer & IT Student",
-			location: "Accra, Ghana",
-			portfolio: "https://lesliepaul.me",
-			github: "https://github.com/leslie-23",
-			email: "leslieajayi27@gmail.com",
-			phone: "+233 (27) 123-7965",
-		},
-		summary:
-			"Passionate Software Engineer and IT student with expertise in full-stack development, mobile applications, and system architecture. Strong background in creating innovative solutions for real-world problems, with proven academic excellence and hands-on project experience in transportation systems, social networks, and developer tools.",
-		education: [
-			{
-				institution: "Regional Maritime University",
-				period: "2022 – 2026",
-				achievements: [
-					"Best in IT Project Management class (Lecturer: Prof Emmanuel Arhin)",
-					"Best in Data Structures class (Lecturer: Prof Eric Johnson)",
-				],
-			},
-			{
-				institution: "Udemy",
-				period: "2023",
-				achievements: [
-					"Web Development Bootcamp by Colt Steele",
-					"Mobile App Development with React Native by Maximilian Schwarzmüller",
-				],
-			},
-		],
-		skills: {
-			languages: ["JavaScript", "C++", "Java", "C#", "PHP", "SQL"],
-			frameworks: [
-				"React",
-				"Node.js",
-				"React Native",
-				"Express",
-				"Tailwind CSS",
-				"Styled Components",
-			],
-			tools: ["Git", "GitHub", "MongoDB", "MySQL"],
-			other: [
-				"Database Design",
-				"System Architecture",
-				"App Development",
-				"UI/UX Design",
-			],
-		},
-		projects: [
-			{
-				title: "Transportation App (Spintex Area)",
-				description:
-					"React Native frontend with Node.js backend and MySQL database. Features real-time bus tracking, route planning, and MTN Mobile Money integration.",
-				technologies: [
-					"React Native",
-					"Node.js",
-					"MySQL",
-					"Mobile Money API",
-				],
-				icon: <Smartphone className="w-5 h-5" />,
-			},
-			{
-				title: "Campus Connect",
-				description:
-					"University social network platform with backend & database design, routing, and real-time location/activity sharing.",
-				technologies: ["React", "Node.js", "MongoDB", "WebSockets"],
-				icon: <Database className="w-5 h-5" />,
-			},
-			{
-				title: "MERN Text Formatting Tool",
-				description:
-					"Styled social media posts creation tool with MongoDB storage for formatted content.",
-				technologies: [
-					"MERN Stack",
-					"MongoDB",
-					"Express",
-					"React",
-					"Node.js",
-				],
-				icon: <Code className="w-5 h-5" />,
-			},
-			{
-				title: "Web Tool for Custom Text Images",
-				description:
-					"Customizable text, fonts, colors, and backgrounds generator using JavaScript.",
-				technologies: ["JavaScript", "HTML5 Canvas", "CSS3"],
-				icon: <Code className="w-5 h-5" />,
-			},
-			{
-				title: "Portfolio Website",
-				description:
-					"Professional portfolio showcasing projects and skills at lesliepaul.me",
-				technologies: ["React", "Tailwind CSS", "Responsive Design"],
-				icon: <ExternalLink className="w-5 h-5" />,
-			},
-		],
+	const skills = {
+		frontend: ["React", "TypeScript", "Next.js", "Tailwind CSS", "Three.js", "Framer Motion"],
+		backend: ["Node.js", "Express", "GraphQL", "Socket.io", "REST APIs", "JWT/OAuth"],
+		data: ["PostgreSQL", "MongoDB", "Redis", "MySQL", "Firebase", "Prisma"],
+		infra: ["Docker", "AWS", "GitHub Actions", "Nginx", "Linux", "CI/CD"],
+		languages: ["JavaScript", "TypeScript", "Python", "C++", "C#", "Java", "SQL"],
 	};
 
-	const handleDownload = async () => {
-		setIsDownloading(true);
-		// Simulate PDF generation process
-		setTimeout(() => {
-			setIsDownloading(false);
-			// In a real implementation, you would use html2pdf or similar library here
-			alert("PDF download functionality would be implemented here");
-		}, 2000);
-	};
+	const projects = [
+		{
+			title: "Transportation App (Spintex Area)",
+			description: "React Native frontend with Node.js backend and MySQL database. Real-time bus tracking with MTN Mobile Money integration.",
+			tech: ["React Native", "Node.js", "MySQL", "Mobile Money API"],
+		},
+		{
+			title: "E-Commerce Platform",
+			description: "Full-stack marketplace with Stripe payments, real-time inventory, admin dashboard, and OTP authentication.",
+			tech: ["React", "Node.js", "MongoDB", "Stripe", "Redux"],
+		},
+		{
+			title: "Campus Connect",
+			description: "University social network with real-time location sharing, activity feeds, and WebSocket communication.",
+			tech: ["React", "Node.js", "MongoDB", "WebSockets"],
+		},
+		{
+			title: "Restaurant Management Platform",
+			description: "Full-stack ordering system with reservations, menu management, and payment integration.",
+			tech: ["React", "Node.js", "MongoDB", "Tailwind"],
+		},
+	];
+
+	const education = [
+		{
+			institution: "Regional Maritime University",
+			period: "2022 – 2026",
+			highlights: [
+				"Best in IT Project Management (Prof. Emmanuel Arhin)",
+				"Best in Data Structures (Prof. Eric Johnson)",
+			],
+		},
+		{
+			institution: "Udemy — Professional Development",
+			period: "2023",
+			highlights: [
+				"Web Development Bootcamp — Colt Steele",
+				"Mobile App Development with React Native — Maximilian Schwarzmüller",
+			],
+		},
+	];
 
 	return (
-		<div className="min-h-screen bg-gradient-to-br from-gray-50 to-green-50 py-12 px-2 sm:px-6 lg:px-8">
-			<div className="max-w-4xl mx-auto">
-				{/* Resume Container */}
-				<div
-					ref={resumeRef}
-					className="bg-white rounded-2xl shadow-2xl overflow-hidden border border-green-100"
-				>
+		<PageLayout>
+			<section className="py-16 md:py-24 px-6 md:px-12">
+				<div className="max-w-4xl mx-auto">
 					{/* Header */}
-					<div className="bg-gradient-to-r from-green-600 to-green-700 text-white p-8">
-						<div className="flex flex-col lg:flex-row justify-between items-start lg:items-center">
-							<div className="flex-1">
-								<h1 className="text-4xl font-bold mb-2">
-									{resumeData.personalInfo.name}
-								</h1>
-								<p className="text-xl text-green-100 mb-4">
-									{resumeData.personalInfo.title}
-								</p>
-
-								<div className="flex flex-wrap gap-4 text-green-100">
-									<div className="flex items-center gap-2">
-										<MapPin className="w-4 h-4" />
-										<span>
-											{resumeData.personalInfo.location}
-										</span>
-									</div>
-									<div className="flex items-center gap-2">
-										<Mail className="w-4 h-4" />
-										<a href="mailto:leslieajayi27@gmail.com">
-											{resumeData.personalInfo.email}
-										</a>
-									</div>
-									<div className="flex items-center gap-2">
-										<Phone className="w-4 h-4" />
-										<a href="tel:+233271237965">
-											{resumeData.personalInfo.phone}
-										</a>
-									</div>
-								</div>
-							</div>
-
-							<div className="mt-4 lg:mt-0">
-								<a
-									href={resumeData.personalInfo.github}
-									target="_blank"
-									rel="noopener noreferrer"
-									className="inline-flex items-center gap-2 bg-white text-green-700 px-6 py-3 rounded-lg font-semibold hover:bg-green-50 transition-all duration-300 hover:scale-105"
-								>
-									<ExternalLink className="w-4 h-4" />
-									Visit Github
-								</a>
-							</div>
+					<Reveal>
+						<div className="font-mono text-green-400/60 text-xs tracking-[0.3em] mb-4">
+							// RESUME
 						</div>
-					</div>
+						<div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-12">
+							<div>
+								<h1
+									className="text-4xl md:text-5xl font-bold text-white mb-2 tracking-tight"
+									style={{ fontFamily: "'Roboto Condensed', system-ui, sans-serif" }}
+								>
+									Leslie Paul <span className="text-green-400">Ajayi</span>
+								</h1>
+								<p className="text-white/50 text-lg">Software Engineer</p>
+							</div>
+							<button
+								onClick={() => alert("PDF download coming soon — resume content is displayed below.")}
+								className="group px-6 py-2.5 bg-green-500/10 border border-green-400/30 text-green-400 font-mono text-xs tracking-wider hover:bg-green-500/20 hover:border-green-400/60 transition-all duration-300 rounded-sm inline-flex items-center gap-2 self-start"
+							>
+								<Download size={14} />
+								DOWNLOAD_PDF
+							</button>
+						</div>
+					</Reveal>
 
-					{/* Download Button */}
-					<div className="bg-green-50 px-8 py-4 border-b border-green-100">
-						<button
-							onClick={handleDownload}
-							disabled={isDownloading}
-							className="flex items-center gap-2 bg-green-600 text-white px-6 py-2 rounded-lg font-semibold hover:bg-green-700 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
-						>
-							{isDownloading ? (
-								<>
-									<div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
-									Generating PDF...
-								</>
-							) : (
-								<>
-									<Download className="w-4 h-4" />
-									Download Resume
-								</>
-							)}
-						</button>
-					</div>
+					{/* Contact bar */}
+					<Reveal delay={0.1}>
+						<div className="flex flex-wrap gap-6 p-5 rounded-lg border border-white/5 bg-white/[0.02] mb-12 font-mono text-xs">
+							{[
+								{ icon: MapPin, value: "Accra, Ghana" },
+								{ icon: Mail, value: "leslieajayi27@gmail.com", href: "mailto:leslieajayi27@gmail.com" },
+								{ icon: Phone, value: "+233 27 123 7965", href: "tel:+233271237965" },
+								{ icon: Github, value: "github.com/Leslie-23", href: "https://github.com/Leslie-23" },
+							].map((item) => (
+								<div key={item.value} className="flex items-center gap-2 text-white/40">
+									<item.icon size={13} className="text-green-400/60" />
+									{item.href ? (
+										<a href={item.href} target="_blank" rel="noopener noreferrer" className="hover:text-green-400 transition-colors">
+											{item.value}
+										</a>
+									) : (
+										<span>{item.value}</span>
+									)}
+								</div>
+							))}
+						</div>
+					</Reveal>
 
-					{/* Content */}
-					<div className="p-8 space-y-8">
-						{/* Summary Section */}
-						<section className="space-y-4">
-							<h2 className="text-2xl font-bold text-gray-900 border-b-2 border-green-200 pb-2">
-								Professional Summary
-							</h2>
-							<p className="text-gray-700 leading-relaxed">
-								{resumeData.summary}
+					{/* Summary */}
+					<Reveal delay={0.15}>
+						<div className="mb-12">
+							<div className="font-mono text-xs text-green-400/40 tracking-wider mb-3">SUMMARY</div>
+							<p className="text-white/50 leading-relaxed">
+								Software Engineer with expertise in full-stack development, system architecture,
+								and production-grade applications. Strong foundation across multiple languages and
+								paradigms with hands-on experience building scalable web and mobile solutions.
+								Focused on clean architecture, performance, and real-world impact.
 							</p>
-						</section>
+						</div>
+					</Reveal>
 
-						<div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-							{/* Left Column */}
-							<div className="lg:col-span-2 space-y-8">
-								{/* Projects Section */}
-								<section className="space-y-4">
-									<h2 className="text-2xl font-bold text-gray-900 border-b-2 border-green-200 pb-2">
-										Projects & Experience
-									</h2>
-									<div className="space-y-6">
-										{resumeData.projects.map(
-											(project, index) => (
-												<div
-													key={index}
-													className="bg-green-50 rounded-xl p-6 border border-green-200 hover:shadow-md transition-all duration-300"
-												>
-													<div className="flex items-start gap-4">
-														<div className="p-2 bg-green-100 rounded-lg text-green-600">
-															{project.icon}
-														</div>
-														<div className="flex-1">
-															<h3 className="text-xl font-semibold text-gray-900 mb-2">
-																{project.title}
-															</h3>
-															<p className="text-gray-700 mb-3 leading-relaxed">
-																{
-																	project.description
-																}
-															</p>
-															<div className="flex flex-wrap gap-2">
-																{project.technologies.map(
-																	(
-																		tech,
-																		techIndex
-																	) => (
-																		<span
-																			key={
-																				techIndex
-																			}
-																			className="px-3 py-1 bg-white text-green-700 rounded-full text-sm font-medium border border-green-200"
-																		>
-																			{
-																				tech
-																			}
-																		</span>
-																	)
-																)}
-															</div>
-														</div>
-													</div>
-												</div>
-											)
-										)}
+					<div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+						{/* Main column */}
+						<div className="lg:col-span-2 space-y-10">
+							{/* Projects / Experience */}
+							<Reveal delay={0.2}>
+								<div>
+									<div className="font-mono text-xs text-green-400/40 tracking-wider mb-6">
+										PROJECTS & EXPERIENCE
 									</div>
-								</section>
-
-								{/* Education Section */}
-								<section className="space-y-4">
-									<h2 className="text-2xl font-bold text-gray-900 border-b-2 border-green-200 pb-2">
-										Education
-									</h2>
-									{resumeData.education.map((edu, index) => (
-										<div
-											key={index}
-											className="bg-green-50 rounded-xl p-6 border border-green-200"
-										>
-											<div className="flex items-start gap-4">
-												<div className="p-2 bg-green-100 rounded-lg text-green-600">
-													<Award className="w-5 h-5" />
-												</div>
-												<div className="flex-1">
-													<div className="flex flex-col sm:flex-row sm:justify-between sm:items-start mb-3">
-														<h3 className="text-xl font-semibold text-gray-900">
-															{edu.institution}
-														</h3>
-														<div className="flex items-center gap-1 text-green-700 font-medium mt-1 sm:mt-0">
-															<Calendar className="w-4 h-4" />
-															<span>
-																{edu.period}
-															</span>
-														</div>
-													</div>
-													<ul className="space-y-2">
-														{edu.achievements.map(
-															(
-																achievement,
-																achievementIndex
-															) => (
-																<li
-																	key={
-																		achievementIndex
-																	}
-																	className="flex items-start gap-2 text-gray-700"
-																>
-																	<div className="w-2 h-2 bg-green-500 rounded-full mt-2 flex-shrink-0"></div>
-																	<span>
-																		{
-																			achievement
-																		}
-																	</span>
-																</li>
-															)
-														)}
-													</ul>
+									<div className="space-y-4">
+										{projects.map((project, i) => (
+											<div
+												key={i}
+												className="p-5 rounded-lg border border-white/5 bg-white/[0.02] hover:border-green-400/10 transition-all duration-300"
+											>
+												<h3 className="text-white font-semibold text-sm mb-2">{project.title}</h3>
+												<p className="text-white/40 text-xs leading-relaxed mb-3">
+													{project.description}
+												</p>
+												<div className="flex flex-wrap gap-1.5">
+													{project.tech.map((t) => (
+														<span
+															key={t}
+															className="px-2 py-0.5 text-[10px] font-mono text-white/30 border border-white/8 rounded"
+														>
+															{t}
+														</span>
+													))}
 												</div>
 											</div>
+										))}
+									</div>
+								</div>
+							</Reveal>
+
+							{/* Education */}
+							<Reveal delay={0.25}>
+								<div>
+									<div className="font-mono text-xs text-green-400/40 tracking-wider mb-6">
+										EDUCATION
+									</div>
+									<div className="space-y-4">
+										{education.map((edu, i) => (
+											<div
+												key={i}
+												className="p-5 rounded-lg border border-white/5 bg-white/[0.02]"
+											>
+												<div className="flex flex-col sm:flex-row sm:justify-between sm:items-start mb-3">
+													<h3 className="text-white font-semibold text-sm">{edu.institution}</h3>
+													<div className="flex items-center gap-1 text-green-400/60 font-mono text-xs mt-1 sm:mt-0">
+														<Calendar size={12} />
+														<span>{edu.period}</span>
+													</div>
+												</div>
+												<div className="space-y-1.5">
+													{edu.highlights.map((h, j) => (
+														<div key={j} className="flex items-start gap-2">
+															<Award size={12} className="text-green-400/40 mt-0.5" />
+															<span className="text-white/40 text-xs">{h}</span>
+														</div>
+													))}
+												</div>
+											</div>
+										))}
+									</div>
+								</div>
+							</Reveal>
+						</div>
+
+						{/* Skills sidebar */}
+						<div className="space-y-6">
+							{Object.entries(skills).map(([category, items], i) => (
+								<Reveal key={category} delay={0.2 + i * 0.05}>
+									<div className="p-5 rounded-lg border border-white/5 bg-white/[0.02]">
+										<div className="font-mono text-[10px] text-white/30 tracking-wider mb-3">
+											{category.toUpperCase()}
 										</div>
-									))}
-								</section>
-							</div>
-
-							{/* Right Column - Skills */}
-							<div className="space-y-8">
-								{/* Languages */}
-								<section className="space-y-4">
-									<h3 className="text-xl font-bold text-gray-900 border-b-2 border-green-200 pb-2">
-										Languages
-									</h3>
-									<div className="flex flex-wrap gap-2">
-										{resumeData.skills.languages.map(
-											(skill, index) => (
+										<div className="flex flex-wrap gap-1.5">
+											{items.map((skill) => (
 												<span
-													key={index}
-													className="px-3 py-2 bg-green-100 text-green-700 rounded-lg font-medium hover:bg-green-200 transition-colors duration-200"
+													key={skill}
+													className="px-2 py-1 text-xs font-mono text-white/50 border border-white/10 rounded bg-white/[0.02]"
 												>
 													{skill}
 												</span>
-											)
-										)}
+											))}
+										</div>
 									</div>
-								</section>
-
-								{/* Frameworks */}
-								<section className="space-y-4">
-									<h3 className="text-xl font-bold text-gray-900 border-b-2 border-green-200 pb-2">
-										Frameworks & Libraries
-									</h3>
-									<div className="flex flex-wrap gap-2">
-										{resumeData.skills.frameworks.map(
-											(skill, index) => (
-												<span
-													key={index}
-													className="px-3 py-2 bg-blue-100 text-blue-700 rounded-lg font-medium hover:bg-blue-200 transition-colors duration-200"
-												>
-													{skill}
-												</span>
-											)
-										)}
-									</div>
-								</section>
-
-								{/* Tools */}
-								<section className="space-y-4">
-									<h3 className="text-xl font-bold text-gray-900 border-b-2 border-green-200 pb-2">
-										Tools & Technologies
-									</h3>
-									<div className="flex flex-wrap gap-2">
-										{resumeData.skills.tools.map(
-											(skill, index) => (
-												<span
-													key={index}
-													className="px-3 py-2 bg-purple-100 text-purple-700 rounded-lg font-medium hover:bg-purple-200 transition-colors duration-200"
-												>
-													{skill}
-												</span>
-											)
-										)}
-									</div>
-								</section>
-
-								{/* Other Skills */}
-								<section className="space-y-4">
-									<h3 className="text-xl font-bold text-gray-900 border-b-2 border-green-200 pb-2">
-										Other Skills
-									</h3>
-									<div className="flex flex-wrap gap-2">
-										{resumeData.skills.other.map(
-											(skill, index) => (
-												<span
-													key={index}
-													className="px-3 py-2 bg-orange-100 text-orange-700 rounded-lg font-medium hover:bg-orange-200 transition-colors duration-200"
-												>
-													{skill}
-												</span>
-											)
-										)}
-									</div>
-								</section>
-							</div>
+								</Reveal>
+							))}
 						</div>
 					</div>
+
+					{/* CTA */}
+					<Reveal delay={0.3}>
+						<div className="mt-16 pt-12 border-t border-white/5 text-center">
+							<p className="text-white/30 text-sm mb-6">Interested in working together?</p>
+							<div className="flex flex-wrap gap-4 justify-center">
+								<button
+									onClick={() => navigate("/contact")}
+									className="group px-8 py-3 bg-green-500/10 border border-green-400/30 text-green-400 font-mono text-sm tracking-wider hover:bg-green-500/20 hover:border-green-400/60 transition-all duration-300 rounded-sm inline-flex items-center gap-3"
+								>
+									GET_IN_TOUCH
+									<ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
+								</button>
+								<button
+									onClick={() => navigate("/projects")}
+									className="px-8 py-3 border border-white/10 text-white/50 font-mono text-sm tracking-wider hover:border-white/30 hover:text-white/80 transition-all duration-300 rounded-sm"
+								>
+									VIEW_WORK
+								</button>
+							</div>
+						</div>
+					</Reveal>
 				</div>
-			</div>
-		</div>
+			</section>
+		</PageLayout>
 	);
 };
 

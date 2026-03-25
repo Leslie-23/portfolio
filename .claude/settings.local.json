@@ -1,0 +1,21 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(head -30 /c/Users/Administrator/portfolio/reactfolio/.github/workflows/*.yml)",
+      "Bash(npm install:*)",
+      "Bash(npx react-scripts:*)",
+      "Bash(npx tailwindcss:*)",
+      "Bash(node -e \"try { require\\(''react-icons/si''\\).SiAmazonwebservices; console.log\\(''EXISTS''\\); } catch\\(e\\) { console.log\\(''NOT FOUND''\\); }\")",
+      "Bash(curl:*)",
+      "Bash(tasklist)",
+      "Bash(netstat -ano)",
+      "Bash(taskkill:*)",
+      "Bash(npm ls:*)",
+      "Bash(npm uninstall:*)",
+      "Bash(rm -f postcss.config.js)",
+      "Bash(grep -c \"tailwind\" build/static/css/*.css)",
+      "Bash(grep -c \"min-h-screen\" build/static/css/*.css)",
+      "Bash(ls:*)"
+    ]
+  }
+}
