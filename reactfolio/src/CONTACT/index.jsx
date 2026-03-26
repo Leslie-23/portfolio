@@ -70,7 +70,7 @@ const Contact = () => {
 	};
 
 	const inputClasses = "w-full px-4 py-3 bg-white/[0.03] border border-white/10 rounded-sm text-white placeholder:text-white/20 focus:outline-none focus:border-green-400/50 focus:bg-white/[0.05] transition-all duration-300 font-mono text-sm";
-
+//  fix up my linked links it's www.linkedin.com/in/leslie-paul-ajayi-409b16356,
 	return (
 		<PageLayout>
 			<section className="py-20 md:py-28 px-6 md:px-12">
