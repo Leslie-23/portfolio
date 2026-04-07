@@ -16,7 +16,8 @@
       "Bash(grep -c \"tailwind\" build/static/css/*.css)",
       "Bash(grep -c \"min-h-screen\" build/static/css/*.css)",
       "Bash(ls:*)",
-      "Bash(node -e \"const drei = require\\(''@react-three/drei''\\); console.log\\(Object.keys\\(drei\\).filter\\(k => k.toLowerCase\\(\\).includes\\(''text''\\)\\).join\\('', ''\\)\\)\")"
+      "Bash(node -e \"const drei = require\\(''@react-three/drei''\\); console.log\\(Object.keys\\(drei\\).filter\\(k => k.toLowerCase\\(\\).includes\\(''text''\\)\\).join\\('', ''\\)\\)\")",
+      "Bash(find . -type f \\\\\\( -name \"*.jsx\" -o -name \"*.js\" -o -name \"*.html\" -o -name \"*.json\" \\\\\\) -not -path \"./node_modules/*\" -exec sed -i 's/leslieajayi27@gmail\\\\.com/hello@lesliepaul.me/g; s/lesliepaulajayi@gmail\\\\.com/hello@lesliepaul.me/g; s/mail@leslie\\\\.dev/hello@lesliepaul.me/g; s/contact@leslie\\\\.dev/hello@lesliepaul.me/g' {} +)"
     ]
   }
 }

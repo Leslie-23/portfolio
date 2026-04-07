@@ -13,7 +13,7 @@ export default function PrivacyPolicy() {
 		{ title: "7. Cookies", content: "We may use cookies and similar tracking technologies. You can instruct your browser to refuse cookies or indicate when one is being sent." },
 		{ title: "8. Third-Party Links", content: "Our website may contain links to external sites. We have no control over and assume no responsibility for their content or privacy practices." },
 		{ title: "9. Updates", content: "We may update this policy periodically. Changes are effective when posted on this page. Review regularly for any updates." },
-		{ title: "10. Contact", content: "Questions about this policy? Email leslieajayi27@gmail.com. We aim to respond within 48 hours." },
+		{ title: "10. Contact", content: "Questions about this policy? Email hello@lesliepaul.me. We aim to respond within 48 hours." },
 	];
 
 	return (

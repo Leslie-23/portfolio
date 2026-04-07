@@ -43,7 +43,7 @@ const Footer = () => {
 								{
 									name: "Email",
 									icon: <Mail size={20} />,
-									href: "mailto:leslieajayi27@gmail.com",
+									href: "mailto:hello@lesliepaul.me",
 								},
 							].map((social) => (
 								<a
@@ -89,10 +89,10 @@ const Footer = () => {
 						<ul className="space-y-2 text-muted">
 							<li>
 								<a
-									href="mailto:leslieajayi27@gmail.com"
+									href="mailto:hello@lesliepaul.me"
 									className="hover:text-primary transition-colors duration-200"
 								>
-									leslieajayi27@gmail.com
+									hello@lesliepaul.me
 								</a>
 							</li>
 							<li>

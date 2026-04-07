@@ -111,7 +111,7 @@ const Resume = () => {
 						<div className="flex flex-wrap gap-6 p-5 rounded-lg border border-white/5 bg-white/[0.02] mb-12 font-mono text-xs">
 							{[
 								{ icon: MapPin, value: "Accra, Ghana" },
-								{ icon: Mail, value: "leslieajayi27@gmail.com", href: "mailto:leslieajayi27@gmail.com" },
+								{ icon: Mail, value: "hello@lesliepaul.me", href: "mailto:hello@lesliepaul.me" },
 								{ icon: Phone, value: "+233 27 123 7965", href: "tel:+233271237965" },
 								{ icon: Github, value: "github.com/Leslie-23", href: "https://github.com/Leslie-23" },
 							].map((item) => (

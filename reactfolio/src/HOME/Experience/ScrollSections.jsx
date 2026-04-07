@@ -418,7 +418,7 @@ function FooterSection() {
 							{[
 								{ icon: Github, href: "https://github.com/Leslie-23" },
 								{ href: "https://linkedin.com/in/leslie-paul-ajayi" },
-								{ href: "mailto:leslieajayi27@gmail.com" },
+								{ href: "mailto:hello@lesliepaul.me" },
 							].map((item, i) => (
 								<a
 									key={i}
@@ -433,10 +433,10 @@ function FooterSection() {
 							))}
 						</div>
 						<a
-							href="mailto:leslieajayi27@gmail.com"
+							href="mailto:hello@lesliepaul.me"
 							className="text-white/25 text-xs font-mono hover:text-green-400 transition-colors"
 						>
-							leslieajayi27@gmail.com
+							hello@lesliepaul.me
 						</a>
 					</div>
 				</div>

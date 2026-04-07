@@ -51,7 +51,7 @@ const Contact = () => {
 				EMAILJS_CONFIG.templateID,
 				form.current,
 				EMAILJS_CONFIG.publicKey,
-				{ timestamp, to_email: "leslieajayi27@gmail.com" }
+				{ timestamp, to_email: "hello@lesliepaul.me" }
 			);
 
 			setIsLoading(false);
@@ -109,8 +109,8 @@ const Contact = () => {
 								{
 									icon: Mail,
 									label: "EMAIL",
-									value: "leslieajayi27@gmail.com",
-									href: "mailto:leslieajayi27@gmail.com",
+									value: "hello@lesliepaul.me",
+									href: "mailto:hello@lesliepaul.me",
 									sub: "Response within 24 hours",
 								},
 								{

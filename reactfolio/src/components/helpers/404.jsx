@@ -153,7 +153,7 @@ const NotFound = () => {
 							onClick={() => navigate("/contact")}
 							className="text-green-400/60 hover:text-green-400 transition-colors"
 						>
-							contact@leslie.dev
+							hello@lesliepaul.me
 						</button>
 					</p>
 				</motion.div>

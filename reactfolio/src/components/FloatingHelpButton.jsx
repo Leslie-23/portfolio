@@ -23,7 +23,7 @@ const FloatingHelpButton = () => {
 		{
 			label: "Contact Me",
 			icon: <Mail size={20} />,
-			link: "mailto:leslieajayi27@gmail.com",
+			link: "mailto:hello@lesliepaul.me",
 		},
 		{
 			label: "Projects",

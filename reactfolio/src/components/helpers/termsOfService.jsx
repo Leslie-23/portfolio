@@ -12,7 +12,7 @@ export default function TermsOfService() {
 		{ title: "6. Disclaimers", content: "This website is provided 'as is' without warranties of any kind. We do not guarantee the accuracy, completeness, or reliability of any content. Project demos linked from this site may be under active development." },
 		{ title: "7. Limitation of Liability", content: "Leslie Paul Ajayi shall not be liable for any damages arising from your use of or inability to use this website or any linked resources." },
 		{ title: "8. Changes to Terms", content: "We reserve the right to modify these terms at any time. Changes are effective immediately upon posting. Continued use of the site constitutes acceptance of modified terms." },
-		{ title: "9. Contact", content: "For questions regarding these terms, contact leslieajayi27@gmail.com." },
+		{ title: "9. Contact", content: "For questions regarding these terms, contact hello@lesliepaul.me." },
 	];
 
 	return (
