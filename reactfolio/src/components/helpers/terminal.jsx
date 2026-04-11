@@ -1,94 +1,112 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import "../globals.css";
 
-const TerminalModal = ({ isOpen, onClose, userOS }) => {
+const ROUTE_MAP = {
+	home: "/",
+	"~": "/",
+	projects: "/projects",
+	about: "/about",
+	contact: "/contact",
+	resume: "/resume",
+	socials: "/socials",
+};
+
+const TerminalModal = ({ isOpen, onClose, userOS, navigate }) => {
 	const [input, setInput] = useState("");
 	const [output, setOutput] = useState([]);
 	const [currentDir, setCurrentDir] = useState("~");
 	const [history, setHistory] = useState([]);
 	const [historyIndex, setHistoryIndex] = useState(0);
-	const [isTypingCommand, setIsTypingCommand] = useState(false);
 	const inputRef = useRef(null);
 	const terminalRef = useRef(null);
 
-	// Extended website structure
+	// Virtual filesystem — maps to real routes where applicable
 	const websiteStructure = {
-		"~": ["about/", "projects/", "skills/", "contact/", "resume.pdf"],
-		"about/": ["bio.txt", "experience.md", "education.txt"],
-		"projects/": ["web-apps/", "mobile-apps/", "open-source/", "clients/"],
-		"skills/": ["frontend.md", "backend.md", "devops.md", "tools.md"],
-		"contact/": ["email.txt", "socials.md", "location.txt"],
-		"web-apps/": ["ecommerce/", "dashboard/", "portfolio/", "saas/"],
-		"mobile-apps/": ["react-native/", "flutter/", "pwa/"],
-		"open-source/": ["github.md", "contributions.md", "packages.md"],
-		"ecommerce/": ["tech-stack.txt", "features.md", "demo.txt"],
-		"dashboard/": ["admin-panel.md", "analytics.md"],
-		"saas/": ["architecture.txt", "scaling.md"],
+		"~": ["about/", "projects/", "contact/", "resume/", "skills/", "bio.txt"],
+		"about/": ["bio.txt", "experience.md", "stack.md"],
+		"projects/": ["featured.md", "github.md"],
+		"skills/": ["frontend.md", "backend.md", "infra.md"],
+		"contact/": ["email.txt", "socials.md"],
+		"resume/": ["resume.md"],
 	};
 
-	// File contents with more detail
 	const fileContents = {
 		"bio.txt": `Leslie Paul Ajayi
-Senior Full-Stack Developer
-Location: Accra, Ghana
+Software Engineer — Accra, Ghana
 
-Specializing in:
-• MERN Stack (MongoDB, Express, React, Node.js)
-• TypeScript & Next.js
-• Cloud Architecture (AWS, Docker, Kubernetes)
-• Microservices & REST APIs
+I build production-grade systems from database to deployment:
+clean architecture, performant backends, and interfaces that feel alive.
 
-With over 5 years of experience building scalable web applications,
-I focus on clean code, performance optimization, and user-centric design.
-Currently leading development teams and architecting enterprise solutions.`,
+Currently focused on full-stack web platforms, API design,
+and the boring-but-important parts: caching, observability, CI/CD.`,
 
-		"experience.md": `## Professional Experience
+		"experience.md": `## Engineering Focus
 
-### Senior Full-Stack Developer (2021-Present)
-• Led development of multiple SaaS platforms serving 50k+ users
-• Architected microservices using Node.js and Docker
-• Implemented CI/CD pipelines reducing deployment time by 70%
-• Mentored 3 junior developers in React best practices
+### Full-stack Web Platforms
+• React / TypeScript frontends with strict type safety
+• Node.js + Express / Fastify REST services
+• PostgreSQL and MongoDB, schema design and query tuning
 
-### Full-Stack Developer (2019-2021)
-• Built e-commerce platforms processing $2M+ monthly
-• Developed real-time chat applications using WebSockets
-• Optimized database queries improving performance by 40%
+### Systems & Infrastructure
+• Docker-based dev + deploy workflows
+• CI/CD via GitHub Actions, Netlify, Vercel
+• Caching (Redis), background jobs, rate limiting
 
-### Frontend Developer (2018-2019)
-• Created responsive UIs for various web applications
-• Implemented design systems with Storybook
-• Collaborated with UX designers to improve user flows`,
+### What I care about
+• Correctness before cleverness
+• Measured performance, not vibes
+• Readable code and small blast radius on changes`,
 
-		"education.txt": `## Education
+		"stack.md": `## Current stack
 
-### Bachelor of Computer Science
-University of Ghana (2014-2018)
-• Graduated with First Class Honors
-• Specialized in Software Engineering
-• President of Developers Club
+frontend:  React 18, TypeScript, Tailwind, Framer Motion, Three.js
+backend:   Node.js, Express, GraphQL, Socket.io, JWT
+data:      PostgreSQL, MongoDB, Redis
+infra:     Docker, GitHub Actions, Netlify, Vercel
+tools:     Git, pnpm, Vite, Jest, Playwright`,
 
-### Certifications
-• AWS Certified Solutions Architect
-• MongoDB Certified Developer
-• React Advanced Patterns
-• Docker and Kubernetes`,
+		"frontend.md": `## Frontend
 
-		"frontend.md": `## Frontend Expertise
+React 18, TypeScript, Tailwind CSS, Framer Motion, Three.js / R3F,
+React Router, Zustand, React Query, Jest + Testing Library.
 
-### Core Technologies
-• React.js & Next.js (4+ years)
-• TypeScript (3+ years)
-• Redux, Context API, Zustand
-• Tailwind CSS, Styled Components
-• Jest, React Testing Library
+Comfortable with SSR / SSG (Next.js), accessibility (WCAG 2.1),
+Core Web Vitals work, and animation systems that don't tank perf.`,
 
-### Advanced Skills
-• Server-Side Rendering (SSR)
-• Static Site Generation (SSG)
-• Progressive Web Apps (PWA)
-• Web Performance Optimization
-• Accessibility (WCAG 2.1)`,
+		"backend.md": `## Backend
+
+Node.js (Express, Fastify), REST + GraphQL APIs, WebSockets,
+auth flows (JWT, OAuth, session), rate limiting, job queues.
+
+Experience designing service boundaries and writing HTTP contracts
+that survive contact with real clients.`,
+
+		"infra.md": `## Infrastructure
+
+Docker, docker-compose, CI/CD pipelines (GitHub Actions),
+PostgreSQL schema design, query plans, indexing,
+Redis for caching and queues, log aggregation + metrics.`,
+
+		"featured.md": `## Featured work
+
+Run \`cd projects\` then \`open projects\` to jump to the full list.
+Or just type \`goto projects\`.`,
+
+		"github.md": `## GitHub
+
+https://github.com/Leslie-23
+
+Type \`open github\` to open in a new tab.`,
+
+		"email.txt": `hello@lesliepaul.me
+
+Type \`open contact\` to jump to the contact form.`,
+
+		"socials.md": `GitHub:    https://github.com/Leslie-23
+LinkedIn:  https://linkedin.com/in/leslie-paul-ajayi
+Email:     hello@lesliepaul.me`,
+
+		"resume.md": `Type \`open resume\` to view the full resume page.`,
 	};
 
 	// Command execution with proper output formatting
@@ -130,7 +148,9 @@ University of Ghana (2014-2018)
 				case "-h":
 					result = `Available commands:
   ls, dir               List directory contents
-  cd <dir>              Change directory
+  cd <dir>              Change directory (try: cd projects)
+  goto <page>           Navigate to a page (home|projects|about|contact|resume)
+  open <target>         Open a page or external link (github|linkedin|email)
   pwd                   Print working directory
   whoami                Display current user
   clear, cls            Clear terminal screen
@@ -140,17 +160,74 @@ University of Ghana (2014-2018)
   history               Show command history
   find <pattern>        Search for files
   tree                  Show directory tree
-  mkdir <name>          Create directory
-  touch <file>          Create file
-  rm <name>             Remove file/directory
-  mv <src> <dest>       Move/rename file
-  cp <src> <dest>       Copy file
   grep <pattern> <file> Search in file
   head <file>           Show first 10 lines
   tail <file>           Show last 10 lines
   wc <file>             Word count
   exit, quit            Close terminal
-  help                  Show this help`;
+  help                  Show this help
+
+Tip: press \` anywhere on the site to toggle this terminal.`;
+					break;
+
+				case "goto":
+				case "nav":
+					if (!args[0]) {
+						result = "Usage: goto <home|projects|about|contact|resume|socials>";
+						break;
+					}
+					{
+						const key = args[0].replace(/^\/+|\/+$/g, "").toLowerCase();
+						const route = ROUTE_MAP[key];
+						if (route && navigate) {
+							outputLines.push({
+								type: "output",
+								text: `→ navigating to ${route}`,
+							});
+							setOutput((prev) => [...prev, ...outputLines]);
+							setTimeout(() => {
+								navigate(route);
+								onClose();
+							}, 250);
+							return;
+						}
+						result = `goto: unknown page "${args[0]}". Try: home, projects, about, contact, resume`;
+					}
+					break;
+
+				case "open":
+					if (!args[0]) {
+						result = "Usage: open <page|github|linkedin|email>";
+						break;
+					}
+					{
+						const key = args[0].toLowerCase();
+						const external = {
+							github: "https://github.com/Leslie-23",
+							linkedin: "https://linkedin.com/in/leslie-paul-ajayi",
+							email: "mailto:hello@lesliepaul.me",
+							mail: "mailto:hello@lesliepaul.me",
+						};
+						if (external[key]) {
+							window.open(external[key], "_blank", "noopener,noreferrer");
+							result = `→ opened ${key}`;
+							break;
+						}
+						const route = ROUTE_MAP[key.replace(/^\/+|\/+$/g, "")];
+						if (route && navigate) {
+							outputLines.push({
+								type: "output",
+								text: `→ opening ${route}`,
+							});
+							setOutput((prev) => [...prev, ...outputLines]);
+							setTimeout(() => {
+								navigate(route);
+								onClose();
+							}, 250);
+							return;
+						}
+						result = `open: unknown target "${args[0]}"`;
+					}
 					break;
 
 				case "ls":
@@ -199,6 +276,25 @@ University of Ghana (2014-2018)
 					if (target === "~" || target === "/") {
 						setCurrentDir("~");
 						break;
+					}
+
+					// If target maps to a real route, navigate there
+					{
+						const routeKey = target
+							.replace(/^\/+|\/+$/g, "")
+							.toLowerCase();
+						if (ROUTE_MAP[routeKey] && navigate) {
+							outputLines.push({
+								type: "output",
+								text: `→ ${ROUTE_MAP[routeKey]}`,
+							});
+							setOutput((prev) => [...prev, ...outputLines]);
+							setTimeout(() => {
+								navigate(ROUTE_MAP[routeKey]);
+								onClose();
+							}, 250);
+							return;
+						}
 					}
 
 					const currentDirKey =
@@ -450,7 +546,7 @@ Session: Interactive Terminal`;
 				setOutput((prev) => [...prev, ...outputLines]);
 			}
 		},
-		[currentDir, history, onClose]
+		[currentDir, history, onClose, navigate]
 	);
 
 	// Handle command history navigation
@@ -558,30 +654,20 @@ Session: Interactive Terminal`;
 				setOutput([
 					{
 						type: "output",
-						text: "Welcome to Leslie Paul's Interactive Terminal!",
+						text: "leslie.dev interactive terminal — v2.0",
 					},
 					{
 						type: "output",
-						text: "This terminal simulates a Linux environment to explore my portfolio.",
-					},
-					{
-						type: "output",
-						text: "Type 'help' to see available commands.",
-					},
-					{
-						type: "output",
-						text: "Use Tab for auto-completion, ↑/↓ for command history.",
+						text: `session: visitor@lesliepaul.me  •  host: ${userOS || "web"}`,
 					},
 					{ type: "output", text: "" },
-					{ type: "output", text: "System Info:" },
 					{
 						type: "output",
-						text: `• OS: ${userOS || "Web Terminal"}`,
+						text: "Try:  help  •  ls  •  cat bio.txt  •  goto projects  •  open github",
 					},
-					{ type: "output", text: `• User: visitor` },
 					{
 						type: "output",
-						text: `• Shell: interactive-portfolio v1.0`,
+						text: "Tab completes, ↑/↓ walks history, ` toggles this window, Esc closes.",
 					},
 					{ type: "output", text: "" },
 				]);
@@ -649,274 +735,14 @@ Session: Interactive Terminal`;
 						<span className="hint-separator">•</span>
 						<span className="hint-item">Ctrl+L Clear</span>
 						<span className="hint-separator">•</span>
-						<span className="hint-item">Ctrl+C Cancel</span>
+						<span className="hint-item">` Toggle</span>
+						<span className="hint-separator">•</span>
+						<span className="hint-item">Esc Close</span>
 					</div>
 				</div>
 			</div>
 		</div>
 	);
-};
-
-// Enhanced CSS for the terminal (add to globals.css)
-const terminalStyles = `
-.terminal-modal-overlay {
-	position: fixed;
-	inset: 0;
-	background: rgba(0, 0, 0, 0.8);
-	backdrop-filter: blur(4px);
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	z-index: 9999;
-	animation: fadeIn 0.2s ease-out;
-}
-
-.terminal-modal {
-	width: 90%;
-	max-width: 900px;
-	height: 80vh;
-	background: #1e1e1e;
-	border-radius: 8px;
-	overflow: hidden;
-	box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-	border: 1px solid #333;
-	display: flex;
-	flex-direction: column;
-	animation: slideUp 0.3s ease-out;
-}
-
-.terminal-header {
-	background: #2d2d2d;
-	padding: 0 16px;
-	height: 40px;
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
-	border-bottom: 1px solid #333;
-	user-select: none;
-}
-
-.terminal-controls {
-	display: flex;
-	gap: 8px;
-}
-
-.terminal-controls .control {
-	width: 12px;
-	height: 12px;
-	border-radius: 50%;
-	cursor: pointer;
-	transition: all 0.2s;
-}
-
-.terminal-controls .control.close {
-	background: #ff5f56;
-}
-
-.terminal-controls .control.minimize {
-	background: #ffbd2e;
-}
-
-.terminal-controls .control.maximize {
-	background: #27ca3f;
-}
-
-.terminal-controls .control:hover {
-	transform: scale(1.1);
-}
-
-.terminal-title {
-	color: #888;
-	font-size: 13px;
-	font-family: 'SF Mono', 'Menlo', monospace;
-}
-
-.terminal-body {
-	flex: 1;
-	padding: 20px;
-	overflow-y: auto;
-	font-family: 'SF Mono', 'Menlo', 'Monaco', monospace;
-	font-size: 14px;
-	line-height: 1.5;
-	color: #f0f0f0;
-	background: #1e1e1e;
-}
-
-.terminal-output {
-	margin-bottom: 10px;
-}
-
-.terminal-line {
-	margin-bottom: 2px;
-	white-space: pre-wrap;
-	word-break: break-word;
-}
-
-.terminal-line.prompt {
-	color: #6a9955;
-	font-weight: 500;
-}
-
-.terminal-line.command {
-	color: #f0f0f0;
-	opacity: 0.9;
-}
-
-.terminal-line.output {
-	color: #cccccc;
-}
-
-.terminal-line.error {
-	color: #f44747;
-}
-
-.terminal-input-form {
-	display: flex;
-	align-items: center;
-	gap: 8px;
-	position: relative;
-}
-
-.prompt {
-	color: #6a9955;
-	font-weight: 500;
-	white-space: nowrap;
-	flex-shrink: 0;
-}
-
-.terminal-input {
-	flex: 1;
-	background: transparent;
-	border: none;
-	color: #f0f0f0;
-	font-family: inherit;
-	font-size: inherit;
-	outline: none;
-	caret-color: #6a9955;
-	min-width: 0;
-}
-
-.terminal-input:focus {
-	outline: none;
-}
-
-.cursor {
-	color: #6a9955;
-	animation: blink 1s infinite;
-	margin-left: 2px;
-}
-
-.terminal-footer {
-	background: #2d2d2d;
-	padding: 8px 16px;
-	border-top: 1px solid #333;
-}
-
-.terminal-hint {
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	gap: 12px;
-	color: #666;
-	font-size: 12px;
-	font-family: 'SF Mono', 'Menlo', monospace;
-}
-
-.hint-separator {
-	opacity: 0.5;
-}
-
-.hint-item {
-	opacity: 0.8;
-}
-
-/* Scrollbar styling */
-.terminal-body::-webkit-scrollbar {
-	width: 8px;
-}
-
-.terminal-body::-webkit-scrollbar-track {
-	background: #2d2d2d;
-}
-
-.terminal-body::-webkit-scrollbar-thumb {
-	background: #555;
-	border-radius: 4px;
-}
-
-.terminal-body::-webkit-scrollbar-thumb:hover {
-	background: #666;
-}
-
-/* Animations */
-@keyframes fadeIn {
-	from { opacity: 0; }
-	to { opacity: 1; }
-}
-
-@keyframes slideUp {
-	from {
-		opacity: 0;
-		transform: translateY(20px);
-	}
-	to {
-		opacity: 1;
-		transform: translateY(0);
-	}
-}
-
-@keyframes blink {
-	0%, 50% { opacity: 1; }
-	51%, 100% { opacity: 0; }
-}
-
-/* Typing effect for initial messages */
-.terminal-line.typing {
-	display: inline-block;
-	overflow: hidden;
-	border-right: 2px solid #6a9955;
-	white-space: nowrap;
-	animation: typing 3s steps(40, end), blink-caret 0.75s step-end infinite;
-}
-
-@keyframes typing {
-	from { width: 0 }
-	to { width: 100% }
-}
-
-@keyframes blink-caret {
-	from, to { border-color: transparent }
-	50% { border-color: #6a9955 }
-}
-`;
-
-// Hook to use the terminal modal
-export const useTerminal = () => {
-	const [isTerminalOpen, setIsTerminalOpen] = useState(false);
-	const [userOS, setUserOS] = useState("unknown");
-
-	useEffect(() => {
-		if (typeof window !== "undefined") {
-			const platform = window.navigator.platform;
-			if (platform.includes("Win")) setUserOS("Windows");
-			else if (platform.includes("Mac")) setUserOS("macOS");
-			else if (platform.includes("Linux")) setUserOS("Linux");
-			else setUserOS(platform);
-		}
-	}, []);
-
-	const openTerminal = () => setIsTerminalOpen(true);
-	const closeTerminal = () => setIsTerminalOpen(false);
-
-	const Terminal = () => (
-		<TerminalModal
-			isOpen={isTerminalOpen}
-			onClose={closeTerminal}
-			userOS={userOS}
-		/>
-	);
-
-	return { openTerminal, closeTerminal, Terminal, isTerminalOpen };
 };
 
 export default TerminalModal;

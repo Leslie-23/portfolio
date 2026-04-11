@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback, createContext, useContext } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Trophy, Star, Eye, MousePointer, Zap, Map } from "lucide-react";
+import { Trophy, Star, Eye, MousePointer, Zap, Map, Terminal } from "lucide-react";
 
 // ---- Game State Context ----
 const GameContext = createContext(null);
@@ -11,6 +11,7 @@ const ACHIEVEMENTS = [
 	{ id: "connected", label: "Connected", desc: "Clicked a social link", icon: Zap, xp: 20 },
 	{ id: "greeted", label: "Hello!", desc: "Clicked the avatar", icon: Star, xp: 15 },
 	{ id: "navigator", label: "Navigator", desc: "Visited 3 pages", icon: MousePointer, xp: 40 },
+	{ id: "terminal", label: "Shell Access", desc: "Opened the interactive terminal", icon: Terminal, xp: 25 },
 ];
 
 export function GameProvider({ children }) {

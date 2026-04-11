@@ -1,10 +1,12 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
-import { Terminal, ArrowLeft, Github, Linkedin, Mail } from "lucide-react";
+import { Terminal, ArrowLeft, Github, Linkedin, Mail, TerminalSquare } from "lucide-react";
+import { useTerminal } from "./TerminalProvider";
 
 function PageNav({ backTo, backLabel }) {
 	const navigate = useNavigate();
+	const { openTerminal } = useTerminal();
 
 	return (
 		<motion.nav
@@ -22,6 +24,15 @@ function PageNav({ backTo, backLabel }) {
 					<span className="text-white font-mono text-sm tracking-wider">
 						LESLIE<span className="text-green-400">.DEV</span>
 					</span>
+				</button>
+
+				<button
+					onClick={openTerminal}
+					title="Open interactive terminal (press `)"
+					className="hidden sm:flex items-center gap-2 text-white/30 hover:text-green-400 font-mono text-xs tracking-wider transition-colors"
+				>
+					<TerminalSquare size={14} />
+					<span className="hidden md:inline">~$</span>
 				</button>
 
 				{backTo && (
@@ -75,6 +86,7 @@ function PageNav({ backTo, backLabel }) {
 
 function PageFooter() {
 	const navigate = useNavigate();
+	const { openTerminal } = useTerminal();
 
 	return (
 		<footer className="border-t border-white/5 pt-12 pb-8 px-6 md:px-12">
@@ -89,9 +101,15 @@ function PageFooter() {
 								LESLIE<span className="text-green-400">.DEV</span>
 							</span>
 						</button>
-						<p className="text-white/25 text-xs leading-relaxed max-w-xs">
+						<p className="text-white/25 text-xs leading-relaxed max-w-xs mb-3">
 							Software Engineer building production-grade applications from database to deployment.
 						</p>
+						<button
+							onClick={openTerminal}
+							className="font-mono text-[11px] text-green-400/50 hover:text-green-400 tracking-wider transition-colors"
+						>
+							$ press ` for terminal
+						</button>
 					</div>
 
 					{/* Nav links */}

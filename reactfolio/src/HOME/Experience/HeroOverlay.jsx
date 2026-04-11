@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { ChevronDown, Github, Linkedin, Mail, Terminal, ArrowRight } from "lucide-react";
 import { useGame } from "./GameUI";
+import { useTerminal } from "../../components/TerminalProvider";
 
 const roles = [
 	"Full-Stack Engineer",
@@ -63,6 +64,7 @@ function GlitchText({ children, className = "" }) {
 export default function HeroOverlay() {
 	const navigate = useNavigate();
 	const { unlock } = useGame();
+	const { openTerminal } = useTerminal();
 	const [loaded, setLoaded] = useState(false);
 
 	useEffect(() => {
@@ -78,12 +80,20 @@ export default function HeroOverlay() {
 				transition={{ delay: 0.5, duration: 0.8, ease: "easeOut" }}
 				className="pointer-events-auto flex items-center justify-between px-6 md:px-12 py-6"
 			>
-				<div className="flex items-center gap-2">
-					<Terminal className="w-5 h-5 text-green-400" />
-					<span className="text-white font-mono text-sm tracking-wider">
+				<button
+					type="button"
+					onClick={() => {
+						unlock("terminal");
+						openTerminal();
+					}}
+					title="Open interactive terminal (press `)"
+					className="pointer-events-auto flex items-center gap-2 group"
+				>
+					<Terminal className="w-5 h-5 text-green-400 group-hover:scale-110 transition-transform" />
+					<span className="text-white font-mono text-sm tracking-wider group-hover:text-green-400 transition-colors">
 						LESLIE<span className="text-green-400">.DEV</span>
 					</span>
-				</div>
+				</button>
 
 				<div className="hidden md:flex items-center gap-8">
 					{[
@@ -138,16 +148,25 @@ export default function HeroOverlay() {
 			{/* Center content */}
 			<div className="flex-1 flex items-center justify-center px-6 md:px-12">
 				<div className="max-w-4xl w-full">
-					{/* Terminal-style greeting */}
-					<motion.div
+					{/* Terminal-style greeting — click to open live terminal */}
+					<motion.button
+						type="button"
 						initial={{ opacity: 0, x: -30 }}
 						animate={{ opacity: 1, x: 0 }}
 						transition={{ delay: 1.2, duration: 0.6 }}
-						className="font-mono text-green-400/70 text-sm mb-4 flex items-center gap-2"
+						onClick={() => {
+							unlock("terminal");
+							openTerminal();
+						}}
+						title="Open interactive terminal (press `)"
+						className="pointer-events-auto font-mono text-green-400/70 hover:text-green-400 text-sm mb-4 flex items-center gap-2 group transition-colors"
 					>
 						<span className="text-green-400">$</span>
 						<span>whoami</span>
-					</motion.div>
+						<span className="text-green-400/30 group-hover:text-green-400/60 text-xs tracking-widest ml-2">
+							[click or press `]
+						</span>
+					</motion.button>
 
 					{/* Name */}
 					<motion.h1

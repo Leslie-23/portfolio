@@ -9,13 +9,13 @@ import {
 	ChevronRight,
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import { useTerminal } from "./helpers/terminal";
+import { useTerminal } from "./TerminalProvider";
 import ThemeToggle from "./ThemeToggle";
 
 const Navbar = () => {
 	const [isMenuOpen, setIsMenuOpen] = useState(false);
 	const [activeItem, setActiveItem] = useState("");
-	const { openTerminal, Terminal } = useTerminal();
+	const { openTerminal } = useTerminal();
 
 	const toggleMenu = () => {
 		setIsMenuOpen(!isMenuOpen);
@@ -89,7 +89,6 @@ const Navbar = () => {
 								LESLIE PAUL
 							</span>
 						</motion.div>
-						<Terminal />
 
 						{/* Desktop Menu */}
 						<div className="hidden md:flex items-center gap-2">

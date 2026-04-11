@@ -17,6 +17,7 @@ import ScrollToTop from "./components/helpers/scrollToTop";
 import Resume from "./CONTACT/resume";
 import CookieConsent from "./components/helpers/cookies";
 import { useGame } from "./HOME/Experience/GameUI";
+import { TerminalProvider } from "./components/TerminalProvider";
 
 function usePageTracker() {
 	const location = useLocation();
@@ -30,31 +31,36 @@ function App() {
 	usePageTracker();
 
 	return (
-		<div className="App min-h-screen transition-colors duration-300">
-			<ScrollToTop />
-			<Routes>
-				<Route path="/" element={<Home />} />
-				<Route path="/home" element={<Home />} />
-				<Route
-					path="/projects/:projectId"
-					element={<ProjectDetail />}
-				/>
-				<Route path="/projects" element={<Projects />} />
-				<Route path="/about" element={<About />} />
-				<Route path="/contact" element={<Contact />} />
-				<Route path="testimonials" element={<Testimonials />} />
-				<Route
-					path="projects-completed"
-					element={<ProjectsCompletion />}
-				/>
-				<Route path="/resume" element={<Resume />} />
-				<Route path="/socials" element={<Socials />} />
-				<Route path="privacy-policy" element={<PrivacyPolicy />} />
-				<Route path="terms-of-service" element={<TermsOfService />} />
-				<Route path="cookies" element={<CookieConsent />} />
-				<Route path="*" element={<NotFound />} />
-			</Routes>
-		</div>
+		<TerminalProvider>
+			<div className="App min-h-screen transition-colors duration-300">
+				<ScrollToTop />
+				<Routes>
+					<Route path="/" element={<Home />} />
+					<Route path="/home" element={<Home />} />
+					<Route
+						path="/projects/:projectId"
+						element={<ProjectDetail />}
+					/>
+					<Route path="/projects" element={<Projects />} />
+					<Route path="/about" element={<About />} />
+					<Route path="/contact" element={<Contact />} />
+					<Route path="testimonials" element={<Testimonials />} />
+					<Route
+						path="projects-completed"
+						element={<ProjectsCompletion />}
+					/>
+					<Route path="/resume" element={<Resume />} />
+					<Route path="/socials" element={<Socials />} />
+					<Route path="privacy-policy" element={<PrivacyPolicy />} />
+					<Route
+						path="terms-of-service"
+						element={<TermsOfService />}
+					/>
+					<Route path="cookies" element={<CookieConsent />} />
+					<Route path="*" element={<NotFound />} />
+				</Routes>
+			</div>
+		</TerminalProvider>
 	);
 }
 
