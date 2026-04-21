@@ -241,7 +241,7 @@ export default function HeroOverlay() {
 						className="mt-16 flex flex-wrap gap-8 md:gap-12 font-mono text-xs"
 					>
 						{[
-							{ label: "PUBLIC_REPOS", value: "30+" },
+							{ label: "PUBLIC_REPOS", value: "150+" },
 							{ label: "TECH_STACK", value: "20+" },
 							{ label: "EXPERIENCE", value: "3+ YRS" },
 							{ label: "STATUS", value: "AVAILABLE", highlight: true },
