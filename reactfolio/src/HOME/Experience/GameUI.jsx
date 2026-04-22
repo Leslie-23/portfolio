@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback, createContext, useContext } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import { Trophy, Star, Eye, MousePointer, Zap, Map, Terminal } from "lucide-react";
 
 // ---- Game State Context ----
@@ -52,8 +52,13 @@ export function GameProvider({ children }) {
 			const achievement = ACHIEVEMENTS.find((a) => a.id === achievementId);
 			if (!achievement) return prev;
 
+			// generate stable id for toast (prefer crypto.randomUUID)
+			const id = typeof crypto !== "undefined" && typeof crypto.randomUUID === "function"
+				? crypto.randomUUID()
+				: Date.now().toString();
+
 			// Show toast
-			setToasts((t) => [...t, { id: Date.now(), achievement }]);
+			setToasts((t) => [...t, { id, achievement }]);
 
 			// Add XP
 			setXp((x) => x + achievement.xp);
@@ -137,41 +142,49 @@ export function XPBar() {
 export function AchievementToasts() {
 	const { toasts, dismissToast } = useGame();
 
+	const reduceMotion = useReducedMotion();
+
 	useEffect(() => {
-		toasts.forEach((toast) => {
-			const timer = setTimeout(() => dismissToast(toast.id), 4000);
-			return () => clearTimeout(timer);
-		});
+		const timers = toasts.map((toast) => setTimeout(() => dismissToast(toast.id), 4000));
+		return () => timers.forEach((t) => clearTimeout(t));
 	}, [toasts, dismissToast]);
 
 	return (
-		<div className="fixed bottom-6 right-4 z-50 flex flex-col gap-2">
+		<div className="fixed bottom-6 right-4 z-50 flex flex-col gap-2" role="status" aria-live="polite" aria-atomic="true">
 			<AnimatePresence>
-				{toasts.map((toast) => (
-					<motion.div
-						key={toast.id}
-						initial={{ x: 100, opacity: 0, scale: 0.9 }}
-						animate={{ x: 0, opacity: 1, scale: 1 }}
-						exit={{ x: 100, opacity: 0, scale: 0.9 }}
-						transition={{ type: "spring", stiffness: 200, damping: 20 }}
-						className="flex items-center gap-3 px-4 py-3 bg-black/80 backdrop-blur-md border border-green-400/30 rounded-lg min-w-[240px]"
-					>
-						<div className="w-8 h-8 rounded-full bg-green-400/10 border border-green-400/30 flex items-center justify-center">
-							<Trophy size={14} className="text-green-400" />
-						</div>
-						<div className="flex-1">
-							<div className="font-mono text-xs text-green-400 font-semibold">
-								{toast.achievement.label}
+				{toasts.map((toast) => {
+					const animProps = reduceMotion
+						? {}
+						: {
+							initial: { x: 100, opacity: 0, scale: 0.9 },
+							animate: { x: 0, opacity: 1, scale: 1 },
+							exit: { x: 100, opacity: 0, scale: 0.9 },
+							transition: { type: "spring", stiffness: 200, damping: 20 },
+						};
+
+					return (
+						<motion.div
+							key={toast.id}
+							{...animProps}
+							className="flex items-center gap-3 px-4 py-3 bg-black/80 backdrop-blur-md border border-green-400/30 rounded-lg min-w-[240px]"
+						>
+							<div className="w-8 h-8 rounded-full bg-green-400/10 border border-green-400/30 flex items-center justify-center">
+								<Trophy size={14} className="text-green-400" />
 							</div>
-							<div className="font-mono text-[10px] text-white/40">
-								{toast.achievement.desc}
+							<div className="flex-1">
+								<div className="font-mono text-xs text-green-400 font-semibold">
+									{toast.achievement.label}
+								</div>
+								<div className="font-mono text-[10px] text-white/40">
+									{toast.achievement.desc}
+								</div>
+							</div> 
+							<div className="font-mono text-[10px] text-green-400/70">
+								+{toast.achievement.xp}xp
 							</div>
-						</div>
-						<div className="font-mono text-[10px] text-green-400/70">
-							+{toast.achievement.xp}xp
-						</div>
-					</motion.div>
-				))}
+						</motion.div>
+					);
+				})}
 			</AnimatePresence>
 		</div>
 	);
