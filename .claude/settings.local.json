@@ -17,7 +17,17 @@
       "Bash(grep -c \"min-h-screen\" build/static/css/*.css)",
       "Bash(ls:*)",
       "Bash(node -e \"const drei = require\\(''@react-three/drei''\\); console.log\\(Object.keys\\(drei\\).filter\\(k => k.toLowerCase\\(\\).includes\\(''text''\\)\\).join\\('', ''\\)\\)\")",
-      "Bash(find . -type f \\\\\\( -name \"*.jsx\" -o -name \"*.js\" -o -name \"*.html\" -o -name \"*.json\" \\\\\\) -not -path \"./node_modules/*\" -exec sed -i 's/leslieajayi27@gmail\\\\.com/hello@lesliepaul.me/g; s/lesliepaulajayi@gmail\\\\.com/hello@lesliepaul.me/g; s/mail@leslie\\\\.dev/hello@lesliepaul.me/g; s/contact@leslie\\\\.dev/hello@lesliepaul.me/g' {} +)"
+      "Bash(find . -type f \\\\\\( -name \"*.jsx\" -o -name \"*.js\" -o -name \"*.html\" -o -name \"*.json\" \\\\\\) -not -path \"./node_modules/*\" -exec sed -i 's/leslieajayi27@gmail\\\\.com/hello@lesliepaul.me/g; s/lesliepaulajayi@gmail\\\\.com/hello@lesliepaul.me/g; s/mail@leslie\\\\.dev/hello@lesliepaul.me/g; s/contact@leslie\\\\.dev/hello@lesliepaul.me/g' {} +)",
+      "Bash(python3 -c ' *)",
+      "Bash(echo \"sellis: $\\(curl -s -o /dev/null -w '%{http_code}' https://github.com/Leslie-23/sellis\\)\")",
+      "Bash(echo \"cp-online: $\\(curl -s -o /dev/null -w '%{http_code}' https://github.com/Leslie-23/cp-online\\)\")",
+      "Bash(echo \"sellisspa: $\\(curl -s -o /dev/null -w '%{http_code}' https://sellisspa.com\\)\")",
+      "Bash(echo \"captivatinghometrade: $\\(curl -s -o /dev/null -w '%{http_code}' https://captivatinghometrade.com\\)\")",
+      "Bash(echo \"trofficient: $\\(curl -s -o /dev/null -w '%{http_code}' https://trofficient-live.vercel.app\\)\")",
+      "Bash(python3 -c \"import json,sys; d=json.load\\(sys.stdin\\); print\\(f\\\\\"desc: {d.get\\('description'\\)}, homepage: {d.get\\('homepage'\\)}, private: {d.get\\('private'\\)}\\\\\"\\)\")",
+      "Bash(grep -E '^\\\\s*\"[a-z-]+\":\\\\s*{$' /Users/admin/Projects/portfolio/reactfolio/src/PROJECTS/data/projects.js)",
+      "Bash(awk -F'\"' '{print $2}')",
+      "Bash(node -e ' *)"
     ]
   }
 }

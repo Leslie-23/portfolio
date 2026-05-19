@@ -21,7 +21,7 @@ const domains = [
 		bgLight: "bg-blue-50",
 		bgDark: "dark:bg-blue-950/30",
 		iconColor: "text-blue-600 dark:text-blue-400",
-		proof: { label: "E-Commerce Platform", link: "/projects/e-commerce-platform" },
+		proof: { label: "AI-SME", link: "/projects/ai-sme" },
 	},
 	{
 		title: "Backend & API Design",
@@ -34,7 +34,7 @@ const domains = [
 		bgLight: "bg-green-50",
 		bgDark: "dark:bg-green-950/30",
 		iconColor: "text-green-600 dark:text-green-400",
-		proof: { label: "Restaurant Platform", link: "/projects/restaurant-website" },
+		proof: { label: "Trofficient", link: "/projects/trofficient" },
 	},
 	{
 		title: "Data & Infrastructure",
@@ -47,7 +47,7 @@ const domains = [
 		bgLight: "bg-purple-50",
 		bgDark: "dark:bg-purple-950/30",
 		iconColor: "text-purple-600 dark:text-purple-400",
-		proof: { label: "Analytics Dashboard", link: "/projects/social-media-analytics" },
+		proof: { label: "OpenStock", link: "/projects/openstock" },
 	},
 	{
 		title: "Systems Architecture",
@@ -60,7 +60,7 @@ const domains = [
 		bgLight: "bg-orange-50",
 		bgDark: "dark:bg-orange-950/30",
 		iconColor: "text-orange-600 dark:text-orange-400",
-		proof: { label: "Task Management App", link: "/projects/task-management-app" },
+		proof: { label: "osAfrica", link: "/projects/osafrica" },
 	},
 ];
 

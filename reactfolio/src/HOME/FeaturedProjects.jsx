@@ -4,47 +4,36 @@ export default function FeaturedProjects() {
 	const navigate = useNavigate();
 	const projects = [
 		{
-			title: "Restaurant Website",
+			title: "Trofficient",
 			description:
-				"A sleek and modern restaurant website with menu browsing, online reservations, and in-house ordering system.",
-			link: "/projects/restaurant-website",
-			tags: ["React", "TailwindCSS", "Node.js", "Express", "MongoDB"],
+				"Transit intelligence for Ghana's trotro network — real-time tracking, dynamic pricing, and mobile-money payments.",
+			link: "/projects/trofficient",
+			tags: ["React Native", "Node.js", "Socket.io", "PostgreSQL"],
+			image: "https://images.unsplash.com/photo-1494522855154-9297ac14b55f?ixlib=rb-4.1.0&auto=format&fit=crop&q=80&w=800",
+		},
+		{
+			title: "AI-SME",
+			description:
+				"AI-powered BI for small businesses. Natural-language assistant grounded in real sales, inventory, and expense data.",
+			link: "/projects/ai-sme",
+			tags: ["React", "TypeScript", "Node.js", "MongoDB"],
+			image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.1.0&auto=format&fit=crop&q=80&w=800",
+		},
+		{
+			title: "Captivating Home Trade",
+			description:
+				"Production e-commerce and operations platform for a live retail business — paid client work on a custom domain.",
+			link: "/projects/captivating-home-trade",
+			tags: ["React", "Node.js", "Express", "MongoDB"],
+			image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-4.1.0&auto=format&fit=crop&q=80&w=800",
+		},
+		{
+			title: "Grilli",
+			description:
+				"High-end restaurant platform — reservations, in-house ordering, and admin tooling on the MERN stack.",
+			link: "/projects/grilli",
+			tags: ["React", "TailwindCSS", "Node.js", "MongoDB"],
 			image: "https://images.unsplash.com/photo-1551218808-94e220e084d2?ixlib=rb-4.1.0&auto=format&fit=crop&q=80&w=800",
-			details: {
-				overview:
-					"Developed a fully responsive restaurant platform that allows users to view the menu, make online reservations, and place in-house orders.",
-				features: [
-					"Interactive menu with dynamic categories",
-					"Table reservation system with confirmation emails",
-					"Admin dashboard for menu and order management",
-					"Integration with payment gateways for in-house orders",
-				],
-				tech: ["React", "TailwindCSS", "Node.js", "Express", "MongoDB"],
-			},
-		},
-		{
-			title: "E-Commerce Platform",
-			description:
-				"Full-stack e-commerce solution with payment integration and inventory management",
-			link: "/projects/e-commerce-platform",
-			tags: ["React", "Node.js", "MongoDB", "Stripe"],
-			image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-4.1.0&auto=format&fit=crop&q=60&w=500",
-		},
-		{
-			title: "Analytics Dashboard",
-			description:
-				"Real-time analytics dashboard with advanced visualization and data processing",
-			link: "/projects/social-media-analytics",
-			tags: ["Next.js", "TypeScript", "Recharts", "Supabase"],
-			image: "https://images.unsplash.com/photo-1608222351212-18fe0ec7b13b?ixlib=rb-4.1.0&auto=format&fit=crop&q=60&w=500",
-		},
-		{
-			title: "Mobile App",
-			description:
-				"Cross-platform mobile application with offline capabilities and sync",
-			link: "/projects/fitness-tracker",
-			tags: ["React Native", "Firebase", "Redux"],
-			image: "https://images.unsplash.com/photo-1551650975-87deedd944c3?ixlib=rb-4.1.0&auto=format&fit=crop&q=60&w=500",
 		},
 	];
 
