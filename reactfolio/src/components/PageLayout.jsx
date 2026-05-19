@@ -184,7 +184,7 @@ function PageFooter() {
 				</div>
 
 				{/* Divider */}
-				<div className="h-px bg-gradient-to-r from-transparent via-white/5 to-transparent mb-6" />
+				<div className="h-px bg-white/5 mb-6" />
 
 				{/* Bottom row */}
 				<div className="flex flex-col md:flex-row items-center justify-between gap-3">

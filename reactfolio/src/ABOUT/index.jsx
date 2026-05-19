@@ -68,11 +68,11 @@ const About = () => {
 
 	const accentColors = {
 		green: "text-green-400 border-green-400/20",
-		cyan: "text-cyan-400 border-cyan-400/20",
-		purple: "text-purple-400 border-purple-400/20",
-		orange: "text-orange-400 border-orange-400/20",
-		blue: "text-blue-400 border-blue-400/20",
-		red: "text-red-400 border-red-400/20",
+		cyan: "text-green-400 border-green-400/20",
+		purple: "text-green-400 border-green-400/20",
+		orange: "text-green-400 border-green-400/20",
+		blue: "text-green-400 border-green-400/20",
+		red: "text-green-400 border-green-400/20",
 	};
 
 	return (
@@ -194,7 +194,7 @@ const About = () => {
 			<section className="py-20 px-6 md:px-12">
 				<div className="max-w-5xl mx-auto">
 					<div className="max-w-5xl mx-auto px-6 md:px-12 mb-12">
-						<div className="h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
+						<div className="h-px bg-white/10" />
 					</div>
 
 					<Reveal>
@@ -237,7 +237,7 @@ const About = () => {
 			{/* CTA */}
 			<section className="py-20 px-6 md:px-12">
 				<div className="max-w-5xl mx-auto">
-					<div className="h-px bg-gradient-to-r from-transparent via-white/10 to-transparent mb-20" />
+					<div className="h-px bg-white/10 mb-20" />
 
 					<Reveal>
 						<div className="text-center">

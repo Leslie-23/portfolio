@@ -137,9 +137,7 @@ export default function AvatarGuide({ scrollProgress = 0 }) {
 					}}
 				>
 					{/* Mini 3D Canvas — renders the actual avatar */}
-					<div className="w-16 h-20 lg:w-20 lg:h-24 rounded-2xl overflow-hidden"
-						style={{ background: "radial-gradient(ellipse at center, rgba(22,163,74,0.12) 0%, transparent 70%)" }}
-					>
+					<div className="w-16 h-20 lg:w-20 lg:h-24 rounded-2xl overflow-hidden bg-green-400/[0.06]">
 						<MiniAvatarCanvas action={currentMessage.action} />
 					</div>
 

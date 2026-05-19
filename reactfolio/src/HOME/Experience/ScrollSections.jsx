@@ -58,32 +58,24 @@ function ExpertiseSection() {
 			title: "Frontend Engineering",
 			description: "React ecosystems, animation systems, responsive interfaces that perform at scale.",
 			tech: ["React", "TypeScript", "Tailwind", "Framer Motion", "Three.js"],
-			accent: "from-green-400/20 to-emerald-400/5",
-			borderAccent: "hover:border-green-400/30",
 		},
 		{
 			icon: Server,
 			title: "Backend & API Design",
 			description: "RESTful services, real-time systems, authentication flows, and API architecture.",
 			tech: ["Node.js", "Express", "GraphQL", "Socket.io", "JWT"],
-			accent: "from-cyan-400/20 to-blue-400/5",
-			borderAccent: "hover:border-cyan-400/30",
 		},
 		{
 			icon: Database,
 			title: "Data & Infrastructure",
 			description: "Database design, caching strategies, containerization, and deployment pipelines.",
 			tech: ["PostgreSQL", "MongoDB", "Redis", "Docker", "CI/CD"],
-			accent: "from-purple-400/20 to-violet-400/5",
-			borderAccent: "hover:border-purple-400/30",
 		},
 		{
 			icon: Cloud,
 			title: "Systems Architecture",
 			description: "Microservices patterns, scalable designs, cloud infrastructure, and monitoring.",
 			tech: ["AWS", "Linux", "Nginx", "Microservices", "Monitoring"],
-			accent: "from-orange-400/20 to-amber-400/5",
-			borderAccent: "hover:border-orange-400/30",
 		},
 	];
 
@@ -99,12 +91,7 @@ function ExpertiseSection() {
 				<div className="grid grid-cols-1 md:grid-cols-2 gap-6">
 					{domains.map((domain, i) => (
 						<Reveal key={domain.title} delay={i * 0.1}>
-							<div
-								className={`group relative p-6 md:p-8 rounded-lg border border-white/5 bg-white/[0.02] backdrop-blur-sm transition-all duration-500 ${domain.borderAccent} hover:bg-white/[0.04]`}
-							>
-								<div
-									className={`absolute inset-0 bg-gradient-to-br ${domain.accent} opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-lg`}
-								/>
+							<div className="group relative p-6 md:p-8 rounded-lg border border-white/5 bg-white/[0.02] backdrop-blur-sm transition-all duration-500 hover:border-green-400/30 hover:bg-white/[0.04]">
 								<div className="relative z-10">
 									<domain.icon className="w-6 h-6 text-green-400 mb-4" />
 									<h3 className="text-xl font-bold text-white mb-2 font-heading">
@@ -139,25 +126,25 @@ function ProjectsSection() {
 	const { unlock } = useGame();
 	const projects = [
 		{
-			title: "E-Commerce Platform",
-			description: "Full-stack marketplace with payment integration, real-time inventory, and admin dashboard.",
-			tech: ["React", "Node.js", "PostgreSQL", "Stripe"],
+			title: "Trofficient",
+			description: "Transit intelligence for Ghana's trotro network — real-time tracking, dynamic pricing, and mobile-money payments.",
+			tech: ["React Native", "Node.js", "Socket.io", "PostgreSQL"],
 			image: null,
-			id: "ecommerce",
+			id: "trofficient",
 		},
 		{
-			title: "Restaurant Management",
-			description: "Order management system with real-time updates, analytics dashboard, and POS integration.",
-			tech: ["Next.js", "Express", "MongoDB", "Socket.io"],
+			title: "AI-SME",
+			description: "AI-powered BI for small businesses. Natural-language assistant grounded in real sales, inventory, and expense data.",
+			tech: ["React", "TypeScript", "Node.js", "MongoDB"],
 			image: null,
-			id: "restaurant",
+			id: "ai-sme",
 		},
 		{
-			title: "Task Management API",
-			description: "RESTful API with JWT auth, role-based access, and comprehensive documentation.",
-			tech: ["Node.js", "Express", "MongoDB", "JWT"],
+			title: "Captivating Home Trade",
+			description: "Production e-commerce platform for a live retail business — paid client work moving real inventory.",
+			tech: ["React", "Node.js", "Express", "MongoDB"],
 			image: null,
-			id: "taskmanager",
+			id: "captivating-home-trade",
 		},
 	];
 
@@ -270,7 +257,7 @@ function SkillsSection() {
 								</div>
 								<div className="h-1 bg-white/5 rounded-full overflow-hidden">
 									<motion.div
-										className="h-full bg-gradient-to-r from-green-400 to-emerald-400 rounded-full"
+										className="h-full bg-green-400 rounded-full"
 										initial={{ width: 0 }}
 										whileInView={{ width: `${skill.level}%` }}
 										viewport={{ once: true }}
@@ -441,7 +428,7 @@ function FooterSection() {
 					</div>
 				</div>
 
-				<div className="h-px bg-gradient-to-r from-transparent via-white/5 to-transparent mb-6" />
+				<div className="h-px bg-white/5 mb-6" />
 
 				<div className="flex flex-col md:flex-row items-center justify-between gap-3">
 					<div className="font-mono text-[11px] text-white/20">
@@ -464,26 +451,22 @@ export default function ScrollSections() {
 			id="experience-section"
 			className="relative z-10 bg-[#0a0a0a]"
 		>
-			{/* Gradient transition from 3D scene */}
-			<div className="h-32 bg-gradient-to-b from-transparent to-[#0a0a0a]" />
-
 			<ExpertiseSection />
 
-			{/* Divider */}
 			<div className="max-w-6xl mx-auto px-6 md:px-12">
-				<div className="h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
+				<div className="h-px bg-white/10" />
 			</div>
 
 			<ProjectsSection />
 
 			<div className="max-w-6xl mx-auto px-6 md:px-12">
-				<div className="h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
+				<div className="h-px bg-white/10" />
 			</div>
 
 			<SkillsSection />
 
 			<div className="max-w-6xl mx-auto px-6 md:px-12">
-				<div className="h-px bg-gradient-to-r from-transparent via-green-400/10 to-transparent" />
+				<div className="h-px bg-green-400/20" />
 			</div>
 
 			<CTASection />

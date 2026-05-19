@@ -16,11 +16,6 @@ const domains = [
 		description:
 			"Building responsive, performant interfaces with modern frameworks. Pixel-perfect UI, smooth animations, and accessibility built in from the start.",
 		technologies: ["React", "Next.js", "TypeScript", "Tailwind CSS", "Framer Motion"],
-		gradient: "from-blue-500 to-cyan-500",
-		darkGradient: "dark:from-blue-600 dark:to-cyan-600",
-		bgLight: "bg-blue-50",
-		bgDark: "dark:bg-blue-950/30",
-		iconColor: "text-blue-600 dark:text-blue-400",
 		proof: { label: "AI-SME", link: "/projects/ai-sme" },
 	},
 	{
@@ -29,11 +24,6 @@ const domains = [
 		description:
 			"Designing RESTful and GraphQL APIs with robust authentication, real-time capabilities, and clean architecture patterns that scale.",
 		technologies: ["Node.js", "Express", "GraphQL", "JWT/OAuth2", "Socket.io"],
-		gradient: "from-green-500 to-emerald-500",
-		darkGradient: "dark:from-green-600 dark:to-emerald-600",
-		bgLight: "bg-green-50",
-		bgDark: "dark:bg-green-950/30",
-		iconColor: "text-green-600 dark:text-green-400",
 		proof: { label: "Trofficient", link: "/projects/trofficient" },
 	},
 	{
@@ -42,11 +32,6 @@ const domains = [
 		description:
 			"Working with relational and NoSQL databases, caching layers, containerized deployments, and CI/CD pipelines for reliable delivery.",
 		technologies: ["PostgreSQL", "MongoDB", "Redis", "Docker", "GitHub Actions"],
-		gradient: "from-purple-500 to-violet-500",
-		darkGradient: "dark:from-purple-600 dark:to-violet-600",
-		bgLight: "bg-purple-50",
-		bgDark: "dark:bg-purple-950/30",
-		iconColor: "text-purple-600 dark:text-purple-400",
 		proof: { label: "OpenStock", link: "/projects/openstock" },
 	},
 	{
@@ -55,11 +40,6 @@ const domains = [
 		description:
 			"Designing microservices, API gateways, caching strategies, and scalable patterns. Thinking in systems, not just features.",
 		technologies: ["Microservices", "MVC/MVVM", "Load Balancing", "AWS", "Nginx"],
-		gradient: "from-orange-500 to-red-500",
-		darkGradient: "dark:from-orange-600 dark:to-red-600",
-		bgLight: "bg-orange-50",
-		bgDark: "dark:bg-orange-950/30",
-		iconColor: "text-orange-600 dark:text-orange-400",
 		proof: { label: "osAfrica", link: "/projects/osafrica" },
 	},
 ];
@@ -113,17 +93,13 @@ export default function EngineeringExpertise() {
 							variants={cardVariants}
 							className="group relative bg-card rounded-2xl border border-border overflow-hidden hover:shadow-xl transition-all duration-300"
 						>
-							{/* Gradient accent top bar */}
-							<div
-								className={`h-1 bg-gradient-to-r ${domain.gradient} ${domain.darkGradient}`}
-							/>
+							{/* Solid accent top bar */}
+							<div className="h-1 bg-green-400/60" />
 
 							<div className="p-8">
 								{/* Icon + Title */}
 								<div className="flex items-center gap-4 mb-4">
-									<div
-										className={`p-3 rounded-xl ${domain.bgLight} ${domain.bgDark} ${domain.iconColor} transition-colors`}
-									>
+									<div className="p-3 rounded-xl bg-green-50 dark:bg-green-950/30 text-green-600 dark:text-green-400 transition-colors">
 										{domain.icon}
 									</div>
 									<h3 className="text-2xl font-bold text-heading font-heading">

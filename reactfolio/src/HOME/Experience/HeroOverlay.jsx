@@ -52,15 +52,6 @@ function TypewriterRole() {
 	);
 }
 
-// Glitch text effect
-function GlitchText({ children, className = "" }) {
-	return (
-		<span className={`relative inline-block ${className}`}>
-			<span className="relative z-10">{children}</span>
-		</span>
-	);
-}
-
 export default function HeroOverlay() {
 	const navigate = useNavigate();
 	const { unlock } = useGame();
@@ -176,10 +167,7 @@ export default function HeroOverlay() {
 						className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold text-white mb-4 tracking-tight"
 						style={{ fontFamily: "'Roboto Condensed', system-ui, sans-serif" }}
 					>
-						<GlitchText>LESLIE</GlitchText>{" "}
-						<span className="text-green-400">
-							<GlitchText>PAUL</GlitchText>
-						</span>
+						LESLIE <span className="text-green-400">PAUL</span>
 					</motion.h1>
 
 					{/* Role cycler */}

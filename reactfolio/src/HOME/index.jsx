@@ -2,7 +2,7 @@ import React, { Suspense, lazy, useState, useEffect, useRef, useCallback } from 
 import HeroOverlay from "./Experience/HeroOverlay";
 import ScrollSections from "./Experience/ScrollSections";
 import AvatarGuide from "./Experience/AvatarGuide";
-import { XPBar, AchievementToasts, ScrollProgressMap } from "./Experience/GameUI";
+import { XPBar, AchievementToasts } from "./Experience/GameUI";
 
 const ExperienceCanvas = lazy(() => import("./Experience/ExperienceCanvas"));
 
@@ -54,7 +54,6 @@ const Home = () => {
 			<AvatarGuide scrollProgress={scrollProgress} />
 			<XPBar />
 			<AchievementToasts />
-			<ScrollProgressMap progress={scrollProgress} />
 		</div>
 	);
 };
