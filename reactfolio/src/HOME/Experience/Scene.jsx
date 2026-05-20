@@ -251,7 +251,7 @@ export default function Scene({ scrollProgress = 0 }) {
 					color="#22c55e"
 				/>
 				<pointLight position={[0, 2, 2]} intensity={0.6} color="#ffffff" />
-				<Avatar position={[0, 0, 0]} action="wave" scale={0.65} />
+				<Avatar position={[0, 0, 0]} action="walk" scale={0.013} />
 			</group>
 
 			<CameraRig />

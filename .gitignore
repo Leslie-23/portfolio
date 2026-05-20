@@ -1,0 +1,5 @@
+# macOS
+.DS_Store
+
+# 3D assets — keep out of git history; serve via CDN/LFS for production
+*.fbx

@@ -28,7 +28,7 @@ function MiniAvatarCanvas({ action = "idle" }) {
 			<directionalLight position={[2, 3, 3]} intensity={0.8} color="#ffffff" />
 			<pointLight position={[-1, 2, 2]} intensity={0.4} color="#22c55e" />
 			<Suspense fallback={null}>
-				<Avatar position={[0, 0, 0]} action={action} scale={0.5} />
+				<Avatar position={[0, -0.8, 0]} action={action} scale={0.012} />
 			</Suspense>
 		</Canvas>
 	);
