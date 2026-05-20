@@ -449,7 +449,7 @@ function FooterSection() {
 						<div className="flex gap-2 mb-4">
 							{[
 								{ icon: Github, href: "https://github.com/Leslie-23" },
-								{ href: "https://linkedin.com/in/leslie-paul-ajayi" },
+								{ href: "https://www.linkedin.com/in/leslie-paul-ajayi-409b16356/" },
 								{ href: "mailto:lesliepaulajayi@gmail.com" },
 							].map((item, i) => (
 								<a

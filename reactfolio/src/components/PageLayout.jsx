@@ -13,7 +13,7 @@ function PageNav({ backTo, backLabel }) {
 			initial={{ y: -100, opacity: 0 }}
 			animate={{ y: 0, opacity: 1 }}
 			transition={{ duration: 0.6, ease: "easeOut" }}
-			className="flex items-center justify-between px-6 md:px-12 py-6 border-b border-white/5"
+			className="hidden md:flex items-center justify-between px-6 md:px-12 py-6 border-b border-white/5"
 		>
 			<div className="flex items-center gap-6">
 				<button
@@ -67,7 +67,7 @@ function PageNav({ backTo, backLabel }) {
 			<div className="flex items-center gap-4">
 				{[
 					{ icon: Github, href: "https://github.com/Leslie-23" },
-					{ icon: Linkedin, href: "https://linkedin.com/in/leslie-paul-ajayi" },
+					{ icon: Linkedin, href: "https://www.linkedin.com/in/leslie-paul-ajayi-409b16356/" },
 				].map((item, i) => (
 					<a
 						key={i}
@@ -160,7 +160,7 @@ function PageFooter() {
 						<div className="flex gap-2 mb-4">
 							{[
 								{ icon: Github, href: "https://github.com/Leslie-23" },
-								{ icon: Linkedin, href: "https://linkedin.com/in/leslie-paul-ajayi" },
+								{ icon: Linkedin, href: "https://www.linkedin.com/in/leslie-paul-ajayi-409b16356/" },
 								{ icon: Mail, href: "mailto:lesliepaulajayi@gmail.com" },
 							].map((item, i) => (
 								<a

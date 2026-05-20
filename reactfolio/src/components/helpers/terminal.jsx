@@ -103,7 +103,7 @@ Type \`open github\` to open in a new tab.`,
 Type \`open contact\` to jump to the contact form.`,
 
 		"socials.md": `GitHub:    https://github.com/Leslie-23
-LinkedIn:  https://linkedin.com/in/leslie-paul-ajayi
+LinkedIn:  https://www.linkedin.com/in/leslie-paul-ajayi-409b16356/
 Email:     lesliepaulajayi@gmail.com`,
 
 		"resume.md": `Type \`open resume\` to view the full resume page.`,
@@ -204,7 +204,7 @@ Tip: press \` anywhere on the site to toggle this terminal.`;
 						const key = args[0].toLowerCase();
 						const external = {
 							github: "https://github.com/Leslie-23",
-							linkedin: "https://linkedin.com/in/leslie-paul-ajayi",
+							linkedin: "https://www.linkedin.com/in/leslie-paul-ajayi-409b16356/",
 							email: "mailto:lesliepaulajayi@gmail.com",
 							mail: "mailto:lesliepaulajayi@gmail.com",
 						};

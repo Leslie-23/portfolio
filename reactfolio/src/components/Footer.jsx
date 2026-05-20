@@ -33,7 +33,7 @@ const Footer = () => {
 								{
 									name: "LinkedIn",
 									icon: <Linkedin size={20} />,
-									href: "https://www.linkedin.com/in/leslie-paul-ajayi-409b16356",
+									href: "https://www.linkedin.com/in/leslie-paul-ajayi-409b16356/",
 								},
 								{
 									name: "Twitter",

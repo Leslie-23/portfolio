@@ -7,7 +7,7 @@ import CTASection from "../CTASection";
 const Socials = () => {
 	const socialLinks = [
 		{ name: "GitHub", handle: "@leslie-23", url: "https://github.com/leslie-23", description: "Open source & projects", accent: "white" },
-		{ name: "LinkedIn", handle: "@leslie-paul-ajayi", url: "https://www.linkedin.com/in/leslie-paul-ajayi-409b16356", description: "Professional network", accent: "blue" },
+		{ name: "LinkedIn", handle: "@leslie-paul-ajayi", url: "https://www.linkedin.com/in/leslie-paul-ajayi-409b16356/", description: "Professional network", accent: "blue" },
 		{ name: "Twitter/X", handle: "@_iam_leslie", url: "https://x.com/_iam_leslie", description: "Thoughts & insights", accent: "cyan" },
 		{ name: "Instagram", handle: "@i_am.leslie", url: "https://instagram.com/i_am.leslie", description: "Behind the scenes", accent: "pink" },
 		{ name: "WhatsApp", handle: "+233-27-123-7965", url: "https://wa.me/+233271237965", description: "Quick collaboration", accent: "green" },

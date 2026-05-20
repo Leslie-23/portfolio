@@ -16,6 +16,7 @@ import Socials from "./components/helpers/socials";
 import ScrollToTop from "./components/helpers/scrollToTop";
 import Resume from "./CONTACT/resume";
 import Stack from "./STACK";
+import MobileMenu from "./components/MobileMenu";
 import CookieConsent from "./components/helpers/cookies";
 import { useGame } from "./HOME/Experience/GameUI";
 import { TerminalProvider } from "./components/TerminalProvider";
@@ -35,6 +36,7 @@ function App() {
 		<TerminalProvider>
 			<div className="App min-h-screen transition-colors duration-300">
 				<ScrollToTop />
+				<MobileMenu />
 				<Routes>
 					<Route path="/" element={<Home />} />
 					<Route path="/home" element={<Home />} />
