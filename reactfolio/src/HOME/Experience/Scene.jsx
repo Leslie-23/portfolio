@@ -4,28 +4,30 @@ import * as THREE from "three";
 import Avatar from "./Avatar";
 import ClimbingIntro from "./ClimbingIntro";
 
-// Main hero walker: large, walks left↔right across the scene on a pendulum
+// Main hero walker: walks from back to front, snap-turns, walks back. Slow pace.
 function WalkingHero() {
 	const groupRef = useRef();
 	useFrame((state) => {
 		if (!groupRef.current) return;
 		const t = state.clock.elapsedTime;
-		const period = 14;            // seconds for a full there-and-back loop
+		const period = 24;            // seconds for a full there-and-back loop
 		const half = period / 2;
 		const phase = t % period;
 		const returning = phase >= half;
 		const local = returning ? (phase - half) / half : phase / half;
 
-		// X: -4 → +4 → -4
-		const x = returning ? 4 - local * 8 : -4 + local * 8;
-		groupRef.current.position.x = x;
+		// Z: -8 (back) → 4 (front) → -8
+		const z = returning ? 4 - local * 12 : -8 + local * 12;
+		groupRef.current.position.z = z;
 
-		// Face direction of travel (snap-turn at apex, brief enough not to notice)
-		groupRef.current.rotation.y = returning ? -Math.PI / 2 : Math.PI / 2;
+		// Face direction of travel.
+		// returning=false → walking toward +Z (front, toward camera): face camera
+		// returning=true  → walking toward -Z (back, away from camera): face away
+		groupRef.current.rotation.y = returning ? 0 : Math.PI;
 	});
 
 	return (
-		<group ref={groupRef} position={[0, -2.4, 1]}>
+		<group ref={groupRef} position={[0, -2.4, 0]}>
 			<Avatar position={[0, 0, 0]} action="walk" scale={0.02} />
 		</group>
 	);
@@ -296,7 +298,8 @@ export default function Scene({ scrollProgress = 0 }) {
 			{!introDone && (
 				<ClimbingIntro
 					position={[0, -3, -0.5]}
-					scale={0.022}
+					rotation={[0, Math.PI, 0]}
+					scale={0.015}
 					onFinish={() => setIntroDone(true)}
 				/>
 			)}

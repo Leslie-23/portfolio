@@ -15,8 +15,21 @@ const GUIDE_MESSAGES = [
 
 const TOTAL_ZONES = GUIDE_MESSAGES.length;
 
-// Mini 3D avatar canvas for the guide
-function MiniAvatarCanvas({ action = "idle" }) {
+// Mini 3D avatar canvas for the guide — cycles wave → climb → walk on a loop.
+// The `action` prop is accepted for compatibility but ignored in favor of the cycle.
+const MINI_CYCLE = ["wave", "climb", "walk"];
+const MINI_CYCLE_MS = 5000;
+
+function MiniAvatarCanvas() {
+	const [idx, setIdx] = useState(0);
+	useEffect(() => {
+		const id = setInterval(
+			() => setIdx((i) => (i + 1) % MINI_CYCLE.length),
+			MINI_CYCLE_MS
+		);
+		return () => clearInterval(id);
+	}, []);
+
 	return (
 		<Canvas
 			camera={{ position: [0, 1.2, 3.2], fov: 35 }}
@@ -26,9 +39,13 @@ function MiniAvatarCanvas({ action = "idle" }) {
 		>
 			<ambientLight intensity={0.5} />
 			<directionalLight position={[2, 3, 3]} intensity={0.8} color="#ffffff" />
-			<pointLight position={[-1, 2, 2]} intensity={0.4} color="#22c55e" />
+			<directionalLight position={[-2, 2, 2]} intensity={0.35} color="#e5f3ff" />
 			<Suspense fallback={null}>
-				<Avatar position={[0, -0.8, 0]} action={action} scale={0.012} />
+				<Avatar
+					position={[0, -0.8, 0]}
+					action={MINI_CYCLE[idx]}
+					scale={0.012}
+				/>
 			</Suspense>
 		</Canvas>
 	);
@@ -137,7 +154,7 @@ export default function AvatarGuide({ scrollProgress = 0 }) {
 					}}
 				>
 					{/* Mini 3D Canvas — renders the actual avatar */}
-					<div className="w-16 h-20 lg:w-20 lg:h-24 rounded-2xl overflow-hidden bg-green-400/[0.06]">
+					<div className="w-16 h-20 lg:w-20 lg:h-24 rounded-2xl overflow-hidden">
 						<MiniAvatarCanvas action={currentMessage.action} />
 					</div>
 

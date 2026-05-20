@@ -8,7 +8,7 @@ export default function FooterAvatar() {
 	return (
 		<div className="w-28 h-32 md:w-36 md:h-40">
 			<Canvas
-				camera={{ position: [0, 0.9, 3], fov: 35 }}
+				camera={{ position: [0, 0.7, 5], fov: 32 }}
 				dpr={[1, 2]}
 				gl={{ antialias: true, alpha: true }}
 				style={{ background: "transparent" }}
@@ -18,7 +18,7 @@ export default function FooterAvatar() {
 				<directionalLight position={[-2, 2, 2]} intensity={0.4} color="#e5f3ff" />
 				<Suspense fallback={null}>
 					<Avatar
-						position={[0, -0.6, 0]}
+						position={[0, -1.1, 0]}
 						action="clap"
 						scale={0.012}
 					/>

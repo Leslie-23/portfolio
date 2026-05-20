@@ -8,6 +8,7 @@ import Avatar from "./Avatar";
  */
 export default function ClimbingIntro({
 	position = [0, -3, -1],
+	rotation = [0, Math.PI, 0], // face the camera by default; flip if back-to-viewer is wanted
 	scale = 0.018,
 	pauseMs = 700,
 	onFinish,
@@ -30,7 +31,7 @@ export default function ClimbingIntro({
 	});
 
 	return (
-		<group ref={wrapperRef} position={position}>
+		<group ref={wrapperRef} position={position} rotation={rotation}>
 			<Avatar
 				action="climb"
 				playOnce
