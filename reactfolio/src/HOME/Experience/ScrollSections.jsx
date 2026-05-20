@@ -7,6 +7,7 @@ import {
 	GitBranch, Box, Github
 } from "lucide-react";
 import { useGame } from "./GameUI";
+import FooterAvatar from "./FooterAvatar";
 
 // Reveal animation wrapper
 function Reveal({ children, delay = 0, className = "" }) {
@@ -354,6 +355,9 @@ function FooterSection() {
 						<p className="text-white/25 text-xs leading-relaxed max-w-xs">
 							Software Engineer building production-grade applications from database to deployment.
 						</p>
+						<div className="mt-4">
+							<FooterAvatar />
+						</div>
 					</div>
 
 					{/* Nav */}
