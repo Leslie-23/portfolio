@@ -161,7 +161,7 @@ function PageFooter() {
 							{[
 								{ icon: Github, href: "https://github.com/Leslie-23" },
 								{ icon: Linkedin, href: "https://linkedin.com/in/leslie-paul-ajayi" },
-								{ icon: Mail, href: "mailto:hello@lesliepaul.me" },
+								{ icon: Mail, href: "mailto:lesliepaulajayi@gmail.com" },
 							].map((item, i) => (
 								<a
 									key={i}
@@ -175,10 +175,10 @@ function PageFooter() {
 							))}
 						</div>
 						<a
-							href="mailto:hello@lesliepaul.me"
+							href="mailto:lesliepaulajayi@gmail.com"
 							className="text-white/25 text-xs font-mono hover:text-green-400 transition-colors"
 						>
-							hello@lesliepaul.me
+							lesliepaulajayi@gmail.com
 						</a>
 					</div>
 				</div>

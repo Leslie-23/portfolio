@@ -11,6 +11,7 @@ import {
 } from "../PROJECTS/data/techMeta";
 import { projectsData } from "../PROJECTS/data/projects";
 import { useGithubStack } from "./useGithubStack";
+import CTASection from "../components/CTASection";
 
 function timeAgo(iso) {
 	if (!iso) return "—";
@@ -228,6 +229,7 @@ export default function Stack() {
 					</div>
 				</div>
 			</section>
+			<CTASection />
 		</div>
 	);
 }

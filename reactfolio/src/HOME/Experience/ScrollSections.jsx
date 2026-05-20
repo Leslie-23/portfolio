@@ -17,6 +17,7 @@ import {
 	groupByTier,
 } from "../../PROJECTS/data/techMeta";
 import { projectsData } from "../../PROJECTS/data/projects";
+import CTASection from "../../components/CTASection";
 
 // Reveal animation wrapper
 function Reveal({ children, delay = 0, className = "" }) {
@@ -374,62 +375,6 @@ function SkillsSection() {
 	);
 }
 
-// CTA Section
-function CTASection() {
-	const navigate = useNavigate();
-	const { unlock } = useGame();
-
-	return (
-		<section className="py-32 px-6 md:px-12">
-			<div className="max-w-4xl mx-auto text-center">
-				<Reveal>
-					<div className="font-mono text-green-400/60 text-xs tracking-[0.3em] mb-6">
-						// CONNECT
-					</div>
-				</Reveal>
-				<Reveal delay={0.1}>
-					<h2
-						className="text-3xl md:text-5xl lg:text-6xl font-bold text-white mb-6 tracking-tight"
-						style={{ fontFamily: "'Roboto Condensed', system-ui, sans-serif" }}
-					>
-						Need an engineer{" "}
-						<span className="text-green-400">who ships?</span>
-					</h2>
-				</Reveal>
-				<Reveal delay={0.2}>
-					<p className="text-white/40 text-lg mb-10 max-w-xl mx-auto">
-						I build from database to deployment. Let's talk about your next
-						project.
-					</p>
-				</Reveal>
-				<Reveal delay={0.3}>
-					<div className="flex flex-wrap gap-4 justify-center pointer-events-auto">
-						<button
-							onClick={() => navigate("/contact")}
-							className="group px-8 py-3 bg-green-500/10 border border-green-400/30 text-green-400 font-mono text-sm tracking-wider hover:bg-green-500/20 hover:border-green-400/60 transition-all duration-300 rounded-sm inline-flex items-center gap-3"
-						>
-							START_CONVERSATION
-							<ArrowRight
-								size={16}
-								className="group-hover:translate-x-1 transition-transform"
-							/>
-						</button>
-						<a
-							href="https://github.com/Leslie-23"
-							target="_blank"
-							rel="noopener noreferrer"
-							onClick={() => unlock("connected")}
-							className="px-8 py-3 border border-white/10 text-white/50 font-mono text-sm tracking-wider hover:border-white/30 hover:text-white/80 transition-all duration-300 rounded-sm inline-flex items-center gap-3"
-						>
-							<Github size={16} />
-							VIEW_GITHUB
-						</a>
-					</div>
-				</Reveal>
-			</div>
-		</section>
-	);
-}
 
 // Footer
 function FooterSection() {
@@ -505,7 +450,7 @@ function FooterSection() {
 							{[
 								{ icon: Github, href: "https://github.com/Leslie-23" },
 								{ href: "https://linkedin.com/in/leslie-paul-ajayi" },
-								{ href: "mailto:hello@lesliepaul.me" },
+								{ href: "mailto:lesliepaulajayi@gmail.com" },
 							].map((item, i) => (
 								<a
 									key={i}
@@ -520,10 +465,10 @@ function FooterSection() {
 							))}
 						</div>
 						<a
-							href="mailto:hello@lesliepaul.me"
+							href="mailto:lesliepaulajayi@gmail.com"
 							className="text-white/25 text-xs font-mono hover:text-green-400 transition-colors"
 						>
-							hello@lesliepaul.me
+							lesliepaulajayi@gmail.com
 						</a>
 					</div>
 				</div>
@@ -569,7 +514,7 @@ export default function ScrollSections() {
 				<div className="h-px bg-green-400/20" />
 			</div>
 
-			<CTASection />
+			<CTASection bordered={false} />
 			<FooterSection />
 		</div>
 	);
