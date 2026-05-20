@@ -4,35 +4,6 @@ import * as THREE from "three";
 import Avatar from "./Avatar";
 import ClimbingIntro from "./ClimbingIntro";
 
-// Main hero walker: walks from back to front, snap-turns, walks back. Slow pace.
-function WalkingHero() {
-	const groupRef = useRef();
-	useFrame((state) => {
-		if (!groupRef.current) return;
-		const t = state.clock.elapsedTime;
-		const period = 24;            // seconds for a full there-and-back loop
-		const half = period / 2;
-		const phase = t % period;
-		const returning = phase >= half;
-		const local = returning ? (phase - half) / half : phase / half;
-
-		// Z: -8 (back) → 4 (front) → -8
-		const z = returning ? 4 - local * 12 : -8 + local * 12;
-		groupRef.current.position.z = z;
-
-		// Face direction of travel.
-		// returning=false → walking toward +Z (front, toward camera): face camera
-		// returning=true  → walking toward -Z (back, away from camera): face away
-		groupRef.current.rotation.y = returning ? 0 : Math.PI;
-	});
-
-	return (
-		<group ref={groupRef} position={[0, -2.4, 0]}>
-			<Avatar position={[0, 0, 0]} action="walk" scale={0.02} />
-		</group>
-	);
-}
-
 // Floating geometric shapes that react to mouse
 function FloatingShape({ position, geometry, color, speed, rotationSpeed, scale = 1 }) {
 	const meshRef = useRef();
@@ -303,9 +274,6 @@ export default function Scene({ scrollProgress = 0 }) {
 					onFinish={() => setIntroDone(true)}
 				/>
 			)}
-
-			{/* Main hero walker — large, pendulum across the scene */}
-			<WalkingHero />
 
 			{/* Greeter — small avatar off to the side, looping a wave */}
 			<Avatar
