@@ -1,22 +1,7 @@
-import React, { useRef, useMemo, useState, useEffect } from "react";
+import React, { useRef, useMemo } from "react";
 import { useFrame, useThree } from "@react-three/fiber";
 import * as THREE from "three";
 import Avatar from "./Avatar";
-
-// Match Tailwind's `md` breakpoint so the greeter only appears on >=768px screens.
-function useIsDesktop(breakpoint = 768) {
-	const [isDesktop, setIsDesktop] = useState(
-		typeof window !== "undefined" ? window.innerWidth >= breakpoint : true
-	);
-	useEffect(() => {
-		const mql = window.matchMedia(`(min-width: ${breakpoint}px)`);
-		const handler = (e) => setIsDesktop(e.matches);
-		setIsDesktop(mql.matches);
-		mql.addEventListener("change", handler);
-		return () => mql.removeEventListener("change", handler);
-	}, [breakpoint]);
-	return isDesktop;
-}
 
 // Floating geometric shapes that react to mouse
 function FloatingShape({ position, geometry, color, speed, rotationSpeed, scale = 1 }) {
@@ -239,8 +224,6 @@ export default function Scene({ scrollProgress = 0 }) {
 		[]
 	);
 
-	const isDesktop = useIsDesktop();
-
 	return (
 		<>
 			{/* Scene atmosphere — kept faint and green, this is the background */}
@@ -278,16 +261,13 @@ export default function Scene({ scrollProgress = 0 }) {
 				/>
 			</group>
 
-			{/* Greeter — small avatar off to the side, looping a wave.
-			    Hidden on screens narrower than `md` (768px). */}
-			{isDesktop && (
-				<Avatar
-					position={[5.5, -2.4, 1.5]}
-					rotation={[0, -Math.PI / 6, 0]}
-					action="wave"
-					scale={0.013}
-				/>
-			)}
+			{/* Greeter — small avatar off to the side, looping a wave */}
+			<Avatar
+				position={[5.5, -2.4, 1.5]}
+				rotation={[0, -Math.PI / 6, 0]}
+				action="wave"
+				scale={0.013}
+			/>
 
 			<CameraRig />
 		</>
