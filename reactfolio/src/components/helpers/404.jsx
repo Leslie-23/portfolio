@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { Home, ArrowLeft, Terminal, Search, Mail, User, ArrowRight } from "lucide-react";
+import CTASection from "../CTASection";
 
 const NotFound = () => {
 	const navigate = useNavigate();
@@ -153,11 +154,12 @@ const NotFound = () => {
 							onClick={() => navigate("/contact")}
 							className="text-green-400/60 hover:text-green-400 transition-colors"
 						>
-							hello@lesliepaul.me
+							lesliepaulajayi@gmail.com
 						</button>
 					</p>
 				</motion.div>
 			</div>
+			<CTASection />
 		</div>
 	);
 };

@@ -7,6 +7,7 @@ import {
 	Package, BookOpen, Boxes, Coffee, QrCode, Trophy, Wallet, Cloud
 } from "lucide-react";
 import PageLayout from "../components/PageLayout";
+import CTASection from "../components/CTASection";
 
 function Reveal({ children, delay = 0, className = "" }) {
 	const ref = useRef(null);
@@ -317,6 +318,7 @@ const Projects = () => {
 					</div>
 				</div>
 			</section>
+			<CTASection />
 		</PageLayout>
 	);
 };

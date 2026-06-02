@@ -226,10 +226,10 @@ export default function Scene({ scrollProgress = 0 }) {
 
 	return (
 		<>
-			<ambientLight intensity={0.2} />
-			<pointLight position={[10, 10, 10]} intensity={0.5} color="#16a34a" />
-			<pointLight position={[-10, -10, -10]} intensity={0.3} color="#22c55e" />
-			<directionalLight position={[0, 5, 5]} intensity={0.3} />
+			{/* Scene atmosphere — kept faint and green, this is the background */}
+			<ambientLight intensity={0.35} />
+			<pointLight position={[10, 10, 10]} intensity={0.4} color="#16a34a" />
+			<pointLight position={[-10, -10, -10]} intensity={0.25} color="#22c55e" />
 
 			<fog attach="fog" args={["#0a0a0a", 15, 40]} />
 
@@ -241,18 +241,33 @@ export default function Scene({ scrollProgress = 0 }) {
 				<FloatingShape key={i} {...shape} />
 			))}
 
-			{/* 3D Avatar — chibi Leslie standing in the scene */}
-			<group position={[4, -2.2, 1]}>
-				<spotLight
-					position={[2, 4, 3]}
-					angle={0.5}
-					penumbra={0.8}
-					intensity={1.5}
-					color="#22c55e"
+			{/* Dedicated white 3-point rig for the avatars so skin tones read true,
+			    not green-tinted by the scene lights above. */}
+			<group>
+				<directionalLight
+					position={[3, 6, 5]}
+					intensity={1.2}
+					color="#ffffff"
 				/>
-				<pointLight position={[0, 2, 2]} intensity={0.6} color="#ffffff" />
-				<Avatar position={[0, 0, 0]} action="walk" scale={0.013} />
+				<directionalLight
+					position={[-4, 3, 4]}
+					intensity={0.5}
+					color="#e5f3ff"
+				/>
+				<directionalLight
+					position={[0, 4, -4]}
+					intensity={0.4}
+					color="#bbf7d0"
+				/>
 			</group>
+
+			{/* Greeter — small avatar off to the side, looping a wave */}
+			<Avatar
+				position={[5.5, -2.4, 1.5]}
+				rotation={[0, -Math.PI / 6, 0]}
+				action="wave"
+				scale={0.013}
+			/>
 
 			<CameraRig />
 		</>

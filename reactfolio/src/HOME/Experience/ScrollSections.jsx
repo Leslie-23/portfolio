@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, useMemo } from "react";
 import { motion, useInView } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import {
@@ -7,6 +7,17 @@ import {
 	GitBranch, Box, Github
 } from "lucide-react";
 import { useGame } from "./GameUI";
+import FooterAvatar from "./FooterAvatar";
+import {
+	HOME_FEATURED,
+	TIER_META,
+	getTechMeta,
+	iconUrl,
+	buildTechToProjects,
+	groupByTier,
+} from "../../PROJECTS/data/techMeta";
+import { projectsData } from "../../PROJECTS/data/projects";
+import CTASection from "../../components/CTASection";
 
 // Reveal animation wrapper
 function Reveal({ children, delay = 0, className = "" }) {
@@ -217,122 +228,153 @@ function ProjectsSection() {
 	);
 }
 
-// Skills grid
-function SkillsSection() {
-	const skills = [
-		{ name: "React", level: 95 },
-		{ name: "Node.js", level: 90 },
-		{ name: "TypeScript", level: 85 },
-		{ name: "PostgreSQL", level: 85 },
-		{ name: "MongoDB", level: 80 },
-		{ name: "Docker", level: 75 },
-		{ name: "Python", level: 75 },
-		{ name: "AWS", level: 70 },
-		{ name: "GraphQL", level: 70 },
-		{ name: "Redis", level: 65 },
-		{ name: "Three.js", level: 60 },
-		{ name: "Linux", level: 75 },
-	];
+// One tech chip — logo + name, sized by tier prominence. Click navigates
+// to the first project that used it (if any).
+function TechChip({ name, projects, prominence }) {
+	const navigate = useNavigate();
+	const meta = getTechMeta(name);
+	const icon = iconUrl(meta.iconSlug);
+	const target = projects[0];
+
+	// Visual treatment scaled by tier prominence (1.0 = daily, 0.4 = explored)
+	const isLarge = prominence >= 0.9;
+	const isMed = prominence >= 0.6 && prominence < 0.9;
+
+	const sizeClass = isLarge
+		? "px-3.5 py-2 text-sm gap-2.5"
+		: isMed
+			? "px-3 py-1.5 text-xs gap-2"
+			: "px-2.5 py-1 text-[11px] gap-1.5";
+
+	const textClass = isLarge
+		? "text-white/90"
+		: isMed
+			? "text-white/70"
+			: "text-white/40";
+
+	const borderClass = isLarge
+		? "border-white/15 hover:border-green-400/40"
+		: isMed
+			? "border-white/10 hover:border-green-400/30"
+			: "border-white/5 hover:border-green-400/20";
+
+	const iconSize = isLarge ? 20 : isMed ? 16 : 14;
+
+	const title = target
+		? `${name} — used in ${target.title}${projects.length > 1 ? ` (+${projects.length - 1} more)` : ""}`
+		: name;
 
 	return (
-		<section className="py-24 px-6 md:px-12">
-			<div className="max-w-6xl mx-auto">
-				<SectionHeader
-					label="// TECH_STACK"
-					title="Tools & Technologies"
-					subtitle="Proficiency earned through production use, not tutorials."
+		<button
+			type="button"
+			onClick={() => target && navigate(`/projects/${target.slug}`)}
+			disabled={!target}
+			title={title}
+			className={`group inline-flex items-center font-mono rounded-md border bg-white/[0.02] transition-all duration-300 ${sizeClass} ${textClass} ${borderClass} ${target ? "cursor-pointer hover:bg-white/[0.04]" : "cursor-default opacity-90"}`}
+		>
+			{icon ? (
+				<img
+					src={icon}
+					alt=""
+					width={iconSize}
+					height={iconSize}
+					loading="lazy"
+					className="shrink-0"
 				/>
+			) : (
+				<span
+					className="shrink-0 rounded-full bg-white/10"
+					style={{ width: iconSize - 4, height: iconSize - 4 }}
+				/>
+			)}
+			<span className="whitespace-nowrap">{name}</span>
+		</button>
+	);
+}
 
-				<div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-					{skills.map((skill, i) => (
-						<Reveal key={skill.name} delay={i * 0.05}>
-							<div className="group p-4 rounded-lg border border-white/5 bg-white/[0.02] hover:border-green-400/20 transition-all duration-300">
-								<div className="flex items-center justify-between mb-2">
-									<span className="font-mono text-sm text-white/80">
-										{skill.name}
-									</span>
-									<span className="font-mono text-xs text-white/30">
-										{skill.level}%
-									</span>
-								</div>
-								<div className="h-1 bg-white/5 rounded-full overflow-hidden">
-									<motion.div
-										className="h-full bg-green-400 rounded-full"
-										initial={{ width: 0 }}
-										whileInView={{ width: `${skill.level}%` }}
-										viewport={{ once: true }}
-										transition={{
-											duration: 1,
-											delay: i * 0.05,
-											ease: "easeOut",
-										}}
-									/>
-								</div>
-							</div>
-						</Reveal>
+function TierRow({ tier, techs, techToProjects, prominence, delay }) {
+	if (!techs.length) return null;
+	return (
+		<Reveal delay={delay}>
+			<div className="mb-8">
+				<div className="flex items-baseline gap-3 mb-3 flex-wrap">
+					<div className="font-mono text-green-400/70 text-xs tracking-[0.3em]">
+						// {TIER_META[tier].label}
+					</div>
+					<div className="font-mono text-[11px] text-white/30">
+						{TIER_META[tier].blurb}
+					</div>
+				</div>
+				<div className="flex flex-wrap gap-2">
+					{techs.map((name) => (
+						<TechChip
+							key={name}
+							name={name}
+							projects={techToProjects[name] || []}
+							prominence={prominence}
+						/>
 					))}
 				</div>
 			</div>
-		</section>
+		</Reveal>
 	);
 }
 
-// CTA Section
-function CTASection() {
+function SkillsSection() {
 	const navigate = useNavigate();
-	const { unlock } = useGame();
+	const techToProjects = useMemo(
+		() => buildTechToProjects(projectsData),
+		[]
+	);
+	const tiers = useMemo(() => groupByTier(HOME_FEATURED), []);
 
 	return (
-		<section className="py-32 px-6 md:px-12">
-			<div className="max-w-4xl mx-auto text-center">
-				<Reveal>
-					<div className="font-mono text-green-400/60 text-xs tracking-[0.3em] mb-6">
-						// CONNECT
-					</div>
-				</Reveal>
-				<Reveal delay={0.1}>
-					<h2
-						className="text-3xl md:text-5xl lg:text-6xl font-bold text-white mb-6 tracking-tight"
-						style={{ fontFamily: "'Roboto Condensed', system-ui, sans-serif" }}
-					>
-						Need an engineer{" "}
-						<span className="text-green-400">who ships?</span>
-					</h2>
-				</Reveal>
-				<Reveal delay={0.2}>
-					<p className="text-white/40 text-lg mb-10 max-w-xl mx-auto">
-						I build from database to deployment. Let's talk about your next
-						project.
-					</p>
-				</Reveal>
+		<section className="py-24 px-6 md:px-12">
+			<div className="max-w-5xl mx-auto">
+				<SectionHeader
+					label="// TECH_STACK"
+					title="Tools & Technologies"
+					subtitle="Grouped by how often it lands in a commit. Click any to jump to a project where it shipped."
+				/>
+
+				<TierRow
+					tier="daily"
+					techs={tiers.daily}
+					techToProjects={techToProjects}
+					prominence={1.0}
+					delay={0}
+				/>
+				<TierRow
+					tier="shipped"
+					techs={tiers.shipped}
+					techToProjects={techToProjects}
+					prominence={0.7}
+					delay={0.1}
+				/>
+				<TierRow
+					tier="explored"
+					techs={tiers.explored}
+					techToProjects={techToProjects}
+					prominence={0.4}
+					delay={0.2}
+				/>
+
 				<Reveal delay={0.3}>
-					<div className="flex flex-wrap gap-4 justify-center pointer-events-auto">
+					<div className="mt-10">
 						<button
-							onClick={() => navigate("/contact")}
-							className="group px-8 py-3 bg-green-500/10 border border-green-400/30 text-green-400 font-mono text-sm tracking-wider hover:bg-green-500/20 hover:border-green-400/60 transition-all duration-300 rounded-sm inline-flex items-center gap-3"
+							onClick={() => navigate("/stack")}
+							className="font-mono text-sm text-white/40 hover:text-green-400 transition-colors tracking-wider inline-flex items-center gap-2"
 						>
-							START_CONVERSATION
-							<ArrowRight
-								size={16}
-								className="group-hover:translate-x-1 transition-transform"
-							/>
+							SEE_LIVE_GITHUB_BREAKDOWN
+							<ArrowRight size={14} />
 						</button>
-						<a
-							href="https://github.com/Leslie-23"
-							target="_blank"
-							rel="noopener noreferrer"
-							onClick={() => unlock("connected")}
-							className="px-8 py-3 border border-white/10 text-white/50 font-mono text-sm tracking-wider hover:border-white/30 hover:text-white/80 transition-all duration-300 rounded-sm inline-flex items-center gap-3"
-						>
-							<Github size={16} />
-							VIEW_GITHUB
-						</a>
 					</div>
 				</Reveal>
 			</div>
 		</section>
 	);
 }
+
 
 // Footer
 function FooterSection() {
@@ -354,6 +396,9 @@ function FooterSection() {
 						<p className="text-white/25 text-xs leading-relaxed max-w-xs">
 							Software Engineer building production-grade applications from database to deployment.
 						</p>
+						<div className="mt-4">
+							<FooterAvatar />
+						</div>
 					</div>
 
 					{/* Nav */}
@@ -404,8 +449,8 @@ function FooterSection() {
 						<div className="flex gap-2 mb-4">
 							{[
 								{ icon: Github, href: "https://github.com/Leslie-23" },
-								{ href: "https://linkedin.com/in/leslie-paul-ajayi" },
-								{ href: "mailto:hello@lesliepaul.me" },
+								{ href: "https://www.linkedin.com/in/leslie-paul-ajayi-409b16356/" },
+								{ href: "mailto:lesliepaulajayi@gmail.com" },
 							].map((item, i) => (
 								<a
 									key={i}
@@ -420,10 +465,10 @@ function FooterSection() {
 							))}
 						</div>
 						<a
-							href="mailto:hello@lesliepaul.me"
+							href="mailto:lesliepaulajayi@gmail.com"
 							className="text-white/25 text-xs font-mono hover:text-green-400 transition-colors"
 						>
-							hello@lesliepaul.me
+							lesliepaulajayi@gmail.com
 						</a>
 					</div>
 				</div>
@@ -469,7 +514,7 @@ export default function ScrollSections() {
 				<div className="h-px bg-green-400/20" />
 			</div>
 
-			<CTASection />
+			<CTASection bordered={false} />
 			<FooterSection />
 		</div>
 	);

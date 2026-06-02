@@ -3,6 +3,7 @@ import { motion, useInView } from "framer-motion";
 import { Download, ExternalLink, ArrowRight } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import PageLayout from "../components/PageLayout";
+import CTASection from "../components/CTASection";
 
 function Reveal({ children, delay = 0, className = "" }) {
 	const ref = useRef(null);
@@ -121,6 +122,7 @@ const Resume = () => {
 					</Reveal>
 				</div>
 			</section>
+			<CTASection />
 		</PageLayout>
 	);
 };

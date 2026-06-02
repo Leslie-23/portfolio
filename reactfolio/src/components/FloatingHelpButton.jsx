@@ -23,7 +23,7 @@ const FloatingHelpButton = () => {
 		{
 			label: "Contact Me",
 			icon: <Mail size={20} />,
-			link: "mailto:hello@lesliepaul.me",
+			link: "mailto:lesliepaulajayi@gmail.com",
 		},
 		{
 			label: "Projects",
@@ -38,7 +38,7 @@ const FloatingHelpButton = () => {
 		{
 			label: "LinkedIn",
 			icon: <Linkedin size={20} />,
-			link: "https://www.linkedin.com/in/leslie-paul-ajayi-409b16356?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=ios_app",
+			link: "https://www.linkedin.com/in/leslie-paul-ajayi-409b16356/",
 		},
 	];
 

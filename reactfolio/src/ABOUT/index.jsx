@@ -7,6 +7,7 @@ import {
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import PageLayout from "../components/PageLayout";
+import CTASection from "../components/CTASection";
 
 function Reveal({ children, delay = 0, className = "" }) {
 	const ref = useRef(null);
@@ -234,39 +235,7 @@ const About = () => {
 				</div>
 			</section>
 
-			{/* CTA */}
-			<section className="py-20 px-6 md:px-12">
-				<div className="max-w-5xl mx-auto">
-					<div className="h-px bg-white/10 mb-20" />
-
-					<Reveal>
-						<div className="text-center">
-							<h2
-								className="text-2xl md:text-4xl font-bold text-white mb-4"
-								style={{ fontFamily: "'Roboto Condensed', system-ui, sans-serif" }}
-							>
-								Want to work together?
-							</h2>
-							<p className="text-white/40 mb-8">Let's build something meaningful.</p>
-							<div className="flex flex-wrap gap-4 justify-center">
-								<button
-									onClick={() => navigate("/contact")}
-									className="group px-8 py-3 bg-green-500/10 border border-green-400/30 text-green-400 font-mono text-sm tracking-wider hover:bg-green-500/20 hover:border-green-400/60 transition-all duration-300 rounded-sm inline-flex items-center gap-3"
-								>
-									START_CONVERSATION
-									<ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
-								</button>
-								<button
-									onClick={() => navigate("/projects")}
-									className="px-8 py-3 border border-white/10 text-white/50 font-mono text-sm tracking-wider hover:border-white/30 hover:text-white/80 transition-all duration-300 rounded-sm"
-								>
-									VIEW_PROJECTS
-								</button>
-							</div>
-						</div>
-					</Reveal>
-				</div>
-			</section>
+			<CTASection />
 		</PageLayout>
 	);
 };

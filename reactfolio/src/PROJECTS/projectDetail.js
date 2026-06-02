@@ -7,6 +7,7 @@ import {
 } from "lucide-react";
 import { projectsData } from "./data/projects";
 import PageLayout from "../components/PageLayout";
+import CTASection from "../components/CTASection";
 
 function Reveal({ children, delay = 0, className = "" }) {
 	const ref = useRef(null);
@@ -283,6 +284,7 @@ const ProjectDetail = () => {
 					</div>
 				</div>
 			</section>
+			<CTASection />
 		</PageLayout>
 	);
 };

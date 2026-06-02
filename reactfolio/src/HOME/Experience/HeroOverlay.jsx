@@ -69,7 +69,7 @@ export default function HeroOverlay() {
 				initial={{ y: -100, opacity: 0 }}
 				animate={{ y: 0, opacity: 1 }}
 				transition={{ delay: 0.5, duration: 0.8, ease: "easeOut" }}
-				className="pointer-events-auto flex items-center justify-between px-6 md:px-12 py-6"
+				className="pointer-events-auto hidden md:flex items-center justify-between px-6 md:px-12 py-6"
 			>
 				<button
 					type="button"
@@ -110,7 +110,7 @@ export default function HeroOverlay() {
 				<div className="flex items-center gap-4">
 					{[
 						{ icon: Github, href: "https://github.com/Leslie-23" },
-						{ icon: Linkedin, href: "https://linkedin.com/in/leslie-paul-ajayi" },
+						{ icon: Linkedin, href: "https://www.linkedin.com/in/leslie-paul-ajayi-409b16356/" },
 						{ icon: Mail, action: () => navigate("/contact") },
 					].map((item, i) => (
 						<motion.a

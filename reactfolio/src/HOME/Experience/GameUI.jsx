@@ -1,6 +1,41 @@
-import React, { useState, useEffect, useCallback, createContext, useContext } from "react";
+import React, { useState, useEffect, useCallback, useRef, createContext, useContext } from "react";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
-import { Trophy, Star, Eye, MousePointer, Zap, Map, Terminal } from "lucide-react";
+import { Trophy, Star, Eye, MousePointer, Zap, Map, Terminal, ChevronLeft } from "lucide-react";
+
+// Collapse-on-idle hook used by XPBar.
+// Returns { collapsed, expand } — collapsed flips true after `idleMs` of no
+// user activity; calling expand() reveals the panel and restarts the timer.
+function useIdleCollapse(idleMs = 5000) {
+	const [collapsed, setCollapsed] = useState(false);
+	const timerRef = useRef(null);
+
+	const arm = useCallback(() => {
+		clearTimeout(timerRef.current);
+		timerRef.current = setTimeout(() => setCollapsed(true), idleMs);
+	}, [idleMs]);
+
+	useEffect(() => {
+		const onActivity = () => {
+			setCollapsed(false);
+			arm();
+		};
+		const events = ["mousemove", "mousedown", "keydown", "touchstart", "scroll"];
+		events.forEach((e) => window.addEventListener(e, onActivity, { passive: true }));
+		arm(); // start the initial idle countdown
+
+		return () => {
+			clearTimeout(timerRef.current);
+			events.forEach((e) => window.removeEventListener(e, onActivity));
+		};
+	}, [arm]);
+
+	const expand = useCallback(() => {
+		setCollapsed(false);
+		arm();
+	}, [arm]);
+
+	return { collapsed, expand };
+}
 
 // ---- Game State Context ----
 const GameContext = createContext(null);
@@ -103,37 +138,66 @@ export function XPBar() {
 	const { xp, unlockedAchievements } = useGame();
 	const level = Math.floor(xp / 100) + 1;
 	const progress = (xp % 100);
+	const { collapsed, expand } = useIdleCollapse(5000);
 
 	return (
 		<motion.div
 			initial={{ x: 60, opacity: 0 }}
 			animate={{ x: 0, opacity: 1 }}
 			transition={{ delay: 3, duration: 0.6 }}
-			className="fixed top-20 right-4 z-50 flex flex-col items-end gap-2"
+			className="fixed top-20 right-0 z-50"
 		>
-			{/* XP display */}
-			<div className="flex items-center gap-2 px-3 py-1.5 bg-black/60 backdrop-blur-md border border-white/10 rounded-full">
-				<Star size={12} className="text-green-400" />
-				<span className="font-mono text-[11px] text-white/70">
-					LVL {level}
-				</span>
-				<div className="w-16 h-1.5 bg-white/10 rounded-full overflow-hidden">
+			<AnimatePresence mode="wait" initial={false}>
+				{collapsed ? (
+					<motion.button
+						key="collapsed"
+						type="button"
+						onClick={expand}
+						initial={{ x: 40, opacity: 0 }}
+						animate={{ x: 0, opacity: 1 }}
+						exit={{ x: 40, opacity: 0 }}
+						transition={{ duration: 0.25, ease: "easeOut" }}
+						aria-label="Show stats"
+						title="Show stats"
+						className="w-7 h-12 flex items-center justify-center rounded-l-md border border-r-0 border-white/10 bg-black/60 backdrop-blur-md text-white/50 hover:text-green-400 hover:border-green-400/40 transition-colors"
+					>
+						<ChevronLeft size={14} />
+					</motion.button>
+				) : (
 					<motion.div
-						className="h-full bg-green-400 rounded-full"
-						animate={{ width: `${progress}%` }}
-						transition={{ duration: 0.5 }}
-					/>
-				</div>
-				<span className="font-mono text-[10px] text-white/40">{xp}xp</span>
-			</div>
+						key="expanded"
+						initial={{ x: 30, opacity: 0 }}
+						animate={{ x: 0, opacity: 1 }}
+						exit={{ x: 30, opacity: 0 }}
+						transition={{ duration: 0.25, ease: "easeOut" }}
+						className="flex flex-col items-end gap-2 mr-4"
+					>
+						{/* XP display */}
+						<div className="flex items-center gap-2 px-3 py-1.5 bg-black/60 backdrop-blur-md border border-white/10 rounded-full">
+							<Star size={12} className="text-green-400" />
+							<span className="font-mono text-[11px] text-white/70">
+								LVL {level}
+							</span>
+							<div className="w-16 h-1.5 bg-white/10 rounded-full overflow-hidden">
+								<motion.div
+									className="h-full bg-green-400 rounded-full"
+									animate={{ width: `${progress}%` }}
+									transition={{ duration: 0.5 }}
+								/>
+							</div>
+							<span className="font-mono text-[10px] text-white/40">{xp}xp</span>
+						</div>
 
-			{/* Achievements count */}
-			<div className="flex items-center gap-1.5 px-2.5 py-1 bg-black/40 backdrop-blur-md border border-white/5 rounded-full">
-				<Trophy size={10} className="text-yellow-400/70" />
-				<span className="font-mono text-[10px] text-white/40">
-					{unlockedAchievements.length}/{ACHIEVEMENTS.length}
-				</span>
-			</div>
+						{/* Achievements count */}
+						<div className="flex items-center gap-1.5 px-2.5 py-1 bg-black/40 backdrop-blur-md border border-white/5 rounded-full">
+							<Trophy size={10} className="text-yellow-400/70" />
+							<span className="font-mono text-[10px] text-white/40">
+								{unlockedAchievements.length}/{ACHIEVEMENTS.length}
+							</span>
+						</div>
+					</motion.div>
+				)}
+			</AnimatePresence>
 		</motion.div>
 	);
 }
