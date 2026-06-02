@@ -27,7 +27,8 @@
       "Bash(python3 -c \"import json,sys; d=json.load\\(sys.stdin\\); print\\(f\\\\\"desc: {d.get\\('description'\\)}, homepage: {d.get\\('homepage'\\)}, private: {d.get\\('private'\\)}\\\\\"\\)\")",
       "Bash(grep -E '^\\\\s*\"[a-z-]+\":\\\\s*{$' /Users/admin/Projects/portfolio/reactfolio/src/PROJECTS/data/projects.js)",
       "Bash(awk -F'\"' '{print $2}')",
-      "Bash(node -e ' *)"
+      "Bash(node -e ' *)",
+      "PowerShell(\\(Get-Item \"C:\\\\Users\\\\Administrator\\\\portfolio\\\\reactfolio\\\\public\\\\Leslie_Paul_Ajayi_Resume.pdf\"\\).Length / 1KB)"
     ]
   }
 }
