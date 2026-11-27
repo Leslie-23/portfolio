@@ -1040,10 +1040,13 @@ export const AFFILIATIONS: Affiliation[] = [
     href: "https://globaliconsagency.com",
     note: "A technology company in Accra building digital systems for transport, education, public services, payments and governance.",
   },
-  { id: "tfg", name: "Transport for Ghana", role: "AFFILIATION", img: "/affil/transport-for-ghana.png", w: 700, h: 187 },
-  { id: "tapngo", name: "Tap n' Go", role: "AFFILIATION", img: "/affil/tap-n-go.png", w: 600, h: 600 },
-  { id: "moveet", name: "Moveet", role: "AFFILIATION", img: "/affil/moveet.png", w: 600, h: 600 },
-  { id: "nss", name: "NSS", role: "AFFILIATION", img: "/affil/nss.png", w: 600, h: 485, note: "I worked on its caching system." },
+  { id: "tfg", name: "Transport for Ghana", role: "AFFILIATION", img: "/affil/transport-for-ghana.png", w: 700, h: 187,
+    note: "The consortium behind Ghana's Tap n' Go, GoRide and GoDriver: public-transport payments and ride-hailing, for commuters and drivers." },
+  { id: "tapngo", name: "Tap n' Go", role: "AFFILIATION", img: "/affil/tap-n-go.png", w: 600, h: 600,
+    note: "Ghana's digital payment system for public transport: a tap-to-pay card and an app for trotro, intercity and taxi fares." },
+  { id: "moveet", name: "Moveet", role: "AFFILIATION", img: "/affil/moveet.png", w: 600, h: 600,
+    note: "A super-app for moving around Accra: rides, deliveries and food, all in one place." },
+  { id: "nss", name: "NSS", role: "AFFILIATION", img: "/affil/nss.png", w: 600, h: 485, note: "Ghana's National Service Scheme: where graduates register for national service and get their postings. I worked on its caching system." },
 ];
 
 /* ---------------- Screenshot personality ----------------
