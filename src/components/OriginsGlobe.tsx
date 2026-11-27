@@ -15,14 +15,15 @@ const VISITED = "Mali, Burkina Faso, Guinea, Liberia, Ivory Coast, Togo and Beni
 // flags are flag-icons SVGs (MIT, see public/flags/LICENSE.txt), keyed by the country names in the map data
 const FLAG: Record<string, string> = { Gambia: "gm", "Sierra Leone": "sl", Nigeria: "ng", Ghana: "gh", Mali: "ml", "Burkina Faso": "bf", Guinea: "gn", Liberia: "lr", "Côte d'Ivoire": "ci", Togo: "tg", Benin: "bj" };
 const BEEN = [["Mali", "Mali"], ["Burkina Faso", "Burkina Faso"], ["Guinea", "Guinea"], ["Liberia", "Liberia"], ["Côte d'Ivoire", "Ivory Coast"], ["Togo", "Togo"], ["Benin", "Benin"]] as const;
-const FLY_MS = 1100;
+// countries that wear their flag on the globe: the places visited, plus Nigeria, Sierra Leone and Ghana
+const WEAR = new Set<string>([...BEEN.map(([n]) => n), "Nigeria", "Sierra Leone", "Ghana"]);
 
 const SAY: Record<string, string> = { born: "Born in The Gambia", grew: "Grew up in Sierra Leone", descent: "Of Nigerian descent", living: "Living in Ghana" };
 type Feat = { name: string; cls: GlobeCls; geom: { type: "MultiPolygon"; coordinates: number[][][][] }; bbox: [number, number, number, number]; centroid: [number, number] };
 // where each story country's name is written when zoomed in: offset in px, and the text colour
 const LABEL: Record<string, { text: string; dx: number; dy: number; on: "ink" | "bg" | "out" }> = {
   Gambia: { text: "THE GAMBIA", dx: -4, dy: -15, on: "out" }, "Sierra Leone": { text: "SIERRA LEONE", dx: -8, dy: 26, on: "out" },
-  Ghana: { text: "GHANA", dx: 0, dy: 0, on: "ink" }, Nigeria: { text: "NIGERIA", dx: 0, dy: 4, on: "bg" },
+  Ghana: { text: "GHANA", dx: 0, dy: 26, on: "out" }, Nigeria: { text: "NIGERIA", dx: 0, dy: 4, on: "out" },
 };
 
 const ease = (t: number) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
@@ -37,8 +38,6 @@ export default function OriginsGlobe() {
   const [ready, setReady] = useState(false);
   const replay = useRef<() => void>(() => {});
   const nudge = useRef<(dLon: number, dLat: number) => void>(() => {});
-  const fly = useRef<(name: string) => void>(() => {});
-  const mark = useRef<(name: string | null) => void>(() => {});
 
   useEffect(() => {
     const canvas = cv.current, wrap = box.current;
@@ -46,8 +45,7 @@ export default function OriginsGlobe() {
     let dead = false, raf = 0, W = 0, dpr = 1;
     const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
     const view = { lon: FOCUS.lon, lat: FOCUS.lat, k: reduce ? ZOOM : 1 };
-    let mode: "still" | "intro" | "fly" = "still", t0 = 0, played = false;
-    let from = { lon: 0, lat: 0, k: 1 }, to = { lon: 0, lat: 0, k: 1 }, flyIdx = -1;
+    let mode: "still" | "intro" = "still", t0 = 0, played = false;
     const vel = { x: 0, y: 0 };                                  // deg per ms, from a drag
     let drag: { x: number; y: number; t: number; moved: boolean; touch: boolean } | null = null;
     let hover = -1;
@@ -85,7 +83,7 @@ export default function OriginsGlobe() {
         ctx.globalAlpha = f.cls === "visited" ? 0.4 : 1;
         ctx.fillStyle = f.cls === "living" || f.cls === "visited" ? C.accent : f.cls === "land" ? (i === hover ? "#cdd1cb" : "#dcdfda") : C.ink;
         ctx.fill(); ctx.globalAlpha = 1;
-        const fl = f.cls === "visited" ? flags[f.name] : undefined;
+        const fl = WEAR.has(f.name) ? flags[f.name] : undefined;
         if (fl) {                                                       // the flag, fitted to the country and clipped to its outline
           const [[x0, y0], [x1, y1]] = path.bounds(f.geom);
           if (x1 > x0 && y1 > y0 && isFinite(x0 + x1 + y0 + y1)) {
@@ -94,7 +92,7 @@ export default function OriginsGlobe() {
             ctx.drawImage(fl, x0 + (x1 - x0 - w) / 2, y0 + (y1 - y0 - h) / 2, w, h); ctx.restore();
           }
         }
-        ctx.strokeStyle = C.bg; ctx.lineWidth = f.cls === "land" ? 0.8 : 1.5; ctx.lineJoin = "round"; ctx.stroke();
+        ctx.strokeStyle = f.cls === "land" || f.cls === "visited" ? C.bg : C.ink; ctx.lineWidth = f.cls === "land" ? 0.8 : f.cls === "visited" ? 1.5 : 2; ctx.lineJoin = "round"; ctx.stroke();
       });
       if (hover >= 0 && feats[hover].cls !== "land") { ctx.beginPath(); path(feats[hover].geom); ctx.strokeStyle = C.ink; ctx.lineWidth = 2; ctx.stroke(); }
       if (shade) { ctx.save(); ctx.beginPath(); ctx.arc(W / 2, W / 2, R, 0, Math.PI * 2); ctx.clip(); ctx.drawImage(shade, 0, 0, W, W); ctx.restore(); }
@@ -123,10 +121,6 @@ export default function OriginsGlobe() {
         const e = now - t0, s = clamp(e / SPIN_MS, 0, 1), z = clamp((e - SPIN_MS) / ZOOM_MS, 0, 1);
         view.lon = FOCUS.lon - 360 * (1 - ease(s)); view.lat = 22 + (FOCUS.lat - 22) * ease(s); view.k = 1 + (ZOOM - 1) * ease(z);
         if (e >= SPIN_MS + ZOOM_MS) { mode = "still"; view.lon = FOCUS.lon; view.lat = FOCUS.lat; view.k = ZOOM; } else again = true;
-      } else if (mode === "fly") {
-        const s = ease(clamp((now - t0) / FLY_MS, 0, 1));
-        view.lon = from.lon + (to.lon - from.lon) * s; view.lat = from.lat + (to.lat - from.lat) * s; view.k = from.k + (to.k - from.k) * s;
-        if (now - t0 >= FLY_MS) { mode = "still"; showTip(W / 2, W * 0.5, flyIdx); } else again = true;
       } else if (!drag && (Math.abs(vel.x) > 0.0004 || Math.abs(vel.y) > 0.0004)) {      // inertia after a drag
         const dt = Math.min(48, now - (last || now));
         view.lon -= vel.x * dt; view.lat = clamp(view.lat + vel.y * dt, -85, 85);
@@ -141,16 +135,6 @@ export default function OriginsGlobe() {
     const startIntro = () => { vel.x = vel.y = 0; mode = "intro"; t0 = performance.now(); view.k = 1; played = true; kick(); };
     replay.current = () => { if (reduce) { view.lon = FOCUS.lon; view.lat = FOCUS.lat; view.k = ZOOM; kick(); } else startIntro(); };
     nudge.current = (dLon, dLat) => { mode = "still"; view.lon += dLon; view.lat = clamp(view.lat + dLat, -85, 85); kick(); };
-
-    fly.current = (name) => {
-      const i = feats.findIndex((f) => f.name === name); if (i < 0) return;
-      const [lo, la] = feats[i].centroid; let dl = lo - view.lon; while (dl > 180) dl -= 360; while (dl < -180) dl += 360;
-      from = { lon: view.lon, lat: view.lat, k: view.k }; to = { lon: view.lon + dl, lat: clamp(la, -60, 60), k: Math.max(ZOOM, 2.6) };
-      vel.x = vel.y = 0; flyIdx = i; hover = i; mode = reduce ? "still" : "fly"; t0 = performance.now();
-      if (reduce) { view.lon = to.lon; view.lat = to.lat; view.k = to.k; showTip(W / 2, W * 0.5, i); } else { setTip(""); setTipFlag(""); }
-      kick();
-    };
-    mark.current = (name) => { hover = name ? feats.findIndex((f) => f.name === name) : -1; kick(); };
 
     const size = () => {
       const w = wrap.clientWidth; if (!w) return;
@@ -218,7 +202,7 @@ export default function OriginsGlobe() {
       }).sort((a, b) => order[a.cls] - order[b.cls]);
       ctx = canvas.getContext("2d")!;
       path = d3.geoPath(proj, ctx);
-      BEEN.forEach(([name]) => {                                        // the flags load after the globe is up, and appear as they arrive
+      WEAR.forEach((name) => {                                        // the flags load after the globe is up, and appear as they arrive
         fetch(`/flags/${FLAG[name]}.svg`).then((res) => res.text()).then((svg) => {
           const img = new window.Image();
           img.onload = () => { const c = document.createElement("canvas"); c.width = 320; c.height = 240; c.getContext("2d")!.drawImage(img, 0, 0, 320, 240); flags[name] = c; kick(); };
@@ -248,26 +232,7 @@ export default function OriginsGlobe() {
           className="absolute inset-0 block w-full select-none rounded-full outline-offset-4" style={{ touchAction: "pan-y" }} />
         <div ref={tipEl} aria-hidden className={`pointer-events-none absolute left-0 top-0 z-10 whitespace-nowrap rounded-full border border-line bg-bg px-3 py-1.5 text-[13px] font-medium tracking-[-0.01em] shadow-[0_8px_24px_-12px_rgba(0,0,0,.35)] transition-opacity duration-150 ${tip ? "opacity-100" : "opacity-0"}`}>{tipFlag && <Image src={`/flags/${tipFlag}.svg`} alt="" width={20} height={15} unoptimized className="mr-2 inline-block h-[15px] w-5 rounded-[2px] object-cover align-[-2px]" />}{tip || " "}</div>
       </div>
-      <div className="mx-auto mt-3 flex max-w-[600px] items-center justify-between gap-3">
-        <p className="label text-mute">Drag to turn it</p>
-        <button type="button" onClick={() => replay.current()} className="label inline-flex h-8 items-center gap-2 rounded-full border border-line px-3 text-mute transition-colors hover:border-ink hover:text-ink">
-          <svg width="12" height="12" viewBox="0 0 12 12" aria-hidden fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"><path d="M10.2 6A4.2 4.2 0 1 1 8.9 3M9 1v2.2H6.8" /></svg>Replay
-        </button>
-      </div>
-      <div className="mx-auto mt-5 max-w-[600px]">
-        <p className="label text-mute">Been to</p>
-        <ul className="mt-3 flex flex-wrap gap-2">
-          {BEEN.map(([name, label]) => (
-            <li key={name}>
-              <button type="button" onClick={() => fly.current(name)} onMouseEnter={() => mark.current(name)} onMouseLeave={() => mark.current(null)} onFocus={() => mark.current(name)} onBlur={() => mark.current(null)}
-                aria-label={`${label}: turn the globe to it`} className="inline-flex h-9 items-center gap-2 rounded-full border border-line pl-2 pr-3.5 text-[14px] font-medium tracking-[-0.01em] transition-colors hover:border-ink">
-                <Image src={`/flags/${FLAG[name]}.svg`} alt="" width={22} height={16} unoptimized className="h-4 w-[22px] rounded-[3px] object-cover" />{label}
-              </button>
-            </li>
-          ))}
-        </ul>
-      </div>
-      <p className="mt-6 text-[clamp(22px,2vw,28px)] font-medium leading-[1.1] tracking-[-0.035em]">That is why I am building for Africa<span className="dot">.</span></p>
+      <p className="mt-5 text-[clamp(22px,2vw,28px)] font-medium leading-[1.1] tracking-[-0.035em]">That is why I am building for Africa<span className="dot">.</span></p>
     </div>
   );
 }
