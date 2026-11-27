@@ -7,6 +7,7 @@ import { PERSON } from "@/lib/data";
 
 const NAV = [
   { href: "/work", label: "Work" },
+  { href: "/team", label: "Team" },
   { href: "/notes", label: "Writing" },
   { href: "/about", label: "About" },
   { href: "/pricing", label: "Pricing" },
