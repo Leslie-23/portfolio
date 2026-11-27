@@ -69,7 +69,7 @@ export default function Home() {
         <ul className="mt-8 grid grid-cols-2 gap-x-5 gap-y-4 border-t border-line pt-6 sm:grid-cols-3 md:mt-10 md:pt-7 lg:grid-cols-5">
           {STRIP.map((s) => (
             <li key={s.name} className="group/li relative">
-              <Image src={s.icon} alt="" aria-hidden width={96} height={96} className="pointer-events-none absolute right-2 top-1/2 h-20 w-20 -translate-y-1/2 rotate-[-5deg] select-none rounded-[22%] object-contain opacity-[0.16] transition-opacity duration-300 group-hover/li:rotate-[-2deg] group-hover/li:opacity-30 md:h-24 md:w-24" />
+              <Image src={s.icon} alt="" aria-hidden width={96} height={96} className="pointer-events-none absolute hidden lg:block right-2 top-1/2 h-20 w-20 -translate-y-1/2 rotate-[-5deg] select-none rounded-[22%] object-contain opacity-[0.16] transition-opacity duration-300 group-hover/li:rotate-[-2deg] group-hover/li:opacity-30 md:h-24 md:w-24" />
               <Link href={s.href} className="group relative block">
                 <span className="flex items-center gap-2 text-[17px] font-medium tracking-[-0.02em] md:text-[19px]">
                   <span className="u">{s.name}</span>
