@@ -7,9 +7,15 @@ const display = Inter_Tight({ variable: "--font-display", subsets: ["latin"], we
 const body = Geist({ variable: "--font-body", subsets: ["latin"] });
 const mono = Geist_Mono({ variable: "--font-mono-label", subsets: ["latin"] });
 
+const site = process.env.VERCEL_PROJECT_PRODUCTION_URL ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}` : "http://localhost:3000";
+const description = "Leslie Paul Ajayi. Software engineer in Accra, building products and figuring out how things work underneath.";
+
 export const metadata: Metadata = {
+  metadataBase: new URL(site),
   title: { default: "Leslie / Software Engineer", template: "%s / Leslie" },
-  description: "Leslie Paul Ajayi. Software engineer in Accra, building products and figuring out how things work underneath.",
+  description,
+  openGraph: { type: "website", siteName: "Leslie / Software Engineer", title: "Leslie / Software Engineer", description, locale: "en_GH" },
+  twitter: { card: "summary_large_image", title: "Leslie / Software Engineer", description },
 };
 export const viewport: Viewport = { themeColor: "#F2F0E9", width: "device-width", initialScale: 1 };
 

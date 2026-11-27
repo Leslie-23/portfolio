@@ -25,7 +25,7 @@ function Card({ e }: { e: Experiment }) {
         <header className="mono flex items-center justify-between">
           <span>EXP. {e.id}</span>
           <span className="text-mute">{e.date}</span>
-          <Tip tip={STATUS_TIPS[e.status]}><span className={`px-1.5 py-0.5 ${TONE[e.status]}`}>{e.status}</span></Tip>
+          <Tip tip={STATUS_TIPS[e.status]} align="right"><span className={`px-1.5 py-0.5 ${TONE[e.status]}`}>{e.status}</span></Tip>
         </header>
         <div className="mono mt-5 text-mute">QUESTION</div>
         <h2 className="display mt-1 text-[clamp(20px,2.2vw,32px)] !leading-[1]">{e.question}</h2>

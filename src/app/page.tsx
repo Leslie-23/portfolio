@@ -5,7 +5,14 @@ import ProjectRow from "@/components/ProjectRow";
 import ScrollVelocity from "@/components/ScrollVelocity";
 import Affiliations from "@/components/Affiliations";
 import { Spec } from "@/components/Spec";
-import { PROJECTS } from "@/lib/data";
+import { PROJECTS, SHIPPED } from "@/lib/data";
+
+const LOOP = [
+  { n: "01", word: "Build.", tag: "BUILD", mark: false, line: `${PROJECTS.length} case studies and ${PROJECTS.filter((p) => p.live).length + SHIPPED.length} live sites and apps, from a step-challenge game to a voice platform I wrote from scratch.`, href: "/work", cta: "SEE THE WORK" },
+  { n: "02", word: "Test.", tag: "TEST", mark: false, line: "40 tests on the voice platform. 36 on the web crawler. A 40-game tournament to find out whether the chess bots were actually getting smarter.", href: "/work/four-man-chess", cta: "HOW I TESTED THE BOTS" },
+  { n: "03", word: "Question.", tag: "QUESTION", mark: false, line: "Why does every endpoint look offline? Because nothing ever checked that they were reachable. That bug took a full-stack rehearsal to find.", href: "/infra", cta: "THINGS THAT BIT ME" },
+  { n: "04", word: "Repeat.", tag: "REPEAT", mark: true, line: "The bench is where the next thing starts: experiments, half-built ideas and things I'm still breaking on purpose.", href: "/bench", cta: "GO TO THE BENCH" },
+];
 
 export default function Home() {
   const featured = PROJECTS.slice(0, 3);
@@ -13,12 +20,23 @@ export default function Home() {
     <>
       <Hero />
 
-      <Spec name="Statement" id="QUIET" as="section" className="frame grid12 py-28 md:py-44">
-        <p className="display col-span-6 md:col-span-10 text-[clamp(32px,6.4vw,104px)]">
-          Build.<br />Test.<br />Question.<br /><span className="mark">Repeat.</span>
-        </p>
-        <p className="col-span-6 mt-8 max-w-[40ch] text-graphite md:col-span-4 md:col-start-9 md:mt-0 md:self-end">
-          I want to know how things work, then I build them. The site you're on is one of them. Press <kbd className="mono border border-ink px-1">I</kbd> to see how.
+      <Spec name="Statement" id="QUIET" as="section" className="frame py-24 md:py-40">
+        <ul>
+          {LOOP.map((r) => (
+            <li key={r.word} className="grid12 items-end gap-y-3 border-t border-ink py-6 md:py-9">
+              <p className={`display col-span-6 text-[clamp(44px,8vw,132px)] md:col-span-7 ${r.mark ? "" : ""}`}>
+                {r.mark ? <span className="mark">{r.word}</span> : r.word}
+              </p>
+              <div className="col-span-6 md:col-span-4 md:col-start-9 md:pb-3">
+                <div className="mono text-mute">{r.n} / {r.tag}</div>
+                <p className="mt-2 max-w-[34ch] text-[clamp(16px,1.35vw,20px)] leading-snug text-graphite">{r.line}</p>
+                <Link href={r.href} className="mono link-u mt-3 inline-block" data-cursor="OPEN →">{r.cta} →</Link>
+              </div>
+            </li>
+          ))}
+        </ul>
+        <p className="mono mt-8 border-t border-ink pt-4 text-mute">
+          I want to know how things work, then I build them. The site you&apos;re on is one of them. Press <kbd className="border border-ink px-1 text-ink">I</kbd> to see how.
         </p>
       </Spec>
 

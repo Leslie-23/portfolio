@@ -1,4 +1,5 @@
 "use client";
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
@@ -24,10 +25,9 @@ function Preview({ k }: { k: string }) {
     );
   if (k === "ABOUT")
     return (
-      <div className={box + " grid place-items-center"}>
-        <span className="reg left-3 top-3" /><span className="reg right-3 top-3" /><span className="reg bottom-3 left-3" /><span className="reg bottom-3 right-3" />
-        <div className="display text-7xl">LPA</div>
-        <div className="mono mono-sm absolute bottom-2 left-3 text-mute">PORTRAIT / PENDING</div>
+      <div className={box + " bg-paper-3"}>
+        <Image src="/portrait/leslie.png" alt="" fill sizes="30vw" className="object-contain object-bottom p-3 mix-blend-multiply" />
+        <div className="mono mono-sm absolute bottom-2 left-3 text-mute">LESLIE PAUL AJAYI</div>
       </div>
     );
   if (k === "TOOLKIT")
@@ -37,6 +37,15 @@ function Preview({ k }: { k: string }) {
           {[30, 62, 94, 126].map((y) => <g key={y}><rect x="14" y={y - 8} width="44" height="16" /><path d={`M58 ${y} H100 V75 H140`} strokeDasharray="3 3" /></g>)}
           <rect x="140" y="63" width="48" height="24" fill="var(--accent)" stroke="var(--accent)" />
         </svg>
+      </div>
+    );
+  if (k === "INFRA")
+    return (
+      <div className={box + " p-4"}>
+        <div className="mono text-mute">ORACLE CLOUD · COMPOSE</div>
+        {["CADDY", "API", "POSTGRES", "ASTERISK"].map((l, i) => (
+          <div key={l} className="mono mono-sm mt-2 flex items-center justify-between border border-ink px-2 py-1.5" style={{ background: i === 1 ? "var(--accent)" : "transparent" }}><span>{l}</span><span className="text-mute">●</span></div>
+        ))}
       </div>
     );
   if (k === "NOTES")

@@ -14,7 +14,7 @@ export function Tip({ tip, children, className = "", align = "left" }: { tip: st
   return (
     <span tabIndex={0} className={`group/tip relative inline-block cursor-help outline-offset-2 ${className}`}>
       {children}
-      <span role="tooltip" className={`mono mono-sm pointer-events-none absolute ${align === "right" ? "right-0" : "left-0"} top-full z-30 mt-1 w-max max-w-[220px] translate-y-1 border border-ink bg-paper px-2 py-1 normal-case tracking-normal text-ink opacity-0 transition group-hover/tip:translate-y-0 group-hover/tip:opacity-100 group-focus/tip:translate-y-0 group-focus/tip:opacity-100`}>
+      <span role="tooltip" className={`mono mono-sm pointer-events-none absolute ${align === "right" ? "right-0" : "left-0"} top-full z-30 mt-1 w-max max-w-[min(220px,calc(100vw-2rem))] translate-y-1 border border-ink bg-paper px-2 py-1 normal-case tracking-normal text-ink opacity-0 transition group-hover/tip:translate-y-0 group-hover/tip:opacity-100 group-focus/tip:translate-y-0 group-focus/tip:opacity-100`}>
         {tip}
       </span>
     </span>

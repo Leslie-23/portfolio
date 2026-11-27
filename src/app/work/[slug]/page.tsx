@@ -67,14 +67,14 @@ async function Case({ params }: { params: Promise<{ slug: string }> }) {
       <Spec name="CaseHeader" id={`FIG_${p.fig}`} as="header" className="frame grid12 py-10 md:py-16">
         <div className="mono col-span-6 flex justify-between text-mute md:col-span-12">
           <Link href="/work" className="link-u" data-cursor="← BACK">← WORK</Link>
-          <Tip tip="yes, the numbering actually means something.">FIG. {p.fig} / {String(idx + 1).padStart(2, "0")} OF {String(PROJECTS.length).padStart(2, "0")}</Tip>
+          <Tip tip="yes, the numbering actually means something." align="right">FIG. {p.fig} / {String(idx + 1).padStart(2, "0")} OF {String(PROJECTS.length).padStart(2, "0")}</Tip>
         </div>
         <h1 className="display col-span-6 mt-6 text-[clamp(40px,8vw,140px)] md:col-span-12">{p.name}</h1>
         <p className="col-span-6 mt-6 max-w-[48ch] text-xl leading-snug md:col-span-6">{p.blurb}</p>
         <dl className="mono col-span-6 mt-8 grid grid-cols-2 gap-x-6 gap-y-4 md:col-span-5 md:col-start-8 md:mt-6">
           <div><dt className="text-mute">YEAR</dt><dd>{p.year}</dd></div>
           <div><dt className="text-mute">ROLE</dt><dd>{p.role}</dd></div>
-          <div><dt className="text-mute">STATUS</dt><dd><Tip tip="for now.">{p.status}</Tip></dd></div>
+          <div><dt className="text-mute">STATUS</dt><dd><Tip tip="for now." align="right">{p.status}</Tip></dd></div>
           <div><dt className="text-mute">CATEGORY</dt><dd>{p.categories.join(" / ")}</dd></div>
           <div className="col-span-2"><dt className="text-mute">TECHNOLOGY</dt><dd>{p.stack.join(" · ")}</dd></div>
           <div className="col-span-2 flex flex-wrap gap-3">

@@ -21,8 +21,9 @@ export const NAV = [
   { n: "02", label: "THE BENCH", href: "/bench", hint: "Things I'm testing" },
   { n: "03", label: "ABOUT", href: "/about", hint: "How I think" },
   { n: "04", label: "TOOLKIT", href: "/toolkit", hint: "What I build with" },
-  { n: "05", label: "NOTES", href: "/notes", hint: "Things I learned" },
-  { n: "06", label: "CONTACT", href: "/contact", hint: "Let's figure it out" },
+  { n: "05", label: "INFRA", href: "/infra", hint: "What it runs on" },
+  { n: "06", label: "NOTES", href: "/notes", hint: "Things I learned" },
+  { n: "07", label: "CONTACT", href: "/contact", hint: "Let's figure it out" },
 ] as const;
 
 export type Category = "PRODUCT" | "WEB" | "MOBILE" | "SYSTEMS" | "EXPERIMENTS";
@@ -126,6 +127,74 @@ export const PROJECTS: Project[] = [
     ],
     learnings:
       "Building for this market is a forcing function for discipline. If it survives bad connectivity and cheap phones, it survives everywhere else.",
+  },
+  {
+    slug: "vop",
+    fig: "012",
+    name: "VoIP",
+    year: "2026",
+    role: "Architect / Engineer",
+    categories: ["PRODUCT", "SYSTEMS", "WEB"],
+    status: "API PREVIEW LIVE",
+    blurb: "Voice infrastructure you actually own: browser calling by VoIP ID or phone alias, a clean API and call records you control, self-hosted on a single server. Built from scratch.",
+    live: "https://vop.mytrofficient.com",
+    media: "vop",
+    accent: "accent",
+    layers: [
+      { key: "app", label: "BROWSER CALLING", detail: "Call by VoIP ID or phone alias" },
+      { key: "api", label: "API + SDKs", detail: "Tenant-scoped, short-lived tokens, call grants" },
+      { key: "int", label: "INTEGRATIONS + WEBHOOKS", detail: "Signed webhooks, call records you control" },
+      { key: "engine", label: "VOICE ENGINE + RELAY", detail: "Asterisk 22 (PJSIP, ARI) · Coturn STUN/TURN" },
+      { key: "db", label: "POSTGRESQL 16", detail: "Tenants, call history, realtime config" },
+    ],
+    stack: ["Node.js", "TypeScript", "Asterisk", "WebRTC / SIP", "Coturn", "PostgreSQL", "Docker Compose", "Caddy", "Oracle Cloud (ARM)"],
+    story: [
+      { label: "THE BRIEF", body: "Adding calling to an app usually means renting someone else's voice platform, so your routing, your call records and your customers' data live on their servers. VoIP is the opposite: voice infrastructure you run yourself, with the control that comes with it." },
+      { label: "WHAT PEOPLE GET", body: "Browser calling by VoIP ID or phone alias. A clean API. Call records in your own database. All of it self-hosted on a single server, with SDKs for the web, Node, React Native and Flutter." },
+      { label: "HOW A CALL WORKS", body: "Your server issues a short-lived token. The Web SDK places the call from the browser. Asterisk bridges it. Coturn relays the audio when a direct path isn't possible. A signed webhook tells your server what happened." },
+      { label: "I BUILT IT FROM SCRATCH", body: "The API and tenancy model, the SDKs, the website and calling app, and the Docker Compose stack that runs the voice engine, from the browser to the database." },
+      { label: "THE HARD PART IS THE NETWORK", body: "Voice is a networking problem wearing an application costume. A first build silently left out a database module because one library was missing. Browser contacts weren't being rewritten behind NAT. Endpoints weren't being checked, so every one looked offline and every call would have been rejected. Each of those was found by rehearsing the full stack, not by reading code." },
+    ],
+    decisions: [
+      { title: "Provisioning is a one-shot job", body: "Migrations and provisioning run in a separate container, so the owner-level database credentials never sit inside the long-running API." },
+      { title: "Pin everything", body: "Images are pinned to exact versions, and the Asterisk source is checked against the publisher's SHA-256 before it's built." },
+      { title: "Fail safe on reconnect", body: "If the control connection to the voice engine drops, affected calls end and unfinished records are marked orphaned, rather than the system guessing what happened." },
+      { title: "Test against a fake engine", body: "Call-controller scenarios run against an engine-neutral fake, and a separate stub exercises the real adapter. 40 tests run in the suite, and the PostgreSQL ones run against a disposable database." },
+    ],
+    learnings: "Most of the bugs weren't in the application code. They were in the network, the build and the configuration around it.",
+  },
+  {
+    slug: "beagine",
+    fig: "013",
+    name: "Beagine",
+    year: "2026",
+    role: "CTO",
+    categories: ["PRODUCT", "MOBILE", "SYSTEMS"],
+    status: "WAITLIST LIVE",
+    blurb: "A home-services marketplace for Ghana in three mobile apps: customers book verified specialists, specialists take jobs and get paid, and shops sell to both. I'm the CTO.",
+    live: "https://beagine.com",
+    media: "beagine",
+    accent: "orange",
+    layers: [
+      { key: "eco", label: "THE ECOSYSTEM", detail: "Customers, specialists and shops on one platform" },
+      { key: "customer", label: "BEAGINE (CUSTOMER)", detail: "Book, track, chat, pay", img: { src: "/work/beagine/layers/customer.jpg" } },
+      { key: "pro", label: "BEAGINE PRO (SPECIALIST)", detail: "Go online, take jobs, get paid", img: { src: "/work/beagine/layers/specialist.jpg" } },
+      { key: "store", label: "BEAGINE STORE (VENDOR)", detail: "Products, orders, payouts", img: { src: "/work/beagine/layers/vendor.jpg" } },
+      { key: "api", label: "SHARED BACKEND", detail: "Node API, realtime, payments, push" },
+    ],
+    stack: ["Expo", "React Native", "TypeScript", "Node.js", "MongoDB", "Socket.IO", "Redis + BullMQ", "Next.js", "Vite"],
+    story: [
+      { label: "THE IDEA", body: "Finding a plumber, an electrician or a cleaner you can trust shouldn't be luck. Beagine puts verified specialists, local shops and the whole job (request to receipt) in one place." },
+      { label: "THREE APPS, ONE PLATFORM", body: "Beagine is for customers who book. Beagine Pro is for specialists who accept and complete jobs. Beagine Store is for local vendors who sell the parts and products. An admin dashboard and a vendor web app sit alongside them." },
+      { label: "BUILT FOR GHANA", body: "Mobile Money (MTN, Telecel, AirtelTigo) and card payments, phone and OTP sign-in, Accra-first service areas, and Ghana Card verification for specialists. Funds are held and released when the job is done." },
+      { label: "MY ROLE", body: "CTO. I own the technical direction and the architecture across all three apps and the backend, and I build alongside the team." },
+    ],
+    decisions: [
+      { title: "One monorepo, shared everything", body: "The three apps and the admin share UI components, types, state and the API client through workspace packages, so a fix lands everywhere at once." },
+      { title: "Build the app before the backend", body: "A dual mock/HTTP API layer with an OpenAPI contract let the apps be built and tested before the backend was finished, then switched to real services by an environment variable." },
+      { title: "Trust is the product", body: "Live job tracking, before-and-after photos, approval before any price change, and a receipt for every job." },
+    ],
+    learnings: "In a marketplace, the hard part isn't any one app. It's keeping three of them telling the same story about the same job.",
   },
   {
     slug: "steppool",
@@ -581,6 +650,11 @@ const LAYER_MEDIA: Record<string, Record<string, LayerImg>> = {
   "four-man-chess": { evt: w("four-man-chess", "evt"), srv: w("four-man-chess", "srv"), eng: w("four-man-chess", "eng") },
   "ai-sme": { api: w("ai-sme", "api"), ai: w("ai-sme", "ai"), dom: w("ai-sme", "dom"), db: w("ai-sme", "db") },
   elena: { tools: w("elena", "tools"), mem: w("elena", "mem"), llm: w("elena", "llm"), hook: w("elena", "hook") },
+  vop: {
+    app: { src: "/work/vop/layers/app.jpg" },
+    api: { src: "/work/vop/layers/api.jpg" },
+    int: { src: "/work/vop/layers/integrations.jpg" },
+  },
   "campus-connect": {
     social: { src: "/work/campus-connect/gallery/events.jpg" },
     connect: { src: "/work/campus-connect/gallery/connect.jpg" },
@@ -734,8 +808,8 @@ export const TOOLKIT: ToolGroup[] = [
     items: [
       { name: "React", projects: ["ai-sme"], also: ["Sellis", "School Management", "E-Commerce App", "Expense Tracker"] },
       { name: "Next.js", projects: ["four-man-chess", "de-sams-studio"] },
-      { name: "TypeScript", projects: ["trofficient", "steppool", "four-man-chess", "ai-sme", "elena", "de-sams-studio"] },
-      { name: "React Native / Expo", projects: ["trofficient", "steppool", "campus-connect"] },
+      { name: "TypeScript", projects: ["trofficient", "steppool", "four-man-chess", "ai-sme", "elena", "de-sams-studio", "vop", "beagine"] },
+      { name: "React Native / Expo", projects: ["trofficient", "steppool", "campus-connect", "beagine"] },
       { name: "Flutter", projects: [], also: ["The Word"] },
       { name: "Tailwind CSS", projects: ["ai-sme", "de-sams-studio"] },
       { name: "GSAP + Motion", projects: ["de-sams-studio"], also: ["this site"] },
@@ -746,12 +820,14 @@ export const TOOLKIT: ToolGroup[] = [
     id: "systems",
     label: "SYSTEMS",
     items: [
-      { name: "Node.js", projects: ["steppool", "ai-sme", "elena", "uat-tracker", "stewardly", "attendance", "de-sams-studio", "campus-connect"] },
+      { name: "Node.js", projects: ["steppool", "ai-sme", "elena", "uat-tracker", "stewardly", "attendance", "de-sams-studio", "campus-connect", "vop", "trofficient"] },
       { name: "Express / Fastify", projects: ["steppool", "four-man-chess", "ai-sme", "uat-tracker", "stewardly", "attendance", "de-sams-studio", "campus-connect"] },
-      { name: "Socket.IO", projects: ["steppool", "four-man-chess", "campus-connect"] },
-      { name: "MongoDB", projects: ["steppool", "ai-sme", "uat-tracker", "stewardly", "attendance", "de-sams-studio"], also: ["Rate Desk"] },
-      { name: "MySQL", projects: ["campus-connect"] },
-      { name: "Redis + BullMQ", projects: ["steppool", "campus-connect"] },
+      { name: "Socket.IO", projects: ["steppool", "four-man-chess", "campus-connect", "beagine"] },
+      { name: "MongoDB", projects: ["steppool", "ai-sme", "uat-tracker", "stewardly", "attendance", "de-sams-studio", "trofficient"], also: ["Rate Desk"] },
+      { name: "MySQL", projects: ["campus-connect", "trofficient"] },
+      { name: "PostgreSQL", projects: ["vop"], also: ["USSD services at work"] },
+      { name: "Asterisk · SIP · WebRTC", projects: ["vop"] },
+      { name: "Redis + BullMQ", projects: ["steppool", "campus-connect", "trofficient"] },
       { name: "Auth: JWT, Google OAuth", projects: ["ai-sme", "stewardly", "de-sams-studio"] },
       { name: "Python", projects: ["scrapy-mcp"] },
     ],
@@ -761,7 +837,12 @@ export const TOOLKIT: ToolGroup[] = [
     label: "INFRASTRUCTURE",
     items: [
       { name: "Vercel", projects: ["ai-sme", "uat-tracker", "stewardly", "attendance", "de-sams-studio"], also: ["most of the shipped sites"] },
-      { name: "Cloudflare (Pages, D1)", projects: [], also: ["an OpenStock deployment"] },
+      { name: "Cloudflare (Workers, Pages, D1)", projects: [], also: ["Nene Collectionz", "an OpenStock deployment"] },
+      { name: "Oracle Cloud (ARM)", projects: ["vop", "trofficient"] },
+      { name: "Caddy (automatic TLS)", projects: ["vop", "trofficient"] },
+      { name: "Coturn (STUN / TURN)", projects: ["vop"] },
+      { name: "Docker + Compose", projects: ["vop", "trofficient"] },
+      { name: "AWS (Lambda, SQS, DynamoDB, S3, ECS)", projects: [], also: ["Transport for Ghana backends"] },
       { name: "Render", projects: ["steppool", "campus-connect"] },
       { name: "Cloudinary media pipeline", projects: ["de-sams-studio"] },
       { name: "Monorepos (pnpm, Turborepo)", projects: ["four-man-chess"] },
@@ -773,9 +854,9 @@ export const TOOLKIT: ToolGroup[] = [
     items: [
       { name: "MCP / LLM integration", projects: ["scrapy-mcp", "ai-sme", "elena", "uat-tracker", "stewardly"] },
       { name: "Shared contracts (zod)", projects: ["steppool", "four-man-chess"] },
-      { name: "Mobile money + SMS", projects: ["trofficient", "steppool", "stewardly"] },
+      { name: "Mobile money + SMS", projects: ["trofficient", "steppool", "stewardly", "beagine"] },
       { name: "Presence verification (QR, WiFi, GPS)", projects: ["attendance"] },
-      { name: "System design", projects: ["trofficient", "steppool", "four-man-chess", "scrapy-mcp", "ai-sme", "elena", "uat-tracker", "stewardly", "attendance", "de-sams-studio", "campus-connect"] },
+      { name: "System design", projects: ["trofficient", "steppool", "four-man-chess", "scrapy-mcp", "ai-sme", "elena", "uat-tracker", "stewardly", "attendance", "de-sams-studio", "campus-connect", "vop"] },
     ],
   },
 ];
@@ -903,7 +984,7 @@ export const AFFILIATIONS: Affiliation[] = [
   { id: "tfg", name: "Transport for Ghana", role: "AFFILIATION", img: "/affil/transport-for-ghana.png", w: 700, h: 187 },
   { id: "tapngo", name: "Tap n' Go", role: "AFFILIATION", img: "/affil/tap-n-go.png", w: 600, h: 600 },
   { id: "moveet", name: "Moveet", role: "AFFILIATION", img: "/affil/moveet.png", w: 600, h: 600 },
-  { id: "nss", name: "NSS", role: "AFFILIATION", img: "/affil/nss.png", w: 600, h: 485, note: "I built a caching system for it." },
+  { id: "nss", name: "NSS", role: "AFFILIATION", img: "/affil/nss.png", w: 600, h: 485, note: "I worked on its caching system." },
 ];
 
 /* ---------------- Screenshot personality ----------------
@@ -911,6 +992,8 @@ export const AFFILIATIONS: Affiliation[] = [
    wears its own accent, and moves its own way on hover. */
 export type Vibe = { say: string; cursor: string; tone: "accent" | "red" | "orange" | "green" | "ink"; rot: number; hx: number; hy: number; hr: number };
 export const VIBE: Record<string, Vibe> = {
+  vop: { say: "Voice infrastructure you own.", cursor: "CALL", tone: "accent", rot: -0.8, hx: 4, hy: -7, hr: 1.5 },
+  beagine: { say: "Home services, handled.", cursor: "BOOK", tone: "orange", rot: 1.1, hx: 5, hy: -7, hr: -1.5 },
   trofficient: { say: "Know when to leave.", cursor: "BOARD", tone: "accent", rot: 1.2, hx: 6, hy: -8, hr: -2 },
   steppool: { say: "Hit your goal. Share the pool.", cursor: "WALK", tone: "accent", rot: -1.4, hx: -5, hy: -8, hr: 2 },
   "four-man-chess": { say: "Chess for everyone at the table.", cursor: "PLAY", tone: "orange", rot: 0.8, hx: 0, hy: -9, hr: 1 },

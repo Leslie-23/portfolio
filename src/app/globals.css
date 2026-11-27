@@ -36,6 +36,7 @@
 }
 
 html {
+  overflow-x: clip;
   background: var(--paper);
   color: var(--ink);
   scroll-behavior: auto;
@@ -49,7 +50,7 @@ body {
   font-size: 16px;
   line-height: 1.55;
   -webkit-font-smoothing: antialiased;
-  overflow-x: hidden;
+  overflow-x: clip;
 }
 
 ::selection { background: var(--accent); color: #151515; }

@@ -65,7 +65,7 @@ export default function ShippedRail() {
         <div className="frame flex items-end justify-between pb-6 max-[899px]:pb-4">
           <div>
             <div className="mono text-mute">FIG. 000 / SCREENS FROM THE REAL THING</div>
-            <h2 className="display mt-2 text-[clamp(28px,4vw,64px)]">Shipped,<br className="md:hidden" /> not mocked.</h2>
+            <h2 className="display mt-2 text-[clamp(28px,4vw,64px)] !leading-[1.04]">Shipped.<br className="md:hidden" /> Not mocked.</h2>
           </div>
           <div className="mono text-right">
             <span className="text-accent-ink">{String(idx + 1).padStart(2, "0")}</span>

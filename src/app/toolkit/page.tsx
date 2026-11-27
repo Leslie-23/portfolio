@@ -12,7 +12,7 @@ export default function Toolkit() {
         <div className="mono col-span-6 text-mute md:col-span-12">ORGANISED BY PURPOSE, NOT BY LOGO</div>
         <h1 className="display col-span-6 mt-4 text-[clamp(44px,8.4vw,148px)] md:col-span-10">Engineering<br />toolkit.</h1>
         <p className="col-span-6 mt-6 max-w-[40ch] text-graphite md:col-span-4 md:col-start-9 md:self-end">
-          No percentages. Instead, evidence: hover (or tap) a technology and trace it to the projects where I used it.
+          No percentages. Instead, evidence: hover (or tap) a technology and trace it to the projects where I used it. For servers and networks, see <a href="/infra" className="link-u">the infrastructure page</a>.
         </p>
       </Spec>
       <section className="frame pb-24"><ToolkitMap /></section>
