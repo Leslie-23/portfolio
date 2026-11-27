@@ -1,4 +1,5 @@
 "use client";
+import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import { EDUCATION, EXPERIENCE } from "@/lib/data";
@@ -18,7 +19,9 @@ export default function ExperienceList({ education = true }: { education?: boole
                 {r.period}
                 <div className="mt-1 normal-case tracking-normal">{r.kind}</div>
               </div>
-              <div>
+              <div className="flex items-start gap-4 md:gap-5">
+                {r.logo && <Image src={r.logo.src} alt={`${r.org} logo`} width={r.logo.w} height={r.logo.h} className={`h-12 w-auto shrink-0 object-contain md:h-14 ${r.logo.round ? "rounded-[22%]" : ""}`} />}
+                <div className="min-w-0">
                 <h3 className="t-card">
                   {r.href ? (r.internal ? <Link href={r.href} className="u">{r.org}</Link> : <a href={r.href} target="_blank" rel="noopener noreferrer" className="u">{r.org}</a>) : r.org}
                 </h3>
@@ -30,6 +33,7 @@ export default function ExperienceList({ education = true }: { education?: boole
                     {r.stack && <p className="label mt-4 text-mute">{r.stack.join(" · ")}</p>}
                   </div>
                 )}
+                </div>
               </div>
               {more && (
                 <button onClick={() => setOpen(on ? null : i)} aria-expanded={on} aria-controls={id} aria-label={`${on ? "Hide" : "Show"} details for ${r.org}`}
@@ -44,10 +48,13 @@ export default function ExperienceList({ education = true }: { education?: boole
       {education && (
         <li className="grid gap-x-8 gap-y-2 py-6 md:grid-cols-[180px_1fr_auto]">
           <div className="label pt-1.5 text-mute">{EDUCATION.period}<div className="mt-1 normal-case tracking-normal">Education</div></div>
-          <div>
-            <h3 className="t-card">{EDUCATION.school}</h3>
-            <p className="mt-1 text-[15px] font-medium text-accent-ink">{EDUCATION.degree}</p>
-            <ul className="mt-3 flex flex-wrap gap-2">{EDUCATION.awards.map((a) => <li key={a} className="label rounded-full border border-line px-3 py-1.5 text-ink">Award · {a}</li>)}</ul>
+          <div className="flex items-start gap-4 md:gap-5">
+            <Image src={EDUCATION.logo.src} alt="Regional Maritime University crest" width={EDUCATION.logo.w} height={EDUCATION.logo.h} className="h-14 w-auto shrink-0 object-contain md:h-[72px]" />
+            <div>
+              <h3 className="t-card">{EDUCATION.school}</h3>
+              <p className="mt-1 text-[15px] font-medium text-accent-ink">{EDUCATION.degree}</p>
+              <ul className="mt-3 flex flex-wrap gap-2">{EDUCATION.awards.map((a) => <li key={a} className="label rounded-full border border-line px-3 py-1.5 text-ink">Award · {a}</li>)}</ul>
+            </div>
           </div>
         </li>
       )}
