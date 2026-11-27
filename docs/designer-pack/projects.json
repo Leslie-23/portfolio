@@ -1933,7 +1933,8 @@
       "role": "AFFILIATION",
       "img": "/affil/moveet.png",
       "w": 600,
-      "h": 600
+      "h": 600,
+      "note": "A super-app for moving around Accra: rides, deliveries and food, all in one place."
     },
     {
       "id": "nss",
