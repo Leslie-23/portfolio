@@ -1,6 +1,7 @@
 "use client";
 import Image from "next/image";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
+import LiveBust from "./LiveBust";
 
 type Mesh = { w: number; h: number; p: number[]; t: number[] };
 
@@ -25,6 +26,8 @@ const easeOut = (t: number) => 1 - Math.pow(1 - t, 3);
 export default function BustBuild({ className = "" }: { className?: string }) {
   const cv = useRef<HTMLCanvasElement>(null);
   const [state, setState] = useState<"pending" | "playing" | "done">("pending");
+  const [live, setLive] = useState(false);       // the animated portrait has taken over from the still one
+  const onLive = useCallback(() => setLive(true), []);
 
   useEffect(() => {
     let seen = false;
@@ -140,8 +143,9 @@ export default function BustBuild({ className = "" }: { className?: string }) {
     <div data-state={state} className={`${className} max-lg:opacity-[0.55] max-lg:mix-blend-multiply max-lg:transition-opacity max-lg:duration-[900ms] max-lg:data-[state=playing]:z-20 max-lg:data-[state=done]:opacity-[0.16] max-lg:[-webkit-mask-image:radial-gradient(ellipse_85%_80%_at_55%_40%,#000_42%,transparent_95%)] max-lg:[mask-image:radial-gradient(ellipse_85%_80%_at_55%_40%,#000_42%,transparent_95%)]`}>
       {/* the real portrait: hidden while the build plays, then it fades in over the finished mesh */}
       <Image src="/portrait/leslie.png" alt="Leslie Paul Ajayi, a faceted greyscale portrait" fill priority sizes="(min-width: 1024px) 40vw, 70vw"
-        className="bust-img object-contain object-bottom" style={{ opacity: state === "done" ? 1 : 0, transition: state === "done" ? "opacity .6s ease" : "none" }} />
+        className="bust-img object-contain object-bottom" style={{ opacity: state === "done" && !live ? 1 : 0, transition: state === "done" ? "opacity .6s ease" : "none" }} />
       <noscript><style>{`.bust-img{opacity:1!important}`}</style></noscript>
+      {state === "done" && <LiveBust onReady={onLive} />}
       <canvas ref={cv} aria-hidden className="pointer-events-none absolute z-10"
         style={{ left: `${-PAD * 100}%`, top: `${-PAD * 100}%`, width: `${(1 + PAD * 2) * 100}%`, height: `${(1 + PAD * 2) * 100}%`, opacity: state === "done" ? 0 : 1, transition: state === "done" ? "opacity .6s ease" : "none" }} />
     </div>
