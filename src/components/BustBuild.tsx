@@ -6,9 +6,8 @@ type Mesh = { w: number; h: number; p: number[]; t: number[] };
 
 // What falls in. Each one is something Leslie has actually written code in, or built with.
 const LABELS = [
-  "Data structures", "Algorithms", "C++", "C#", ".NET", "Java", "Python", "JavaScript", "TypeScript", "React",
-  "Node.js", "Express", "MongoDB", "PostgreSQL", "Redis", "Docker", "Socket.IO", "React Native", "Next.js", "System design",
-  "REST APIs", "Git", "Linux", "MCP",
+  "Data structures", "Algorithms", "C++", "C#", ".NET", "Java", "Python", "JavaScript", "TypeScript",
+  "React", "Node.js", "MongoDB", "PostgreSQL", "Docker", "Next.js", "React Native", "System design", "Redis",
 ];
 
 const NOSE = { x: 0.4, y: 0.575 };   // where the face is "finished": the last facets land here
@@ -74,8 +73,8 @@ export default function BustBuild({ className = "" }: { className?: string }) {
         t.dur = 0.7 + rnd() * 0.3;
         t.rot = (rnd() - 0.5) * Math.PI * 1.6;
       }
-      // pick triangles to carry labels: spread around the circle, away from the very last (nose) ones
-      const cands = tris.filter((t) => t.d / dmax > 0.22).sort((p, q) => p.ang - q.ang);
+      // pick triangles to carry labels: spread evenly around the circle, well away from the nose so they never crowd it
+      const cands = tris.filter((t) => t.d / dmax > 0.4).sort((p, q) => p.ang - q.ang);
       LABELS.forEach((label, i) => { const pick = cands[Math.floor(((i + 0.5) / LABELS.length) * cands.length)]; if (pick) pick.label = label; });
 
       const R = Math.hypot(cssW, cssH) / 2 * dpr * 0.62;  // how far out they start
@@ -87,7 +86,7 @@ export default function BustBuild({ className = "" }: { className?: string }) {
         if (cancelled) return;
         const t = (now - start) / 1000;
         x.clearRect(0, 0, canvas.width, canvas.height);
-        const chips: { px: number; py: number; a: number; label: string }[] = [];
+        const chips: { px: number; py: number; a: number; z: number; label: string }[] = [];
         for (const tr of tris) {
           const k = Math.min(1, Math.max(0, (t - tr.t0) / tr.dur));
           if (k <= 0) continue;
@@ -108,15 +107,22 @@ export default function BustBuild({ className = "" }: { className?: string }) {
             if (f > 0) { x.fillStyle = `rgba(52,187,120,${0.28 * f})`; x.fill(); }
           }
           x.setTransform(1, 0, 0, 1, 0, 0);
-          if (tr.label && k < 1) chips.push({ px: ox + cx * s, py: oy + cy * s, a: k < 0.55 ? 1 : Math.max(0, 1 - (k - 0.55) / 0.4), label: tr.label });
+          if (tr.label && k < 1) chips.push({ px: ox + cx * s, py: oy + cy * s, a: Math.min(1, k * 6) * (k < 0.8 ? 1 : Math.max(0, 1 - (k - 0.8) / 0.2)), z: 0.8 + 0.5 * e, label: tr.label });
         }
-        // labels ride along upright, then dissolve into the facet
-        x.font = `500 ${11 * dpr}px ui-monospace, "SF Mono", Menlo, monospace`; x.textBaseline = "middle";
+        // labels ride along upright, grow as they near the face, and stay readable until the last moment
+        const base = (innerWidth < 640 ? 14 : 20) * dpr;
+        x.textBaseline = "middle"; x.textAlign = "center";
         for (const c of chips) {
-          const w = x.measureText(c.label).width + 14 * dpr, h = 20 * dpr;
-          x.globalAlpha = c.a; x.fillStyle = "#fbfbf9"; x.strokeStyle = "#111"; x.lineWidth = dpr;
-          x.beginPath(); x.roundRect(c.px - w / 2, c.py - h / 2, w, h, 4 * dpr); x.fill(); x.stroke();
-          x.fillStyle = "#111"; x.textAlign = "center"; x.fillText(c.label, c.px, c.py + dpr * 0.5);
+          const fs = base * c.z;
+          x.font = `600 ${fs}px ui-monospace, "SF Mono", Menlo, monospace`;
+          const w = x.measureText(c.label).width + fs * 1.3, h = fs * 1.9;
+          x.globalAlpha = c.a;
+          x.shadowColor = "rgba(0,0,0,0.18)"; x.shadowBlur = fs * 0.6; x.shadowOffsetY = fs * 0.2;
+          x.fillStyle = "#fbfbf9"; x.beginPath(); x.roundRect(c.px - w / 2, c.py - h / 2, w, h, fs * 0.45); x.fill();
+          x.shadowColor = "transparent"; x.shadowBlur = 0; x.shadowOffsetY = 0;
+          x.strokeStyle = "#111"; x.lineWidth = Math.max(1, fs * 0.09); x.stroke();
+          x.fillStyle = "#34bb78"; x.beginPath(); x.arc(c.px - w / 2 + fs * 0.55, c.py, fs * 0.17, 0, Math.PI * 2); x.fill();
+          x.fillStyle = "#111"; x.fillText(c.label, c.px + fs * 0.25, c.py + fs * 0.04);
         }
         x.globalAlpha = 1;
         if (skip || t >= total) { finish(); return; }
@@ -131,7 +137,7 @@ export default function BustBuild({ className = "" }: { className?: string }) {
   }, []);
 
   return (
-    <div data-state={state} className={`${className} max-lg:opacity-[0.55] max-lg:mix-blend-multiply max-lg:transition-opacity max-lg:duration-[900ms] max-lg:data-[state=done]:opacity-[0.16] max-lg:[-webkit-mask-image:radial-gradient(ellipse_85%_80%_at_55%_40%,#000_42%,transparent_95%)] max-lg:[mask-image:radial-gradient(ellipse_85%_80%_at_55%_40%,#000_42%,transparent_95%)]`}>
+    <div data-state={state} className={`${className} max-lg:opacity-[0.55] max-lg:mix-blend-multiply max-lg:transition-opacity max-lg:duration-[900ms] max-lg:data-[state=playing]:z-20 max-lg:data-[state=done]:opacity-[0.16] max-lg:[-webkit-mask-image:radial-gradient(ellipse_85%_80%_at_55%_40%,#000_42%,transparent_95%)] max-lg:[mask-image:radial-gradient(ellipse_85%_80%_at_55%_40%,#000_42%,transparent_95%)]`}>
       {/* the real portrait: hidden while the build plays, then it fades in over the finished mesh */}
       <Image src="/portrait/leslie.png" alt="Leslie Paul Ajayi, a faceted greyscale portrait" fill priority sizes="(min-width: 1024px) 40vw, 70vw"
         className="bust-img object-contain object-bottom" style={{ opacity: state === "done" ? 1 : 0, transition: state === "done" ? "opacity .6s ease" : "none" }} />
