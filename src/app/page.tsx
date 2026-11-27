@@ -73,7 +73,9 @@ export default function Home() {
             </div>
           </div>
           <div className="order-1 hidden lg:order-2 lg:mt-0 lg:block lg:h-[min(640px,calc(100svh-300px))]">
-            <Dither shape={{ kind: "portrait", fit: "contain", align: 0.6 }} cell={3} label="Leslie Paul Ajayi, portrait rendered in green dots" />
+            <div className="relative h-full w-full">
+              <Image src="/portrait/leslie.png" alt="Leslie Paul Ajayi, a faceted greyscale portrait" fill priority sizes="(min-width: 1024px) 40vw, 0px" className="object-contain object-[60%_100%]" />
+            </div>
           </div>
         </div>
         <ul className="mt-8 grid grid-cols-2 gap-x-5 gap-y-4 border-t border-line pt-6 sm:grid-cols-3 md:mt-10 md:pt-7 lg:grid-cols-5">
