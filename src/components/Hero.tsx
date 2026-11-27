@@ -2,6 +2,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef } from "react";
+import Image from "next/image";
 import { gsap, reducedMotion } from "@/lib/gsap";
 import { PERSON, PROJECTS, SHIPPED } from "@/lib/data";
 import { useShell } from "./state";
@@ -84,6 +85,18 @@ export default function Hero() {
         <i aria-hidden className="pointer-events-none absolute inset-x-0 top-0 h-[7px] opacity-70" style={{ backgroundImage: "repeating-linear-gradient(90deg, var(--ink) 0 1px, transparent 1px 10px)", maskImage: "linear-gradient(#000, #000)" }} />
         <i aria-hidden className="pointer-events-none absolute inset-x-0 top-0 h-[13px] opacity-60" style={{ backgroundImage: "repeating-linear-gradient(90deg, var(--ink) 0 1px, transparent 1px 100px)" }} />
         <i aria-hidden className="pointer-events-none absolute bottom-0 left-0 top-0 w-[7px] opacity-50 max-md:hidden" style={{ backgroundImage: "repeating-linear-gradient(180deg, var(--ink) 0 1px, transparent 1px 10px)" }} />
+
+        {/* portrait: a light, faded layer behind the type */}
+        <div aria-hidden className="pointer-events-none absolute right-[-8%] top-[3%] z-0 h-[40%] w-[74%] md:bottom-0 md:right-0 md:top-[7%] md:h-auto md:w-[52%]" data-no-part>
+          <Image
+            src="/portrait/leslie.png" alt="" fill priority sizes="(min-width: 900px) 52vw, 78vw"
+            className="object-contain object-right-top opacity-[0.17] mix-blend-multiply md:object-right-bottom"
+            style={{
+              WebkitMaskImage: "radial-gradient(ellipse 78% 82% at 66% 55%, #000 38%, transparent 88%)",
+              maskImage: "radial-gradient(ellipse 78% 82% at 66% 55%, #000 38%, transparent 88%)",
+            }}
+          />
+        </div>
 
         {/* pointer measurement */}
         <svg aria-hidden className="pointer-events-none absolute inset-0 z-10 h-full w-full opacity-0 transition-opacity [[data-measure='1']_&]:opacity-100">

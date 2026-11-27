@@ -19,7 +19,7 @@ export default function Footer() {
         <div className="grid12 mt-10 gap-y-8">
           <nav aria-label="Footer" className="col-span-6 md:col-span-4">
             <ul className="space-y-1">
-              {[["WORK", "/work"], ["BENCH", "/bench"], ["ABOUT", "/about"], ["TOOLKIT", "/toolkit"], ["NOTES", "/notes"], ["ARCHIVE", "/archive"], ["CONTACT", "/contact"]].map(([l, h]) => (
+              {[["WORK", "/work"], ["BENCH", "/bench"], ["ABOUT", "/about"], ["TOOLKIT", "/toolkit"], ["INFRA", "/infra"], ["NOTES", "/notes"], ["ARCHIVE", "/archive"], ["CONTACT", "/contact"]].map(([l, h]) => (
                 <li key={h}><Link href={h} className="display link-u text-2xl">{l}</Link></li>
               ))}
             </ul>
