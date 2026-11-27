@@ -87,6 +87,9 @@ export default function BustBuild({ className = "" }: { className?: string }) {
 
       const frame = (now: number) => {
         if (cancelled) return;
+        try { draw(now); } catch { finish(); }
+      };
+      const draw = (now: number) => {
         const t = (now - start) / 1000;
         x.clearRect(0, 0, canvas.width, canvas.height);
         const chips: { px: number; py: number; a: number; z: number; label: string }[] = [];
@@ -121,7 +124,7 @@ export default function BustBuild({ className = "" }: { className?: string }) {
           const w = x.measureText(c.label).width + fs * 1.3, h = fs * 1.9;
           x.globalAlpha = c.a;
           x.shadowColor = "rgba(0,0,0,0.18)"; x.shadowBlur = fs * 0.6; x.shadowOffsetY = fs * 0.2;
-          x.fillStyle = "#fbfbf9"; x.beginPath(); x.roundRect(c.px - w / 2, c.py - h / 2, w, h, fs * 0.45); x.fill();
+          x.fillStyle = "#fbfbf9"; x.beginPath(); if (x.roundRect) x.roundRect(c.px - w / 2, c.py - h / 2, w, h, fs * 0.45); else x.rect(c.px - w / 2, c.py - h / 2, w, h); x.fill();
           x.shadowColor = "transparent"; x.shadowBlur = 0; x.shadowOffsetY = 0;
           x.strokeStyle = "#111"; x.lineWidth = Math.max(1, fs * 0.09); x.stroke();
           x.fillStyle = "#34bb78"; x.beginPath(); x.arc(c.px - w / 2 + fs * 0.55, c.py, fs * 0.17, 0, Math.PI * 2); x.fill();
@@ -134,9 +137,11 @@ export default function BustBuild({ className = "" }: { className?: string }) {
       raf = requestAnimationFrame(frame);
     }).catch(() => setState("done"));
 
-    const onSkip = () => { skip = true; };
-    addEventListener("keydown", onSkip); addEventListener("pointerdown", onSkip);
-    return () => { cancelled = true; cancelAnimationFrame(raf); removeEventListener("keydown", onSkip); removeEventListener("pointerdown", onSkip); };
+    // a keypress or a mouse click skips; a touch never does (on a phone a touch is just a scroll or a tap)
+    const onKey = () => { skip = true; };
+    const onPointer = (e: PointerEvent) => { if (e.pointerType === "mouse") skip = true; };
+    addEventListener("keydown", onKey); addEventListener("pointerdown", onPointer);
+    return () => { cancelled = true; cancelAnimationFrame(raf); removeEventListener("keydown", onKey); removeEventListener("pointerdown", onPointer); };
   }, []);
 
   return (
