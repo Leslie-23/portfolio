@@ -55,12 +55,6 @@ export default function Home() {
     <>
       {/* 01 COVER */}
       <Slide id="cover" label="Leslie Paul Ajayi, profile 2026" deck className="overflow-x-clip lg:min-h-[calc(100svh-var(--bar))]">
-        {/* phones: the portrait sits lightly behind the text instead of taking a block of its own */}
-        <div aria-hidden className="pointer-events-none absolute inset-x-0 top-0 z-0 h-[78%] overflow-hidden lg:hidden">
-          <Image src="/portrait/leslie.png" alt="" fill priority sizes="100vw"
-            className="object-contain object-right-top opacity-[0.16] mix-blend-multiply"
-            style={{ WebkitMaskImage: "radial-gradient(ellipse 70% 78% at 62% 38%, #000 40%, transparent 92%)", maskImage: "radial-gradient(ellipse 70% 78% at 62% 38%, #000 40%, transparent 92%)" }} />
-        </div>
         <div className="relative z-10 grid items-center gap-x-10 lg:grid-cols-[1.08fr_1fr]">
           <div className="order-2 lg:order-1">
             <p className="pill label mt-6 text-ink lg:mt-16">Software engineer · Accra, Ghana</p>
@@ -73,8 +67,8 @@ export default function Home() {
               <a href="#contact" className="btn">Get in touch</a>
             </div>
           </div>
-          <div className="order-1 hidden lg:order-2 lg:mt-0 lg:block lg:h-[min(640px,calc(100svh-300px))]">
-            <BustBuild className="mx-auto h-full aspect-[687/1083]" />
+          <div className="contents lg:order-2 lg:mt-0 lg:block lg:h-[min(640px,calc(100svh-300px))]">
+            <BustBuild className="absolute right-[-22%] top-[1%] -z-10 w-[104%] aspect-[687/1083] lg:relative lg:right-auto lg:top-auto lg:z-auto lg:mx-auto lg:h-full lg:w-auto" />
           </div>
         </div>
         <ul className="mt-8 grid grid-cols-2 gap-x-5 gap-y-4 border-t border-line pt-6 sm:grid-cols-3 md:mt-10 md:pt-7 lg:grid-cols-5">
