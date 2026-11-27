@@ -609,7 +609,7 @@ export type Shipped = {
 export const SHIPPED: Shipped[] = [
   { slug: "sellis", name: "Sellis Beauty Spa", year: "2026", kind: "BUSINESS SITE", categories: ["WEB"], blurb: "Luxury beauty and spa in Accra: hair, spa, nails, waxing and lash treatments. Live on its own domain.", live: "https://sellisspa.com", stack: ["React", "Vite"] },
   { slug: "captivating-home", name: "Captivating Home & Trading", year: "2026", kind: "RETAIL PLATFORM", categories: ["WEB", "PRODUCT"], blurb: "Platform for a Ghanaian retail operation: home appliances, electricity vending and currency exchange. Live on its own domain.", live: "https://captivatinghometrade.com" },
-  { slug: "nenecollectionz", name: "NeneCollectionz", year: "2025", kind: "STOREFRONT", categories: ["WEB"], blurb: "Storefront for premium wigs and hair care.", live: "https://nenecollectionz.vercel.app" },
+  { slug: "nenecollectionz", name: "Nene Collectionz", year: "2026", kind: "STOREFRONT", categories: ["WEB"], blurb: "Wigs, wholesale and retail from Spintex, Accra: braided wigs, frontals and glueless units, ordered on WhatsApp and shipped worldwide.", live: "https://nene-collectionz.leslieajayi27.workers.dev/" },
   { slug: "rate-desk", name: "GHS to NGN Rate Desk", year: "2026", kind: "INTERNAL TOOL", categories: ["WEB", "SYSTEMS"], blurb: "Internal rate calculator with MongoDB-backed shared rates, so a whole team quotes the same number.", live: "https://rate-calc-kappa.vercel.app", repo: "https://github.com/Leslie-23/rateCalc", stack: ["Node.js", "MongoDB"] },
   { slug: "ecommerce", name: "PAL Shop", year: "2024", kind: "WEB APP", categories: ["WEB", "PRODUCT"], blurb: "E-commerce app where you can buy goods and sell them, with accounts, a cart and a checkout flow.", live: "https://paltech-e-commerce.netlify.app", stack: ["React"] },
   { slug: "grilli", name: "Grilli", year: "2024", kind: "TEMPLATE", categories: ["WEB"], blurb: "A restaurant landing page, hand-built in HTML and CSS.", live: "https://web-plusplus.vercel.app", repo: "https://github.com/Leslie-23/web-plusplus" },
@@ -922,7 +922,7 @@ export const VIBE: Record<string, Vibe> = {
   "campus-connect": { say: "Your whole campus in one app.", cursor: "JOIN", tone: "red", rot: 1.8, hx: 5, hy: -9, hr: -2.5 },
   sellis: { say: "Come in heavy. Leave weightless.", cursor: "BOOK", tone: "orange", rot: -1, hx: -4, hy: -7, hr: 1.5 },
   "captivating-home": { say: "Ask for current price.", cursor: "SHOP", tone: "red", rot: 0.7, hx: 4, hy: -6, hr: -1 },
-  nenecollectionz: { say: "Luxury hair, redefined.", cursor: "SHOP", tone: "orange", rot: -0.8, hx: -5, hy: -7, hr: 1 },
+  nenecollectionz: { say: "Home of wholesale prices.", cursor: "SHOP", tone: "orange", rot: -0.8, hx: -5, hy: -7, hr: 1 },
 };
 
 /** Where a screenshot should take you: the live product, else its source, else its case study. */

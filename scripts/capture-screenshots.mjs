@@ -15,7 +15,7 @@ const SITES = {
   "de-sams-studio": "https://desamsstudio.vercel.app",
   sellis: "https://sellisspa.com",
   "captivating-home": "https://captivatinghometrade.com",
-  nenecollectionz: "https://nenecollectionz.vercel.app",
+  nenecollectionz: "https://nene-collectionz.leslieajayi27.workers.dev/",
   "efo-kodjo": "https://efo-kodjo.vercel.app",
   "valuable-women": "https://valuable-women.vercel.app",
   "rate-desk": "https://rate-calc-kappa.vercel.app",
