@@ -9,7 +9,6 @@ const nextConfig: NextConfig = {
       { source: "/archive", destination: "/work", permanent: true },
       { source: "/toolkit", destination: "/about", permanent: true },
       { source: "/infra", destination: "/about", permanent: true },
-      { source: "/contact", destination: "/#contact", permanent: true },
     ];
   },
   partialPrefetching: true,
