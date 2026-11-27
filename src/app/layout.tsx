@@ -3,6 +3,9 @@ import { Mona_Sans, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import TopBar from "@/components/TopBar";
 import Reveal from "@/components/Reveal";
+import Console, { type ConsoleData } from "@/components/Console";
+import { PERSON, TOOLKIT, publicEvidence } from "@/lib/data";
+import { WORK } from "@/lib/work";
 
 const sans = Mona_Sans({ variable: "--font-sans-face", subsets: ["latin"], weight: ["400", "500", "600"] });
 const mono = Geist_Mono({ variable: "--font-mono-face", subsets: ["latin"], weight: ["400", "500"] });
@@ -22,6 +25,14 @@ export const metadata: Metadata = {
 };
 export const viewport: Viewport = { themeColor: "#ecedeb", width: "device-width", initialScale: 1, viewportFit: "cover" };
 
+// what the command palette and terminal can name: slugs, titles and the stack, nothing else
+const consoleData: ConsoleData = {
+  email: PERSON.email,
+  github: PERSON.links.github,
+  work: WORK.map((w) => ({ slug: w.slug, name: w.name, category: w.category, tier: w.tier })),
+  stack: TOOLKIT.map((g) => ({ group: g.label, items: g.items.filter(publicEvidence).map((i) => i.name) })),
+};
+
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={`${sans.variable} ${mono.variable}`}>
@@ -30,6 +41,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <TopBar />
         <main id="main" className="pt-[var(--bar)]">{children}</main>
         <Reveal />
+        <Console data={consoleData} />
       </body>
     </html>
   );

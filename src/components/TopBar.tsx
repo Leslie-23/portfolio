@@ -46,6 +46,9 @@ export default function TopBar() {
               {active(path, n.href) && <i aria-hidden className="absolute inset-x-0 -bottom-0.5 h-[2px] rounded bg-accent" />}
             </Link>
           ))}
+          <button type="button" onClick={() => dispatchEvent(new Event("open-palette"))} className="label hidden items-center gap-2 text-mute transition-colors hover:text-ink xl:flex" aria-label="Open the command palette">
+            <kbd className="rounded border border-line px-1.5 py-0.5">/</kbd>Commands
+          </button>
           <Link href="/contact" className="btn btn-solid !h-9 !px-4 !text-[14px]">Contact</Link>
         </nav>
 

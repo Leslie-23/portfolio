@@ -122,6 +122,8 @@ export default function TeamPage() {
           <a href={CREW_SITE} target="_blank" rel="noopener noreferrer" className="btn btn-solid">See the crew&apos;s own site</a>
           <a href={`${CREW_SITE}/track-record`} target="_blank" rel="noopener noreferrer" className="btn">The dated receipts</a>
           <p className="w-full text-[14px] text-mute md:ml-2 md:w-auto">Everything above is from the crew&apos;s site, as of 27 November 2026.</p>
+          <p className="w-full text-[14px] text-mute">The command palette (press <kbd className="rounded border border-line px-1 font-mono text-[12px]">/</kbd>) and the terminal (<kbd className="rounded border border-line px-1 font-mono text-[12px]">~</kbd>) on this site were inspired by{" "}
+            <a href="https://bio-ten-nu.vercel.app" target="_blank" rel="noopener noreferrer" className="u text-ink">Elton&apos;s portfolio</a>.</p>
         </div>
       </Slide>
       <Ask />

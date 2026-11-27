@@ -856,6 +856,9 @@ export const INTERESTS: { t: string; b: string; proof: { label: string; href: st
 
 /* ---------------- Toolkit ---------------- */
 export type ToolItem = { name: string; projects: string[]; also?: string[] };
+/** Employer and affiliate systems are names and logos only. A toolkit item whose only evidence is that work is never shown. */
+const PRIVATE_EVIDENCE = /transport for ghana|tap n'? ?go|moveet|global icons|nss|at work/i;
+export const publicEvidence = (it: { projects: string[]; also?: string[] }) => it.projects.length > 0 || !(it.also ?? []).some((a) => PRIVATE_EVIDENCE.test(a));
 export type ToolGroup = { id: string; label: string; items: ToolItem[] };
 export const TOOLKIT: ToolGroup[] = [
   {

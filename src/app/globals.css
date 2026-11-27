@@ -147,3 +147,13 @@ a:hover .frame-img img { transform: scale(1.015); }
   .story-in { animation: story-in .35s cubic-bezier(.2,.7,.2,1) both; }
   @keyframes story-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
 }
+
+/* command palette, terminal, and the "surprise me" glitch */
+@media (prefers-reduced-motion: no-preference) {
+  .pop-in { animation: pop-in .22s cubic-bezier(.2,.7,.2,1) both; }
+  @keyframes pop-in { from { opacity: 0; transform: translateY(10px) scale(.98); } to { opacity: 1; transform: none; } }
+  .sheet-in { animation: sheet-in .3s cubic-bezier(.2,.7,.2,1) both; }
+  @keyframes sheet-in { from { transform: translateY(100%); } to { transform: none; } }
+  .glitch body { animation: glitch .12s steps(2) 7; }
+  @keyframes glitch { 50% { filter: invert(1); transform: skew(2deg); } }
+}
