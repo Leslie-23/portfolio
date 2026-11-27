@@ -5,6 +5,7 @@ import Dither, { type Shape } from "@/components/Dither";
 import WorkCard, { ownership } from "@/components/WorkCard";
 import ExperienceList from "@/components/ExperienceList";
 import AppMarquee from "@/components/AppMarquee";
+import BustBuild from "@/components/BustBuild";
 import StatMarquee from "@/components/StatMarquee";
 import CopyCommand from "@/components/CopyCommand";
 import Ask from "@/components/Ask";
@@ -53,7 +54,7 @@ export default function Home() {
   return (
     <>
       {/* 01 COVER */}
-      <Slide id="cover" label="Leslie Paul Ajayi, profile 2026" deck className="lg:min-h-[calc(100svh-var(--bar))]">
+      <Slide id="cover" label="Leslie Paul Ajayi, profile 2026" deck className="overflow-x-clip lg:min-h-[calc(100svh-var(--bar))]">
         {/* phones: the portrait sits lightly behind the text instead of taking a block of its own */}
         <div aria-hidden className="pointer-events-none absolute inset-x-0 top-0 z-0 h-[78%] overflow-hidden lg:hidden">
           <Image src="/portrait/leslie.png" alt="" fill priority sizes="100vw"
@@ -73,9 +74,7 @@ export default function Home() {
             </div>
           </div>
           <div className="order-1 hidden lg:order-2 lg:mt-0 lg:block lg:h-[min(640px,calc(100svh-300px))]">
-            <div className="relative h-full w-full">
-              <Image src="/portrait/leslie.png" alt="Leslie Paul Ajayi, a faceted greyscale portrait" fill priority sizes="(min-width: 1024px) 40vw, 0px" className="object-contain object-[60%_100%]" />
-            </div>
+            <BustBuild className="mx-auto h-full aspect-[687/1083]" />
           </div>
         </div>
         <ul className="mt-8 grid grid-cols-2 gap-x-5 gap-y-4 border-t border-line pt-6 sm:grid-cols-3 md:mt-10 md:pt-7 lg:grid-cols-5">
