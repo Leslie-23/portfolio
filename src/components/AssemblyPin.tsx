@@ -10,10 +10,10 @@ const P = PROJECTS[0]; // Trofficient: real layers, real screens
 const PARTS = P.layers.slice(1).filter((l) => l.img);
 // docked centre (percent of the stage), desktop / mobile, and where each piece starts: scattered, tilted
 const DOCK = [
-  { x: 24, y: 29, xm: 17, ym: 24, fx: -0.34, fy: -0.32, r: -14 },
-  { x: 24, y: 71, xm: 17, ym: 76, fx: -0.2, fy: 0.42, r: 9 },
-  { x: 76, y: 29, xm: 83, ym: 24, fx: 0.3, fy: -0.4, r: 12 },
-  { x: 76, y: 71, xm: 83, ym: 76, fx: 0.36, fy: 0.3, r: -8 },
+  { x: 24, y: 29, xm: 17, ym: 24, fx: -0.2, fy: 0.06, r: -10 },
+  { x: 24, y: 71, xm: 17, ym: 76, fx: -0.12, fy: 0.12, r: 7 },
+  { x: 76, y: 29, xm: 83, ym: 24, fx: 0.18, fy: 0.08, r: 9 },
+  { x: 76, y: 71, xm: 83, ym: 76, fx: 0.2, fy: 0.1, r: -6 },
 ];
 
 /** PINNED ASSEMBLY. Disconnected parts of a real product sit around the screen.
@@ -95,8 +95,8 @@ export default function AssemblyPin() {
         className="relative flex h-[calc(100svh-56px)] flex-col overflow-hidden border-y border-ink bg-paper-3">
         <div className="frame flex items-end justify-between gap-4 pt-6">
           <div>
-            <div className="mono text-mute">FIG. {P.fig}-X / PINNED ASSEMBLY</div>
-            <h2 className="display mt-2 text-[clamp(34px,5vw,84px)]">Parts first.<br />Then the product.</h2>
+            <div className="mono text-mute"><span className="text-accent-ink">■</span> SYSTEMS THINKING / {P.name.toUpperCase()}</div>
+            <h2 className="display mt-2 text-[clamp(34px,4.6vw,76px)]">A product is<br />its parts, connected.</h2>
           </div>
           <div className="mono text-right">
             <div className="text-mute">CONNECTED</div>
@@ -137,7 +137,7 @@ export default function AssemblyPin() {
             {PARTS.map((l, i) => (
               <div key={l.key} className="ap-part absolute left-[var(--xm)] top-[var(--ym)] h-[26%] -translate-x-1/2 -translate-y-1/2 md:left-[var(--x)] md:top-[var(--y)] md:h-[40%]"
                 style={{ aspectRatio: "1179 / 2556", "--x": `${DOCK[i].x}%`, "--y": `${DOCK[i].y}%`, "--xm": `${DOCK[i].xm}%`, "--ym": `${DOCK[i].ym}%` } as React.CSSProperties}>
-                <div className="absolute inset-0 overflow-hidden rounded-[10px] border border-ink bg-ink shadow-[4px_4px_0_var(--ink)]">
+                <div className="absolute inset-0 overflow-hidden rounded-[10px] border border-ink bg-ink">
                   <Image src={l.img!.src} alt="" fill sizes="12vw" className="object-cover object-top" />
                 </div>
                 <span className="ap-lock absolute -right-1.5 -top-1.5 grid h-4 w-4 place-items-center bg-accent text-[9px] text-ink" aria-hidden>✓</span>
@@ -153,7 +153,7 @@ export default function AssemblyPin() {
             <div className="pointer-events-auto text-center">
               <div className="mono text-mute">FIG. {P.fig} / {P.name.toUpperCase()}</div>
               <div className="display mt-2 text-[clamp(40px,7vw,120px)]">System<br />complete.</div>
-              <Link href={`/work/${P.slug}`} className="btn mono mt-6 bg-paper" data-cursor="OPEN FIG. →">SEE HOW IT WORKS →</Link>
+              <Link href={`/work/${P.slug}`} className="btn btn-go mono mt-6" data-cursor="OPEN →">READ THE CASE STUDY →</Link>
             </div>
           </div>
         </div>

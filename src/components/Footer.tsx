@@ -2,7 +2,6 @@
 import Link from "next/link";
 import { PERSON } from "@/lib/data";
 import { useShell } from "./state";
-import { Tip } from "./Spec";
 
 export default function Footer() {
   const { setBroken } = useShell();
@@ -11,10 +10,10 @@ export default function Footer() {
       style={{ "--paper": "#151515", "--paper-2": "#1d1d1d", "--paper-3": "#222", "--ink": "#f2f0e9", "--graphite": "#d6d4cc", "--mute": "#9d9c94", "--hair": "rgba(242,240,233,0.16)", "--accent-ink": "#34bb78" } as React.CSSProperties}>
       <div className="frame py-12 md:py-14">
         <div className="grid12 items-end gap-y-4">
-          <h2 className="display col-span-6 text-[clamp(56px,12vw,200px)] md:col-span-9">Still<br /><span className="text-accent">curious?</span></h2>
-          <div className="col-span-6 md:col-span-3 md:pb-4">
-            <p className="mono"><span className="chip">GOOD.</span></p>
-            <a href={`mailto:${PERSON.email}`} className="btn btn-go mono mt-4 !shadow-none" data-cursor="FOLLOW →">START A CONVERSATION →</a>
+          <h2 className="display col-span-6 text-[clamp(52px,9vw,150px)] md:col-span-8">Have a problem<br /><span className="text-accent">worth building?</span></h2>
+          <div className="col-span-6 md:col-span-4 md:pb-4">
+            <p className="max-w-[36ch] text-graphite">Open to engineering roles, product collaborations and well-scoped client work.</p>
+            <a href={`mailto:${PERSON.email}`} className="btn btn-go mono mt-5" data-cursor="EMAIL →">{PERSON.email.toUpperCase()} →</a>
           </div>
         </div>
         <div className="grid12 mt-10 gap-y-8">
@@ -36,8 +35,8 @@ export default function Footer() {
             </div>
           </div>
           <div className="col-span-6 md:col-span-4 md:text-right">
-            <button onClick={() => setBroken(true)} className="btn mono" data-cursor="DON'T">DISASSEMBLE SITE</button>
-            <p className="mono mono-sm mt-2 text-mute"><Tip tip="you've been warned. it's reversible." align="right">do not press</Tip></p>
+            <button onClick={() => setBroken(true)} className="mono link-u text-mute hover:text-ink" data-cursor="TAKE APART">DISASSEMBLE THIS SITE ↺</button>
+            <p className="mono mono-sm mt-2 text-mute">Fully reversible. Press I anywhere for internals.</p>
           </div>
         </div>
         <div className="mono mono-sm mt-10 flex flex-wrap justify-between gap-2 border-t border-hair pt-4 text-mute">

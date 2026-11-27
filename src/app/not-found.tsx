@@ -21,7 +21,7 @@ export default function NotFound() {
         <div className="mono text-signal">ERR / ROUTE_UNRESOLVED</div>
         <h1 className="display mt-4 text-[clamp(52px,11vw,190px)]">Component<br />not found.</h1>
         <p className="mono mt-6 min-h-12 text-mute" aria-live="polite">
-          {placed ? <>ROUTE STILL DOESN'T EXIST.<br />NICE TRY.</> : "ONE PIECE IS MISSING. DRAG IT INTO PLACE."}
+          {placed ? <>PART PLACED. THE ROUTE STILL DOESN&apos;T EXIST.<br />THE WAY BACK IS BELOW.</> : "ONE PIECE IS MISSING. DRAG IT INTO PLACE."}
         </p>
         <Link href="/" className="btn mono mt-6" data-cursor="HOME →">RETURN TO ASSEMBLY →</Link>
       </div>

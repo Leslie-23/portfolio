@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Spec } from "@/components/Spec";
-import { FlowChain, OperatingCharacteristics } from "@/components/Characteristics";
+import Experience from "@/components/Experience";
+import Approach from "@/components/Approach";
+import Interests from "@/components/Interests";
 import Affiliations from "@/components/Affiliations";
 
 export const metadata: Metadata = { title: "About" };
@@ -48,7 +50,7 @@ export default function About() {
 
       <Spec name="Story" id="STORY" as="section" className="frame grid12 gap-y-10 border-t border-ink py-12 md:py-16">
         <div className="col-span-6 md:col-span-5">
-          <div className="mono"><span className="chip">01</span> <span className="text-mute">WHO</span></div>
+          <div className="mono text-mute"><span className="text-accent-ink">■</span> PROFILE</div>
           <p className="display mt-5 max-w-[14ch] text-[clamp(32px,3.8vw,60px)] !leading-[0.95]">Systems that go to production, <span className="text-accent-ink">not demos that die in a repo.</span></p>
         </div>
         <div className="col-span-6 space-y-5 text-[19px] leading-relaxed text-graphite md:col-span-6 md:col-start-7">
@@ -58,10 +60,11 @@ export default function About() {
         </div>
       </Spec>
 
-      <Affiliations className="border-t border-ink py-12 md:py-16" />
+      <div className="border-t border-ink pt-12 md:pt-16"><Experience /></div>
 
       <Spec name="HowIWork" id="HOW_I_WORK" as="section" className="frame border-t border-ink py-12 md:py-16">
-        <div className="mono mb-8"><span className="chip">02</span> <span className="text-mute">HOW I WORK</span></div>
+        <div className="mono text-mute"><span className="text-accent-ink">■</span> PRINCIPLES</div>
+        <h2 className="display mb-8 mt-3 text-[clamp(40px,5.6vw,92px)]">What I hold to.</h2>
         {[
           ["Ship the executable MVP, then layer.", "I've killed my own over-engineered microservice plans when a monolith shipped faster. Architecture serves delivery, not the reverse."],
           ["Full-stack by necessity, backend by preference.", "I'm most interested in the parts users never see: data models, payment integration, the failure modes nobody plans for."],
@@ -75,13 +78,13 @@ export default function About() {
         ))}
       </Spec>
 
-      <section className="frame grid12 gap-y-16 border-t border-ink py-12 md:py-16">
-        <div className="col-span-6 md:col-span-6"><div className="mono mb-4"><span className="chip">03</span> <span className="text-mute">DEFAULT BEHAVIOUR</span></div><FlowChain /></div>
-        <div className="col-span-6 md:col-span-6"><OperatingCharacteristics /></div>
-      </section>
+      <div className="border-t border-ink py-12 md:py-16"><Approach /></div>
+
+      <div className="border-t border-ink py-12 md:py-16"><Interests /></div>
 
       <Spec name="CommitLog" id="COMMIT_LOG" as="section" className="frame border-t border-ink py-12 md:py-16">
-        <div className="mono mb-8"><span className="chip">04</span> <span className="text-mute">FROM THE COMMIT LOG</span></div>
+        <div className="mono text-mute"><span className="text-accent-ink">■</span> TIMELINE</div>
+        <h2 className="display mb-8 mt-3 text-[clamp(40px,5.6vw,92px)]">How I got here.</h2>
         <ol>
           {LOG.map(([y, t]) => (
             <li key={y} className="grid12 border-t border-hair py-5">
@@ -91,6 +94,8 @@ export default function About() {
           ))}
         </ol>
       </Spec>
+
+      <Affiliations className="border-t border-ink py-12 md:py-16" />
     </>
   );
 }

@@ -16,7 +16,7 @@ export default function Toolkit() {
         meta={[
           { k: "GROUPS", v: String(TOOLKIT.length).padStart(2, "0") },
           { k: "TOOLS", v: String(TOOLKIT.reduce((n, g) => n + g.items.length, 0)).padStart(2, "0") },
-          { k: "PERCENTAGES", v: "00", tip: "on purpose." },
+          { k: "ORGANISED BY", v: "PURPOSE" },
         ]}
       />
       <section className="frame pb-14"><ToolkitMap /></section>

@@ -15,7 +15,7 @@ export default function Work() {
         intro="Hover (or tap) a plate to take it apart. Click to go inside. Below the case studies: everything else that shipped, with live links."
         meta={[
           { k: "CASE STUDIES", v: String(PROJECTS.length).padStart(2, "0") },
-          { k: "SHIPPED + LIVE", v: String(SHIPPED.length).padStart(2, "0"), tip: "on the internet right now" },
+          { k: "SHIPPED + LIVE", v: String(SHIPPED.length).padStart(2, "0") },
           { k: "CATEGORIES", v: String(CATEGORIES.length).padStart(2, "0") },
         ]}
       />

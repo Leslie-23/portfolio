@@ -11,7 +11,7 @@ export default function PageHeader({
     <Spec name="PageHeader" id={id} as="header" className="frame pb-8 pt-8 md:pb-12 md:pt-12">
       <div className="mono flex items-center justify-between gap-4 border-b-2 border-ink pb-2">
         <span className="flex items-center gap-3">
-          <Tip tip="yes, the numbering actually means something."><span className="bg-accent px-1.5 py-0.5 text-ink">FIG. {fig}</span></Tip>
+          <span className="bg-accent px-1.5 py-0.5 text-ink">FIG. {fig}</span>
           <span className="text-mute">{kicker}</span>
         </span>
         {sheet && <span className="text-mute max-sm:hidden">{sheet}</span>}

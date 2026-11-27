@@ -9,13 +9,13 @@ export default function Bench() {
   return (
     <>
       <PageHeader
-        id="THE_BENCH" fig="02" kicker="STATUS / UNFINISHED BY DESIGN" sheet="SHEET 02 / 06"
+        id="THE_BENCH" fig="02" kicker="EXPERIMENTS & PROTOTYPES" sheet="SHEET 02 / 06"
         title={<>The<br />bench.</>}
-        intro="Things I'm testing, breaking and figuring out. Some of them run right here on the page."
+        intro="Questions I'm working through in code. Not products: each one exists to answer something, and several run live on this page."
         meta={[
           { k: "EXPERIMENTS", v: String(EXPERIMENTS.length).padStart(2, "0") },
-          { k: "RUNNING ON THIS PAGE", v: String(EXPERIMENTS.filter((e) => e.kind && e.kind !== "link").length).padStart(2, "0"), tip: "go on, touch them" },
-          { k: "WORKING", v: String(EXPERIMENTS.filter((e) => e.status === "WORKING").length).padStart(2, "0"), tip: "for now." },
+          { k: "RUNNING ON THIS PAGE", v: String(EXPERIMENTS.filter((e) => e.kind && e.kind !== "link").length).padStart(2, "0") },
+          { k: "WORKING", v: String(EXPERIMENTS.filter((e) => e.status === "WORKING").length).padStart(2, "0") },
         ]}
       />
       <BenchGrid />

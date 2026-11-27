@@ -8,8 +8,8 @@ export default function Affiliations({ className = "" }: { className?: string })
   return (
     <Spec name="Affiliations" id="WHERE_I_BUILD" as="section" className={`frame grid12 gap-y-8 ${className}`}>
       <div className="col-span-6 md:col-span-12">
-        <div className="mono text-mute">FIG. 040 / AFFILIATIONS</div>
-        <h2 className="display mt-3 text-[clamp(32px,5vw,84px)]">Where I build.</h2>
+        <div className="mono text-mute"><span className="text-accent-ink">■</span> ORGANISATIONS</div>
+        <h2 className="display mt-3 text-[clamp(32px,4.6vw,76px)]">Who I&apos;ve built with.</h2>
       </div>
 
       <article className="col-span-6 border border-ink bg-paper-3 p-5 md:col-span-6 md:p-8">

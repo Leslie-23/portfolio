@@ -106,8 +106,8 @@ body {
 .btn:hover { background: var(--ink); color: var(--paper); }
 .btn:active { transform: translate(1px, 1px); }
 /* primary action: the signature green, ink on hover */
-.btn-go { background: var(--accent); color: #151515; border-color: var(--ink); box-shadow: 3px 3px 0 var(--ink); }
-.btn-go:hover { background: var(--ink); color: var(--paper); box-shadow: 0 0 0 var(--ink); transform: translate(3px, 3px); }
+.btn-go { background: var(--accent); color: #151515; border-color: var(--accent); }
+.btn-go:hover { background: var(--ink); border-color: var(--ink); color: var(--paper); }
 .chip { display: inline-block; background: var(--accent); color: #151515; padding: 1px 6px; }
 .chip-ink { display: inline-block; background: var(--ink); color: var(--accent); padding: 1px 6px; }
 }
@@ -158,24 +158,24 @@ html[data-internals="on"] .plate { filter: grayscale(1) contrast(1.05); opacity:
 .noscript-hide { display: block; }
 
 /* marker: the accent as a highlighter behind ink text (keeps #34bb78 exact, keeps contrast) */
-.mark { background: var(--accent); color: #151515; padding: 0 0.12em; box-decoration-break: clone; -webkit-box-decoration-break: clone; }
+.mark { color: var(--accent-ink); }
 
-/* ---------- screenshots with a personality ---------- */
+/* ---------- screenshots: square to the grid, quiet until touched ---------- */
 @layer components {
 .shot {
   display: block; position: relative;
   border: 1px solid var(--ink);
   background: var(--ink);
-  transform: rotate(var(--rot, 0deg));
-  box-shadow: 5px 5px 0 var(--sh, var(--ink));
+  box-shadow: none;
   transition: transform 0.28s cubic-bezier(0.2, 0.9, 0.25, 1), box-shadow 0.28s cubic-bezier(0.2, 0.9, 0.25, 1);
   will-change: transform;
 }
 .shot:hover, .shot:focus-visible {
-  transform: translate(calc(var(--hx, -3) * 1px), calc(var(--hy, -6) * 1px)) rotate(var(--hr, 0deg));
-  box-shadow: 11px 11px 0 var(--sh, var(--ink));
+  transform: translateY(-3px);
+  outline: 2px solid var(--accent); outline-offset: 3px;
   z-index: 40;
 }
+.shot-sticker { display: none !important; }
 .shot-sticker {
   position: absolute; left: 10px; bottom: 10px;
   padding: 3px 8px;

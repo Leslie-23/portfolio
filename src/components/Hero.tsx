@@ -5,19 +5,19 @@ import { useEffect, useRef } from "react";
 import { gsap, reducedMotion } from "@/lib/gsap";
 import { PERSON, PROJECTS, SHIPPED } from "@/lib/data";
 import { useShell } from "./state";
-import { Spec, Tip } from "./Spec";
+import { Spec } from "./Spec";
 
 const STATS = [
-  { n: PROJECTS.length, l: "CASE STUDIES", tip: "each one with its own story" },
-  { n: PROJECTS.filter((p) => p.live).length + SHIPPED.length, l: "LIVE SITES + APPS", tip: "on the internet right now" },
-  { n: PROJECTS.filter((p) => p.portrait).length, l: "MOBILE APPS", tip: "phone first" },
-  { n: PERSON.year - 2022, l: "YEARS ON GITHUB", tip: "joined January 2022" },
+  { n: PROJECTS.length, l: "CASE STUDIES" },
+  { n: PROJECTS.filter((p) => p.live).length + SHIPPED.length, l: "LIVE IN PRODUCTION" },
+  { n: 2, l: "CLIENT PLATFORMS SHIPPED" },
+  { n: PERSON.year - 2022, l: "YEARS BUILDING" },
 ];
 
 // project fragments pinned to the sheet: real screens, each with a leader line to its figure label
 const FRAGS = ["four-man-chess", "ai-sme", "trofficient"].map((slug, i) => {
   const p = PROJECTS.find((x) => x.slug === slug)!;
-  return { p, depth: [10, 6, 3][i], box: ["right-[2%] top-[4%] w-[78%] rotate-[2deg]", "right-[30%] top-[34%] w-[70%] -rotate-[1.5deg]", "right-[6%] top-[60%] w-[66%] rotate-[0.5deg]"][i] };
+  return { p, depth: [10, 6, 3][i], box: ["right-[2%] top-[4%] w-[78%]", "right-[30%] top-[34%] w-[70%]", "right-[6%] top-[60%] w-[66%]"][i] };
 });
 
 /** A drawing sheet: title block, rulers, a stack of real screens with leader lines, and a facts strip. */
@@ -95,29 +95,26 @@ export default function Hero() {
         <div className="frame grid12 flex-1 content-center gap-y-10 py-10 md:py-8">
           {/* title block */}
           <div className="col-span-6 md:col-span-12 flex flex-wrap items-start justify-between gap-6" data-asm data-spec="TitleBlock">
-            <div className="mono leading-5">
-              <Tip tip="yes, the numbering actually means something."><div className="chip mb-1">FIG. 001</div></Tip>
-              <div>SOFTWARE ENGINEER</div>
-              <div className="text-mute">{PERSON.country} / {PERSON.year}</div>
+            <div className="mono flex w-full flex-wrap items-center justify-between gap-3 border-b border-ink pb-2">
+              <span>SOFTWARE ENGINEER &amp; FOUNDER</span>
+              <span className="text-mute">{PERSON.place.toUpperCase()}</span>
             </div>
           </div>
 
           {/* headline */}
           <div className="relative z-20 col-span-6 md:col-span-9 md:self-center" data-spec="Headline" data-spec-id="FIG_001">
-            <h1 className="display text-[clamp(52px,12vw,200px)]" data-asm>Leslie</h1>
-            <div className="hero-tick my-5 h-px w-full bg-ink" />
-            <p className="display text-[clamp(30px,6vw,100px)]" data-asm>
-              I like taking<br />things apart.
+            <h1 className="display text-[clamp(56px,10.5vw,176px)]" data-asm>Leslie Paul<br />Ajayi</h1>
+            <div className="hero-tick my-6 h-[2px] w-24 bg-accent" />
+            <p className="max-w-[24ch] text-[clamp(24px,2.7vw,42px)] font-medium leading-[1.12] tracking-[-0.02em]" data-asm>
+              I take systems apart to understand them, <span className="text-accent-ink">then build better ones.</span>
             </p>
-            <p className="display mt-4 text-[clamp(20px,3vw,52px)]" data-asm>
-              <span className="mark">And putting them</span><br /><span className="mark">back together better.</span>
+            <p className="mt-5 max-w-[52ch] text-[17px] leading-relaxed text-graphite" data-asm>
+              Software engineer at Global Icons and founder of Trofficient. I build production systems for real businesses in Ghana: payments, real-time tracking, retail and applied AI.
             </p>
-            <p className="mt-6 max-w-[44ch] text-[17px] text-graphite" data-asm>
-              Software engineer building products, exploring systems and figuring out how things work underneath.
-            </p>
-            <div className="mt-6 flex flex-wrap gap-3" data-asm data-spec="Actions">
-              <Link href="/work" className="btn btn-go mono" data-cursor="OPEN FIG. →">SEE WHAT I&apos;VE BUILT →</Link>
-              <Link href="/bench" className="btn mono">THE BENCH</Link>
+            <div className="mt-7 flex flex-wrap gap-3" data-asm data-spec="Actions">
+              <Link href="/work" className="btn btn-go mono" data-cursor="OPEN →">SELECTED WORK →</Link>
+              <Link href="/about#experience" className="btn mono">EXPERIENCE</Link>
+              <Link href="/contact" className="btn mono">GET IN TOUCH</Link>
             </div>
           </div>
 
@@ -129,7 +126,7 @@ export default function Hero() {
                 data-cursor="OPEN FIG. →" data-cursor-dim
                 className={`group absolute block ${box} transition-[translate] duration-300 ease-out hover:z-10`}
               >
-                <span className="block border border-ink bg-ink shadow-[5px_5px_0_var(--ink)] transition-transform duration-200 group-hover:-translate-y-1 group-hover:shadow-[8px_8px_0_var(--accent)]">
+                <span className="block border border-ink bg-ink transition-[transform,outline-color] duration-200 outline outline-2 outline-offset-4 outline-transparent group-hover:-translate-y-1 group-hover:outline-accent">
                   <span className="relative block aspect-[16/10] overflow-hidden">
                     <Image src={`/work/${p.media}/desktop.jpg`} alt={`${p.name}`} fill sizes="22vw" priority={i === 0} className="object-cover object-top" />
                   </span>
@@ -153,7 +150,7 @@ export default function Hero() {
             {STATS.map((s, i) => (
               <div key={s.l} className={`py-4 md:py-5 ${i > 0 ? "md:border-l md:border-hair md:pl-6" : ""} ${i % 2 === 1 ? "max-md:border-l max-md:border-hair max-md:pl-4" : ""}`}>
                 <dd className="display flex items-start gap-2 text-[clamp(28px,3.4vw,52px)] !leading-none"><i aria-hidden className="mt-1 block h-2 w-2 shrink-0 bg-accent" />{String(s.n).padStart(2, "0")}</dd>
-                <dt className="mono mt-1 text-mute"><Tip tip={s.tip}>{s.l}</Tip></dt>
+                <dt className="mono mt-1 text-mute">{s.l}</dt>
               </div>
             ))}
           </dl>

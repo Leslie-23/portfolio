@@ -5,7 +5,7 @@ import { useRef, useState } from "react";
 import { motion } from "motion/react";
 import type { Project } from "@/lib/data";
 import Exploded from "./Exploded";
-import { Spec, Tip } from "./Spec";
+import { Spec } from "./Spec";
 
 export default function ProjectRow({ project: p, index = 0 }: { project: Project; index?: number }) {
   const router = useRouter();
@@ -33,7 +33,7 @@ export default function ProjectRow({ project: p, index = 0 }: { project: Project
         <div className="col-span-6 md:col-span-5 md:flex md:flex-col md:justify-between">
           <div>
             <div className="mono flex items-center justify-between text-mute md:justify-start md:gap-6">
-              <Tip tip="yes, the numbering actually means something."><span className="chip">FIG. {p.fig}</span></Tip>
+              <span className="chip">FIG. {p.fig}</span>
               <span>{String(index + 1).padStart(2, "0")} / {p.year}</span>
             </div>
             <h2 className="display mt-3 text-[clamp(36px,5.6vw,92px)]">

@@ -12,7 +12,7 @@ import ScanPlate from "./ScanPlate";
 
 const TONE: Record<ExpStatus, string> = {
   TESTING: "bg-industrial text-ink", BROKEN: "bg-signal text-paper", WORKING: "bg-tech text-paper",
-  ABANDONED: "bg-ink/15 text-ink", PROMISING: "bg-accent text-ink", "WHY DID I BUILD THIS?": "border border-ink",
+  ABANDONED: "bg-ink/15 text-ink", PROMISING: "bg-accent text-ink", EXPLORATORY: "border border-ink",
 };
 // preferred widths (of 12). Rows are packed so every row ends flush: the last card in a row takes what's left.
 const WANT: Record<string, number> = { system: 7, board: 5, velocity: 6, lens: 7, disassemble: 6, link: 4 };
@@ -49,7 +49,7 @@ function Card({ e, span }: { e: Experiment; span: number }) {
           {e.kind === "system" && <DraggableSystem />}
           {e.kind === "board" && <ChessBoard />}
           {e.kind === "lens" && <ScanPlate />}
-          {e.kind === "disassemble" && <button className="btn mono" onClick={() => setBroken(true)} data-cursor="DON'T">DISASSEMBLE SITE</button>}
+          {e.kind === "disassemble" && <button className="btn mono" onClick={() => setBroken(true)} data-cursor="RUN">DISASSEMBLE SITE</button>}
           {e.kind === "link" && e.href && <Link href={e.href} className="btn mono" target="_blank" rel="noopener noreferrer" data-cursor="FOLLOW →">SOURCE ↗</Link>}
         </div>
       </Spec>
@@ -59,7 +59,7 @@ function Card({ e, span }: { e: Experiment; span: number }) {
 
 export default function BenchGrid() {
   const [f, setF] = useState<ExpStatus | "ALL">("ALL");
-  const statuses: (ExpStatus | "ALL")[] = ["ALL", "WORKING", "PROMISING", "TESTING", "ABANDONED", "WHY DID I BUILD THIS?"];
+  const statuses: (ExpStatus | "ALL")[] = ["ALL", "WORKING", "PROMISING", "TESTING", "ABANDONED", "EXPLORATORY"];
   const list = EXPERIMENTS.filter((e) => f === "ALL" || e.status === f);
   const spans = pack(list);
   return (

@@ -130,10 +130,10 @@ export default function Disassemble() {
       </div>
       <div className="grid h-full place-items-center">
         <div className="broke pointer-events-auto border border-ink bg-paper/90 px-8 py-6 text-center backdrop-blur-[2px]" role="alertdialog" aria-label="The site is disassembled">
-          <div className="display text-[clamp(44px,9vw,128px)] text-ink">You broke it.</div>
-          <div className="mono mt-1 text-mute">good.</div>
+          <div className="display text-[clamp(44px,8vw,112px)] text-ink">Disassembled.</div>
+          <div className="mono mt-1 text-mute">EVERY PART OF THIS PAGE IS LOOSE. NOTHING IS LOST.</div>
           <div className="mono mono-sm mt-3 text-mute" aria-live="polite">
-            {loose} PARTS LOOSE{moved > 0 ? ` · ${moved} MOVED BY HAND` : " · DRAG THEM AROUND"}
+            {loose} PARTS LOOSE{moved > 0 ? ` · ${moved} MOVED` : " · DRAG TO INSPECT"}
           </div>
           <button onClick={() => setBroken(false)} className="btn mono mt-6 bg-paper" data-cursor="REASSEMBLE">REASSEMBLE ↺</button>
         </div>

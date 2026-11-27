@@ -633,7 +633,7 @@ export type ExpStatus =
   | "WORKING"
   | "ABANDONED"
   | "PROMISING"
-  | "WHY DID I BUILD THIS?";
+  | "EXPLORATORY";
 
 export type Experiment = {
   id: string;
@@ -698,9 +698,9 @@ export const EXPERIMENTS: Experiment[] = [
   {
     id: "007",
     date: "2024.10",
-    status: "WHY DID I BUILD THIS?",
+    status: "EXPLORATORY",
     question: "Can a keyboard be a beat machine?",
-    result: "keyboardBeatMachine. It is exactly what it sounds like.",
+    result: "keyboardBeatMachine: the computer keyboard as a beat machine.",
     kind: "link",
     href: "https://github.com/Leslie-23/keyboardBeatMachine",
   },
@@ -709,20 +709,58 @@ export const EXPERIMENTS: Experiment[] = [
     date: "2024.10",
     status: "ABANDONED",
     question: "What does the Chrome dino game do when you stop playing fair?",
-    result: "ChromeDino-cheatCode. Answered. Moved on.",
+    result: "ChromeDino-cheatCode: a cheat code for the Chrome dino game. Question answered.",
     kind: "link",
     href: "https://github.com/Leslie-23/ChromeDino-cheatCode",
   },
 ];
 
 export const STATUS_TIPS: Record<ExpStatus, string> = {
-  TESTING: "currently poking it",
-  BROKEN: "on purpose. mostly.",
-  WORKING: "for now.",
-  ABANDONED: "answered. moved on.",
-  PROMISING: "don't tell it I said that",
-  "WHY DID I BUILD THIS?": "curiosity. next question.",
+  TESTING: "Under active investigation",
+  BROKEN: "Known to fail; kept for what it taught",
+  WORKING: "Does what the question asked",
+  ABANDONED: "Question answered; not pursued further",
+  PROMISING: "Worth taking further",
+  EXPLORATORY: "Built to understand something, not to ship",
 };
+
+/* ---------------- Experience ----------------
+   Only what's already public: the site's own bio, the shipped list and Leslie's published resume.
+   No dates or titles that aren't stated there. */
+export type Role = { org: string; role: string; period: string; kind: "EMPLOYMENT" | "FOUNDER" | "CLIENT" | "CONTRIBUTION"; summary: string; href?: string; internal?: boolean; current?: boolean };
+export const EXPERIENCE: Role[] = [
+  { org: "Global Icons", role: "Software Engineer", period: "PRESENT", kind: "EMPLOYMENT", current: true, href: "https://globaliconsagency.com",
+    summary: "A technology company in Accra building digital systems for transport, education, public services, payments and governance." },
+  { org: "Trofficient", role: "Founder & Engineering Lead", period: "2025 — PRESENT", kind: "FOUNDER", current: true, href: "/work/trofficient", internal: true,
+    summary: "Transit technology for Ghana's informal trotro network: real-time vehicle tracking, dynamic pricing and mobile-money payments." },
+  { org: "Captivating Home & Trading", role: "Engineering Lead", period: "2026", kind: "CLIENT", href: "https://captivatinghometrade.com",
+    summary: "Production platform for a retail operation: home appliances, electricity vending and currency exchange. Real inventory, live transactions." },
+  { org: "Sellis Beauty Spa", role: "Solo Engineer", period: "2026", kind: "CLIENT", href: "https://sellisspa.com",
+    summary: "Booking platform for a live spa business in Accra, end to end: customer booking flow, service management and operations tooling." },
+  { org: "NSS", role: "Caching system", period: "—", kind: "CONTRIBUTION",
+    summary: "Built a caching system for NSS." },
+];
+export const EDUCATION = {
+  school: "Regional Maritime University", degree: "BSc Information Technology", period: "2022 — 2026",
+  awards: ["Best in IT Project Management", "Best in Data Structures"],
+};
+
+/* How Leslie works through a problem. The sequence, not a slogan. */
+export const APPROACH: { k: string; t: string; b: string }[] = [
+  { k: "01", t: "Understand", b: "Take the existing system apart first: the data model, the incentives, where it actually breaks." },
+  { k: "02", t: "Find the constraint", b: "Name the one thing that decides the design. In Ghana it's usually connectivity, devices or mobile money." },
+  { k: "03", t: "Ship the smallest real version", b: "An executable MVP in front of real users beats an architecture diagram. Monolith first." },
+  { k: "04", t: "Observe", b: "Watch it run in production. The failure modes nobody planned for are the interesting ones." },
+  { k: "05", t: "Layer", b: "Add structure where the load proves it's needed: queues, caches, services. Not before." },
+];
+
+/* What he's drawn to, each with the work that shows it. */
+export const INTERESTS: { t: string; b: string; proof: { label: string; href: string } }[] = [
+  { t: "Payments & money movement", b: "Mobile money rails, ledgers, reconciliation: the parts where a bug costs someone real money.", proof: { label: "Trofficient", href: "/work/trofficient" } },
+  { t: "Real-time systems", b: "Live state across unreliable networks: vehicle tracking, multiplayer, shared challenges.", proof: { label: "StepPool", href: "/work/steppool" } },
+  { t: "AI as infrastructure", b: "Models as a system primitive with tools and memory, not a chat box bolted on.", proof: { label: "Elena", href: "/work/elena" } },
+  { t: "Products for this market", b: "Software built around how Ghanaian businesses and commuters already work.", proof: { label: "AI for SMEs", href: "/work/ai-sme" } },
+];
 
 /* ---------------- Toolkit ---------------- */
 export type ToolItem = { name: string; projects: string[]; also?: string[] };
