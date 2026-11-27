@@ -17,6 +17,8 @@ const PAD = 0.5;                      // the canvas extends this much beyond the
 const KEY = "bust-built";
 /** Testing: false = play on every load. Set to true to play once per browser session. */
 const PLAY_ONCE = false;
+/** Testing: a gold flash and a glint on each facet as it locks into place. Set to false to go back to the quiet green flash. */
+const GOLD_SHINE = true;
 
 const easeOut = (t: number) => 1 - Math.pow(1 - t, 3);
 
@@ -93,6 +95,7 @@ export default function BustBuild({ className = "" }: { className?: string }) {
         const t = (now - start) / 1000;
         x.clearRect(0, 0, canvas.width, canvas.height);
         const chips: { px: number; py: number; a: number; z: number; label: string }[] = [];
+        const glints: { px: number; py: number; a: number; r: number }[] = [];
         for (const tr of tris) {
           const k = Math.min(1, Math.max(0, (t - tr.t0) / tr.dur));
           if (k <= 0) continue;
@@ -108,12 +111,25 @@ export default function BustBuild({ className = "" }: { className?: string }) {
           x.globalAlpha = Math.min(1, k * 3);
           x.fillStyle = x.strokeStyle = fill; x.lineWidth = 0.9 / s * dpr * 0.6; x.fill(); x.stroke(); x.globalAlpha = 1;
           // a brief flash of the accent as a facet locks into place
-          if (k > 0.9 && t - tr.t0 - tr.dur < 0.22) {
-            const f = 1 - Math.min(1, (t - (tr.t0 + tr.dur * 0.9)) / (0.22 + tr.dur * 0.1));
-            if (f > 0) { x.fillStyle = `rgba(52,187,120,${0.28 * f})`; x.fill(); }
+          const W = GOLD_SHINE ? 0.7 : 0.22;
+          if (k > 0.9 && t - tr.t0 - tr.dur < W) {
+            const f = 1 - Math.min(1, (t - (tr.t0 + tr.dur * 0.9)) / (W + tr.dur * 0.1));
+            if (f > 0) {
+              x.fillStyle = GOLD_SHINE ? `rgba(255,201,60,${0.5 * f})` : `rgba(52,187,120,${0.28 * f})`; x.fill();
+              if (GOLD_SHINE && (tr.a % 70 === 0)) glints.push({ px: ox + cx * s, py: oy + cy * s, a: f, r: (9 + (tr.a % 5) * 3) * dpr });   // some facets also throw a glint
+            }
           }
           x.setTransform(1, 0, 0, 1, 0, 0);
           if (tr.label && k < 1) chips.push({ px: ox + cx * s, py: oy + cy * s, a: Math.min(1, k * 6) * (k < 0.8 ? 1 : Math.max(0, 1 - (k - 0.8) / 0.2)), z: 0.8 + 0.5 * e, label: tr.label });
+        }
+        // gold glints: a soft glow with a four-point star, drawn in screen space over the finished facets
+        for (const g of glints) {
+          const rr = g.r * (0.55 + 0.9 * g.a);
+          const grad = x.createRadialGradient(g.px, g.py, 0, g.px, g.py, rr);
+          grad.addColorStop(0, `rgba(255,251,225,${0.95 * g.a})`); grad.addColorStop(0.3, `rgba(255,214,84,${0.6 * g.a})`); grad.addColorStop(1, "rgba(255,190,40,0)");
+          x.fillStyle = grad; x.beginPath(); x.arc(g.px, g.py, rr, 0, Math.PI * 2); x.fill();
+          x.strokeStyle = `rgba(255,243,190,${0.9 * g.a})`; x.lineWidth = Math.max(1, dpr * 0.9); x.lineCap = "round";
+          x.beginPath(); x.moveTo(g.px - rr * 1.5, g.py); x.lineTo(g.px + rr * 1.5, g.py); x.moveTo(g.px, g.py - rr * 1.5); x.lineTo(g.px, g.py + rr * 1.5); x.stroke();
         }
         // labels ride along upright, grow as they near the face, and stay readable until the last moment
         const base = (innerWidth < 640 ? 14 : 20) * dpr;
