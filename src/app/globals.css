@@ -157,3 +157,10 @@ a:hover .frame-img img { transform: scale(1.015); }
   .glitch body { animation: glitch .12s steps(2) 7; }
   @keyframes glitch { 50% { filter: invert(1); transform: skew(2deg); } }
 }
+
+/* the music button's little equaliser: still when paused, moving when playing */
+@media (prefers-reduced-motion: no-preference) {
+  .eq-on i { animation: eq .9s ease-in-out infinite alternate; transform-origin: bottom; }
+  .eq-on i:nth-child(2) { animation-delay: -.3s; } .eq-on i:nth-child(3) { animation-delay: -.6s; } .eq-on i:nth-child(4) { animation-delay: -.15s; }
+  @keyframes eq { from { transform: scaleY(.35); } to { transform: scaleY(1.1); } }
+}

@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { PERSON } from "@/lib/data";
+import MusicPlayer from "./MusicPlayer";
 
 const NAV = [
   { href: "/work", label: "Work" },
@@ -52,11 +53,14 @@ export default function TopBar() {
           <Link href="/contact" className="btn btn-solid !h-9 !px-4 !text-[14px]">Contact</Link>
         </nav>
 
+        <div className="flex items-center gap-2 md:contents">
+          <div className="md:order-last md:ml-1"><MusicPlayer /></div>
         <button onClick={() => setOpen((v) => !v)} aria-expanded={open} aria-label="Menu" className="grid h-10 w-10 place-items-center rounded-full border border-line md:hidden">
           <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round">
             {open ? <path d="M3 3l10 10M13 3L3 13" /> : <path d="M2 5h12M2 11h12" />}
           </svg>
         </button>
+        </div>
       </div>
 
     </header>

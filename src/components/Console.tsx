@@ -9,6 +9,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 export type ConsoleData = {
   email: string;
   github: string;
+  music: boolean;
   work: { slug: string; name: string; category: string; tier: string }[];
   stack: { group: string; items: string[] }[];
 };
@@ -64,6 +65,7 @@ export default function Console({ data }: { data: ConsoleData }) {
     { id: "terminal", label: "Open the terminal", hint: "~", keys: "terminal shell console", run: () => { setPalette(false); setTerm(true); } },
     { id: "email", label: "Email Leslie", hint: data.email, keys: "email mail hire contact", run: () => { location.href = `mailto:${data.email}`; } },
     { id: "github", label: "Leslie on GitHub", hint: "github.com/Leslie-23", keys: "github code repos", run: () => window.open(data.github, "_blank", "noopener,noreferrer") },
+    ...(data.music ? [{ id: "music", label: "Play or pause the music", hint: "m", keys: "music play pause sound song", run: () => { setPalette(false); dispatchEvent(new Event("toggle-music")); } }] : []),
     { id: "surprise", label: "Surprise me", hint: "do not press", keys: "surprise glitch random fun", run: surprise },
   // eslint-disable-next-line react-hooks/exhaustive-deps
   ], [data]);
@@ -136,7 +138,7 @@ function Terminal({ data, onClose, go, surprise }: { data: ConsoleData; onClose:
     const cases = data.work.filter((w) => w.tier === "case");
     switch (cmd.toLowerCase()) {
       case "": return [];
-      case "help": return ["help · whoami · ls · projects · stack · team · open <page or project> · sudo hire leslie · surprise · clear · exit"];
+      case "help": return [`help · whoami · ls · projects · stack · team · open <page or project>${data.music ? " · music" : ""} · sudo hire leslie · surprise · clear · exit`];
       case "whoami": return ["Leslie Paul Ajayi. Software engineer in Accra, Ghana.", "Works at Global Icons. Founder of Trofficient. CTO of Beagine."];
       case "ls": return ["work/  team/  writing/  about/  pricing/  contact/"];
       case "projects": return cases.map((w) => `${w.slug.padEnd(16)} ${w.name}: ${w.category}`).concat(["", "open <name> to read one."]);
@@ -154,6 +156,7 @@ function Terminal({ data, onClose, go, surprise }: { data: ConsoleData; onClose:
         if (/^hire( leslie)?$/i.test(arg)) { setTimeout(() => go("/contact"), 600); return ["Permission granted. Opening contact…"]; }
         return ["sudo: nice try. Only one command is allowed here: sudo hire leslie."];
       case "rm": return ["rm: permission denied. This site is read-only, and I like it that way."];
+      case "music": if (!data.music) return ["no music here yet."]; dispatchEvent(new Event("toggle-music")); return ["toggled the music."];
       case "surprise": setTimeout(surprise, 200); return matchMedia("(prefers-reduced-motion: reduce)").matches ? ["Motion is off on your device, so no glitch. Respect."] : ["you asked for it…"];
       case "clear": setLines([]); return null;
       case "exit": case "quit": onClose(); return null;

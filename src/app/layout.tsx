@@ -6,6 +6,7 @@ import Reveal from "@/components/Reveal";
 import Console, { type ConsoleData } from "@/components/Console";
 import { PERSON, TOOLKIT, publicEvidence } from "@/lib/data";
 import { WORK } from "@/lib/work";
+import { TRACKS } from "@/lib/music";
 
 const sans = Mona_Sans({ variable: "--font-sans-face", subsets: ["latin"], weight: ["400", "500", "600"] });
 const mono = Geist_Mono({ variable: "--font-mono-face", subsets: ["latin"], weight: ["400", "500"] });
@@ -29,6 +30,7 @@ export const viewport: Viewport = { themeColor: "#ecedeb", width: "device-width"
 const consoleData: ConsoleData = {
   email: PERSON.email,
   github: PERSON.links.github,
+  music: TRACKS.length > 0,
   work: WORK.map((w) => ({ slug: w.slug, name: w.name, category: w.category, tier: w.tier })),
   stack: TOOLKIT.map((g) => ({ group: g.label, items: g.items.filter(publicEvidence).map((i) => i.name) })),
 };
