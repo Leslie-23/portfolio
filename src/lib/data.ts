@@ -815,20 +815,21 @@ export const STATUS_TIPS: Record<ExpStatus, string> = {
 export type Role = {
   org: string; role: string; period: string; kind: "Employment" | "Founder" | "Leadership" | "Contribution";
   summary: string; points?: string[]; stack?: string[]; href?: string; internal?: boolean; current?: boolean;
+  logo?: { src: string; w: number; h: number; round?: boolean };
 };
 export const EXPERIENCE: Role[] = [
-  { org: "Global Icons", role: "Software Engineer", period: "Present", kind: "Employment", current: true, href: "https://globaliconsagency.com",
+  { org: "Global Icons", role: "Software Engineer", period: "Present", kind: "Employment", current: true, logo: { src: "/affil/global-icons.svg", w: 45, h: 48 }, href: "https://globaliconsagency.com",
     summary: "A technology company in Accra building digital systems for transport, education, public services, payments and governance.",
     points: ["Production engineering inside an organisation whose systems are confidential, so this entry stays at a public level."] },
-  { org: "Beagine", role: "CTO", period: "2026", kind: "Leadership", current: true, href: "/work/beagine", internal: true,
+  { org: "Beagine", role: "CTO", period: "2026", kind: "Leadership", current: true, logo: { src: "/work/icons/beagine.png", w: 256, h: 256, round: true }, href: "/work/beagine", internal: true,
     summary: "A home-services marketplace for Ghana in three mobile apps. I own the technical direction and the architecture across all three apps and the backend, and build alongside the team.",
     points: ["One monorepo: the three apps and the admin share UI, types, state and the API client.", "A mock/HTTP API layer with an OpenAPI contract, so the apps were built and tested before the backend was finished.", "Mobile Money and card payments, phone/OTP sign-in and Ghana Card verification for specialists."],
     stack: ["Expo", "React Native", "TypeScript", "Node.js", "MongoDB", "Socket.IO", "Redis + BullMQ"] },
-  { org: "Trofficient", role: "Founder / Engineer", period: "2025 — Present", kind: "Founder", current: true, href: "/work/trofficient", internal: true,
+  { org: "Trofficient", role: "Founder / Engineer", period: "2025 — Present", kind: "Founder", current: true, logo: { src: "/work/icons/trofficient.png", w: 256, h: 256, round: true }, href: "/work/trofficient", internal: true,
     summary: "Transit technology for Ghana's informal trotro network: real-time vehicle tracking, dynamic pricing and mobile-money payments. I design and build the product.",
     points: ["Payments designed around mobile money from day one, not bolted onto a card flow.", "Killed a microservice plan when a monolith shipped faster.", "A self-managed production stack on Oracle Cloud: Docker Compose behind Caddy."],
     stack: ["React Native", "TypeScript", "Node.js", "Docker", "Caddy"] },
-  { org: "NSS", role: "Caching system", period: "—", kind: "Contribution",
+  { org: "NSS", role: "Caching system", period: "—", kind: "Contribution", logo: { src: "/affil/nss.png", w: 600, h: 485 },
     summary: "I worked on its caching system." },
 ];
 export const EDUCATION = {

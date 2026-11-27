@@ -19,7 +19,9 @@ export default function ExperienceList({ education = true }: { education?: boole
                 {r.period}
                 <div className="mt-1 normal-case tracking-normal">{r.kind}</div>
               </div>
-              <div>
+              <div className="flex items-start gap-4 md:gap-5">
+                {r.logo && <Image src={r.logo.src} alt={`${r.org} logo`} width={r.logo.w} height={r.logo.h} className={`h-12 w-auto shrink-0 object-contain md:h-14 ${r.logo.round ? "rounded-[22%]" : ""}`} />}
+                <div className="min-w-0">
                 <h3 className="t-card">
                   {r.href ? (r.internal ? <Link href={r.href} className="u">{r.org}</Link> : <a href={r.href} target="_blank" rel="noopener noreferrer" className="u">{r.org}</a>) : r.org}
                 </h3>
@@ -31,6 +33,7 @@ export default function ExperienceList({ education = true }: { education?: boole
                     {r.stack && <p className="label mt-4 text-mute">{r.stack.join(" · ")}</p>}
                   </div>
                 )}
+                </div>
               </div>
               {more && (
                 <button onClick={() => setOpen(on ? null : i)} aria-expanded={on} aria-controls={id} aria-label={`${on ? "Hide" : "Show"} details for ${r.org}`}
