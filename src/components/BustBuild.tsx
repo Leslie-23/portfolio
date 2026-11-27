@@ -58,11 +58,16 @@ export default function BustBuild({ className = "" }: { className?: string }) {
     if (seen || reduced) { setState("done"); return; }
 
     let raf = 0, cancelled = false, skip = false, frames = 0;
+    let nFrames = 0, worst = 0, lastT = 0, startedAt = 0, summarised = false;
     let panel: HTMLDivElement | null = null, tick = 0;
     if (DBG) {
       panel = document.createElement("div");
-      panel.style.cssText = "position:fixed;left:6px;bottom:6px;z-index:99999;max-width:94vw;padding:6px 8px;background:rgba(0,0,0,.82);color:#9fe3b8;font:10px/1.35 ui-monospace,Menlo,monospace;white-space:pre-wrap;pointer-events:none;border-radius:6px";
+      panel.style.cssText = "position:fixed;right:6px;bottom:6px;z-index:99999;max-width:90vw;padding:6px 8px;background:rgba(0,0,0,.82);color:#9fe3b8;font:10px/1.35 ui-monospace,Menlo,monospace;white-space:pre-wrap;pointer-events:none;border-radius:6px";
       document.body.appendChild(panel);
+      const onVis = () => note(`page ${document.hidden ? "hidden" : "visible"}`);
+      const onShow = (e: PageTransitionEvent) => note(`pageshow${e.persisted ? " (restored from cache)" : ""}`);
+      const onSize = () => note(`resize ${innerWidth}x${innerHeight}`);
+      document.addEventListener("visibilitychange", onVis); addEventListener("pageshow", onShow); addEventListener("resize", onSize);
       const onErr = (e: ErrorEvent) => note(`error: ${e.message}`); const onRej = (e: PromiseRejectionEvent) => note(`rejection: ${String(e.reason)}`);
       addEventListener("error", onErr); addEventListener("unhandledrejection", onRej);
       let last = performance.now();
@@ -71,9 +76,13 @@ export default function BustBuild({ className = "" }: { className?: string }) {
         const c = cv.current, gl = document.querySelector("canvas.cursor-pointer") as HTMLCanvasElement | null;
         panel!.textContent = `bust ${c ? c.width + "x" + c.height : "-"} dpr ${devicePixelRatio} ${innerWidth}px  ${fps.toFixed(0)} fps\nlive-bust canvas: ${gl ? gl.width + "x" + gl.height : "none"}\n${dbgLines.join("\n")}`;
       }, 500);
-      cleanupDbg = () => { clearInterval(tick); panel?.remove(); removeEventListener("error", onErr); removeEventListener("unhandledrejection", onRej); };
+      cleanupDbg = () => { document.removeEventListener("visibilitychange", onVis); removeEventListener("pageshow", onShow); removeEventListener("resize", onSize); clearInterval(tick); panel?.remove(); removeEventListener("error", onErr); removeEventListener("unhandledrejection", onRej); };
     }
-    const finish = () => { if (PLAY_ONCE) { try { sessionStorage.setItem(KEY, "1"); } catch {} } setState("done"); };
+    const finish = () => {
+      if (DBG && !summarised) {
+        summarised = true; const ms = performance.now() - startedAt;
+        note(`${skip ? "skipped by input" : "finished"}: ${nFrames} frames in ${Math.round(ms)}ms = ${((nFrames * 1000) / ms).toFixed(0)} fps avg, worst gap ${Math.round(worst)}ms`);
+      } if (PLAY_ONCE) { try { sessionStorage.setItem(KEY, "1"); } catch {} } setState("done"); };
 
     const loadImg = (src: string) => new Promise<HTMLImageElement>((res, rej) => { const i = new window.Image(); i.onload = () => res(i); i.onerror = rej; i.src = src; });
     Promise.all([fetch("/bust-mesh.json").then((r) => r.json() as Promise<Mesh>), loadImg("/portrait/leslie.png")]).then(([m, photo]) => {
@@ -124,7 +133,7 @@ export default function BustBuild({ className = "" }: { className?: string }) {
 
       const R = Math.hypot(cssW, cssH) / 2 * dpr * 0.62;  // how far out they start
       const total = BASE + SPREAD + 0.22 + 1.0;
-      const start = performance.now();
+      const start = performance.now(); startedAt = start;
       note(`build starts: ${canvas.width}x${canvas.height}px, ${tris.length} facets, ${phone ? "phone" : "desktop"} mode`);
       setState("playing");
 
@@ -135,6 +144,8 @@ export default function BustBuild({ className = "" }: { className?: string }) {
 
       const frame = (now: number) => {
         if (cancelled) return;
+        if (lastT) worst = Math.max(worst, now - lastT);
+        lastT = now; nFrames++;
         try { draw(now); frames++; } catch (err) { note(`draw error: ${err instanceof Error ? err.message : String(err)}`); finish(); }
       };
       const draw = (now: number) => {
