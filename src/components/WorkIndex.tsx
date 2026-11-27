@@ -19,7 +19,7 @@ export default function WorkIndex() {
           <span className="mr-3 text-mute">INDEX FILTER</span>
           {(["ALL", ...CATEGORIES] as const).map((c) => (
             <button key={c} onClick={() => setCat(c)} aria-pressed={cat === c} data-cursor="FILTER"
-              className={`px-2 py-0.5 transition-colors hover:text-accent-ink ${cat === c ? "bg-ink text-paper hover:!text-paper" : ""}`}>
+              className={`px-2 py-0.5 transition-colors hover:text-accent-ink ${cat === c ? "bg-accent text-ink hover:!text-ink" : ""}`}>
               [{c}<sup className="ml-0.5 opacity-60">{count(c)}</sup>]
             </button>
           ))}
@@ -31,7 +31,7 @@ export default function WorkIndex() {
           {list.map((p, i) => <ProjectRow key={p.slug} project={p} index={i} />)}
         </AnimatePresence>
         {shipped.length > 0 && (
-          <section className="mt-16 border-t border-ink pt-10" aria-label="Shipped and live">
+          <section className="mt-12 border-t border-ink pt-8" aria-label="Shipped and live">
             <Spec name="ShippedHeader" id="SHIPPED_AND_LIVE" className="frame grid12 pb-8">
               <h2 className="display col-span-6 text-[clamp(32px,5vw,84px)] md:col-span-8">Shipped<br />&amp; live.</h2>
               <p className="mono col-span-6 mt-3 text-mute md:col-span-4 md:self-end md:text-right">{shipped.length} MORE, EACH ONE ON THE INTERNET RIGHT NOW</p>

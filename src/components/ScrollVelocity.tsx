@@ -31,7 +31,7 @@ export default function ScrollVelocity() {
       <div className="mono flex justify-between"><span>SCROLL VELOCITY</span><span ref={num}>+0000 PX/S</span></div>
       <div className="mt-3 h-3 w-full border border-ink"><div ref={bar} className="h-full origin-left" style={{ transform: "scaleX(0)", background: "var(--accent)" }} /></div>
       <div ref={trail} className="mt-3 flex h-16 items-end gap-[2px] [&>i]:block [&>i]:flex-1 [&>i]:bg-ink/70" aria-hidden />
-      <div className="mono mono-sm mt-2 text-mute">SCROLL THE PAGE. ↑ ORANGE = UP, ↓ COBALT = DOWN.</div>
+      <div className="mono mono-sm mt-2 text-mute">SCROLL THE PAGE. ↑ ORANGE = UP, ↓ GREEN = DOWN.</div>
     </div>
   );
 }

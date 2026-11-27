@@ -16,7 +16,7 @@ export default function NotFound() {
 
   const box = "mono grid h-16 w-40 place-items-center border border-ink bg-paper-3";
   return (
-    <Spec name="NotFound" id="ROUTE_UNRESOLVED" as="div" className="frame grid12 gap-y-12 py-16 md:py-28">
+    <Spec name="NotFound" id="ROUTE_UNRESOLVED" as="div" className="frame grid12 gap-y-12 py-12 md:py-16">
       <div className="col-span-6 md:col-span-7">
         <div className="mono text-signal">ERR / ROUTE_UNRESOLVED</div>
         <h1 className="display mt-4 text-[clamp(52px,11vw,190px)]">Component<br />not found.</h1>

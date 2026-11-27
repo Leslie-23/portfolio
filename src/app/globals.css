@@ -57,10 +57,11 @@ body {
 /* ---------- type ---------- */
 .display {
   font-family: var(--font-display), system-ui, sans-serif;
-  font-weight: 800;
+  font-weight: 400;
   text-transform: uppercase;
-  letter-spacing: -0.035em;
-  line-height: 0.88;
+  letter-spacing: 0.004em;
+  line-height: 0.86;
+  font-synthesis: none;
 }
 .mono {
   font-family: var(--font-mono-label), ui-monospace, monospace;
@@ -104,6 +105,11 @@ body {
 }
 .btn:hover { background: var(--ink); color: var(--paper); }
 .btn:active { transform: translate(1px, 1px); }
+/* primary action: the signature green, ink on hover */
+.btn-go { background: var(--accent); color: #151515; border-color: var(--ink); box-shadow: 3px 3px 0 var(--ink); }
+.btn-go:hover { background: var(--ink); color: var(--paper); box-shadow: 0 0 0 var(--ink); transform: translate(3px, 3px); }
+.chip { display: inline-block; background: var(--accent); color: #151515; padding: 1px 6px; }
+.chip-ink { display: inline-block; background: var(--ink); color: var(--accent); padding: 1px 6px; }
 }
 
 :focus-visible { outline: 2px solid var(--accent-ink); outline-offset: 3px; }
@@ -130,6 +136,9 @@ html[data-internals="on"] {
 html, body, .paper-bg { transition: background-color 0.5s ease, color 0.5s ease; }
 html[data-internals="on"] img,
 html[data-internals="on"] .plate { filter: grayscale(1) contrast(1.05); opacity: 0.85; }
+
+/* disassembled: dragging parts must never select text */
+.is-broken, .is-broken * { user-select: none; -webkit-user-select: none; }
 
 /* ---------- reduced motion ---------- */
 @media (prefers-reduced-motion: reduce) {
@@ -172,8 +181,8 @@ html[data-internals="on"] .plate { filter: grayscale(1) contrast(1.05); opacity:
   padding: 3px 8px;
   background: var(--sh, var(--accent)); color: #151515;
   font-family: var(--font-display), system-ui, sans-serif;
-  font-weight: 800; text-transform: uppercase; letter-spacing: -0.02em; line-height: 1;
-  font-size: clamp(11px, 1.05vw, 16px);
+  font-weight: 400; text-transform: uppercase; letter-spacing: 0.02em; line-height: 1;
+  font-size: clamp(13px, 1.25vw, 19px);
   transform: rotate(-2deg);
   transform-origin: left bottom;
   transition: transform 0.28s cubic-bezier(0.2, 0.9, 0.25, 1);

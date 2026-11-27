@@ -10,6 +10,7 @@ import GridOverlay from "./GridOverlay";
 import InternalsLayer from "./InternalsLayer";
 import Disassemble from "./Disassemble";
 import Footer from "./Footer";
+import Reconfigure from "./Reconfigure";
 
 function Inner({ children }: { children: React.ReactNode }) {
   const { internals, toggleInternals } = useShell();
@@ -43,6 +44,7 @@ function Inner({ children }: { children: React.ReactNode }) {
       <InternalsLayer />
       <Disassemble />
       <Chrome />
+      <Reconfigure />
       <main id="main" className="min-h-screen pt-14">{children}</main>
       <Footer />
     </>

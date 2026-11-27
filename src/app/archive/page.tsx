@@ -1,16 +1,21 @@
 import type { Metadata } from "next";
+import PageHeader from "@/components/PageHeader";
 import { ARCHIVE } from "@/lib/data";
-import { Spec } from "@/components/Spec";
 
 export const metadata: Metadata = { title: "Archive" };
 
 export default function Archive() {
   return (
     <>
-      <Spec name="ArchiveHeader" id="ARCHIVE" as="header" className="frame grid12 py-16 md:py-24">
-        <div className="mono col-span-6 text-mute md:col-span-12">SMALLER PROJECTS, EXPERIMENTS, HISTORY</div>
-        <h1 className="display col-span-6 mt-4 text-[clamp(44px,8.4vw,148px)] md:col-span-10">Archive.</h1>
-      </Spec>
+      <PageHeader
+        id="ARCHIVE" fig="07" kicker="SMALLER PROJECTS, EXPERIMENTS, HISTORY" sheet="APPENDIX"
+        title="Archive."
+        intro="The smaller things: deployments, utilities and early builds. Each one links to its source."
+        meta={[
+          { k: "ITEMS", v: String(ARCHIVE.length).padStart(2, "0") },
+          { k: "OLDEST", v: Math.min(...ARCHIVE.map((a) => parseInt(a.year)).filter(Boolean)) },
+        ]}
+      />
       <ul className="frame grid12 gap-y-[var(--col-gap)] border-t border-ink pt-10">
         {ARCHIVE.map((a, i) => (
           <li key={a.name} className={`col-span-6 ${i % 5 === 0 ? "md:col-span-6" : i % 3 === 0 ? "md:col-span-4" : "md:col-span-3"}`}>

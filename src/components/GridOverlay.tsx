@@ -10,12 +10,14 @@ export default function GridOverlay() {
   const root = useRef<HTMLDivElement>(null);
   const { internals } = useShell();
   const first = useRef(true);
+  const internalsRef = useRef(internals);
+  useEffect(() => { internalsRef.current = internals; }, [internals]);
 
   useEffect(() => {
     const el = root.current!;
     const cols = el.querySelectorAll(".gcol");
     const flash = () => {
-      if (reducedMotion()) return;
+      if (reducedMotion() || internalsRef.current) return;
       gsap.killTweensOf([el, cols]);
       gsap
         .timeline()
@@ -23,8 +25,28 @@ export default function GridOverlay() {
         .fromTo(cols, { scaleY: 0 }, { scaleY: 1, duration: 0.28, stagger: 0.012, ease: "power3.out", transformOrigin: "top" })
         .to(el, { opacity: 0, duration: 0.25, delay: 0.08 });
     };
-    window.addEventListener("grid:flash", flash);
-    return () => window.removeEventListener("grid:flash", flash);
+    // exit half of a page transition: the grid comes up and stays until the next page arrives
+    const hold = (e: Event) => {
+      if (reducedMotion()) return;
+      const to = (e as CustomEvent<string>).detail ?? "";
+      const lbl = el.querySelector(".g-route");
+      if (lbl) lbl.textContent = `RECONFIGURING → ${to.toUpperCase()}`;
+      gsap.killTweensOf([el, cols, el.querySelectorAll(".g-reg, .g-route")]);
+      gsap.timeline()
+        .set(el, { opacity: 1 })
+        .fromTo(cols, { scaleY: 0 }, { scaleY: 1, duration: 0.26, stagger: 0.012, ease: "power3.out", transformOrigin: "top" })
+        .fromTo(el.querySelectorAll(".g-reg"), { scale: 2.4, opacity: 0, rotate: 45 }, { scale: 1, opacity: 1, rotate: 0, duration: 0.22, ease: "back.out(2)", stagger: 0.03 }, 0.05)
+        .fromTo(el.querySelectorAll(".g-route"), { opacity: 0, y: 6 }, { opacity: 1, y: 0, duration: 0.18 }, 0.12);
+    };
+    const flashOrRelease = () => {
+      if (gsap.getProperty(el, "opacity") === 1 && !internalsRef.current) {
+        gsap.killTweensOf(el);
+        gsap.timeline().to(el.querySelectorAll(".g-reg, .g-route"), { opacity: 0, duration: 0.2 }, 0.25).to(el, { opacity: 0, duration: 0.3 }, 0.35);
+      } else flash();
+    };
+    window.addEventListener("grid:hold", hold);
+    window.addEventListener("grid:flash", flashOrRelease);
+    return () => { window.removeEventListener("grid:flash", flashOrRelease); window.removeEventListener("grid:hold", hold); };
   }, []);
 
   useEffect(() => {
@@ -53,6 +75,11 @@ export default function GridOverlay() {
           ))}
         </div>
       </div>
+      <span className="g-reg reg left-4 top-[68px] text-accent-ink opacity-0" />
+      <span className="g-reg reg right-4 top-[68px] text-accent-ink opacity-0" />
+      <span className="g-reg reg bottom-4 left-4 text-accent-ink opacity-0" />
+      <span className="g-reg reg bottom-4 right-4 text-accent-ink opacity-0" />
+      <span className="g-route mono absolute bottom-4 left-1/2 -translate-x-1/2 bg-paper px-2 text-accent-ink opacity-0" />
     </div>
   );
 }

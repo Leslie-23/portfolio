@@ -1,10 +1,10 @@
 import type { Metadata, Viewport } from "next";
-import { Inter_Tight, Geist, Geist_Mono } from "next/font/google";
+import { Bebas_Neue, Inter, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Shell from "@/components/Shell";
 
-const display = Inter_Tight({ variable: "--font-display", subsets: ["latin"], weight: ["700", "800", "900"] });
-const body = Geist({ variable: "--font-body", subsets: ["latin"] });
+const display = Bebas_Neue({ variable: "--font-display", subsets: ["latin"], weight: "400" });
+const body = Inter({ variable: "--font-body", subsets: ["latin"] });
 const mono = Geist_Mono({ variable: "--font-mono-label", subsets: ["latin"] });
 
 export const metadata: Metadata = {

@@ -120,6 +120,25 @@ function IndexNav({ onClose }: { onClose: () => void }) {
   );
 }
 
+/** Where you are on this sheet: a green rule under the header that fills as you scroll. */
+function ScrollProgress() {
+  const bar = useRef<HTMLSpanElement>(null);
+  useEffect(() => {
+    let raf = 0;
+    const paint = () => {
+      raf = 0;
+      const max = document.documentElement.scrollHeight - innerHeight;
+      if (bar.current) bar.current.style.transform = `scaleX(${max > 0 ? Math.min(1, scrollY / max) : 0})`;
+    };
+    const on = () => { if (!raf) raf = requestAnimationFrame(paint); };
+    paint();
+    addEventListener("scroll", on, { passive: true });
+    addEventListener("resize", on);
+    return () => { removeEventListener("scroll", on); removeEventListener("resize", on); if (raf) cancelAnimationFrame(raf); };
+  }, []);
+  return <span ref={bar} aria-hidden className="absolute inset-x-0 -bottom-px block h-[3px] origin-left bg-accent" style={{ transform: "scaleX(0)" }} />;
+}
+
 export default function Chrome() {
   const { internals, toggleInternals, indexOpen, setIndexOpen } = useShell();
   const pathname = usePathname();
@@ -128,7 +147,7 @@ export default function Chrome() {
 
   return (
     <>
-      <header data-part className="fixed inset-x-0 top-0 z-[80] bg-paper">
+      <header data-part data-spec="Chrome" data-spec-id="NAV" className="fixed inset-x-0 top-0 z-[80] bg-paper">
         <div className="frame flex h-14 items-center justify-between border-b border-hair">
           <Link href="/" className="flex items-baseline gap-3" data-cursor="HOME">
             <span className="display text-xl">LESLIE</span>
@@ -140,9 +159,10 @@ export default function Chrome() {
               <span className="max-sm:hidden">{internals ? "HIDE INTERNALS" : "SHOW INTERNALS"}</span>
               <span className="sm:hidden">{internals ? "HIDE" : "INTERNALS"}</span>
             </button>
-            <button onClick={() => setIndexOpen(true)} aria-haspopup="dialog" className="btn mono !py-1.5 bg-ink text-paper hover:!bg-accent hover:!text-ink" data-cursor="OPEN INDEX">INDEX ≡</button>
+            <button onClick={() => setIndexOpen(true)} aria-haspopup="dialog" className="btn btn-go mono !py-1.5 !shadow-none hover:!translate-x-0 hover:!translate-y-0" data-cursor="OPEN INDEX">INDEX ≡</button>
           </div>
         </div>
+        <ScrollProgress />
       </header>
       {indexOpen && <IndexNav onClose={close} />}
     </>

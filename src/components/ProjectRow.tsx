@@ -26,13 +26,14 @@ export default function ProjectRow({ project: p, index = 0 }: { project: Project
       layout
       initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
       transition={{ layout: { type: "spring", stiffness: 380, damping: 36 }, duration: 0.2 }}
-      className="border-t border-ink"
+      className="group/row relative border-t border-ink"
     >
+      <span aria-hidden className="absolute inset-y-0 left-0 w-1 origin-top scale-y-0 bg-accent transition-transform duration-300 group-hover/row:scale-y-100" />
       <Spec name="ProjectRow" id={`FIG_${p.fig}`} className="frame grid12 gap-y-6 py-8 md:py-12">
         <div className="col-span-6 md:col-span-5 md:flex md:flex-col md:justify-between">
           <div>
             <div className="mono flex items-center justify-between text-mute md:justify-start md:gap-6">
-              <Tip tip="yes, the numbering actually means something.">FIG. {p.fig}</Tip>
+              <Tip tip="yes, the numbering actually means something."><span className="chip">FIG. {p.fig}</span></Tip>
               <span>{String(index + 1).padStart(2, "0")} / {p.year}</span>
             </div>
             <h2 className="display mt-3 text-[clamp(36px,5.6vw,92px)]">
@@ -48,7 +49,7 @@ export default function ProjectRow({ project: p, index = 0 }: { project: Project
             <div className="mono mt-3 flex flex-wrap gap-x-4 text-mute"><span>{p.categories.join(" / ")}</span><span>{p.role}</span></div>
             <p className="mt-5 max-w-[44ch] text-graphite">{p.blurb}</p>
           </div>
-          <Link href={`/work/${p.slug}`} className="btn mono mt-6 w-fit" data-cursor="OPEN FIG. →">INSPECT PROJECT →</Link>
+          <Link href={`/work/${p.slug}`} className="btn btn-go mono mt-6 w-fit" data-cursor="OPEN FIG. →">INSPECT PROJECT →</Link>
         </div>
 
         <div className="col-span-6 md:col-span-7">

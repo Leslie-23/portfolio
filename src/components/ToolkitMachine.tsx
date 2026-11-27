@@ -40,7 +40,7 @@ export default function ToolkitMachine() {
                 <g className={`tm-box tm-box-${i}`}>
                   <rect x="10" y={y} width="320" height="80" fill="var(--paper-3)" stroke="var(--ink)" strokeWidth="1.5" />
                   <rect x="10" y={y} width="8" height="80" fill="var(--accent)" />
-                  <text x="36" y={y + 36} fontSize="26" fontWeight="800" fill="var(--ink)" style={{ fontFamily: "var(--font-display)", letterSpacing: "-0.03em" }}>{r.l}</text>
+                  <text x="36" y={y + 40} fontSize="34" fontWeight="400" fill="var(--ink)" style={{ fontFamily: "var(--font-display)", letterSpacing: "0.01em" }}>{r.l}</text>
                   <text x="36" y={y + 60} fontSize="12" fill="var(--mute)" style={{ fontFamily: "var(--font-mono-label)", textTransform: "uppercase" }}>{r.s}</text>
                 </g>
               </g>
@@ -48,8 +48,8 @@ export default function ToolkitMachine() {
           })}
           <g className="tm-out">
             <rect x="620" y="160" width="330" height="120" fill="var(--accent)" />
-            <text x="644" y="212" fontSize="34" fontWeight="800" fill="var(--paper)" style={{ fontFamily: "var(--font-display)", letterSpacing: "-0.03em" }}>PRODUCT</text>
-            <text x="644" y="252" fontSize="34" fontWeight="800" fill="var(--paper)" style={{ fontFamily: "var(--font-display)", letterSpacing: "-0.03em" }}>ENGINEER</text>
+            <text x="644" y="214" fontSize="46" fontWeight="400" fill="var(--paper)" style={{ fontFamily: "var(--font-display)", letterSpacing: "0.01em" }}>PRODUCT</text>
+            <text x="644" y="258" fontSize="46" fontWeight="400" fill="var(--paper)" style={{ fontFamily: "var(--font-display)", letterSpacing: "0.01em" }}>ENGINEER</text>
           </g>
         </svg>
       </div>

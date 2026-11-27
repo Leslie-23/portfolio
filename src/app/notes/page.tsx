@@ -1,18 +1,22 @@
 import type { Metadata } from "next";
+import PageHeader from "@/components/PageHeader";
 import Link from "next/link";
 import { NOTES } from "@/lib/data";
-import { Spec } from "@/components/Spec";
 
 export const metadata: Metadata = { title: "Notes" };
 
 export default function Notes() {
   return (
     <>
-      <Spec name="NotesHeader" id="NOTEBOOK" as="header" className="frame grid12 py-16 md:py-24">
-        <div className="mono col-span-6 text-mute md:col-span-12">TECHNICAL NOTEBOOK / {NOTES.length} ENTRIES</div>
-        <h1 className="display col-span-6 mt-4 text-[clamp(44px,8.4vw,148px)] md:col-span-10">Notes.</h1>
-        <p className="col-span-6 mt-6 max-w-[40ch] text-graphite md:col-span-4 md:col-start-9 md:self-end">Things I learned while building the things. Short, specific, occasionally wrong.</p>
-      </Spec>
+      <PageHeader
+        id="NOTEBOOK" fig="05" kicker="TECHNICAL NOTEBOOK" sheet="SHEET 05 / 06"
+        title="Notes."
+        intro="Things I learned while building the things. Short, specific, occasionally wrong."
+        meta={[
+          { k: "ENTRIES", v: String(NOTES.length).padStart(2, "0") },
+          { k: "TOTAL READING", v: `${NOTES.reduce((n, x) => n + x.minutes, 0)} MIN` },
+        ]}
+      />
       <ul className="border-t border-ink">
         {NOTES.map((n) => (
           <li key={n.slug} className="border-b border-hair">

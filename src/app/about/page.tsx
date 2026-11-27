@@ -12,28 +12,56 @@ const LOG = [
   ["2026", "Ships to production (sellisspa.com, captivatinghometrade.com), publishes an npm package, starts osAfrica, and builds StepPool, 4-Man Chess, scrapy-mcp and Elena."],
 ];
 
+// all from the bio below: nothing here that isn't already said on the page
+const FACTS: [string, string][] = [
+  ["BASED", "ACCRA, GHANA"],
+  ["WORKS AT", "GLOBAL ICONS"],
+  ["FOUNDER", "TROFFICIENT"],
+  ["ALSO", "ENGINEERING LEAD, RETAIL"],
+  ["STUDIED", "IT / REGIONAL MARITIME UNIV."],
+  ["ON GITHUB SINCE", "2022"],
+];
+
 export default function About() {
   return (
     <>
-      <Spec name="AboutHeader" id="ABOUT" as="header" className="frame grid12 py-16 md:py-28">
-        <div className="mono col-span-6 text-mute md:col-span-12">FIG. 020 / HOW I THINK</div>
-        <h1 className="display col-span-6 mt-4 text-[clamp(44px,9vw,160px)] md:col-span-12">I keep<br />asking why.</h1>
-        <p className="display col-span-6 mt-8 text-[clamp(28px,5vw,84px)] md:col-span-12"><span className="mark">Until I can</span><br /><span className="mark">build it.</span></p>
+      <Spec name="AboutHeader" id="ABOUT" as="header" className="frame pb-10 pt-8 md:pb-14 md:pt-12">
+        <div className="mono flex items-center justify-between border-b-2 border-ink pb-2">
+          <span className="flex items-center gap-3"><span className="chip">FIG. 03</span><span className="text-mute">HOW I THINK</span></span>
+          <span className="text-mute max-sm:hidden">SHEET 03 / 06</span>
+        </div>
+        <div className="grid12 mt-6 items-end gap-y-8 md:mt-8">
+          <div className="col-span-6 md:col-span-7">
+            <h1 className="display text-[clamp(56px,9vw,160px)]">I keep<br />asking why.</h1>
+            <p className="display mt-4 text-[clamp(30px,4.6vw,80px)]"><span className="mark">Until I can</span><br /><span className="mark">build it.</span></p>
+          </div>
+          <dl className="mono col-span-6 grid grid-cols-2 border-t border-ink md:col-span-5">
+            {FACTS.map(([k, v]) => (
+              <div key={k} className="border-b border-hair py-3 pr-3">
+                <dt className="mono-sm text-mute">{k}</dt>
+                <dd className="mt-0.5 text-accent-ink">{v}</dd>
+              </div>
+            ))}
+          </dl>
+        </div>
       </Spec>
 
-      <Spec name="Story" id="STORY" as="section" className="frame grid12 gap-y-10 border-t border-ink py-16 md:py-24">
-        <div className="mono col-span-6 text-mute md:col-span-3">01 / WHO</div>
-        <div className="col-span-6 space-y-5 text-[19px] leading-relaxed text-graphite md:col-span-7 md:col-start-5">
+      <Spec name="Story" id="STORY" as="section" className="frame grid12 gap-y-10 border-t border-ink py-12 md:py-16">
+        <div className="col-span-6 md:col-span-5">
+          <div className="mono"><span className="chip">01</span> <span className="text-mute">WHO</span></div>
+          <p className="display mt-5 max-w-[14ch] text-[clamp(32px,3.8vw,60px)] !leading-[0.95]">Systems that go to production, <span className="text-accent-ink">not demos that die in a repo.</span></p>
+        </div>
+        <div className="col-span-6 space-y-5 text-[19px] leading-relaxed text-graphite md:col-span-6 md:col-start-7">
           <p>I'm Leslie Paul Ajayi, a software engineer in Accra. I build systems that go to production, not demos that die in a repo.</p>
           <p>I work at Global Icons, a technology company in Accra, and I'm the founder of Trofficient, transit technology for Ghana's informal trotro network. I'm also engineering lead at a retail company where the software I write moves real inventory and real money.</p>
           <p>I studied Information Technology at Regional Maritime University. Most of what I know I learned by taking something apart and then building my own version of it.</p>
         </div>
       </Spec>
 
-      <Affiliations className="border-t border-ink py-16 md:py-24" />
+      <Affiliations className="border-t border-ink py-12 md:py-16" />
 
-      <Spec name="HowIWork" id="HOW_I_WORK" as="section" className="frame border-t border-ink py-16 md:py-24">
-        <div className="mono mb-8 text-mute">02 / HOW I WORK</div>
+      <Spec name="HowIWork" id="HOW_I_WORK" as="section" className="frame border-t border-ink py-12 md:py-16">
+        <div className="mono mb-8"><span className="chip">02</span> <span className="text-mute">HOW I WORK</span></div>
         {[
           ["Ship the executable MVP, then layer.", "I've killed my own over-engineered microservice plans when a monolith shipped faster. Architecture serves delivery, not the reverse."],
           ["Full-stack by necessity, backend by preference.", "I'm most interested in the parts users never see: data models, payment integration, the failure modes nobody plans for."],
@@ -47,13 +75,13 @@ export default function About() {
         ))}
       </Spec>
 
-      <section className="frame grid12 gap-y-16 border-t border-ink py-16 md:py-24">
-        <div className="col-span-6 md:col-span-6"><div className="mono mb-4 text-mute">03 / DEFAULT BEHAVIOUR</div><FlowChain /></div>
+      <section className="frame grid12 gap-y-16 border-t border-ink py-12 md:py-16">
+        <div className="col-span-6 md:col-span-6"><div className="mono mb-4"><span className="chip">03</span> <span className="text-mute">DEFAULT BEHAVIOUR</span></div><FlowChain /></div>
         <div className="col-span-6 md:col-span-6"><OperatingCharacteristics /></div>
       </section>
 
-      <Spec name="CommitLog" id="COMMIT_LOG" as="section" className="frame border-t border-ink py-16 md:py-24">
-        <div className="mono mb-8 text-mute">04 / FROM THE COMMIT LOG</div>
+      <Spec name="CommitLog" id="COMMIT_LOG" as="section" className="frame border-t border-ink py-12 md:py-16">
+        <div className="mono mb-8"><span className="chip">04</span> <span className="text-mute">FROM THE COMMIT LOG</span></div>
         <ol>
           {LOG.map(([y, t]) => (
             <li key={y} className="grid12 border-t border-hair py-5">

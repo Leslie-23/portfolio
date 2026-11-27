@@ -58,7 +58,7 @@ export default function DraggableSystem() {
           <g key={n.id} transform={`translate(${n.x} ${n.y})`} onPointerDown={(e) => down(e, n)} onPointerMove={move} onPointerUp={up} onKeyDown={(e) => key(e, n)} tabIndex={0} style={{ cursor: "grab" }} data-cursor="MOVE">
             <rect width={W} height={H} fill="var(--paper)" stroke="var(--ink)" strokeWidth="1.5" />
             <rect width="6" height={H} fill="var(--accent)" />
-            <text x="16" y="22" fontSize="14" fontWeight="800" fill="var(--ink)" style={{ fontFamily: "var(--font-display)" }}>{n.label}</text>
+            <text x="16" y="24" fontSize="19" fontWeight="400" fill="var(--ink)" style={{ fontFamily: "var(--font-display)" }}>{n.label}</text>
             <text x="16" y="40" fontSize="9" fill="var(--mute)" style={{ fontFamily: "var(--font-mono-label)", textTransform: "uppercase" }}>{n.sub}</text>
           </g>
         ))}

@@ -7,7 +7,7 @@ export const metadata: Metadata = { title: "Contact" };
 
 export default function Contact() {
   return (
-    <Spec name="Contact" id="CONTACT" as="div" className="frame grid12 gap-y-12 py-16 md:py-24">
+    <Spec name="Contact" id="CONTACT" as="div" className="frame grid12 gap-y-12 py-12 md:py-16">
       <div className="col-span-6 md:col-span-6">
         <div className="mono text-mute">FIG. 030 / CONTACT</div>
         <h1 className="display mt-4 text-[clamp(44px,7.4vw,130px)]">Have a<br />problem<br />worth<br /><span className="mark">building?</span></h1>

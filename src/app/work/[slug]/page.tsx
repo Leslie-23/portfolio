@@ -29,7 +29,7 @@ const RHYTHM: Record<string, ("big" | "cols" | "stack")[]> = {
 function Story({ b, kind, i }: { b: Block; kind: "big" | "cols" | "stack"; i: number }) {
   if (kind === "big")
     return (
-      <Spec name="Statement" id={b.label.replace(/\W+/g, "_")} className="frame grid12 border-t border-hair py-14 md:py-24">
+      <Spec name="Statement" id={b.label.replace(/\W+/g, "_")} className="frame grid12 border-t border-hair py-10 md:py-16">
         <div className="mono col-span-6 text-mute md:col-span-12">{String(i + 1).padStart(2, "0")} / {b.label}</div>
         <p className="display col-span-6 mt-4 text-[clamp(26px,4.4vw,72px)] !leading-[0.98] md:col-span-11">{b.body}</p>
       </Spec>
@@ -44,7 +44,7 @@ function Story({ b, kind, i }: { b: Block; kind: "big" | "cols" | "stack"; i: nu
       </Spec>
     );
   return (
-    <Spec name="TextBlock" id={b.label.replace(/\W+/g, "_")} className="frame grid12 border-t border-hair py-10 md:py-14">
+    <Spec name="TextBlock" id={b.label.replace(/\W+/g, "_")} className="frame grid12 border-t border-hair py-8 md:py-10">
       <div className="mono col-span-6 text-mute md:col-span-3">{String(i + 1).padStart(2, "0")} / {b.label}</div>
       <p className="col-span-6 mt-2 max-w-[60ch] text-[19px] leading-relaxed text-graphite md:col-span-7 md:col-start-5 md:mt-0">{b.body}</p>
     </Spec>
@@ -90,7 +90,7 @@ async function Case({ params }: { params: Promise<{ slug: string }> }) {
 
 
       {p.media && p.portrait && p.gallery && (
-        <Spec name="Screens" id="SCREENS" as="section" className="frame border-t border-ink py-14 md:py-24">
+        <Spec name="Screens" id="SCREENS" as="section" className="frame border-t border-ink py-10 md:py-16">
           <div className="mono mb-6 text-mute">FIG. {p.fig}-A / THE APP, SCREEN BY SCREEN</div>
           <ul className="grid grid-cols-2 gap-x-[var(--col-gap)] gap-y-8 md:grid-cols-3 lg:grid-cols-6">
             {p.gallery.map((g) => (
@@ -105,7 +105,7 @@ async function Case({ params }: { params: Promise<{ slug: string }> }) {
         </Spec>
       )}
       {p.media && (!p.portrait || p.web) && (
-        <Spec name="Screens" id="SCREENS" as="section" className="frame grid12 gap-y-6 border-t border-ink py-14 md:py-24">
+        <Spec name="Screens" id="SCREENS" as="section" className="frame grid12 gap-y-6 border-t border-ink py-10 md:py-16">
           <div className="mono col-span-6 text-mute md:col-span-12">FIG. {p.fig}-A / {p.portrait ? "THE WEBSITE" : "THE REAL THING, IN PRODUCTION"}</div>
           <figure className={`col-span-6 ${p.desktopOnly ? "md:col-span-12" : "md:col-span-9"}`} data-cursor="INSPECT" data-cursor-dim>
             <Image src={`/work/${p.media}/desktop.jpg`} alt={`${p.name} on desktop`} width={p.desktopOnly ? 1600 : 1440} height={p.desktopOnly ? 939 : 900} className="h-auto w-full border border-ink" />
@@ -120,7 +120,7 @@ async function Case({ params }: { params: Promise<{ slug: string }> }) {
 
       <Deconstruct project={p} />
 
-      <Spec name="SystemSection" id="SYSTEM" as="section" className="frame grid12 gap-y-10 py-20 md:py-32">
+      <Spec name="SystemSection" id="SYSTEM" as="section" className="frame grid12 gap-y-10 py-12 md:py-20">
         <div className="col-span-6 md:col-span-5">
           <div className="mono text-mute">FIG. {p.fig}-B / SYSTEM</div>
           <h2 className="display mt-3 text-[clamp(32px,5vw,80px)]">Top to<br />bottom.</h2>
@@ -129,7 +129,7 @@ async function Case({ params }: { params: Promise<{ slug: string }> }) {
         <div className="col-span-6 md:col-span-7"><FlowDiagram project={p} /></div>
       </Spec>
 
-      <Spec name="KeyDecisions" id="KEY_DECISIONS" as="section" className="frame border-t border-ink py-14 md:py-20">
+      <Spec name="KeyDecisions" id="KEY_DECISIONS" as="section" className="frame border-t border-ink py-10 md:py-14">
         <div className="mono mb-8 text-mute">KEY DECISIONS</div>
         <ol>
           {p.decisions.map((d, i) => (
@@ -142,7 +142,7 @@ async function Case({ params }: { params: Promise<{ slug: string }> }) {
         </ol>
       </Spec>
 
-      <Spec name="Learnings" id="LEARNINGS" as="section" className="frame grid12 py-16 md:py-28">
+      <Spec name="Learnings" id="LEARNINGS" as="section" className="frame grid12 py-12 md:py-16">
         <div className="mono col-span-6 text-mute md:col-span-3">LEARNED</div>
         <p className="display col-span-6 text-[clamp(26px,4vw,64px)] !leading-[0.98] md:col-span-9">{p.learnings}</p>
       </Spec>

@@ -40,7 +40,7 @@ export default function FlowDiagram({ project: p }: { project: Project }) {
                   <rect x="20" y={y} width="720" height={H} fill={on ? "var(--ink)" : "var(--paper-3)"} stroke="var(--ink)" strokeWidth={1.5} style={{ transition: "fill .2s" }} />
                   <rect x="20" y={y} width="12" height={H} fill="var(--accent)" />
                   <text x="58" y={y + 34} fontSize="12" fill={on ? "var(--paper)" : "var(--mute)"} style={{ fontFamily: "var(--font-mono-label)" }}>L{i + 1}</text>
-                  <text x="58" y={y + 62} fontSize="30" fontWeight="800" fill={on ? "var(--paper)" : "var(--ink)"} style={{ fontFamily: "var(--font-display)", letterSpacing: "-0.03em" }}>{l.label}</text>
+                  <text x="58" y={y + 66} fontSize="38" fontWeight="400" fill={on ? "var(--paper)" : "var(--ink)"} style={{ fontFamily: "var(--font-display)", letterSpacing: "0.01em" }}>{l.label}</text>
                   <text x="720" y={y + 34} textAnchor="end" fontSize="12" fill={on ? "var(--paper)" : "var(--mute)"} style={{ fontFamily: "var(--font-mono-label)" }}>{l.detail.toUpperCase().slice(0, 52)}</text>
                   <text x="720" y={y + 82} textAnchor="end" fontSize="11" fill="var(--accent-ink)" style={{ fontFamily: "var(--font-mono-label)" }}>{on ? "◂ INSPECTING" : ""}</text>
                 </g>
