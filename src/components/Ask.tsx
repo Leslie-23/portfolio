@@ -1,6 +1,6 @@
 import { PERSON } from "@/lib/data";
 import Slide, { H } from "./Slide";
-import Dither from "./Dither";
+import OriginsGlobe from "./OriginsGlobe";
 import Clock from "./Clock";
 
 const LINKS = [
@@ -14,12 +14,10 @@ const LINKS = [
 export default function Ask({ deck = false }: { deck?: boolean }) {
   return (
     <Slide id="contact" label="Contact" deck={deck} className="overflow-hidden">
-      <div className="pointer-events-none absolute bottom-0 right-0 h-[62%] w-[52%] max-md:h-[34%] max-md:w-[70%]" aria-hidden>
-        <Dither shape={{ kind: "sphere", cx: 0.82, cy: 1.05, r: 0.95 }} cell={4} />
-      </div>
-      <div className="relative max-w-[980px]">
+      <div className="relative grid gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,600px)] lg:items-end lg:gap-16">
+      <div>
         <p className="pill label mt-8 text-ink md:mt-16">Based in Accra, Ghana</p>
-        <H className="t-hero mt-6 !text-[clamp(50px,7.2vw,116px)]">Have a problem worth solving?</H>
+        <H className="t-hero mt-6 !text-[clamp(44px,5.6vw,92px)]">Have a problem worth solving?</H>
         <p className="t-lead mt-7 max-w-[46ch] !text-ink">
           I&apos;m interested in engineering roles, product collaborations and well-scoped builds. Email is the fastest way to reach me.
         </p>
@@ -39,6 +37,8 @@ export default function Ask({ deck = false }: { deck?: boolean }) {
           <span>© {PERSON.year} Leslie Paul Ajayi</span>
           <Clock />
         </div>
+      </div>
+      <div className="max-w-[560px] lg:max-w-none"><p className="label mb-2 text-mute">Where I am from, and where I build</p><OriginsGlobe /></div>
       </div>
     </Slide>
   );
