@@ -1915,7 +1915,8 @@
       "role": "AFFILIATION",
       "img": "/affil/transport-for-ghana.png",
       "w": 700,
-      "h": 187
+      "h": 187,
+      "note": "The consortium behind Ghana's Tap n' Go, GoRide and GoDriver: public-transport payments and ride-hailing, for commuters and drivers."
     },
     {
       "id": "tapngo",
@@ -1923,7 +1924,8 @@
       "role": "AFFILIATION",
       "img": "/affil/tap-n-go.png",
       "w": 600,
-      "h": 600
+      "h": 600,
+      "note": "Ghana's digital payment system for public transport: a tap-to-pay card and an app for trotro, intercity and taxi fares."
     },
     {
       "id": "moveet",
@@ -1940,7 +1942,7 @@
       "img": "/affil/nss.png",
       "w": 600,
       "h": 485,
-      "note": "I worked on its caching system."
+      "note": "Ghana's National Service Scheme: where graduates register for national service and get their postings. I worked on its caching system."
     }
   ],
   "vibes": {
