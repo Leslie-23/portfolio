@@ -22,6 +22,7 @@ const STRIP = [
 ];
 
 // Leslie's own principles (his profile README), each tied to the work that shows it
+const THESIS_LINK: Record<string, string> = { Trofficient: "trofficient", VoIP: "vop", Beagine: "beagine" };
 const THESIS: { tag: string; t: string; b: string; shape: Shape }[] = [
   { tag: "Trofficient", t: "Ship the executable MVP, then layer", b: "I've killed my own over-engineered microservice plans when a monolith shipped faster. Architecture serves delivery, not the reverse.", shape: { kind: "sphere", cx: 0.5, cy: 1.05, r: 0.62 } },
   { tag: "VoIP", t: "Backend by preference", b: "Full-stack by necessity. Most interested in what users never see: data models, payments and the failure modes nobody plans for.", shape: { kind: "rings", cx: 0.5, cy: 0.5 } },
@@ -49,10 +50,10 @@ export default function Home() {
     <>
       {/* 01 COVER */}
       <Slide id="cover" label="Leslie Paul Ajayi, profile 2026" deck className="overflow-x-clip lg:min-h-[calc(100svh-var(--bar))]">
-        <div className="relative z-10 grid items-center gap-x-10 lg:grid-cols-[1.08fr_1fr]">
+        <div className="relative z-10 grid items-center gap-x-10 lg:grid-cols-[1.7fr_1fr]">
           <div className="order-2 lg:order-1">
             <p className="pill label mt-6 text-ink lg:mt-16">Software engineer · Accra, Ghana</p>
-            <H as="h1" className="t-hero mt-5 md:mt-6">Understand it. Then build it</H>
+            <H as="h1" className="t-hero mt-5 !text-[clamp(28px,8.4vw,40px)] md:mt-6 md:!text-[clamp(39px,5.1vw,84px)]">Built for Africa.<br />Systems for society.<br />Engineered for impact</H>
             <p className="t-lead mt-5 max-w-[44ch] !text-ink md:mt-7">
               I&apos;m Leslie Paul Ajayi: software engineer at Global Icons, founder of Trofficient and CTO of Beagine. I build systems that go to production, not demos that die in a repo.
             </p>
@@ -80,15 +81,28 @@ export default function Home() {
         </ul>
       </Slide>
 
-      {/* 02 PRINCIPLES: one big statement, then three ruled columns */}
-      <Slide id="thesis" label="Principles" deck>
-        <H className="t-hero mt-8 max-w-[15ch] md:mt-14">I build systems that go to production, not demos that die in a repo</H>
-        <ol className="mt-12 grid gap-10 border-t border-ink pt-8 md:mt-20 md:grid-cols-3 md:gap-12">
+      {/* 02 PRINCIPLES: dark, loud and ruled. The type is the graphic. */}
+      <Slide id="thesis" label="Principles / 02" deck dark className="overflow-hidden">
+        <div aria-hidden className="pointer-events-none absolute inset-0 opacity-[0.05] [background-image:linear-gradient(90deg,#fff_1px,transparent_1px)] [background-size:25%_100%]" />
+        <div className="relative">
+          <h2 className="mt-8 text-[clamp(40px,8.4vw,144px)] font-semibold uppercase leading-[0.86] tracking-[-0.06em] md:mt-14">
+            I build systems that go to <span className="text-accent">production.</span>
+            <span className="mt-[0.1em] block text-white/30">Not demos that die in a repo.</span>
+          </h2>
+          <p aria-hidden className="label absolute -right-1 top-[-6px] hidden rotate-[4deg] bg-accent px-4 py-3 text-[11px] text-black shadow-[10px_10px_0_rgba(255,255,255,.1)] md:block lg:right-[4%] lg:top-[-24px]">Shipped, not demoed</p>
+        </div>
+        <ol className="relative mt-14 border-t border-white/25 md:mt-24">
           {THESIS.map((c, i) => (
-            <li key={c.t}>
-              <p className="label text-mute">{String(i + 1).padStart(2, "0")} · {c.tag}</p>
-              <h3 className="t-big mt-4">{c.t}</h3>
-              <p className="mt-4 max-w-[38ch] text-[17px] leading-relaxed text-body">{c.b}</p>
+            <li key={c.t} className="border-b border-white/25">
+              <Link href={`/work/${THESIS_LINK[c.tag]}`} className="group grid gap-x-8 gap-y-3 px-1 py-7 transition-[padding,background-color,color] duration-300 hover:bg-accent hover:px-5 hover:text-black md:grid-cols-[72px_minmax(0,1.15fr)_minmax(0,1fr)_32px] md:items-center md:py-9">
+                <span className="label text-white/45 group-hover:text-black/60">{String(i + 1).padStart(2, "0")}<span className="md:hidden"> · {c.tag}</span></span>
+                <h3 className="text-[clamp(26px,3.6vw,56px)] font-semibold uppercase leading-[0.95] tracking-[-0.05em]">{c.t}</h3>
+                <div>
+                  <p className="label mb-2 hidden text-accent group-hover:text-black/70 md:block">{c.tag}</p>
+                  <p className="max-w-[44ch] text-[16px] leading-relaxed text-white/60 group-hover:text-black/80">{c.b}</p>
+                </div>
+                <span aria-hidden className="hidden text-[26px] leading-none transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1 md:block">↗</span>
+              </Link>
             </li>
           ))}
         </ol>

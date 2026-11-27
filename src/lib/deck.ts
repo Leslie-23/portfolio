@@ -1,7 +1,7 @@
 /* The homepage is a deck. Each slide's id, rail label and short title live here so the
    rail thumbnails, the mobile pager and the slide counters always agree. */
 export const SLIDES = [
-  { id: "cover", label: "Cover", title: "Understand it. Then build it." },
+  { id: "cover", label: "Cover", title: "Built for Africa. Systems for society. Engineered for impact." },
   { id: "thesis", label: "Thesis", title: "I build systems that go to production." },
   { id: "work", label: "Work", title: "What I founded, lead and built." },
   { id: "experience", label: "Experience", title: "Where I work, and what I own." },
