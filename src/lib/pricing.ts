@@ -73,22 +73,22 @@ export const FEATURES = [
 ];
 
 export const DESIGNS = [
-  { id: "template", label: "Adapted template", what: "Proven layouts styled with your logo and colours.", pct: 0 },
-  { id: "custom", label: "Custom design", what: "Screens designed for your users and brand, prototyped before I build.", pct: 0.2 }, // mine
-  { id: "premium", label: "Premium design", what: "Brand-led design with illustrations, motion and extra polish.", pct: 0.4 }, // mine
+  { id: "template", label: "Adapted template", what: "Proven layouts styled with your logo and colours.", pct: 0, wk: 0 },
+  { id: "custom", label: "Custom design", what: "Screens designed for your users and brand, prototyped before I build.", pct: 0.2, wk: 1 }, // mine
+  { id: "premium", label: "Premium design", what: "Brand-led design with illustrations, motion and extra polish.", pct: 0.35, wk: 2 }, // mine
 ];
 
 // delivery model: price multiplier on the build (Nesisoft's stated 30% / 50% less)
 export const MODES = [
-  { id: "sprints", label: "Sprint by sprint", what: "Plan, build, review, adjust. The scope can change as you go.", mult: 1, note: "Base price" },
-  { id: "assisted", label: "AI-assisted", what: "The same sprints, with AI speeding up coding, tests and documentation, and me reviewing every line.", mult: 0.7, note: "About 30% less" },
-  { id: "native", label: "AI-native", what: "A specification agreed up front, then built in milestones. Changes after sign-off are quoted separately.", mult: 0.5, note: "About 50% less" },
+  { id: "sprints", label: "Sprint by sprint", what: "Plan, build, review, adjust. The scope can change as you go.", mult: 1, time: 1, note: "Base price" },
+  { id: "assisted", label: "AI-assisted", what: "The same sprints, with AI speeding up coding, tests and documentation, and me reviewing every line.", mult: 0.7, time: 0.85, note: "About 30% less" },
+  { id: "native", label: "AI-native", what: "A specification agreed up front, then built in milestones. Changes after sign-off are quoted separately.", mult: 0.5, time: 0.7, note: "About 50% less" },
 ];
 
 export const PACES = [
   { id: "flexible", label: "Flexible", what: "No fixed deadline: I fit the work around a steady schedule.", price: 0.95, time: 1.25 }, // mine
   { id: "standard", label: "Standard", what: "A steady pace with regular demos along the way.", price: 1, time: 1 },
-  { id: "fast", label: "Fast-tracked", what: "Extra capacity to meet a firm launch date.", price: 1.25, time: 0.7 }, // mine
+  { id: "fast", label: "Fast-tracked", what: "Extra capacity to meet a firm launch date.", price: 1.2, time: 0.75 }, // mine
 ];
 
 // null = "not chosen yet": the estimate falls back to a default for it until the visitor picks
@@ -112,21 +112,28 @@ export function estimate(sel: Selection): Estimate | null {
   const feats = FEATURES.filter((f) => sel.features.includes(f.id));
 
   const core = base.from * size.price;
-  const extras = feats.reduce((a, f) => a + base.from * f.pct, 0);
+  // features share foundations (sign-in, roles and the admin area are reused), so a long list does not add up in full
+  const bundle = feats.length > 5 ? 0.85 : 1;
+  const extras = feats.reduce((a, f) => a + base.from * f.pct, 0) * bundle;
   const build = (core + extras) * mode.mult;       // AI shortens the build
   const designCost = core * design.pct;             // design stays human work
-  const total = (build + designCost) * pace.price;
+  // the published starting price is the floor: stacked discounts never take an estimate below it
+  const floored = Math.max((build + designCost) * pace.price, base.from);
 
-  const midWeeks = (base.min + base.max) / 2;
-  const weeks = (midWeeks * size.time + feats.reduce((a, f) => a + f.wk, 0) + (design.pct ? 1 + design.pct * 4 : 0)) * pace.time;
+  // weeks: the base build, plus feature work that mostly runs in parallel (capped at 90% of the base), plus design time
+  const baseWeeks = ((base.min + base.max) / 2) * size.time;
+  const featWeeks = Math.min(feats.reduce((a, f) => a + f.wk, 0) * 0.55, baseWeeks * 0.9);
+  const weeks = (baseWeeks + featWeeks + design.wk) * mode.time * pace.time;
+  const total = floored;
 
   return {
-    low: round(total, 100), high: round(total * 1.2, 100),
-    weeksLow: Math.max(1, Math.round(weeks * 0.85)), weeksHigh: Math.max(2, Math.round(weeks * 1.2)),
+    low: round(total, 100), high: round(total * 1.25, 100),
+    weeksLow: Math.max(1, Math.round(weeks * 0.85)), weeksHigh: Math.max(Math.max(1, Math.round(weeks * 0.85)) + 1, Math.round(weeks * 1.2)),
     lines: [
       { label: `${base.label}, ${size.label.toLowerCase()}`, value: cedi(round(core, 100)) },
       ...(feats.length ? [{ label: `${feats.length} feature${feats.length > 1 ? "s" : ""}`, value: `+ ${cedi(round(extras, 100))}` }] : []),
       ...(mode.mult !== 1 ? [{ label: `${mode.label}`, value: `${mode.note.toLowerCase()}` }] : []),
+      ...(total > (build + designCost) * pace.price ? [{ label: "Starting price applies", value: cedi(base.from) }] : []),
       ...(design.pct ? [{ label: design.label, value: `+ ${cedi(round(designCost, 100))}` }] : []),
       ...(pace.price !== 1 ? [{ label: `${pace.label} pace`, value: pace.price > 1 ? `+${Math.round((pace.price - 1) * 100)}%` : `${Math.round((1 - pace.price) * 100)}% less` }] : []),
     ],

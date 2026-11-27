@@ -833,6 +833,7 @@ export const EXPERIENCE: Role[] = [
 ];
 export const EDUCATION = {
   school: "Regional Maritime University", degree: "BSc Information Technology", period: "2022 — 2026",
+  logo: { src: "/affil/rmu.png", w: 240, h: 237 },
   awards: ["Best in IT Project Management", "Best in Data Structures"],
 };
 

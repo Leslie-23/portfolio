@@ -2,6 +2,7 @@
 import Image from "next/image";
 import { useCallback, useEffect, useRef, useState } from "react";
 import LiveBust from "./LiveBust";
+import { frameWatch, perfTier } from "@/lib/perf";
 
 type Mesh = { w: number; h: number; p: number[]; t: number[] };
 
@@ -94,7 +95,7 @@ export default function BustBuild({ className = "" }: { className?: string }) {
   const onLost = useCallback(() => { setLive(false); note("webgl context lost: showing the still portrait"); }, []);   // phones reclaim the GPU under memory pressure
 
   useEffect(() => {
-    const q = matchMedia("(min-width: 1024px)"), f = () => setIsDesktop(q.matches);
+    const q = matchMedia("(min-width: 1024px)"), f = () => setIsDesktop(q.matches && perfTier() > 0);   // the living bust is for desktops that can afford it
     f(); q.addEventListener("change", f);
     return () => q.removeEventListener("change", f);
   }, []);
@@ -141,24 +142,27 @@ export default function BustBuild({ className = "" }: { className?: string }) {
     Promise.all([fetch("/bust-mesh.json").then((r) => r.json() as Promise<Mesh>), loadImg("/portrait/leslie.png")]).then(([m, photo]) => {
       if (cancelled) return;
       const glCanvas = glc.current!, overlay = cv.current!, box = overlay.parentElement!.getBoundingClientRect();
-      const phone = innerWidth < 1024;
-      const pad = phone ? 0.22 : PAD, dpr = Math.min(phone ? 1.5 : 2, devicePixelRatio || 1);
+      const phone = innerWidth < 1024, tier = perfTier();
+      // weaker devices get a smaller canvas (less to fill) and a lower pixel density; the build also watches its own frame rate below
+      const pad = phone || tier === 0 ? 0.22 : tier === 1 ? 0.35 : PAD;
+      const dpr0 = Math.min(phone ? 1.5 : 2, tier === 0 ? 1 : tier === 1 ? 1.25 : 2, devicePixelRatio || 1);
+      let q = 1, dp = dpr0;                              // q: resolution scale, stepped down if frames run slow
       const cssW = box.width * (1 + pad * 2), cssH = box.height * (1 + pad * 2);
       for (const c of [glCanvas, overlay]) {
         c.style.left = c.style.top = `${-pad * 100}%`; c.style.width = c.style.height = `${(1 + pad * 2) * 100}%`;
-        c.width = Math.round(cssW * dpr); c.height = Math.round(cssH * dpr);
+        c.width = Math.round(cssW * dp); c.height = Math.round(cssH * dp);
       }
       const gl = glCanvas.getContext("webgl", { premultipliedAlpha: true, alpha: true, antialias: false });
       if (!gl) { note("no WebGL: skipping the build, showing the still portrait"); finish(); return; }
       const x = overlay.getContext("2d")!;
-      const s = (box.width / m.w) * dpr;               // mesh unit -> canvas pixels
-      const ox = box.width * pad * dpr, oy = box.height * pad * dpr;
+      let s = (box.width / m.w) * dp;                  // mesh unit -> canvas pixels
+      let ox = box.width * pad * dp, oy = box.height * pad * dp;
       const nx = NOSE.x * m.w, ny = NOSE.y * m.h;
 
       // the real portrait, a little soft: shrunk, then stretched back up. This is the picture on every facet.
       const small = document.createElement("canvas"); small.width = BLUR_W; small.height = Math.round((BLUR_W * photo.height) / photo.width);
       small.getContext("2d")!.drawImage(photo, 0, 0, small.width, small.height);
-      const soft = document.createElement("canvas"); soft.width = Math.round(box.width * dpr); soft.height = Math.round((soft.width * photo.height) / photo.width);
+      const soft = document.createElement("canvas"); soft.width = Math.min(Math.round(box.width * dpr0), tier === 2 ? 1400 : 720);   // the picture on the facets is soft anyway: no need for more than this soft.height = Math.round((soft.width * photo.height) / photo.width);
       const sx = soft.getContext("2d")!; sx.imageSmoothingEnabled = true; sx.imageSmoothingQuality = "high"; sx.drawImage(small, 0, 0, soft.width, soft.height);
 
       type Tri = { a: number; b: number; c: number; cx: number; cy: number; d: number; ang: number; t0: number; dur: number; rot: number; label?: string };
@@ -198,7 +202,7 @@ export default function BustBuild({ className = "" }: { className?: string }) {
       gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, soft);
       gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR); gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
       gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE); gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
-      const R = Math.hypot(cssW, cssH) / 2 * dpr * 0.62;  // how far out they start, in canvas pixels
+      let R = Math.hypot(cssW, cssH) / 2 * dp * 0.62;    // how far out they start, in canvas pixels
       const U = (n: string) => gl.getUniformLocation(prog, n);
       const uTime = U("uTime");
       gl.uniform1f(U("uS"), s); gl.uniform1f(U("uR"), R / s);
@@ -207,19 +211,31 @@ export default function BustBuild({ className = "" }: { className?: string }) {
       gl.uniform3f(U("uFlash"), FLASH_RGB[0] / 255, FLASH_RGB[1] / 255, FLASH_RGB[2] / 255); gl.uniform1f(U("uFlashA"), FLASH_A);
       gl.viewport(0, 0, glCanvas.width, glCanvas.height);
       gl.enable(gl.BLEND); gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
+      const applyScale = (nq: number) => {
+        q = nq; dp = dpr0 * q;
+        for (const c of [glCanvas, overlay]) { c.width = Math.round(cssW * dp); c.height = Math.round(cssH * dp); }
+        s = (box.width / m.w) * dp; ox = box.width * pad * dp; oy = box.height * pad * dp; R = Math.hypot(cssW, cssH) / 2 * dp * 0.62;
+        gl.uniform1f(U("uS"), s); gl.uniform1f(U("uR"), R / s); gl.uniform2f(U("uO"), ox, oy); gl.uniform2f(U("uCanvas"), glCanvas.width, glCanvas.height);
+        gl.viewport(0, 0, glCanvas.width, glCanvas.height);
+        note(`slow frames: resolution scale ${q.toFixed(2)} (${glCanvas.width}x${glCanvas.height})`);
+      };
+      const watch = frameWatch({ slowMs: 34, fastMs: 0 });   // below ~30 fps: step the resolution down (never back up mid-build)
+      let tooSlow = 0, drewOverlay = false;
       glCanvas.addEventListener("webglcontextlost", (e) => { e.preventDefault(); note("webgl context lost during the build"); skip = true; });
 
       // ---- the flat side: only the labels and a few glints are drawn in 2D, about 60 facets a frame ----
       const special = tris.filter((t) => t.label || (GOLD_SHINE && t.a % 70 === 0));
       const total = BASE + SPREAD + 0.22 + 1.0;
       const start = performance.now(); startedAt = start;
-      note(`build starts: ${glCanvas.width}x${glCanvas.height}px, ${tris.length} facets, ${phone ? "phone" : "desktop"} mode, on the GPU`);
+      note(`build starts: ${glCanvas.width}x${glCanvas.height}px, ${tris.length} facets, ${phone ? "phone" : "desktop"} mode, tier ${tier}, on the GPU`);
       setState("playing");
 
       const frame = (now: number) => {
         if (cancelled) return;
         if (lastT) worst = Math.max(worst, now - lastT);
         lastT = now; nFrames++;
+        if (watch.tick(now) === -1) { if (q > 0.5) applyScale(Math.max(0.5, q * 0.78)); }
+        if (q <= 0.5 && watch.avg > 55) { if (++tooSlow > 12) { note("device too slow: ending the build early"); skip = true; } } else tooSlow = 0;
         try { draw(now); frames++; } catch (err) { note(`draw error: ${err instanceof Error ? err.message : String(err)}`); finish(); }
       };
       const draw = (now: number) => {
@@ -227,7 +243,7 @@ export default function BustBuild({ className = "" }: { className?: string }) {
         gl.clearColor(0, 0, 0, 0); gl.clear(gl.COLOR_BUFFER_BIT);
         gl.uniform1f(uTime, t); gl.drawArrays(gl.TRIANGLES, 0, tris.length * 3);
 
-        x.setTransform(1, 0, 0, 1, 0, 0); x.clearRect(0, 0, overlay.width, overlay.height);
+        x.setTransform(1, 0, 0, 1, 0, 0); if (drewOverlay) { x.clearRect(0, 0, overlay.width, overlay.height); drewOverlay = false; }
         const chips: { px: number; py: number; a: number; z: number; label: string }[] = [];
         for (const tr of special) {
           const k = Math.min(1, Math.max(0, (t - tr.t0) / tr.dur));
@@ -237,27 +253,28 @@ export default function BustBuild({ className = "" }: { className?: string }) {
           const cx = tr.cx + (sxm - tr.cx) * inv, cy = tr.cy + (sym - tr.cy) * inv;
           if (tr.label && k < 1) chips.push({ px: ox + cx * s, py: oy + cy * s, a: Math.min(1, k * 6) * (k < 0.8 ? 1 : Math.max(0, 1 - (k - 0.8) / 0.2)), z: 0.8 + 0.5 * e, label: tr.label });
           // some facets also throw a glint as they lock in: a soft glow with a four-point star
-          if (GOLD_SHINE && tr.a % 70 === 0 && k > 0.9 && t - tr.t0 - tr.dur < FW) {
+          if (GOLD_SHINE && tier === 2 && q >= 0.78 && tr.a % 70 === 0 && k > 0.9 && t - tr.t0 - tr.dur < FW) {
             const f = 1 - Math.min(1, (t - (tr.t0 + tr.dur * 0.9)) / (FW + tr.dur * 0.1));
             if (f > 0) {
-              const gx = ox + cx * s, gy = oy + cy * s, rr = (9 + (tr.a % 5) * 3) * dpr * (0.55 + 0.9 * f);
+              const gx = ox + cx * s, gy = oy + cy * s, rr = (9 + (tr.a % 5) * 3) * dp * (0.55 + 0.9 * f);
               const grad = x.createRadialGradient(gx, gy, 0, gx, gy, rr);
               grad.addColorStop(0, `rgba(${PAL.core},${0.95 * f})`); grad.addColorStop(0.3, `rgba(${PAL.mid},${0.6 * f})`); grad.addColorStop(1, `rgba(${PAL.edge},0)`);
               x.fillStyle = grad; x.beginPath(); x.arc(gx, gy, rr, 0, Math.PI * 2); x.fill();
-              x.strokeStyle = `rgba(${PAL.ray},${0.9 * f})`; x.lineWidth = Math.max(1, dpr * 0.9); x.lineCap = "round";
-              x.beginPath(); x.moveTo(gx - rr * 1.5, gy); x.lineTo(gx + rr * 1.5, gy); x.moveTo(gx, gy - rr * 1.5); x.lineTo(gx, gy + rr * 1.5); x.stroke();
+              x.strokeStyle = `rgba(${PAL.ray},${0.9 * f})`; x.lineWidth = Math.max(1, dp * 0.9); x.lineCap = "round";
+              x.beginPath(); x.moveTo(gx - rr * 1.5, gy); x.lineTo(gx + rr * 1.5, gy); x.moveTo(gx, gy - rr * 1.5); x.lineTo(gx, gy + rr * 1.5); x.stroke(); drewOverlay = true;
             }
           }
         }
         // labels ride along upright, grow as they near the face, and stay readable until the last moment
-        const base = (innerWidth < 640 ? 14 : 20) * dpr;
+        const base = (innerWidth < 640 ? 14 : 20) * dp;
         x.textBaseline = "middle"; x.textAlign = "center";
+        if (chips.length) drewOverlay = true;
         for (const c of chips) {
           const fs = base * c.z;
           x.font = `600 ${fs}px ui-monospace, "SF Mono", Menlo, monospace`;
           const w = x.measureText(c.label).width + fs * 1.3, h = fs * 1.9;
           x.globalAlpha = c.a;
-          if (!phone) { x.shadowColor = "rgba(0,0,0,0.18)"; x.shadowBlur = fs * 0.6; x.shadowOffsetY = fs * 0.2; }
+          if (!phone && tier > 0) { x.shadowColor = "rgba(0,0,0,0.18)"; x.shadowBlur = fs * 0.6; x.shadowOffsetY = fs * 0.2; }
           x.fillStyle = "#fbfbf9"; x.beginPath(); if (x.roundRect) x.roundRect(c.px - w / 2, c.py - h / 2, w, h, fs * 0.45); else x.rect(c.px - w / 2, c.py - h / 2, w, h); x.fill();
           x.shadowColor = "transparent"; x.shadowBlur = 0; x.shadowOffsetY = 0;
           x.strokeStyle = "#111"; x.lineWidth = Math.max(1, fs * 0.09); x.stroke();

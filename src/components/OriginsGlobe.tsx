@@ -3,6 +3,7 @@ import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import type { GeoPath, GeoPermissibleObjects, GeoProjection } from "d3-geo";
 import type { GlobeCls } from "@/lib/globe-data";
+import { frameWatch, perfTier } from "@/lib/perf";
 
 /** The footer artwork: a globe you can turn. It spins once, settles, and zooms in on West Africa; after that it is yours
  *  to drag. Hover (or tap) a country for its part in the story. The Gambia (born), Sierra Leone (grew up), Nigeria
@@ -19,7 +20,9 @@ const BEEN = [["Mali", "Mali"], ["Burkina Faso", "Burkina Faso"], ["Guinea", "Gu
 const WEAR = new Set<string>([...BEEN.map(([n]) => n), "Nigeria", "Sierra Leone", "Ghana", "Gambia"]);
 
 const SAY: Record<string, string> = { born: "Born in The Gambia", grew: "Grew up in Sierra Leone", descent: "Of Nigerian descent", living: "Living in Ghana" };
-type Feat = { name: string; cls: GlobeCls; geom: { type: "MultiPolygon"; coordinates: number[][][][] }; bbox: [number, number, number, number]; centroid: [number, number] };
+type Feat = { name: string; cls: GlobeCls; geom: { type: "MultiPolygon"; coordinates: number[][][][] }; bbox: [number, number, number, number]; centroid: [number, number]; rad: number; rings: Ring[] };
+/** One outline, kept as the sines and cosines of each point so a turning frame can be projected with plain arithmetic. */
+type Ring = { n: number; sl: Float64Array; cl: Float64Array; sp: Float64Array; cp: Float64Array };
 // where each story country's name is written when zoomed in: offset in px, and the text colour
 const LABEL: Record<string, { text: string; dx: number; dy: number; on: "ink" | "bg" | "out" }> = {
   Gambia: { text: "THE GAMBIA", dx: -4, dy: -15, on: "out" }, "Sierra Leone": { text: "SIERRA LEONE", dx: -8, dy: 26, on: "out" },
@@ -43,6 +46,11 @@ export default function OriginsGlobe() {
     const canvas = cv.current, wrap = box.current;
     if (!canvas || !wrap) return;
     let dead = false, raf = 0, W = 0, dpr = 1;
+    // quality: the device tier sets the pixel density cap and how sharp the outlines are while it moves; the globe also watches its own
+    // frame rate and lowers the resolution while turning (it always redraws sharp once it comes to rest)
+    const tier = perfTier();
+    let qMove = tier === 0 ? 0.6 : tier === 1 ? 0.8 : 1, qNow = 1, moving = false;
+    const watch = frameWatch({ slowMs: 26, fastMs: 15, cooldownMs: 600 });
     const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
     const view = { lon: FOCUS.lon, lat: FOCUS.lat, k: reduce ? ZOOM : 1 };
     let mode: "still" | "intro" = "still", t0 = 0, played = false;
@@ -71,29 +79,106 @@ export default function OriginsGlobe() {
       }
     };
 
+    // the canvas is drawn at dpr * q pixels per CSS pixel: lower q while it moves on a slow device, 1 when it rests
+    const setQ = (q: number) => {
+      if (Math.abs(q - qNow) < 0.01 || !W) return;
+      qNow = q; canvas.width = canvas.height = Math.round(W * dpr * q); ctx = canvas.getContext("2d")!;
+    };
+
+    // ---- the fast path, used while the globe is moving ----
+    // d3 rotates, clips and smooths every point of every country on each frame, which is too much for a slow phone. While it turns we
+    // project the points ourselves (the plain orthographic formulas) and cut each outline where it meets the horizon. When it comes to
+    // rest the exact d3 drawing takes over, so the finished picture is unchanged.
+    const toRing = (pts: number[][]): Ring => {
+      const n = pts.length, r: Ring = { n, sl: new Float64Array(n), cl: new Float64Array(n), sp: new Float64Array(n), cp: new Float64Array(n) };
+      for (let i = 0; i < n; i++) { const l = pts[i][0] * D2R, f = pts[i][1] * D2R; r.sl[i] = Math.sin(l); r.cl[i] = Math.cos(l); r.sp[i] = Math.sin(f); r.cp[i] = Math.cos(f); }
+      return r;
+    };
+    let gratRings: Ring[] = [], maxN = 0;
+    let SX = new Float64Array(0), SY = SX, SZ = SX;
+    let sl0 = 0, cl0 = 1, sp0 = 0, cp0 = 1;                           // sine and cosine of where the globe is centred
+    const project = (r: Ring) => {
+      for (let j = 0; j < r.n; j++) {
+        const sdl = r.sl[j] * cl0 - r.cl[j] * sl0, cdl = r.cl[j] * cl0 + r.sl[j] * sl0;
+        SX[j] = r.cp[j] * sdl; SY[j] = cp0 * r.sp[j] - sp0 * r.cp[j] * cdl; SZ[j] = sp0 * r.sp[j] + cp0 * r.cp[j] * cdl;
+      }
+    };
+    const bb = [0, 0, 0, 0];                                          // bounds of what the last trace drew
+    /** Adds one outline to the current path. Where it leaves the visible side it follows the horizon, as the real drawing does. */
+    const trace = (r: Ring, R: number, ring: boolean) => {
+      project(r);
+      const n = r.n, c = W / 2;
+      let s0 = -1; for (let j = 0; j < n; j++) if (SZ[j] > 0) { s0 = j; break; }
+      if (s0 < 0) return;
+      const put = (x: number, y: number, first: boolean) => {
+        const px = c + R * x, py = c - R * y;
+        if (px < bb[0]) bb[0] = px; if (px > bb[2]) bb[2] = px; if (py < bb[1]) bb[1] = py; if (py > bb[3]) bb[3] = py;
+        if (first) ctx.moveTo(px, py); else ctx.lineTo(px, py);
+      };
+      const cross = (a: number, b: number): [number, number] => {      // where the edge a-b meets the horizon, pushed out onto the rim
+        const t = SZ[a] / (SZ[a] - SZ[b]), x = SX[a] + (SX[b] - SX[a]) * t, y = SY[a] + (SY[b] - SY[a]) * t, l = Math.hypot(x, y) || 1;
+        return [x / l, y / l];
+      };
+      if (!ring) {                                                     // an open line (the graticule): only the visible stretches, each cut at the horizon
+        if (s0 > 0) { const [x, y] = cross(s0 - 1, s0); put(x, y, true); put(SX[s0], SY[s0], false); } else put(SX[0], SY[0], true);
+        let was = true;
+        for (let i = s0 + 1; i < n; i++) {
+          const vis = SZ[i] > 0;
+          if (vis && was) put(SX[i], SY[i], false);
+          else if (!vis && was) { const [x, y] = cross(i - 1, i); put(x, y, false); }
+          else if (vis && !was) { const [x, y] = cross(i - 1, i); put(x, y, true); put(SX[i], SY[i], false); }
+          was = vis;
+        }
+        return;
+      }
+      put(SX[s0], SY[s0], true);
+      let prev = s0, prevVis = true, exitAng = 0;
+      const steps = n;
+      for (let k = 1; k <= steps; k++) {
+        const i = (s0 + k) % n, vis = SZ[i] > 0;
+        if (vis && prevVis) put(SX[i], SY[i], false);
+        else if (!vis && prevVis) { const [x, y] = cross(prev, i); put(x, y, false); exitAng = Math.atan2(-y, x); }
+        else if (vis && !prevVis) {
+          const [x, y] = cross(prev, i), a1 = Math.atan2(-y, x); let d = a1 - exitAng; d -= Math.round(d / (2 * Math.PI)) * 2 * Math.PI;
+          ctx.arc(c, c, R, exitAng, exitAng + d, d < 0); put(x, y, false); put(SX[i], SY[i], false);
+        }
+        prev = i; prevVis = vis;
+      }
+      ctx.closePath();
+    };
+
     const draw = () => {
       if (!ctx || !feats.length) return;
-      ctx.setTransform(dpr, 0, 0, dpr, 0, 0); ctx.clearRect(0, 0, W, W);
+      const k = dpr * qNow;
+      ctx.setTransform(k, 0, 0, k, 0, 0); ctx.clearRect(0, 0, W, W);
       const R = W * 0.47 * view.k;
-      proj.translate([W / 2, W / 2]).scale(R).rotate([-view.lon, -view.lat]);
+      proj.precision(moving ? 3 : 0.5).translate([W / 2, W / 2]).scale(R).rotate([-view.lon, -view.lat]);
+      const centre: [number, number] = [view.lon, view.lat];
+      const fast = moving && gratRings.length > 0;
+      if (fast) { sl0 = Math.sin(view.lon * D2R); cl0 = Math.cos(view.lon * D2R); sp0 = Math.sin(view.lat * D2R); cp0 = Math.cos(view.lat * D2R); }
       ctx.fillStyle = C.soft; ctx.beginPath(); path(sphere); ctx.fill();
-      ctx.strokeStyle = C.line; ctx.lineWidth = 1; ctx.beginPath(); path(grat); ctx.stroke();
+      ctx.strokeStyle = C.line; ctx.lineWidth = 1; ctx.beginPath();
+      if (fast) for (const g of gratRings) trace(g, R, false); else path(grat);
+      ctx.stroke();
       feats.forEach((f, i) => {
-        ctx.beginPath(); path(f.geom);
+        if (geoDistance(f.centroid, centre) - f.rad > Math.PI / 2 + 0.03) return;   // wholly on the far side: nothing to draw
+        ctx.beginPath();
+        let bounds: [[number, number], [number, number]] | null = null;
+        if (fast) { bb[0] = bb[1] = Infinity; bb[2] = bb[3] = -Infinity; for (const r of f.rings) trace(r, R, true); bounds = [[bb[0], bb[1]], [bb[2], bb[3]]]; } else path(f.geom);
         ctx.globalAlpha = f.cls === "visited" ? 0.4 : 1;
         ctx.fillStyle = f.cls === "living" || f.cls === "visited" ? C.accent : f.cls === "land" ? (i === hover ? "#cdd1cb" : "#dcdfda") : C.ink;
         ctx.fill(); ctx.globalAlpha = 1;
-        const fl = WEAR.has(f.name) ? flags[f.name] : undefined;
+        const fl = WEAR.has(f.name) && !(moving && view.k < 1.35) ? flags[f.name] : undefined;   // flags are too small to see mid-spin
         if (fl) {                                                       // the flag, fitted to the country and clipped to its outline
-          const [[x0, y0], [x1, y1]] = path.bounds(f.geom);
+          const [[x0, y0], [x1, y1]] = bounds ?? path.bounds(f.geom);
           if (x1 > x0 && y1 > y0 && isFinite(x0 + x1 + y0 + y1)) {
-            ctx.save(); ctx.beginPath(); path(f.geom); ctx.clip();
+            ctx.save(); ctx.clip();                                     // clips to the outline just filled (the path is still current)
             const sc = Math.max((x1 - x0) / 320, (y1 - y0) / 240), w = 320 * sc, h = 240 * sc;
             ctx.drawImage(fl, x0 + (x1 - x0 - w) / 2, y0 + (y1 - y0 - h) / 2, w, h); ctx.restore();
           }
         }
         let lw = f.cls === "land" ? 0.8 : f.cls === "visited" ? 1.5 : 2;
-        if (lw === 2) { const [[a0, b0], [a1, b1]] = path.bounds(f.geom); lw = clamp(Math.min(a1 - a0, b1 - b0) / 12, 0.7, 2); }   // a sliver like the Gambia gets a hairline, so its flag shows
+        if (lw === 2) { const [[a0, b0], [a1, b1]] = bounds ?? path.bounds(f.geom); lw = clamp(Math.min(a1 - a0, b1 - b0) / 12, 0.7, 2); }   // a sliver like the Gambia gets a hairline, so its flag shows
         ctx.strokeStyle = f.cls === "land" || f.cls === "visited" ? C.bg : C.ink; ctx.lineWidth = lw; ctx.lineJoin = "round"; ctx.stroke();
       });
       if (hover >= 0 && feats[hover].cls !== "land") { ctx.beginPath(); path(feats[hover].geom); ctx.strokeStyle = C.ink; ctx.lineWidth = 2; ctx.stroke(); }
@@ -129,8 +214,15 @@ export default function OriginsGlobe() {
         const f = Math.pow(0.92, dt / 16); vel.x *= f; vel.y *= f; again = true;
       }
       last = again ? now : 0;
+      moving = again || !!drag;
+      if (moving) {
+        const w = watch.tick(now);                                     // slow frames: draw smaller; fast ones: win some back
+        if (w === -1) qMove = Math.max(0.5, qMove * 0.82); else if (w === 1) qMove = Math.min(1, qMove * 1.1);
+        setQ(qMove);
+      } else { watch.reset(); setQ(1); }                               // at rest it is drawn sharp
       draw();
       if (again) raf = requestAnimationFrame(loop);
+      else if (!drag && qNow !== 1) raf = requestAnimationFrame(loop);
     };
     const kick = () => { if (!raf) raf = requestAnimationFrame(loop); };
 
@@ -140,7 +232,7 @@ export default function OriginsGlobe() {
 
     const size = () => {
       const w = wrap.clientWidth; if (!w) return;
-      dpr = Math.min(2, devicePixelRatio || 1); W = w;
+      dpr = Math.min(tier === 0 ? 1.5 : 2, devicePixelRatio || 1); W = w; qNow = 1;
       canvas.width = canvas.height = Math.round(W * dpr); canvas.style.height = `${W}px`;
       ctx = canvas.getContext("2d")!; buildShade(); draw();
     };
@@ -170,9 +262,13 @@ export default function OriginsGlobe() {
       drag = { x, y, t: performance.now(), moved: false, touch: e.pointerType === "touch" };
       canvas.setPointerCapture(e.pointerId); canvas.style.cursor = "grabbing";
     };
+    let hx = 0, hy = 0, hraf = 0;
     const move = (e: PointerEvent) => {
       const [x, y] = point(e);
-      if (!drag) { if (e.pointerType === "mouse") showTip(x, y, pick(x, y)); return; }
+      if (!drag) {
+        if (e.pointerType === "mouse") { hx = x; hy = y; if (!hraf) hraf = requestAnimationFrame(() => { hraf = 0; showTip(hx, hy, pick(hx, hy)); }); }   // hit-test at most once a frame
+        return;
+      }
       const dx = x - drag.x, dy = drag.touch ? 0 : y - drag.y, now = performance.now(), dt = Math.max(1, now - drag.t), s = degPerPx();
       if (Math.abs(x - drag.x) + Math.abs(y - drag.y) > 3) drag.moved = true;
       view.lon -= dx * s; view.lat = clamp(view.lat + dy * s, -85, 85);
@@ -190,8 +286,8 @@ export default function OriginsGlobe() {
 
     const ro = new ResizeObserver(size); ro.observe(wrap);
 
-    // data and d3 load on demand, so the page itself stays light
-    Promise.all([import("d3-geo"), import("@/lib/globe-data")]).then(([d3, { GLOBE_DATA }]) => {
+    // the map and d3 are only fetched when the globe is about to scroll into view, so the page itself loads lighter
+    const begin = () => Promise.all([import("d3-geo"), import("@/lib/globe-data")]).then(([d3, { GLOBE_DATA }]) => {
       if (dead) return;
       geoContains = d3.geoContains as typeof geoContains; geoDistance = d3.geoDistance as typeof geoDistance;
       proj = d3.geoOrthographic().clipAngle(90).precision(0.4);
@@ -200,8 +296,18 @@ export default function OriginsGlobe() {
       feats = GLOBE_DATA.map(([name, cls, coords]) => {
         const geom = { type: "MultiPolygon" as const, coordinates: coords };
         let x0 = 180, y0 = 90, x1 = -180, y1 = -90; for (const p of coords) for (const [x, y] of p[0]) { x0 = Math.min(x0, x); x1 = Math.max(x1, x); y0 = Math.min(y0, y); y1 = Math.max(y1, y); }
-        return { name, cls, geom, bbox: [x0, y0, x1, y1] as [number, number, number, number], centroid: d3.geoCentroid(geom) as [number, number] };
+        const centroid = d3.geoCentroid(geom) as [number, number];
+        // how far the country reaches from its centre, so a country can be skipped when all of it is on the far side (huge or antimeridian ones are never skipped)
+        const rad = x1 - x0 > 120 || y1 - y0 > 90 ? Math.PI : Math.max(...[[x0, y0], [x1, y0], [x0, y1], [x1, y1]].map((c) => d3.geoDistance(centroid, c as [number, number])));
+        return { name, cls, geom, bbox: [x0, y0, x1, y1] as [number, number, number, number], centroid, rad, rings: coords.flatMap((poly) => poly.map(toRing)) };
       }).sort((a, b) => order[a.cls] - order[b.cls]);
+      // the graticule for the fast path: 15 degree meridians and parallels as lines sampled every 5 degrees
+      const lines: number[][][] = [];
+      for (let lo = -180; lo < 180; lo += 15) { const l: number[][] = []; for (let la = -90; la <= 90; la += 5) l.push([lo, la]); lines.push(l); }
+      for (let la = -75; la <= 75; la += 15) { const l: number[][] = []; for (let lo = -180; lo <= 180; lo += 5) l.push([lo, la]); lines.push(l); }
+      gratRings = lines.map(toRing);
+      maxN = Math.max(...feats.flatMap((f) => f.rings.map((r) => r.n)), ...gratRings.map((r) => r.n));
+      SX = new Float64Array(maxN); SY = new Float64Array(maxN); SZ = new Float64Array(maxN);
       ctx = canvas.getContext("2d")!;
       path = d3.geoPath(proj, ctx);
       WEAR.forEach((name) => {                                        // the flags load after the globe is up, and appear as they arrive
@@ -218,7 +324,9 @@ export default function OriginsGlobe() {
       }
     });
     const cleanup: (() => void)[] = [];
-    return () => { dead = true; cancelAnimationFrame(raf); ro.disconnect(); cleanup.forEach((f) => f()); canvas.removeEventListener("pointerdown", down); canvas.removeEventListener("pointermove", move); canvas.removeEventListener("pointerup", up); canvas.removeEventListener("pointercancel", up); canvas.removeEventListener("pointerleave", leave); };
+    const near = new IntersectionObserver(([en]) => { if (en.isIntersecting) { near.disconnect(); begin(); } }, { rootMargin: "800px 0px" });
+    near.observe(wrap); cleanup.push(() => near.disconnect());
+    return () => { dead = true; cancelAnimationFrame(raf); cancelAnimationFrame(hraf); ro.disconnect(); cleanup.forEach((f) => f()); canvas.removeEventListener("pointerdown", down); canvas.removeEventListener("pointermove", move); canvas.removeEventListener("pointerup", up); canvas.removeEventListener("pointercancel", up); canvas.removeEventListener("pointerleave", leave); };
   }, []);
 
   return (

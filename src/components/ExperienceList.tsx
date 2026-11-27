@@ -1,4 +1,5 @@
 "use client";
+import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import { EDUCATION, EXPERIENCE } from "@/lib/data";
@@ -44,10 +45,13 @@ export default function ExperienceList({ education = true }: { education?: boole
       {education && (
         <li className="grid gap-x-8 gap-y-2 py-6 md:grid-cols-[180px_1fr_auto]">
           <div className="label pt-1.5 text-mute">{EDUCATION.period}<div className="mt-1 normal-case tracking-normal">Education</div></div>
-          <div>
-            <h3 className="t-card">{EDUCATION.school}</h3>
-            <p className="mt-1 text-[15px] font-medium text-accent-ink">{EDUCATION.degree}</p>
-            <ul className="mt-3 flex flex-wrap gap-2">{EDUCATION.awards.map((a) => <li key={a} className="label rounded-full border border-line px-3 py-1.5 text-ink">Award · {a}</li>)}</ul>
+          <div className="flex items-start gap-4 md:gap-5">
+            <Image src={EDUCATION.logo.src} alt="Regional Maritime University crest" width={EDUCATION.logo.w} height={EDUCATION.logo.h} className="h-14 w-auto shrink-0 object-contain md:h-[72px]" />
+            <div>
+              <h3 className="t-card">{EDUCATION.school}</h3>
+              <p className="mt-1 text-[15px] font-medium text-accent-ink">{EDUCATION.degree}</p>
+              <ul className="mt-3 flex flex-wrap gap-2">{EDUCATION.awards.map((a) => <li key={a} className="label rounded-full border border-line px-3 py-1.5 text-ink">Award · {a}</li>)}</ul>
+            </div>
           </div>
         </li>
       )}
