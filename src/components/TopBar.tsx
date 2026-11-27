@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
+import { PERSON } from "@/lib/data";
 
 const NAV = [
   { href: "/work", label: "Work" },
@@ -22,10 +23,13 @@ export default function TopBar() {
     if (!open) return;
     const k = (e: KeyboardEvent) => e.key === "Escape" && setOpen(false);
     addEventListener("keydown", k);
-    return () => removeEventListener("keydown", k);
+    const prev = document.documentElement.style.overflow;
+    document.documentElement.style.overflow = "hidden";
+    return () => { removeEventListener("keydown", k); document.documentElement.style.overflow = prev; };
   }, [open]);
 
   return (
+    <>
     <header className="fixed inset-x-0 top-0 z-40 border-b border-line bg-bg/85 backdrop-blur-md">
       <div className="mx-auto flex h-[var(--bar)] max-w-[1400px] items-center justify-between px-5 sm:px-8">
         <Link href="/" className="flex items-center gap-3" aria-label="Leslie Paul Ajayi, home">
@@ -51,15 +55,30 @@ export default function TopBar() {
         </button>
       </div>
 
+    </header>
       {open && (
-        <nav aria-label="Primary" className="border-t border-line bg-bg px-5 pb-5 pt-2 md:hidden">
-          {[...NAV, { href: "/contact", label: "Contact" }].map((n) => (
-            <Link key={n.href} href={n.href} className="t-big flex items-baseline justify-between border-b border-line py-3">
-              {n.label}{active(path, n.href) && <span className="dot text-[0.6em]">●</span>}
+      <div role="dialog" aria-modal="true" aria-label="Menu" className="fixed inset-0 z-[60] flex flex-col bg-bg md:hidden">
+        <div className="flex h-[var(--bar)] shrink-0 items-center justify-between border-b border-line px-5">
+          <Link href="/" className="flex items-center gap-3" aria-label="Leslie Paul Ajayi, home">
+            <Image src="/brand/leslie-avatar-1024.png" alt="" width={32} height={32} className="rounded-[9px]" />
+            <span className="text-[16px] font-medium tracking-[-0.02em]">Leslie Paul Ajayi</span>
+          </Link>
+          <button onClick={() => setOpen(false)} aria-label="Close menu" autoFocus className="grid h-10 w-10 place-items-center rounded-full border border-line">
+            <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round"><path d="M3 3l10 10M13 3L3 13" /></svg>
+          </button>
+        </div>
+        <nav aria-label="Primary" className="flex flex-1 flex-col justify-center overflow-y-auto px-5 py-6">
+          {[{ href: "/", label: "Home" }, ...NAV, { href: "/contact", label: "Contact" }].map((n) => (
+            <Link key={n.href} href={n.href} className="flex items-baseline justify-between border-b border-line py-4 text-[clamp(34px,10vw,52px)] font-medium leading-none tracking-[-0.05em]">
+              {n.label}{(n.href === "/" ? path === "/" : active(path, n.href)) && <span className="dot text-[0.5em]">●</span>}
             </Link>
           ))}
         </nav>
-      )}
-    </header>
+        <div className="shrink-0 border-t border-line px-5 py-5 pb-[calc(20px+env(safe-area-inset-bottom))]">
+          <a href={`mailto:${PERSON.email}`} className="btn btn-solid w-full justify-center">{PERSON.email}</a>
+        </div>
+      </div>
+    )}
+    </>
   );
 }
