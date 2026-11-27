@@ -57,8 +57,9 @@ export default function TopBar() {
 
     </header>
       {open && (
-      <div role="dialog" aria-modal="true" aria-label="Menu" className="fixed inset-0 z-[60] flex flex-col bg-bg md:hidden">
-        <div className="flex h-[var(--bar)] shrink-0 items-center justify-between border-b border-line px-5">
+      <div role="dialog" aria-modal="true" aria-label="Menu" className="fixed inset-0 z-[60] flex flex-col overflow-hidden bg-bg md:hidden">
+        <Image src="/portrait/leslie.png" alt="" width={720} height={900} aria-hidden className="pointer-events-none absolute bottom-0 right-[-8%] h-[58%] w-auto max-w-none select-none opacity-[0.55]" />
+        <div className="relative flex h-[var(--bar)] shrink-0 items-center justify-between border-b border-line px-5">
           <Link href="/" className="flex items-center gap-3" aria-label="Leslie Paul Ajayi, home">
             <Image src="/brand/leslie-avatar-1024.png" alt="" width={32} height={32} className="rounded-[9px]" />
             <span className="text-[16px] font-medium tracking-[-0.02em]">Leslie Paul Ajayi</span>
@@ -67,14 +68,14 @@ export default function TopBar() {
             <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round"><path d="M3 3l10 10M13 3L3 13" /></svg>
           </button>
         </div>
-        <nav aria-label="Primary" className="flex flex-1 flex-col justify-center overflow-y-auto px-5 py-6">
+        <nav aria-label="Primary" className="relative flex flex-1 flex-col justify-center overflow-y-auto px-5 py-6">
           {[{ href: "/", label: "Home" }, ...NAV, { href: "/contact", label: "Contact" }].map((n) => (
             <Link key={n.href} href={n.href} className="flex items-baseline justify-between border-b border-line py-4 text-[clamp(34px,10vw,52px)] font-medium leading-none tracking-[-0.05em]">
               {n.label}{(n.href === "/" ? path === "/" : active(path, n.href)) && <span className="dot text-[0.5em]">●</span>}
             </Link>
           ))}
         </nav>
-        <div className="shrink-0 border-t border-line px-5 py-5 pb-[calc(20px+env(safe-area-inset-bottom))]">
+        <div className="relative shrink-0 border-t border-line px-5 py-5 pb-[calc(20px+env(safe-area-inset-bottom))]">
           <a href={`mailto:${PERSON.email}`} className="btn btn-solid w-full justify-center">{PERSON.email}</a>
         </div>
       </div>
