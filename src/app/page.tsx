@@ -5,6 +5,8 @@ import Dither, { type Shape } from "@/components/Dither";
 import WorkCard, { ownership } from "@/components/WorkCard";
 import ExperienceList from "@/components/ExperienceList";
 import AppMarquee from "@/components/AppMarquee";
+import StatMarquee from "@/components/StatMarquee";
+import Pricing from "@/components/Pricing";
 import CopyCommand from "@/components/CopyCommand";
 import Ask from "@/components/Ask";
 import { AFFILIATIONS, NOTES, PROJECTS, SHIPPED } from "@/lib/data";
@@ -147,12 +149,8 @@ export default function Home() {
       {/* 05 NUMBERS */}
       <Slide id="numbers" label="Numbers" deck dark>
         <H className="t-slide mt-7 md:mt-12">Receipts, not adjectives</H>
-        <div className="mt-7 grid grid-cols-2 gap-2 md:mt-10 md:grid-cols-4 md:grid-rows-2 md:gap-3">
-          <div className="panel col-span-2 flex min-h-[210px] flex-col p-5 md:row-span-2 md:min-h-[300px] md:p-8">
-            <p className="label text-white/55">GitHub</p>
-            <p className="mt-auto text-[clamp(96px,16vw,240px)] font-medium leading-[0.85] tracking-[-0.06em]">158</p>
-            <p className="mt-3 text-[16px] text-white/70 md:mt-4 md:text-[18px]">repositories since 2022, 138 of them public</p>
-          </div>
+        <StatMarquee />
+        <div className="mt-6 grid grid-cols-2 gap-2 md:mt-10 md:grid-cols-4 md:gap-3">
           {[
             ["Case studies", String(PROJECTS.length), "products, each with its own write-up"],
             ["VoIP platform", "40", "tests, the PostgreSQL ones on a disposable database"],
@@ -256,6 +254,11 @@ export default function Home() {
             </div>
           </div>
         </div>
+      </Slide>
+
+      {/* PRICING */}
+      <Slide id="pricing" label="Pricing" deck>
+        <Pricing />
       </Slide>
 
       {/* 09 WRITING */}

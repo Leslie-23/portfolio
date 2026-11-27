@@ -691,6 +691,7 @@ export type Shipped = {
 };
 
 export const SHIPPED: Shipped[] = [
+  { slug: "nesisoft", name: "Nesisoft", year: "2026", kind: "COMPANY SITE", categories: ["WEB", "PRODUCT"], blurb: "Software studio in Accra: web platforms, mobile apps and custom software for businesses across Africa. A marketing site with a blog, project pages, an instant cost calculator and an admin to edit it all.", live: "https://www.nesisoft.com", repo: "https://github.com/Nesisoft/nesisoft-digital-canvas", stack: ["Vite", "React", "TypeScript", "Tailwind CSS", "Express", "PostgreSQL"] },
   { slug: "sellis", name: "Sellis Beauty Spa", year: "2026", kind: "BUSINESS SITE", categories: ["WEB"], blurb: "Luxury beauty and spa in Accra: hair, spa, nails, waxing and lash treatments. Live on its own domain.", live: "https://sellisspa.com", stack: ["React", "Vite"] },
   { slug: "captivating-home", name: "Captivating Home & Trading", year: "2026", kind: "RETAIL PLATFORM", categories: ["WEB", "PRODUCT"], blurb: "Platform for a Ghanaian retail operation: home appliances, electricity vending and currency exchange. Live on its own domain.", live: "https://captivatinghometrade.com" },
   { slug: "nenecollectionz", name: "Nene Collectionz", year: "2026", kind: "STOREFRONT", categories: ["WEB"], blurb: "Wigs, wholesale and retail from Spintex, Accra: braided wigs, frontals and glueless units, ordered on WhatsApp and shipped worldwide.", live: "https://nene-collectionz.leslieajayi27.workers.dev/" },
@@ -1072,3 +1073,6 @@ export function shotHref(slug: string): { href: string; external: boolean } {
   if (p?.repo) return { href: p.repo, external: true };
   return { href: `/work/${slug}`, external: false };
 }
+
+/* GitHub totals for Leslie-23, checked with the GitHub API on 2026-11-27. */
+export const GITHUB = { total: 191, original: 158, forked: 33, private: 20, public: 171, asOf: "2026-11-27" };

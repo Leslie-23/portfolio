@@ -125,6 +125,7 @@ a:hover .frame-img img { transform: scale(1.015); }
 .marquee-set { display: flex; flex: none; gap: 28px; padding-right: 28px; list-style: none; margin: 0; }
 @media (prefers-reduced-motion: no-preference) {
   .marquee-track { animation: marquee 60s linear infinite; }
+  .marquee-rev .marquee-track { animation-direction: reverse; animation-duration: 50s; }
   .marquee:hover .marquee-track, .marquee:focus-within .marquee-track { animation-play-state: paused; }
 }
 @keyframes marquee { to { transform: translateX(-50%); } }

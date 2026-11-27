@@ -8,6 +8,7 @@ const NAV = [
   { href: "/work", label: "Work" },
   { href: "/notes", label: "Writing" },
   { href: "/about", label: "About" },
+  { href: "/#pricing", label: "Pricing" },
 ];
 const active = (path: string, href: string) => path === href || path.startsWith(href + "/");
 

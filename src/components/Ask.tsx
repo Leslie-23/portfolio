@@ -4,7 +4,7 @@ import Dither from "./Dither";
 import Clock from "./Clock";
 
 const LINKS = [
-  { k: "GitHub", v: "Leslie-23 · 138 public repositories", href: PERSON.links.github },
+  { k: "GitHub", v: "Leslie-23 · 171 public repositories", href: PERSON.links.github },
   { k: "LinkedIn", v: "/in/leslie-paul-ajayi", href: PERSON.links.linkedin },
   { k: "X", v: "@_iam_leslie", href: PERSON.links.x },
   { k: "npm", v: "npm-git-helper, v3.0.0", href: "https://www.npmjs.com/package/npm-git-helper" },
