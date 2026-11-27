@@ -7,7 +7,7 @@ const display = Inter_Tight({ variable: "--font-display", subsets: ["latin"], we
 const body = Geist({ variable: "--font-body", subsets: ["latin"] });
 const mono = Geist_Mono({ variable: "--font-mono-label", subsets: ["latin"] });
 
-const site = process.env.VERCEL_PROJECT_PRODUCTION_URL ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}` : "http://localhost:3000";
+const site = process.env.NODE_ENV === "production" ? "https://www.leslieajayi.com" : "http://localhost:3000";
 const description = "Leslie Paul Ajayi. Software engineer in Accra, building products and figuring out how things work underneath.";
 
 export const metadata: Metadata = {
