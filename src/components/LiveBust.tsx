@@ -70,11 +70,25 @@ varying vec2 vSrc;
 void main() {
   vec4 c = texture2D(uTex, vSrc / vec2(${W}., ${H}.));
   // the band between the lips is stretched open by the jaw; paint it as the inside of a mouth
-  float band = smoothstep(735., 738., vSrc.y) * (1. - smoothstep(748., 753., vSrc.y));
-  float xw = 1. - smoothstep(.5, 1., abs(vSrc.x - 255.) / 116.);
-  float k = clamp(uOpen * 3.5, 0., 1.) * band * xw;
-  float teeth = (1. - smoothstep(739.5, 742., vSrc.y)) * clamp(uOpen * 2., 0., 1.);
-  vec3 inside = mix(vec3(.07, .045, .05), vec3(.78, .78, .76), teeth * .8);
+  float v = clamp((vSrc.y - 735.) / 18., 0., 1.);            // 0 at the upper lip, 1 at the lower
+  float lens = 1. - 0.5 * pow(abs(2. * v - 1.), 3.);         // the opening narrows toward its top and bottom edges
+  float ax = abs(vSrc.x - 255.) / (116. * lens);
+  float band = smoothstep(735., 737., vSrc.y) * (1. - smoothstep(751., 753., vSrc.y));
+  float k = clamp(uOpen * 3.5, 0., 1.) * band * (1. - smoothstep(.7, 1., ax));
+  float wide = clamp(uOpen * 2.2, 0., 1.);
+
+  vec3 inside = vec3(.05, .045, .048);                       // the dark of the mouth
+  inside *= 1. - .6 * smoothstep(.4, 1., ax);                // darker toward the corners
+  // upper teeth: a row with a defined lower edge that curves up at the corners, a faint gap between each, shaded under the lip
+  float edge = .5 - .1 * ax * ax;
+  float teethRow = (1. - smoothstep(edge - .03, edge + .015, v)) * (1. - smoothstep(.62, .88, ax)) * wide;
+  float tooth = .5 + .5 * cos(vSrc.x * .2);                  // 1 mid-tooth, 0 in the gap
+  vec3 teeth = vec3(.8) * (.89 + .11 * smoothstep(.0, .5, tooth)) * (.45 + .55 * smoothstep(0., .3, v));
+  // tongue: a soft grey mound rising from the bottom lip
+  float tongueRow = smoothstep(.52, .8, v) * (1. - smoothstep(.15, .7, ax)) * smoothstep(.1, .35, uOpen);
+  vec3 tongue = vec3(.36) + .14 * smoothstep(.6, 1., v) + .05 * (1. - ax);
+  inside = mix(inside, tongue, tongueRow * .9);
+  inside = mix(inside, teeth, teethRow);
   gl_FragColor = vec4(mix(c.rgb, inside * c.a, k), c.a);
 }`;
 
@@ -82,8 +96,8 @@ const clamp = (v: number, a: number, b: number) => Math.min(b, Math.max(a, v));
 /** how open the mouth is for a letter: vowels wide, lip-closers shut, the rest in between */
 const openFor = (ch: string) => {
   const c = ch.toLowerCase();
-  if ("aou".includes(c)) return 0.95;
-  if ("ei".includes(c)) return 0.6;
+  if ("aou".includes(c)) return 0.8;
+  if ("ei".includes(c)) return 0.5;
   if ("mbp".includes(c)) return 0;
   if (c === " ") return 0.12;
   if (/[a-z]/.test(c)) return 0.38;
