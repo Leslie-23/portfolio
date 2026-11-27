@@ -2,9 +2,9 @@
 
 /* ---------- tokens ---------- */
 :root {
-  --bg: #ecedeb;          /* the desk the slides sit on */
-  --card: #ffffff;        /* a slide */
-  --soft: #f4f4f2;        /* panels inside a slide */
+  --bg: #fbfbf9;          /* the page */
+  --card: #fbfbf9;
+  --soft: #f1f1ee;        /* quiet panels */
   --ink: #111112;
   --body: #3d3e43;
   --mute: #6b6c72;
@@ -13,7 +13,7 @@
   --accent-ink: #1b7a4b;  /* green that is safe for small text */
   --night: #0b0b0c;       /* dark slide */
   --night-card: #19191b;
-  --rail: 116px;
+  --bar: 64px;
 }
 
 @theme inline {
@@ -58,17 +58,21 @@ body {
 /* ---------- surfaces ---------- */
 .slide {
   --pad: clamp(20px, 4vw, 56px);
+  --max: 1280px;
   position: relative;
-  background: var(--card);
-  border-radius: 28px;
-  padding: var(--pad);
-  scroll-margin-top: 12px;
+  padding-block: clamp(52px, 8vw, 112px);
+  padding-inline: max(var(--pad), calc((100% - var(--max)) / 2));
+  border-top: 1px solid var(--line);
+  scroll-margin-top: var(--bar);
 }
-.slide-dark { background: var(--night); color: #ecedee; }
+main > .slide:first-child { border-top: 0; padding-top: clamp(28px, 5vw, 64px); }
+.slide-dark { background: var(--night); color: #ecedee; border-top: 0; }
 .slide-dark .t-lead { color: rgba(236, 237, 238, 0.62); }
 .panel { background: var(--soft); border-radius: 18px; }
 .slide-dark .panel { background: var(--night-card); }
-@media (max-width: 767px) { .slide { border-radius: 22px; padding-block: 24px 28px; } .panel { border-radius: 14px; } }
+/* edge to edge, from inside a section */
+.bleed { margin-inline: calc(50% - 50vw); width: 100vw; }
+@media (max-width: 767px) { .panel { border-radius: 14px; } }
 
 /* phones: a row of cards becomes a swipeable strip, bleeding to the slide edge with the next card peeking in */
 @media (max-width: 767px) {

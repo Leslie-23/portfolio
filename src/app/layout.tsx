@@ -1,8 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Mona_Sans, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import Rail from "@/components/Rail";
-import MobileBar from "@/components/MobileBar";
+import TopBar from "@/components/TopBar";
 import Reveal from "@/components/Reveal";
 
 const sans = Mona_Sans({ variable: "--font-sans-face", subsets: ["latin"], weight: ["400", "500", "600"] });
@@ -28,11 +27,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en" className={`${sans.variable} ${mono.variable}`}>
       <body>
         <a href="#main" className="label sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-full focus:bg-ink focus:px-4 focus:py-2 focus:text-white">Skip to content</a>
-        <Rail />
-        <main id="main" className="px-2 pb-[calc(5.5rem+env(safe-area-inset-bottom))] pt-2 sm:px-3 sm:pt-3 lg:ml-[var(--rail)] lg:pb-3 lg:pl-0">
-          <div className="flex flex-col gap-2 sm:gap-3">{children}</div>
-        </main>
-        <MobileBar />
+        <TopBar />
+        <main id="main" className="pt-[var(--bar)]">{children}</main>
         <Reveal />
       </body>
     </html>

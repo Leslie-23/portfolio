@@ -1,16 +1,10 @@
-import { SLIDES, pad, slideNo, type SlideId } from "@/lib/deck";
-
-/** A deck slide: a rounded card with a mono label and, on the homepage, an "03 / 10" counter. */
+/** A page section: full width, a quiet mono label, no card and no counter. */
 export default function Slide({
-  id, label, deck = false, dark = false, className = "", children,
+  id, label, dark = false, className = "", children,
 }: { id?: string; label: string; deck?: boolean; dark?: boolean; className?: string; children: React.ReactNode }) {
-  const n = deck && id ? slideNo(id as SlideId) : 0;
   return (
-    <section id={id} data-slide={deck ? id : undefined} aria-label={label} className={`slide reveal ${dark ? "slide-dark" : ""} ${className}`}>
-      <div className={`label flex items-center justify-between ${dark ? "text-white/55" : "text-mute"}`}>
-        <span>{label}</span>
-        {n > 0 && <span aria-hidden>{pad(n)} / {pad(SLIDES.length)}</span>}
-      </div>
+    <section id={id} aria-label={label} className={`slide reveal ${dark ? "slide-dark" : ""} ${className}`}>
+      <div className={`label ${dark ? "text-white/55" : "text-mute"}`}>{label}</div>
       {children}
     </section>
   );

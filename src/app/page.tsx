@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import Slide, { H } from "@/components/Slide";
 import Dither, { type Shape } from "@/components/Dither";
-import WorkCard from "@/components/WorkCard";
+import WorkCard, { ownership } from "@/components/WorkCard";
 import ExperienceList from "@/components/ExperienceList";
 import CopyCommand from "@/components/CopyCommand";
 import Ask from "@/components/Ask";
@@ -51,7 +51,7 @@ export default function Home() {
   return (
     <>
       {/* 01 COVER */}
-      <Slide id="cover" label="Leslie Paul Ajayi, profile 2026" deck className="lg:min-h-[calc(100svh-24px)]">
+      <Slide id="cover" label="Leslie Paul Ajayi, profile 2026" deck className="lg:min-h-[calc(100svh-var(--bar))]">
         <div className="grid items-center gap-x-10 lg:grid-cols-[1.08fr_1fr]">
           <div className="order-2 lg:order-1">
             <p className="pill label mt-6 text-ink lg:mt-16">Software engineer · Accra, Ghana</p>
@@ -83,34 +83,41 @@ export default function Home() {
         </ul>
       </Slide>
 
-      {/* 02 THESIS */}
-      <Slide id="thesis" label="Thesis" deck>
-        <div className="mt-7 grid gap-5 md:mt-12 md:gap-8 lg:grid-cols-[1fr_340px] lg:items-start">
-          <H className="t-slide max-w-[17ch]">I build systems that go to production, not demos that die in a repo</H>
-          <p className="t-lead lg:pt-3">Three working principles. They decide what I build, how I build it and what I leave out.</p>
-        </div>
-        <ul className="swipe mt-8 grid gap-3 md:mt-12 md:grid-cols-3">
-          {THESIS.map((c) => (
-            <li key={c.t} className="panel overflow-hidden">
-              <div className="h-[96px] md:h-[180px]"><Dither shape={c.shape} cell={5} /></div>
-              <div className="p-5 md:p-7">
-                <p className="label text-mute">{c.tag}</p>
-                <h3 className="t-card mt-3">{c.t}</h3>
-                <p className="mt-3 text-[16px] leading-relaxed text-body">{c.b}</p>
-              </div>
+      {/* 02 PRINCIPLES: one big statement, then three ruled columns */}
+      <Slide id="thesis" label="Principles" deck>
+        <H className="t-hero mt-8 max-w-[15ch] md:mt-14">I build systems that go to production, not demos that die in a repo</H>
+        <ol className="mt-12 grid gap-10 border-t border-ink pt-8 md:mt-20 md:grid-cols-3 md:gap-12">
+          {THESIS.map((c, i) => (
+            <li key={c.t}>
+              <p className="label text-mute">{String(i + 1).padStart(2, "0")} · {c.tag}</p>
+              <h3 className="t-big mt-4">{c.t}</h3>
+              <p className="mt-4 max-w-[38ch] text-[17px] leading-relaxed text-body">{c.b}</p>
             </li>
           ))}
-        </ul>
+        </ol>
       </Slide>
 
-      {/* 03 WORK */}
+      {/* 03 WORK: the lead runs edge to edge */}
       <Slide id="work" label="Portfolio" deck>
         <H className="t-slide mt-7 md:mt-12">What I founded, lead and built</H>
-        <div className="mt-7 grid gap-3 md:mt-10 md:grid-cols-6">
-          <div className="md:col-span-4 md:row-span-2"><WorkCard w={lead} big sizes="(min-width: 1024px) 55vw, 95vw" /></div>
-          <div className="swipe contents md:contents">
-            {rest.map((w) => <div key={w.slug} className="md:col-span-2"><WorkCard w={w} /></div>)}
-          </div>
+        {lead.image && (
+          <Link href={`/work/${lead.slug}`} className="group bleed mt-8 block md:mt-12">
+            <div className="relative h-[52vw] max-h-[620px] min-h-[240px] overflow-hidden bg-soft">
+              <Image src={lead.image} alt={`${lead.name}: a screen from the real product`} fill priority sizes="100vw" className="object-cover object-top transition-transform duration-700 group-hover:scale-[1.012]" />
+            </div>
+            <div className="mx-auto flex max-w-[1280px] flex-wrap items-end justify-between gap-x-10 gap-y-3 px-5 pt-5 sm:px-8 lg:px-14">
+              <div>
+                <p className="label text-mute">{ownership(lead.role)} · {lead.year}</p>
+                <h3 className="t-big mt-2">{lead.name}</h3>
+              </div>
+              <p className="max-w-[52ch] text-[16px] leading-relaxed text-body">{lead.blurb}</p>
+            </div>
+          </Link>
+        )}
+        <div className="mt-12 md:mt-16">
+          <ul className="swipe grid gap-3 md:grid-cols-5">
+            {rest.map((w) => <li key={w.slug}><WorkCard w={w} sizes="(min-width: 1024px) 20vw, 90vw" /></li>)}
+          </ul>
         </div>
         <Link href="/work" className="u mt-8 inline-block text-[17px] font-medium">See all {WORK.length} projects</Link>
       </Slide>
@@ -183,19 +190,17 @@ export default function Home() {
         </ol>
       </Slide>
 
-      {/* 07 APPROACH */}
+      {/* 07 APPROACH: four words, each with its evidence */}
       <Slide id="approach" label="Approach" deck>
-        <div className="mt-7 grid gap-5 md:mt-12 md:gap-8 lg:grid-cols-[1fr_340px] lg:items-end">
-          <H className="t-slide">Build. Test. Question. Repeat</H>
-          <p className="t-lead">The loop I run on everything, with the evidence for each step.</p>
-        </div>
-        <ol className="swipe mt-7 grid gap-3 md:mt-10 md:grid-cols-2 xl:grid-cols-4">
-          {LOOP.map((l) => (
-            <li key={l.w} className="panel flex flex-col p-5 md:p-7">
-              <p className="label text-mute">{l.n}</p>
-              <h3 className="mt-4 text-[clamp(32px,3vw,46px)] md:mt-6 font-medium tracking-[-0.045em]">{l.w}<span className="dot">.</span></h3>
-              <p className="mt-3 flex-1 text-[16px] leading-relaxed text-body">{l.line}</p>
-              <Link href={l.href} className="u mt-6 self-start text-[15px] font-medium">{l.cta}</Link>
+        <ol className="mt-8 md:mt-14">
+          {LOOP.map((l, i) => (
+            <li key={l.w} className={`grid items-end gap-x-10 gap-y-3 border-t border-ink py-6 md:grid-cols-[1.1fr_1fr] md:py-9 ${i === LOOP.length - 1 ? "border-b" : ""}`}>
+              <h3 className="t-hero !text-[clamp(52px,10vw,160px)]">{l.w}<span className="dot">.</span></h3>
+              <div className="md:pb-3">
+                <p className="label text-mute">{l.n}</p>
+                <p className="mt-2 max-w-[40ch] text-[clamp(16px,1.35vw,19px)] leading-snug text-body">{l.line}</p>
+                <Link href={l.href} className="u mt-4 inline-block text-[15px] font-medium">{l.cta}</Link>
+              </div>
             </li>
           ))}
         </ol>
