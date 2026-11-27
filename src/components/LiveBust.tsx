@@ -124,7 +124,7 @@ const shapeFor = (ch: string): [number, number] => {
   return [0.06, 0];
 };
 
-export default function LiveBust({ onReady }: { onReady: () => void }) {
+export default function LiveBust({ onReady, onLost }: { onReady: () => void; onLost: () => void }) {
   const cv = useRef<HTMLCanvasElement>(null);
   const [said, setSaid] = useState("");
   const [talking, setTalking] = useState(false);
@@ -160,7 +160,10 @@ export default function LiveBust({ onReady }: { onReady: () => void }) {
     gl.uniform1f(uPad, PAD);
     gl.enable(gl.BLEND); gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
 
-    let raf = 0, cancelled = false, visible = true;
+    let raf = 0, cancelled = false, visible = true, lastDraw = 0;
+    const phone = innerWidth < 1024;
+    const lose = (e: Event) => { e.preventDefault(); cancelled = true; cancelAnimationFrame(raf); onLost(); };   // phones reclaim the GPU context under memory pressure
+    canvas.addEventListener("webglcontextlost", lose);
     const mouse = { x: 0, y: 0, seen: 0 };
     const st = { gx: 0, gy: 0, open: 0, round: 0, blink: 0, nextBlink: 1.8, blinkAt: -1, };
     let line: { text: string; t0: number } | null = null, hideAt = 0, spoken = 0;
@@ -183,7 +186,7 @@ export default function LiveBust({ onReady }: { onReady: () => void }) {
 
       const size = () => {
         const b = canvas.parentElement!.getBoundingClientRect();
-        const dpr = Math.min(2, devicePixelRatio || 1);
+        const dpr = Math.min(innerWidth < 1024 ? 1.25 : 2, devicePixelRatio || 1);
         const w = Math.round(b.width * (1 + 2 * PAD) * dpr), h = Math.round(b.height * (1 + 2 * PAD) * dpr);
         if (canvas.width !== w || canvas.height !== h) { canvas.width = w; canvas.height = h; }
         gl.viewport(0, 0, canvas.width, canvas.height);
@@ -197,6 +200,8 @@ export default function LiveBust({ onReady }: { onReady: () => void }) {
         if (cancelled) return;
         raf = requestAnimationFrame(frame);
         if (!visible || document.hidden) { last = now / 1000; return; }
+        if (phone && now - lastDraw < 30) return;                   // 30 fps is plenty for a faint background
+        lastDraw = now;
         const t = now / 1000, dt = Math.min(0.05, t - last); last = t;
 
         // gaze: toward the cursor if it has moved lately, otherwise a slow wander
@@ -248,8 +253,8 @@ export default function LiveBust({ onReady }: { onReady: () => void }) {
     const move = (e: PointerEvent) => { mouse.x = e.clientX; mouse.y = e.clientY; mouse.seen = performance.now() / 1000; };
     addEventListener("pointermove", move, { passive: true });
     const io = new IntersectionObserver(([e]) => { visible = e.isIntersecting; }); io.observe(canvas.parentElement!);
-    return () => { cancelled = true; cancelAnimationFrame(raf); removeEventListener("pointermove", move); io.disconnect(); cleanup.forEach((f) => f()); };
-  }, [onReady]);
+    return () => { cancelled = true; cancelAnimationFrame(raf); removeEventListener("pointermove", move); canvas.removeEventListener("webglcontextlost", lose); io.disconnect(); cleanup.forEach((f) => f()); };
+  }, [onReady, onLost]);
 
   const poke = useCallback(() => speak.current(), []);
 
