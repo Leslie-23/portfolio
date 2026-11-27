@@ -55,7 +55,13 @@ export default function Home() {
     <>
       {/* 01 COVER */}
       <Slide id="cover" label="Leslie Paul Ajayi, profile 2026" deck className="lg:min-h-[calc(100svh-var(--bar))]">
-        <div className="grid items-center gap-x-10 lg:grid-cols-[1.08fr_1fr]">
+        {/* phones: the portrait sits lightly behind the text instead of taking a block of its own */}
+        <div aria-hidden className="pointer-events-none absolute inset-x-0 top-0 z-0 h-[78%] overflow-hidden lg:hidden">
+          <Image src="/portrait/leslie.png" alt="" fill priority sizes="100vw"
+            className="object-contain object-right-top opacity-[0.16] mix-blend-multiply"
+            style={{ WebkitMaskImage: "radial-gradient(ellipse 70% 78% at 62% 38%, #000 40%, transparent 92%)", maskImage: "radial-gradient(ellipse 70% 78% at 62% 38%, #000 40%, transparent 92%)" }} />
+        </div>
+        <div className="relative z-10 grid items-center gap-x-10 lg:grid-cols-[1.08fr_1fr]">
           <div className="order-2 lg:order-1">
             <p className="pill label mt-6 text-ink lg:mt-16">Software engineer · Accra, Ghana</p>
             <H as="h1" className="t-hero mt-5 md:mt-6">Understand it. Then build it</H>
@@ -67,7 +73,7 @@ export default function Home() {
               <a href="#contact" className="btn">Get in touch</a>
             </div>
           </div>
-          <div className="order-1 -mx-2 mt-4 h-[210px] sm:h-[340px] lg:order-2 lg:mx-0 lg:mt-0 lg:h-[min(640px,calc(100svh-300px))]">
+          <div className="order-1 hidden lg:order-2 lg:mt-0 lg:block lg:h-[min(640px,calc(100svh-300px))]">
             <Dither shape={{ kind: "portrait", fit: "contain", align: 0.6 }} cell={3} label="Leslie Paul Ajayi, portrait rendered in green dots" />
           </div>
         </div>
