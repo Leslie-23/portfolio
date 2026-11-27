@@ -51,6 +51,7 @@ export default function OriginsGlobe() {
     const vel = { x: 0, y: 0 };                                  // deg per ms, from a drag
     let drag: { x: number; y: number; t: number; moved: boolean; touch: boolean } | null = null;
     let hover = -1;
+    const flags: Record<string, HTMLCanvasElement> = {};          // each visited country's flag, rendered once and painted onto it
     let feats: Feat[] = [], proj: GeoProjection, path: GeoPath, geoContains: (o: object, p: [number, number]) => boolean, geoDistance: (a: [number, number], b: [number, number]) => number;
     let sphere: GeoPermissibleObjects, grat: GeoPermissibleObjects, shade: HTMLCanvasElement | null = null;
     const css = getComputedStyle(wrap);
@@ -84,6 +85,15 @@ export default function OriginsGlobe() {
         ctx.globalAlpha = f.cls === "visited" ? 0.4 : 1;
         ctx.fillStyle = f.cls === "living" || f.cls === "visited" ? C.accent : f.cls === "land" ? (i === hover ? "#cdd1cb" : "#dcdfda") : C.ink;
         ctx.fill(); ctx.globalAlpha = 1;
+        const fl = f.cls === "visited" ? flags[f.name] : undefined;
+        if (fl) {                                                       // the flag, fitted to the country and clipped to its outline
+          const [[x0, y0], [x1, y1]] = path.bounds(f.geom);
+          if (x1 > x0 && y1 > y0 && isFinite(x0 + x1 + y0 + y1)) {
+            ctx.save(); ctx.beginPath(); path(f.geom); ctx.clip();
+            const sc = Math.max((x1 - x0) / 320, (y1 - y0) / 240), w = 320 * sc, h = 240 * sc;
+            ctx.drawImage(fl, x0 + (x1 - x0 - w) / 2, y0 + (y1 - y0 - h) / 2, w, h); ctx.restore();
+          }
+        }
         ctx.strokeStyle = C.bg; ctx.lineWidth = f.cls === "land" ? 0.8 : 1.5; ctx.lineJoin = "round"; ctx.stroke();
       });
       if (hover >= 0 && feats[hover].cls !== "land") { ctx.beginPath(); path(feats[hover].geom); ctx.strokeStyle = C.ink; ctx.lineWidth = 2; ctx.stroke(); }
@@ -208,6 +218,13 @@ export default function OriginsGlobe() {
       }).sort((a, b) => order[a.cls] - order[b.cls]);
       ctx = canvas.getContext("2d")!;
       path = d3.geoPath(proj, ctx);
+      BEEN.forEach(([name]) => {                                        // the flags load after the globe is up, and appear as they arrive
+        fetch(`/flags/${FLAG[name]}.svg`).then((res) => res.text()).then((svg) => {
+          const img = new window.Image();
+          img.onload = () => { const c = document.createElement("canvas"); c.width = 320; c.height = 240; c.getContext("2d")!.drawImage(img, 0, 0, 320, 240); flags[name] = c; kick(); };
+          img.src = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(svg.replace("<svg ", '<svg width="640" height="480" '));
+        }).catch(() => {});
+      });
       setReady(true); size(); canvas.style.cursor = "grab";
       if (!reduce) {
         const io = new IntersectionObserver(([en]) => { if (en.isIntersecting && !played && !dead) { startIntro(); io.disconnect(); } }, { threshold: 0.5 });
