@@ -14,10 +14,12 @@ const LABELS = [
 const NOSE = { x: 0.4, y: 0.575 };   // where the face is "finished": the last facets land here
 const PAD = 0.5;                      // the canvas extends this much beyond the portrait on every side
 const KEY = "bust-built";
+/** Testing: false = play on every load. Set to true to play once per browser session. */
+const PLAY_ONCE = false;
 
 const easeOut = (t: number) => 1 - Math.pow(1 - t, 3);
 
-/** The portrait, built from its own triangles. They arrive from every direction (360°), the outer edge of the head
+/** The portrait, built from its own triangles. (Currently set to replay on every load, see PLAY_ONCE.) They arrive from every direction (360°), the outer edge of the head
  *  first and the nose last, with the skills Leslie works in riding in on some of them. One-shot: plays once per
  *  session, any key or click skips it, and the real portrait is always underneath. */
 export default function BustBuild({ className = "" }: { className?: string }) {
@@ -26,13 +28,13 @@ export default function BustBuild({ className = "" }: { className?: string }) {
 
   useEffect(() => {
     let seen = false;
-    try { seen = sessionStorage.getItem(KEY) === "1"; } catch {}
+    if (PLAY_ONCE) { try { seen = sessionStorage.getItem(KEY) === "1"; } catch {} }
     const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
     // eslint-disable-next-line react-hooks/set-state-in-effect -- sessionStorage and reduced-motion are only known on the client
     if (seen || reduced) { setState("done"); return; }
 
     let raf = 0, cancelled = false, skip = false;
-    const finish = () => { try { sessionStorage.setItem(KEY, "1"); } catch {} setState("done"); };
+    const finish = () => { if (PLAY_ONCE) { try { sessionStorage.setItem(KEY, "1"); } catch {} } setState("done"); };
 
     fetch("/bust-mesh.json").then((r) => r.json()).then((m: Mesh) => {
       if (cancelled) return;
