@@ -2,8 +2,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 
 /** The portrait, alive. The real picture is drawn through a WebGL grid that is bent in a few small places:
- *  the irises follow the cursor, the lids blink, the head turns a little toward you, the cheeks and mouth corners lift
- *  into a smile, and the jaw drops in time with the letters of whatever it is saying. Nothing here is a recording.
+ *  the irises follow the cursor, the lids blink, the head turns a little toward you, and the jaw drops in time with the letters of whatever it is saying. Nothing here is a recording.
  *  Coordinates below are pixels of public/portrait/leslie.png (687 x 1083). */
 const W = 687, H = 1083;
 const PAD = 0.12;                    // spare canvas around the portrait so a head turn is never clipped
@@ -21,7 +20,7 @@ const VERT = `
 precision highp float;
 attribute vec2 aUv;
 uniform vec2 uGaze;      // -1..1, where the eyes and head are looking
-uniform float uSmile, uOpen, uBlink, uBreath, uPad;
+uniform float uOpen, uBlink, uBreath, uPad;
 varying vec2 vSrc;
 const vec2 RES = vec2(${W}., ${H}.);
 float g(vec2 r, float s) { return exp(-dot(r, r) / (2. * s * s)); }
@@ -42,12 +41,6 @@ void main() {
   vec2 bl = (q - eL) / vec2(64., 38.), br = (q - eR) / vec2(64., 38.);
   d.y += (eL.y - q.y) * 0.86 * uBlink * exp(-dot(bl, bl));
   d.y += (eR.y - q.y) * 0.86 * uBlink * exp(-dot(br, br));
-
-  // smile: the mouth corners go up and out, the cheeks lift
-  vec2 cL = vec2(142., 744.), cR = vec2(368., 738.);
-  float wl = g(q - cL, 40.), wr = g(q - cR, 40.);
-  d += uSmile * (wl * vec2(-11., -27.) + wr * vec2(11., -27.));
-  d.y -= uSmile * 12. * (g(q - vec2(105., 650.), 80.) + g(q - vec2(415., 635.), 80.));
 
   // talking: everything under the lip line drops, most at the lips, less toward the chin, none at the neck
   float below = smoothstep(738., 752., q.y);
@@ -129,13 +122,13 @@ export default function LiveBust({ onReady }: { onReady: () => void }) {
     const loc = gl.getAttribLocation(prog, "aUv"); gl.enableVertexAttribArray(loc); gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
     const ib = gl.createBuffer(); gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, ib); gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, idx, gl.STATIC_DRAW);
     const U = (n: string) => gl.getUniformLocation(prog, n);
-    const uGaze = U("uGaze"), uSmile = U("uSmile"), uOpen = U("uOpen"), uBlink = U("uBlink"), uBreath = U("uBreath"), uPad = U("uPad");
+    const uGaze = U("uGaze"), uOpen = U("uOpen"), uBlink = U("uBlink"), uBreath = U("uBreath"), uPad = U("uPad");
     gl.uniform1f(uPad, PAD);
     gl.enable(gl.BLEND); gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
 
     let raf = 0, cancelled = false, visible = true;
-    const mouse = { x: 0, y: 0, seen: 0, over: false };
-    const st = { gx: 0, gy: 0, smile: 0, open: 0, blink: 0, nextBlink: 1.8, blinkAt: -1, smileUntil: 0, pulseAt: 6 };
+    const mouse = { x: 0, y: 0, seen: 0 };
+    const st = { gx: 0, gy: 0, open: 0, blink: 0, nextBlink: 1.8, blinkAt: -1, };
     let line: { text: string; t0: number } | null = null, hideAt = 0, spoken = 0;
 
     const say = (i?: number) => {
@@ -178,7 +171,7 @@ export default function LiveBust({ onReady }: { onReady: () => void }) {
         let tx: number, ty: number;
         if (t - mouse.seen < 4) { tx = clamp((mouse.x - fx) / (innerWidth * 0.45), -1, 1); ty = clamp((mouse.y - fy) / (innerHeight * 0.45), -1, 1); }
         else { tx = Math.sin(t * 0.37) * 0.35 + Math.sin(t * 0.91) * 0.15; ty = Math.sin(t * 0.29 + 1) * 0.18; }
-        const ke = 1 - Math.exp(-dt * 9), kh = 1 - Math.exp(-dt * 3.5);
+        const ke = 1 - Math.exp(-dt * 9);
         st.gx += (tx - st.gx) * ke; st.gy += (ty - st.gy) * ke;
 
         // blink, now and then, sometimes twice
@@ -190,27 +183,23 @@ export default function LiveBust({ onReady }: { onReady: () => void }) {
         }
 
         // speech: the mouth follows the letters being typed
-        let openT = 0, smileT = 0;
+        let openT = 0;
         if (line) {
           const e = t - line.t0, n = Math.floor(e * 16);
           if (n < line.text.length) {
             if (n !== spoken) { spoken = n; setSaid(line.text.slice(0, n + 1)); }
             const ch = line.text[n] ?? " ";
             const wob = 0.85 + 0.15 * Math.sin(t * 38);
-            openT = openFor(ch) * wob; smileT = 0.28;
+            openT = openFor(ch) * wob;
           } else {
-            if (!hideAt) { hideAt = t + 3.2; st.smileUntil = t + 2.2; setSaid(line.text); setTalking(false); spoken = -1; }
+            if (!hideAt) { hideAt = t + 3.2; setSaid(line.text); setTalking(false); spoken = -1; }
             if (t > hideAt) { line = null; setSaid(""); spoken = -1; }
           }
         }
-        // smiles: on hover, after speaking, and a small one now and then
-        if (mouse.over || t < st.smileUntil) smileT = Math.max(smileT, 0.9);
-        if (t > st.pulseAt) { st.smileUntil = Math.max(st.smileUntil, t + 1.6); st.pulseAt = t + 9 + Math.random() * 6; }
         st.open += (openT - st.open) * (1 - Math.exp(-dt * 24));
-        st.smile += (smileT - st.smile) * kh;
 
         gl.uniform2f(uGaze, st.gx, st.gy);
-        gl.uniform1f(uSmile, st.smile); gl.uniform1f(uOpen, st.open); gl.uniform1f(uBlink, st.blink);
+        gl.uniform1f(uOpen, st.open); gl.uniform1f(uBlink, st.blink);
         gl.uniform1f(uBreath, Math.sin(t * 1.3));
         gl.clearColor(0, 0, 0, 0); gl.clear(gl.COLOR_BUFFER_BIT);
         gl.drawElements(gl.TRIANGLES, idx.length, gl.UNSIGNED_SHORT, 0);
@@ -222,9 +211,7 @@ export default function LiveBust({ onReady }: { onReady: () => void }) {
     img.src = "/portrait/leslie.png";
 
     const cleanup: (() => void)[] = [];
-    const move = (e: PointerEvent) => { mouse.x = e.clientX; mouse.y = e.clientY; mouse.seen = performance.now() / 1000;
-      const b = canvas.parentElement!.getBoundingClientRect();
-      mouse.over = e.clientX > b.left && e.clientX < b.right && e.clientY > b.top && e.clientY < b.bottom; };
+    const move = (e: PointerEvent) => { mouse.x = e.clientX; mouse.y = e.clientY; mouse.seen = performance.now() / 1000; };
     addEventListener("pointermove", move, { passive: true });
     const io = new IntersectionObserver(([e]) => { visible = e.isIntersecting; }); io.observe(canvas.parentElement!);
     return () => { cancelled = true; cancelAnimationFrame(raf); removeEventListener("pointermove", move); io.disconnect(); cleanup.forEach((f) => f()); };
