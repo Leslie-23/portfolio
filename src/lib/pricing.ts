@@ -91,8 +91,9 @@ export const PACES = [
   { id: "fast", label: "Fast-tracked", what: "Extra capacity to meet a firm launch date.", price: 1.25, time: 0.7 }, // mine
 ];
 
-export type Selection = { type: string | null; size: string; features: string[]; design: string; mode: string; pace: string };
-export const DEFAULTS: Selection = { type: null, size: "medium", features: [], design: "template", mode: "sprints", pace: "standard" };
+// null = "not chosen yet": the estimate falls back to a default for it until the visitor picks
+export type Selection = { type: string | null; size: string | null; features: string[]; design: string | null; mode: string | null; pace: string | null };
+export const DEFAULTS: Selection = { type: null, size: null, features: [], design: null, mode: null, pace: null };
 
 const round = (n: number, to: number) => Math.round(n / to) * to;
 export const cedi = (n: number) => `GH₵${n.toLocaleString("en-GH")}`;
@@ -106,8 +107,8 @@ export type Estimate = {
 export function estimate(sel: Selection): Estimate | null {
   const base = BASE.find((b) => b.id === sel.type);
   if (!base) return null;
-  const size = SIZES.find((x) => x.id === sel.size)!, design = DESIGNS.find((x) => x.id === sel.design)!;
-  const mode = MODES.find((x) => x.id === sel.mode)!, pace = PACES.find((x) => x.id === sel.pace)!;
+  const size = SIZES.find((x) => x.id === (sel.size ?? "medium"))!, design = DESIGNS.find((x) => x.id === (sel.design ?? "template"))!;
+  const mode = MODES.find((x) => x.id === (sel.mode ?? "sprints"))!, pace = PACES.find((x) => x.id === (sel.pace ?? "standard"))!;
   const feats = FEATURES.filter((f) => sel.features.includes(f.id));
 
   const core = base.from * size.price;

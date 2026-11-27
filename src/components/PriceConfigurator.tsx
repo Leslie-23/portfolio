@@ -1,11 +1,11 @@
 "use client";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { BASE, DEFAULTS, DESIGNS, FEATURES, MODES, PACES, SIZES, cedi, estimate, type Selection } from "@/lib/pricing";
 import { PERSON } from "@/lib/data";
 
-function Step({ n, title, hint, children }: { n: string; title: string; hint?: string; children: React.ReactNode }) {
+function Step({ n, title, hint, children, setRef }: { n: string; title: string; hint?: string; children: React.ReactNode; setRef: (el: HTMLDivElement | null) => void }) {
   return (
-    <fieldset className="border-t border-line pt-6 md:pt-8">
+    <div ref={setRef} className="step-in scroll-mt-[calc(var(--bar)+16px)]"><fieldset className="border-t border-line pt-6 md:pt-8">
       <legend className="sr-only">{title}</legend>
       <div className="flex items-baseline gap-4" aria-hidden>
         <span className="label text-accent-ink">{n}</span>
@@ -13,7 +13,7 @@ function Step({ n, title, hint, children }: { n: string; title: string; hint?: s
       </div>
       {hint && <p className="mt-2 max-w-[60ch] text-[15px] text-mute md:ml-[calc(11px*2+1rem)]">{hint}</p>}
       <div className="mt-5">{children}</div>
-    </fieldset>
+    </fieldset></div>
   );
 }
 
@@ -40,8 +40,18 @@ function Choice({ type, name, checked, onChange, title, body, aside }: {
 
 export default function PriceConfigurator() {
   const [sel, setSel] = useState<Selection>(DEFAULTS);
+  const [shown, setShown] = useState(1);            // how many steps are revealed (they all stay on the page)
+  const refs = useRef<(HTMLDivElement | null)[]>([]);
   const est = useMemo(() => estimate(sel), [sel]);
-  const set = <K extends keyof Selection>(k: K, v: Selection[K]) => setSel((s) => ({ ...s, [k]: v }));
+  const TOTAL = 6;
+  // reveal the next step, then bring it into view. Revealed steps are never hidden again.
+  const advance = (from: number) => {
+    if (from + 1 >= TOTAL && shown >= TOTAL) return;
+    setShown((n) => Math.max(n, Math.min(TOTAL, from + 2)));
+    setTimeout(() => refs.current[from + 1]?.scrollIntoView({ behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "start" }), 60);
+  };
+  useEffect(() => { refs.current = refs.current.slice(0, TOTAL); }, []);
+  const pick = <K extends keyof Selection>(k: K, v: Selection[K], step: number) => { setSel((s) => ({ ...s, [k]: v })); if (step + 1 >= shown) advance(step); };
   const toggle = (id: string) => setSel((s) => ({ ...s, features: s.features.includes(id) ? s.features.filter((x) => x !== id) : [...s.features, id] }));
 
   const summary = useMemo(() => {
@@ -50,9 +60,9 @@ export default function PriceConfigurator() {
     const feats = FEATURES.filter((f) => sel.features.includes(f.id)).map((f) => f.label);
     return [
       "Hi Leslie, I built this estimate on your pricing page.", "",
-      `Building: ${g(BASE, sel.type!)}`, `Size: ${g(SIZES, sel.size)}`,
+      `Size: ${g(SIZES, sel.size ?? "medium")}`, `Building: ${g(BASE, sel.type!)}`,
       `Features: ${feats.length ? feats.join(", ") : "none beyond the basics"}`,
-      `Design: ${g(DESIGNS, sel.design)}`, `How we work: ${g(MODES, sel.mode)}`, `Pace: ${g(PACES, sel.pace)}`, "",
+      `Design: ${g(DESIGNS, sel.design ?? "template")}`, `How we work: ${g(MODES, sel.mode ?? "sprints")}`, `Pace: ${g(PACES, sel.pace ?? "standard")}`, "",
       `Estimate: ${cedi(est.low)} to ${cedi(est.high)}, about ${est.weeksLow}–${est.weeksHigh} weeks.`, "",
       "A bit about the project:", "",
     ].join("\n");
@@ -71,7 +81,7 @@ export default function PriceConfigurator() {
       ) : (
         <>
           <p className="label text-mute">Your estimate</p>
-          <p className={`mt-2 leading-snug text-body ${compact ? "text-[14px]" : "text-[17px]"}`}>Choose what you&apos;re building to see a price range and timeline.</p>
+          <p className={`mt-2 leading-snug text-body ${compact ? "text-[14px]" : "text-[17px]"}`}>Answer the first two questions to see a price range and timeline.</p>
         </>
       )}
     </div>
@@ -80,43 +90,54 @@ export default function PriceConfigurator() {
   return (
     <div className="mt-8 grid gap-10 pb-24 md:mt-14 lg:grid-cols-[1fr_390px] lg:gap-14 lg:pb-0">
       <form onSubmit={(e) => e.preventDefault()} className="space-y-9 md:space-y-12" aria-label="Project estimate">
-        <Step n="01" title="What are you building?">
-          <div className="grid gap-3 sm:grid-cols-2">
-            {BASE.map((b) => (
-              <Choice key={b.id} type="radio" name="type" checked={sel.type === b.id} onChange={() => set("type", b.id)} title={b.label} body={b.what} aside={`From ${cedi(b.from)}`} />
-            ))}
-          </div>
-        </Step>
-
-        <Step n="02" title="How big is it?" hint="A screen is a page or view, such as sign-in, a product list or checkout.">
+        <Step n="01" title="How big is it?" hint="A screen is a page or view, such as sign-in, a product list or checkout." setRef={(el) => { refs.current[0] = el; }}>
           <div className="grid gap-3 md:grid-cols-3">
-            {SIZES.map((s) => <Choice key={s.id} type="radio" name="size" checked={sel.size === s.id} onChange={() => set("size", s.id)} title={s.label} body={s.what} />)}
+            {SIZES.map((x) => <Choice key={x.id} type="radio" name="size" checked={sel.size === x.id} onChange={() => pick("size", x.id, 0)} title={x.label} body={x.what} />)}
           </div>
         </Step>
 
-        <Step n="03" title="What should it do?" hint="Tick everything you need. Leave it empty if you only need the basics.">
-          <div className="grid gap-3 sm:grid-cols-2">
-            {FEATURES.map((f) => <Choice key={f.id} type="checkbox" name="features" checked={sel.features.includes(f.id)} onChange={() => toggle(f.id)} title={f.label} body={f.what} />)}
-          </div>
-        </Step>
+        {shown > 1 && (
+          <Step n="02" title="What are you building?" setRef={(el) => { refs.current[1] = el; }}>
+            <div className="grid gap-3 sm:grid-cols-2">
+              {BASE.map((x) => <Choice key={x.id} type="radio" name="type" checked={sel.type === x.id} onChange={() => pick("type", x.id, 1)} title={x.label} body={x.what} aside={`From ${cedi(x.from)}`} />)}
+            </div>
+          </Step>
+        )}
 
-        <Step n="04" title="How should it look?">
-          <div className="grid gap-3 md:grid-cols-3">
-            {DESIGNS.map((d) => <Choice key={d.id} type="radio" name="design" checked={sel.design === d.id} onChange={() => set("design", d.id)} title={d.label} body={d.what} />)}
-          </div>
-        </Step>
+        {shown > 2 && (
+          <Step n="03" title="What should it do?" hint="Tick everything you need. Leave it empty if you only need the basics." setRef={(el) => { refs.current[2] = el; }}>
+            <div className="grid gap-3 sm:grid-cols-2">
+              {FEATURES.map((f) => <Choice key={f.id} type="checkbox" name="features" checked={sel.features.includes(f.id)} onChange={() => toggle(f.id)} title={f.label} body={f.what} />)}
+            </div>
+            {shown === 3 && <button type="button" onClick={() => advance(2)} className="btn btn-solid mt-6">{sel.features.length ? "Continue" : "Nothing extra, continue"}</button>}
+          </Step>
+        )}
 
-        <Step n="05" title="How should we work?" hint="I use AI across the build. The more of it AI takes on, the less you pay, with trade-offs.">
-          <div className="grid gap-3 md:grid-cols-3">
-            {MODES.map((m) => <Choice key={m.id} type="radio" name="mode" checked={sel.mode === m.id} onChange={() => set("mode", m.id)} title={m.label} body={m.what} aside={m.note} />)}
-          </div>
-        </Step>
+        {shown > 3 && (
+          <Step n="04" title="How should it look?" setRef={(el) => { refs.current[3] = el; }}>
+            <div className="grid gap-3 md:grid-cols-3">
+              {DESIGNS.map((d) => <Choice key={d.id} type="radio" name="design" checked={sel.design === d.id} onChange={() => pick("design", d.id, 3)} title={d.label} body={d.what} />)}
+            </div>
+          </Step>
+        )}
 
-        <Step n="06" title="How soon do you need it?">
-          <div className="grid gap-3 md:grid-cols-3">
-            {PACES.map((p) => <Choice key={p.id} type="radio" name="pace" checked={sel.pace === p.id} onChange={() => set("pace", p.id)} title={p.label} body={p.what} />)}
-          </div>
-        </Step>
+        {shown > 4 && (
+          <Step n="05" title="How should we work?" hint="I use AI across the build. The more of it AI takes on, the less you pay, with trade-offs." setRef={(el) => { refs.current[4] = el; }}>
+            <div className="grid gap-3 md:grid-cols-3">
+              {MODES.map((m) => <Choice key={m.id} type="radio" name="mode" checked={sel.mode === m.id} onChange={() => pick("mode", m.id, 4)} title={m.label} body={m.what} aside={m.note} />)}
+            </div>
+          </Step>
+        )}
+
+        {shown > 5 && (
+          <Step n="06" title="How soon do you need it?" setRef={(el) => { refs.current[5] = el; }}>
+            <div className="grid gap-3 md:grid-cols-3">
+              {PACES.map((p) => <Choice key={p.id} type="radio" name="pace" checked={sel.pace === p.id} onChange={() => pick("pace", p.id, 5)} title={p.label} body={p.what} />)}
+            </div>
+          </Step>
+        )}
+
+        {shown < TOTAL && <p className="label text-mute" aria-live="polite">Step {shown} of {TOTAL}</p>}
 
         <div className="lg:hidden"><div className="panel p-5">{result()}</div></div>
       </form>
@@ -134,7 +155,7 @@ export default function PriceConfigurator() {
               <a href={mailto} className="btn btn-solid mt-5 w-full justify-center">Send me this estimate</a>
             </>
           )}
-          {dirty && <button type="button" onClick={() => setSel(DEFAULTS)} className="u mt-4 text-[14px] text-mute">Start again</button>}
+          {dirty && <button type="button" onClick={() => { setSel(DEFAULTS); setShown(1); window.scrollTo({ top: 0, behavior: "smooth" }); }} className="u mt-4 text-[14px] text-mute">Start again</button>}
         </div>
       </aside>
 
