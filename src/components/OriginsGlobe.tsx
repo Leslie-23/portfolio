@@ -15,8 +15,8 @@ const VISITED = "Mali, Burkina Faso, Guinea, Liberia, Ivory Coast, Togo and Beni
 // flags are flag-icons SVGs (MIT, see public/flags/LICENSE.txt), keyed by the country names in the map data
 const FLAG: Record<string, string> = { Gambia: "gm", "Sierra Leone": "sl", Nigeria: "ng", Ghana: "gh", Mali: "ml", "Burkina Faso": "bf", Guinea: "gn", Liberia: "lr", "Côte d'Ivoire": "ci", Togo: "tg", Benin: "bj" };
 const BEEN = [["Mali", "Mali"], ["Burkina Faso", "Burkina Faso"], ["Guinea", "Guinea"], ["Liberia", "Liberia"], ["Côte d'Ivoire", "Ivory Coast"], ["Togo", "Togo"], ["Benin", "Benin"]] as const;
-// countries that wear their flag on the globe: the places visited, plus Nigeria, Sierra Leone and Ghana
-const WEAR = new Set<string>([...BEEN.map(([n]) => n), "Nigeria", "Sierra Leone", "Ghana"]);
+// countries that wear their flag on the globe: the places visited, plus the four countries of the story: Gambia, Sierra Leone, Nigeria and Ghana
+const WEAR = new Set<string>([...BEEN.map(([n]) => n), "Nigeria", "Sierra Leone", "Ghana", "Gambia"]);
 
 const SAY: Record<string, string> = { born: "Born in The Gambia", grew: "Grew up in Sierra Leone", descent: "Of Nigerian descent", living: "Living in Ghana" };
 type Feat = { name: string; cls: GlobeCls; geom: { type: "MultiPolygon"; coordinates: number[][][][] }; bbox: [number, number, number, number]; centroid: [number, number] };
@@ -92,7 +92,9 @@ export default function OriginsGlobe() {
             ctx.drawImage(fl, x0 + (x1 - x0 - w) / 2, y0 + (y1 - y0 - h) / 2, w, h); ctx.restore();
           }
         }
-        ctx.strokeStyle = f.cls === "land" || f.cls === "visited" ? C.bg : C.ink; ctx.lineWidth = f.cls === "land" ? 0.8 : f.cls === "visited" ? 1.5 : 2; ctx.lineJoin = "round"; ctx.stroke();
+        let lw = f.cls === "land" ? 0.8 : f.cls === "visited" ? 1.5 : 2;
+        if (lw === 2) { const [[a0, b0], [a1, b1]] = path.bounds(f.geom); lw = clamp(Math.min(a1 - a0, b1 - b0) / 12, 0.7, 2); }   // a sliver like the Gambia gets a hairline, so its flag shows
+        ctx.strokeStyle = f.cls === "land" || f.cls === "visited" ? C.bg : C.ink; ctx.lineWidth = lw; ctx.lineJoin = "round"; ctx.stroke();
       });
       if (hover >= 0 && feats[hover].cls !== "land") { ctx.beginPath(); path(feats[hover].geom); ctx.strokeStyle = C.ink; ctx.lineWidth = 2; ctx.stroke(); }
       if (shade) { ctx.save(); ctx.beginPath(); ctx.arc(W / 2, W / 2, R, 0, Math.PI * 2); ctx.clip(); ctx.drawImage(shade, 0, 0, W, W); ctx.restore(); }
