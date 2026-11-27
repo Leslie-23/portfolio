@@ -4,7 +4,7 @@ import Link from "next/link";
 import Slide, { H } from "@/components/Slide";
 import ExperienceList from "@/components/ExperienceList";
 import Ask from "@/components/Ask";
-import { AFFILIATIONS, APPROACH, INTERESTS, TOOLKIT, PERSON } from "@/lib/data";
+import { AFFILIATIONS, APPROACH, INTERESTS, TOOLKIT, PERSON, publicEvidence } from "@/lib/data";
 import { INFRA, LESSONS } from "@/lib/infra";
 import { getWork } from "@/lib/work";
 
@@ -16,10 +16,6 @@ const THINKING = [
   { t: "Product", b: "The decisions that matter are about people. In StepPool your payout depends only on your own goal, never your rank. In Beagine there's a receipt for every job and approval before any price changes. Trust is a feature.", link: { label: "StepPool", href: "/work/steppool" } },
   { t: "Entrepreneurship", b: "I founded Trofficient to modernise a transit network nobody centrally controls, and I'm CTO at Beagine. In a company, architecture has to serve delivery, so I ship the executable version first.", link: { label: "Trofficient", href: "/work/trofficient" } },
 ];
-
-// BRIEF §4: employer and affiliate systems are names and logos only. Drop any capability whose only evidence is that work.
-const PRIVATE = /transport for ghana|tap n'? ?go|moveet|global icons|nss|at work/i;
-const publicEvidence = (it: { projects: string[]; also?: string[] }) => it.projects.length > 0 || !(it.also ?? []).some((a) => PRIVATE.test(a));
 
 const SKILL_LABEL: Record<string, string> = { interfaces: "Interfaces", systems: "Backend and data", infra: "Infrastructure", product: "Product engineering" };
 
