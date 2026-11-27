@@ -54,7 +54,7 @@ export type Project = {
   web?: boolean;
   /** image for the single phone this product becomes when exploded (default: desktop.jpg) */
   phone?: string;
-  gallery?: { src: string; caption: string }[];
+  gallery?: { src: string; caption: string; app?: string }[];
   accent: "accent" | "red" | "orange" | "green";
   layers: Layer[]; // top (what the user touches) → bottom (what holds it up)
   stack: string[];
@@ -80,12 +80,14 @@ export const PROJECTS: Project[] = [
     web: true,
     phone: "/work/trofficient/phone/home.jpg",
     gallery: [
-      { src: "/work/trofficient/phone/home.jpg", caption: "RIDER HOME" },
-      { src: "/work/trofficient/phone/live.jpg", caption: "LIVE BUS TRACKER" },
-      { src: "/work/trofficient/phone/route.jpg", caption: "ROUTE + FARE" },
-      { src: "/work/trofficient/phone/booking.jpg", caption: "BOOKING + MOBILE MONEY" },
-      { src: "/work/trofficient/phone/wallet.jpg", caption: "WALLET" },
-      { src: "/work/trofficient/phone/driverhome.jpg", caption: "DRIVER APP" },
+      { src: "/work/trofficient/phone/home.jpg", caption: "HOME", app: "Rider app" },
+      { src: "/work/trofficient/phone/live.jpg", caption: "LIVE BUS TRACKER", app: "Rider app" },
+      { src: "/work/trofficient/phone/route.jpg", caption: "ROUTE + FARE", app: "Rider app" },
+      { src: "/work/trofficient/phone/booking.jpg", caption: "BOOKING + MOBILE MONEY", app: "Rider app" },
+      { src: "/work/trofficient/phone/wallet.jpg", caption: "WALLET", app: "Rider app" },
+      { src: "/work/trofficient/phone/driver-landing.jpg", caption: "DRIVER SIGN-UP", app: "Driver app" },
+      { src: "/work/trofficient/phone/driver-home.jpg", caption: "HOME: GO ONLINE", app: "Driver app" },
+      { src: "/work/trofficient/phone/driver-map.jpg", caption: "DRIVER MAP", app: "Driver app" },
     ],
     accent: "accent",
     layers: [
@@ -93,10 +95,18 @@ export const PROJECTS: Project[] = [
       { key: "track", label: "LIVE TRACKING", detail: "Where the vehicle is, right now" },
       { key: "route", label: "ROUTING + PRICING", detail: "Predictable journeys, dynamic fares" },
       { key: "pay", label: "PAYMENTS", detail: "Mobile money" },
-      { key: "ops", label: "DRIVER + OPERATOR SIDE", detail: "Go online, route map, scan tickets, earnings" },
+      { key: "ops", label: "DRIVER APP + OPERATORS", detail: "Go online, route map, scan tickets, earnings" },
     ],
     stack: ["React Native", "TypeScript", "Mobile money"],
     story: [
+      {
+        label: "TWO APPS, ONE ECOSYSTEM",
+        body: "Trofficient is two mobile apps and the platform behind them. The rider app lets commuters watch buses move on a live map, see a route with its fare, book a seat and pay with Mobile Money. The driver app lets drivers go online, follow a route map, scan tickets and track earnings.",
+      },
+      {
+        label: "TWO APPS, ONE ECOSYSTEM",
+        body: "Trofficient is two mobile apps and the platform behind them. The rider app lets commuters watch buses move on a live map, see a route with its fare, book a seat and pay with Mobile Money. The driver app lets drivers go online, follow a route map, scan tickets and track earnings.",
+      },
       {
         label: "CONTEXT",
         body: "Bus and shared-commuter transport in Ghana runs on a huge informal network. It works, but it is fragmented: riders can't predict a journey and operators can't see their own fleet.",
@@ -639,7 +649,7 @@ const LAYER_MEDIA: Record<string, Record<string, LayerImg>> = {
     track: { src: "/work/trofficient/phone/live.jpg" },
     route: { src: "/work/trofficient/phone/route.jpg" },
     pay: { src: "/work/trofficient/phone/wallet.jpg" },
-    ops: { src: "/work/trofficient/phone/driverhome.jpg" },
+    ops: { src: "/work/trofficient/phone/driver-home.jpg" },
   },
   steppool: {
     ds: { src: "/work/steppool/gallery/04-challenges.jpg" },
@@ -855,7 +865,7 @@ export const TOOLKIT: ToolGroup[] = [
       { name: "Next.js", projects: ["four-man-chess", "de-sams-studio"] },
       { name: "TypeScript", projects: ["trofficient", "steppool", "four-man-chess", "ai-sme", "elena", "de-sams-studio", "vop", "beagine"] },
       { name: "React Native / Expo", projects: ["trofficient", "steppool", "campus-connect", "beagine"] },
-      { name: "Flutter", projects: [], also: ["The Word"] },
+      { name: "Flutter", projects: [], also: ["Family Bible"] },
       { name: "Tailwind CSS", projects: ["ai-sme", "de-sams-studio"] },
       { name: "GSAP + Motion", projects: ["de-sams-studio"], also: ["this site"] },
       { name: "Installable PWAs", projects: ["stewardly"] },
@@ -993,7 +1003,7 @@ export type ArchiveItem = { name: string; year: string; type: string; lang: stri
 const gh = (n: string) => `https://github.com/Leslie-23/${n}`;
 export const ARCHIVE: ArchiveItem[] = [
   { name: "openstock", year: "2026", type: "DEPLOYMENT", lang: "Nuxt 4 · Cloudflare D1", blurb: "A deployed instance of the open-source OpenStock inventory system (by florianjs), set up on Cloudflare.", href: gh("openstock") },
-  { name: "The Word", year: "2026", type: "MOBILE", lang: "Flutter", blurb: "Open-source Bible app: multiple versions, search, bookmarks and daily verse notifications.", href: gh("Family-Bible") },
+  { name: "Family Bible", year: "2026", type: "MOBILE", lang: "Flutter", blurb: "Open-source Bible app: multiple versions, search, bookmarks and daily verse notifications.", href: gh("Family-Bible") },
   { name: "School-Management-System", year: "2024", type: "WEB", lang: "React · Node", blurb: "Admin and records management for a school.", href: gh("School-Management-System") },
   { name: "PALtech Weather", year: "2024", type: "WEB", lang: "JavaScript", blurb: "Forecasts, alerts and planning signals for any city.", href: gh("weatherApp") },
   { name: "expense-tracker", year: "2024", type: "WEB", lang: "React", blurb: "Track income and expenses.", href: gh("expense-tracker") },

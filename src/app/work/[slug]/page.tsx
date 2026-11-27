@@ -26,13 +26,12 @@ function Row({ label, children }: { label: string; children: React.ReactNode }) 
 }
 
 function Hero({ w }: { w: WorkItem }) {
-  const p = w.project;
-  if (w.phones && p?.gallery)
+  if (w.phones && w.phones.length)
     return (
       <div className="panel flex items-center justify-center gap-[3%] overflow-hidden bg-[#e5ebe7] px-[5%] py-[6%] md:gap-[2.5%] md:px-[6%] md:py-[5%]">
-        {p.gallery.slice(0, 4).map((g, i) => (
-          <div key={g.src} className={`relative w-[30%] overflow-hidden rounded-[12%/6%] border-[3px] border-ink bg-ink sm:w-[22%] sm:border-[4px] ${i === 3 ? "max-sm:hidden" : ""}`} style={{ aspectRatio: "1179 / 2556", transform: `translateY(${i % 2 ? "-3%" : "3%"})` }}>
-            <Image src={g.src} alt={`${w.name}: ${g.caption.toLowerCase()} screen`} fill sizes="22vw" className="object-cover object-top" priority={i < 2} />
+        {w.phones.slice(0, 4).map((src, i) => (
+          <div key={src} className={`relative w-[30%] overflow-hidden rounded-[12%/6%] border-[3px] border-ink bg-ink sm:w-[22%] sm:border-[4px] ${i === 3 ? "max-sm:hidden" : ""}`} style={{ aspectRatio: "1179 / 2556", transform: `translateY(${i % 2 ? "-3%" : "3%"})` }}>
+            <Image src={src} alt={`${w.name}: a screen from the app`} fill sizes="22vw" className="object-cover object-top" priority={i < 2} />
           </div>
         ))}
       </div>
@@ -48,6 +47,41 @@ function Hero({ w }: { w: WorkItem }) {
   return <div className="panel h-[260px] overflow-hidden md:h-[360px]"><Dither shape={{ kind: "rings", cx: 0.75, cy: 0.35 }} cell={6} /></div>;
 }
 
+const APP_ICON: Record<string, string> = { "Rider app": "/work/icons/trofficient.png", "Driver app": "/work/icons/trofficient-driver.png" };
+
+/** Phone screens, grouped by app when a project ships more than one (Trofficient: rider and driver). */
+function Screens({ gallery, name }: { gallery: NonNullable<WorkItem["gallery"]>; name: string }) {
+  const groups: { app?: string; items: typeof gallery }[] = [];
+  for (const g of gallery) {
+    const last = groups[groups.length - 1];
+    if (last && last.app === g.app) last.items.push(g); else groups.push({ app: g.app, items: [g] });
+  }
+  return (
+    <div className="space-y-9">
+      {groups.map((grp, gi) => (
+        <div key={gi}>
+          {grp.app && (
+            <div className="mb-4 flex items-center gap-3">
+              {APP_ICON[grp.app] && <Image src={APP_ICON[grp.app]} alt="" width={40} height={40} className="rounded-[10px]" />}
+              <h3 className="text-[19px] font-medium tracking-[-0.02em]">{grp.app}</h3>
+            </div>
+          )}
+          <ul className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
+            {grp.items.map((g) => (
+              <li key={g.src}>
+                <div className="relative overflow-hidden rounded-[14px] border border-line bg-ink" style={{ aspectRatio: "1179 / 2556" }}>
+                  <Image src={g.src} alt={`${name}: ${g.caption.toLowerCase()} screen`} fill sizes="(min-width: 1024px) 18vw, 45vw" className="object-cover object-top" />
+                </div>
+                <p className="mt-2 text-[13px] text-mute">{sentence(g.caption)}</p>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))}
+    </div>
+  );
+}
+
 export default async function Page({ params }: { params: Promise<{ slug: string }> }) {
   const w = getWork((await params).slug);
   if (!w) notFound();
@@ -60,9 +94,9 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
     ["Year", w.year],
     ["Status", w.status ? sentence(w.status) : "—"],
   ];
-  // Trofficient's phone captures show personal data (BRIEF §4): only its public website captures appear here
-  const showPhones = !!p?.gallery && w.slug !== "trofficient";
-  const showWeb = !!p?.media && (!p.portrait || p.web);
+  const gallery = w.gallery;
+  const showPhones = !!gallery && gallery.length > 0;
+  const showWeb = !!p?.media && (!p.portrait || !!p.web);
 
   return (
     <>
@@ -133,21 +167,10 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
             </Row>
           )}
 
-          {p && (showPhones || showWeb) && (
+          {(showPhones || (p && showWeb)) && (
             <Row label="Screens">
-              {showPhones && (
-                <ul className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
-                  {p.gallery!.map((g) => (
-                    <li key={g.src}>
-                      <div className="relative overflow-hidden rounded-[14px] border border-line bg-ink" style={{ aspectRatio: "1179 / 2556" }}>
-                        <Image src={g.src} alt={`${w.name}: ${g.caption.toLowerCase()} screen`} fill sizes="(min-width: 1024px) 18vw, 45vw" className="object-cover object-top" />
-                      </div>
-                      <p className="mt-2 text-[13px] text-mute">{sentence(g.caption)}</p>
-                    </li>
-                  ))}
-                </ul>
-              )}
-              {showWeb && (
+              {showPhones && <Screens gallery={gallery!} name={w.name} />}
+              {p && showWeb && (
                 <div className={`grid gap-3 ${p.desktopOnly ? "" : "md:grid-cols-[1fr_220px]"} ${showPhones ? "mt-6" : ""}`}>
                   <div className="frame-img border border-line"><Image src={`/work/${p.media}/desktop.jpg`} alt={`${w.name} on desktop`} width={1440} height={900} className="h-auto w-full" /></div>
                   {!p.desktopOnly && <div className="frame-img border border-line md:self-end"><Image src={`/work/${p.media}/mobile.jpg`} alt={`${w.name} on a phone`} width={390} height={844} className="h-auto w-full" /></div>}

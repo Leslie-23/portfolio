@@ -19,6 +19,7 @@ export type WorkItem = {
   repo?: string;
   image?: string;     // desktop capture
   phones?: string[];  // portrait screens, shown in phone frames
+  gallery?: { src: string; caption: string; app?: string }[]; // full set of screens for the detail page
   tier: "case" | "site" | "tool";
   project?: Project;
   note?: string;      // honest caveat, e.g. a deployment of someone else's software
@@ -49,14 +50,18 @@ const toFilters = (cats: string[]): Filter[] => {
   return [...f];
 };
 
-// Trofficient's phone captures include personal data on screen (BRIEF §4), so its card uses the public website capture.
-const PHONE_OK = (p: Project) => !!p.portrait && !!p.gallery && p.slug !== "trofficient";
+// Which screens lead a card or a detail hero. Trofficient is two apps, so it shows one of each.
+const PHONE_PICK: Record<string, string[]> = {
+  trofficient: ["home", "live", "driver-home", "driver-map"].map((n) => `/work/trofficient/phone/${n}.jpg`),
+};
+const PHONE_OK = (p: Project) => !!p.portrait && !!p.gallery;
 
 const fromProject = (p: Project): WorkItem => ({
   slug: p.slug, name: p.name, year: p.year, category: CATEGORY[p.slug] ?? p.categories[0], role: p.role, blurb: p.blurb,
   stack: p.stack, filters: toFilters(p.categories), status: p.status, live: liveFor(p.slug, p.live), repo: p.repo,
   image: p.media ? `/work/${p.media}/desktop.jpg` : undefined,
-  phones: PHONE_OK(p) ? p.gallery!.slice(0, 3).map((g) => g.src) : undefined,
+  phones: PHONE_OK(p) ? (PHONE_PICK[p.slug] ?? p.gallery!.slice(0, 3).map((g) => g.src)) : undefined,
+  gallery: p.gallery,
   tier: "case", project: p,
 });
 
@@ -93,8 +98,19 @@ const TOOLS: WorkItem[] = [
     blurb: "An example MCP server.", stack: ["TypeScript"], repo: gh("mcp-weather") },
   { slug: "osafrica", name: "osAfrica", year: "2026", category: "AI-native OS", role: "Author", tier: "tool", filters: ["Tools", "Systems"],
     blurb: "An AI-native operating system, in active development. Nothing to show yet.", stack: ["Python"], status: "IN DEVELOPMENT", repo: gh("osAfrica") },
-  { slug: "the-word", name: "The Word", year: "2026", category: "Open-source Bible app", role: "Author", tier: "tool", filters: ["Tools", "Mobile"],
-    blurb: "A Flutter Bible app: multiple versions, search, bookmarks and daily notifications.", stack: ["Flutter"], repo: gh("Family-Bible") },
+  { slug: "the-word", name: "Family Bible", year: "2026", category: "Bible app · Flutter", role: "Author", tier: "tool", filters: ["Tools", "Mobile"],
+    blurb: "A Flutter Bible app for families: several translations, search across the whole Bible, a chapter and verse picker, light and dark reading, and daily notifications.",
+    stack: ["Flutter", "Firebase"], repo: gh("Family-Bible"), live: "https://site-pi-eosin-28.vercel.app",
+    note: "These screens are from an early Android build.",
+    phones: ["reader-light", "reader-dark", "search"].map((n) => `/work/family-bible/${n}.jpg`),
+    gallery: [
+      { src: "/work/family-bible/reader-light.jpg", caption: "READING, LIGHT" },
+      { src: "/work/family-bible/reader-dark.jpg", caption: "READING, DARK" },
+      { src: "/work/family-bible/translations.jpg", caption: "TRANSLATIONS" },
+      { src: "/work/family-bible/chapters.jpg", caption: "CHAPTERS + VERSES" },
+      { src: "/work/family-bible/books.jpg", caption: "BOOKS" },
+      { src: "/work/family-bible/search.jpg", caption: "SEARCH" },
+    ] },
   { slug: "vien", name: "VIEN", year: "2025", category: "Storefront build", role: "Author", tier: "tool", filters: ["Web"],
     blurb: "A rustic shoe store: home, shop, product, about and contact pages with a Cloudinary media pipeline.",
     stack: ["React", "Vite", "Express", "MongoDB", "Cloudinary"], repo: gh("vien") },

@@ -17,7 +17,7 @@ export function Cover({ w, big = false, sizes }: { w: WorkItem; big?: boolean; s
   if (w.phones)
     return (
       <div className={`frame-img flex items-center justify-center gap-[3%] bg-[#e5ebe7] px-[8%] ${big ? "aspect-[16/10]" : "aspect-[16/10]"}`}>
-        {w.phones.map((src, i) => (
+        {w.phones.slice(0, 3).map((src, i) => (
           <div key={src} className="relative h-[84%] overflow-hidden rounded-[12%/6%] border-[3px] border-ink bg-ink" style={{ aspectRatio: "1179 / 2556", transform: `translateY(${i === 1 ? "-3%" : "3%"})` }}>
             <Image src={src} alt="" fill sizes="12vw" className="object-cover object-top" />
           </div>

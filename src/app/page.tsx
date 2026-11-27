@@ -4,6 +4,7 @@ import Slide, { H } from "@/components/Slide";
 import Dither, { type Shape } from "@/components/Dither";
 import WorkCard, { ownership } from "@/components/WorkCard";
 import ExperienceList from "@/components/ExperienceList";
+import AppMarquee from "@/components/AppMarquee";
 import CopyCommand from "@/components/CopyCommand";
 import Ask from "@/components/Ask";
 import { AFFILIATIONS, NOTES, PROJECTS, SHIPPED } from "@/lib/data";
@@ -100,6 +101,7 @@ export default function Home() {
       {/* 03 WORK: the lead runs edge to edge */}
       <Slide id="work" label="Portfolio" deck>
         <H className="t-slide mt-7 md:mt-12">What I founded, lead and built</H>
+        <AppMarquee />
         {lead.image && (
           <Link href={`/work/${lead.slug}`} className="group bleed mt-8 block md:mt-12">
             <div className="relative h-[52vw] max-h-[620px] min-h-[240px] overflow-hidden bg-soft">
