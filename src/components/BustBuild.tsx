@@ -12,6 +12,7 @@ const LABELS = [
 ];
 
 const NOSE = { x: 0.4, y: 0.575 };   // where the face is "finished": the last facets land here
+const BLUR_W = 210;                  // width the portrait is shrunk to before being stretched back: smaller = softer
 const PAD = 0.5;                      // the canvas extends this much beyond the portrait on every side
 const KEY = "bust-built";
 /** Testing: false = play on every load. Set to true to play once per browser session. */
@@ -19,7 +20,7 @@ const PLAY_ONCE = false;
 
 const easeOut = (t: number) => 1 - Math.pow(1 - t, 3);
 
-/** The portrait, built from its own triangles. (Currently set to replay on every load, see PLAY_ONCE.) They arrive from every direction (360°), the outer edge of the head
+/** The portrait, built from its own triangles. On phones the same animation runs as the faint background behind the text. (Currently set to replay on every load, see PLAY_ONCE.) They arrive from every direction (360°), the outer edge of the head
  *  first and the nose last, with the skills Leslie works in riding in on some of them. One-shot: plays once per
  *  session, any key or click skips it, and the real portrait is always underneath. */
 export default function BustBuild({ className = "" }: { className?: string }) {
@@ -36,7 +37,8 @@ export default function BustBuild({ className = "" }: { className?: string }) {
     let raf = 0, cancelled = false, skip = false;
     const finish = () => { if (PLAY_ONCE) { try { sessionStorage.setItem(KEY, "1"); } catch {} } setState("done"); };
 
-    fetch("/bust-mesh.json").then((r) => r.json()).then((m: Mesh) => {
+    const loadImg = (src: string) => new Promise<HTMLImageElement>((res, rej) => { const i = new window.Image(); i.onload = () => res(i); i.onerror = rej; i.src = src; });
+    Promise.all([fetch("/bust-mesh.json").then((r) => r.json() as Promise<Mesh>), loadImg("/portrait/leslie.png")]).then(([m, photo]) => {
       if (cancelled) return;
       const canvas = cv.current!, box = canvas.parentElement!.getBoundingClientRect();
       const dpr = Math.min(2, devicePixelRatio || 1);
@@ -46,6 +48,14 @@ export default function BustBuild({ className = "" }: { className?: string }) {
       const s = (box.width / m.w) * dpr;               // mesh unit -> canvas pixels
       const ox = box.width * PAD * dpr, oy = box.height * PAD * dpr;
       const nx = NOSE.x * m.w, ny = NOSE.y * m.h;
+
+      // the real portrait, a little soft: shrunk, then stretched back up (works in every browser, no canvas filters)
+      const small = document.createElement("canvas"); small.width = BLUR_W; small.height = Math.round((BLUR_W * photo.height) / photo.width);
+      small.getContext("2d")!.drawImage(photo, 0, 0, small.width, small.height);
+      const soft = document.createElement("canvas"); soft.width = Math.round(box.width * dpr); soft.height = Math.round((soft.width * photo.height) / photo.width);
+      const sx = soft.getContext("2d")!; sx.imageSmoothingEnabled = true; sx.imageSmoothingQuality = "high"; sx.drawImage(small, 0, 0, soft.width, soft.height);
+      const fill = x.createPattern(soft, "no-repeat")!;
+      fill.setTransform(new DOMMatrix().scale(m.w / soft.width, m.w / soft.width));   // pattern now spans mesh space
 
       type Tri = { a: number; b: number; c: number; g: number; cx: number; cy: number; d: number; ang: number; t0: number; dur: number; rot: number; label?: string };
       const tris: Tri[] = [];
@@ -87,17 +97,17 @@ export default function BustBuild({ className = "" }: { className?: string }) {
           const cx = tr.cx + (sx - tr.cx) * inv, cy = tr.cy + (sy - tr.cy) * inv;
           const rot = tr.rot * inv, sc = 0.55 + 0.45 * e;
           const cr = Math.cos(rot) * sc, sr = Math.sin(rot) * sc;
-          const pt = (idx: number) => { const dx = m.p[idx] - tr.cx, dy = m.p[idx + 1] - tr.cy; return [ox + (cx + dx * cr - dy * sr) * s, oy + (cy + dx * sr + dy * cr) * s]; };
-          const A = pt(tr.a), B = pt(tr.b), C = pt(tr.c);
-          x.beginPath(); x.moveTo(A[0], A[1]); x.lineTo(B[0], B[1]); x.lineTo(C[0], C[1]); x.closePath();
-          const g = tr.g;
-          x.fillStyle = x.strokeStyle = `rgb(${g},${g},${g})`; x.globalAlpha = Math.min(1, k * 3);
-          x.lineWidth = 0.7 * dpr; x.fill(); x.stroke(); x.globalAlpha = 1;
+          // map mesh space -> canvas, rotated and scaled about this triangle's own centre, so the picture travels with the facet
+          x.setTransform(s * cr, s * sr, -s * sr, s * cr, ox + s * (cx - tr.cx * cr + tr.cy * sr), oy + s * (cy - tr.cx * sr - tr.cy * cr));
+          x.beginPath(); x.moveTo(m.p[tr.a], m.p[tr.a + 1]); x.lineTo(m.p[tr.b], m.p[tr.b + 1]); x.lineTo(m.p[tr.c], m.p[tr.c + 1]); x.closePath();
+          x.globalAlpha = Math.min(1, k * 3);
+          x.fillStyle = x.strokeStyle = fill; x.lineWidth = 0.9 / s * dpr * 0.6; x.fill(); x.stroke(); x.globalAlpha = 1;
           // a brief flash of the accent as a facet locks into place
           if (k > 0.9 && t - tr.t0 - tr.dur < 0.22) {
             const f = 1 - Math.min(1, (t - (tr.t0 + tr.dur * 0.9)) / (0.22 + tr.dur * 0.1));
-            if (f > 0) { x.fillStyle = `rgba(52,187,120,${0.32 * f})`; x.fill(); }
+            if (f > 0) { x.fillStyle = `rgba(52,187,120,${0.28 * f})`; x.fill(); }
           }
+          x.setTransform(1, 0, 0, 1, 0, 0);
           if (tr.label && k < 1) chips.push({ px: ox + cx * s, py: oy + cy * s, a: k < 0.55 ? 1 : Math.max(0, 1 - (k - 0.55) / 0.4), label: tr.label });
         }
         // labels ride along upright, then dissolve into the facet
@@ -121,9 +131,9 @@ export default function BustBuild({ className = "" }: { className?: string }) {
   }, []);
 
   return (
-    <div className={`relative ${className}`}>
+    <div data-state={state} className={`${className} max-lg:opacity-[0.55] max-lg:mix-blend-multiply max-lg:transition-opacity max-lg:duration-[900ms] max-lg:data-[state=done]:opacity-[0.16] max-lg:[-webkit-mask-image:radial-gradient(ellipse_85%_80%_at_55%_40%,#000_42%,transparent_95%)] max-lg:[mask-image:radial-gradient(ellipse_85%_80%_at_55%_40%,#000_42%,transparent_95%)]`}>
       {/* the real portrait: hidden while the build plays, then it fades in over the finished mesh */}
-      <Image src="/portrait/leslie.png" alt="Leslie Paul Ajayi, a faceted greyscale portrait" fill priority sizes="(min-width: 1024px) 40vw, 0px"
+      <Image src="/portrait/leslie.png" alt="Leslie Paul Ajayi, a faceted greyscale portrait" fill priority sizes="(min-width: 1024px) 40vw, 70vw"
         className="bust-img object-contain object-bottom" style={{ opacity: state === "done" ? 1 : 0, transition: state === "done" ? "opacity .6s ease" : "none" }} />
       <noscript><style>{`.bust-img{opacity:1!important}`}</style></noscript>
       <canvas ref={cv} aria-hidden className="pointer-events-none absolute z-10"
