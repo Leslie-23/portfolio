@@ -5,6 +5,7 @@ import Dither, { type Shape } from "@/components/Dither";
 import WorkCard, { ownership } from "@/components/WorkCard";
 import ExperienceList from "@/components/ExperienceList";
 import AppMarquee from "@/components/AppMarquee";
+import StoryTimeline from "@/components/StoryTimeline";
 import BustBuild from "@/components/BustBuild";
 import StatMarquee from "@/components/StatMarquee";
 import CopyCommand from "@/components/CopyCommand";
@@ -35,13 +36,6 @@ const LOOP = [
   { n: "04", w: "Repeat", line: "Tools and experiments are where the next thing starts: half-built ideas and things I'm still breaking on purpose.", href: "/work?filter=Tools", cta: "Tools and experiments" },
 ];
 
-const STORY = [
-  { y: "2022", t: "Joined GitHub", b: "Started a BSc in Information Technology at Regional Maritime University.", h: 18, d: 0.25 },
-  { y: "2023", t: "First code", b: "C++ console programs: payroll and trajectory calculators. Learning the fundamentals.", h: 30, d: 0.38 },
-  { y: "2024", t: "Breadth", b: "83 repositories in a year: React and MERN apps, e-commerce, school and church systems.", h: 44, d: 0.52 },
-  { y: "2025", t: "Mobile, AI, a company", b: "Expo apps, a speech-accessibility hackathon project and the first Trofficient build.", h: 58, d: 0.7 },
-  { y: "2026", t: "Systems and products", b: "VoIP, Beagine, StepPool, scrapy-mcp. A shift from apps to infrastructure and tools.", h: 74, d: 1 },
-];
 
 const NOTE_COVERS: Shape[] = [{ kind: "sphere", cx: 0.3, cy: 0.75, r: 0.55 }, { kind: "rings", cx: 0.7, cy: 0.4 }, { kind: "fill", density: 0.55, fade: "up" }];
 
@@ -169,25 +163,7 @@ export default function Home() {
       {/* 06 STORY */}
       <Slide id="story" label="Story" deck>
         <H className="t-slide mt-7 md:mt-12 max-w-[15ch]">From console apps to companies</H>
-        <ol className="mt-8 grid gap-x-3 border-l border-line pl-5 max-lg:space-y-6 md:mt-12 lg:grid-cols-6 lg:items-end lg:gap-y-8 lg:border-0 lg:pl-0">
-          {STORY.map((s) => (
-            <li key={s.y} className="relative flex flex-col">
-              <i aria-hidden className="absolute -left-[25px] top-[13px] h-[9px] w-[9px] rounded-full bg-accent ring-4 ring-card lg:hidden" />
-              <p className="text-[clamp(26px,2.6vw,40px)] font-medium tracking-[-0.04em]">{s.y}</p>
-              <h3 className="mt-1 text-[17px] font-medium tracking-[-0.02em]">{s.t}</h3>
-              <p className="mt-2 text-[15px] leading-relaxed text-mute">{s.b}</p>
-              <div className="mt-4 hidden overflow-hidden rounded-[14px] lg:block lg:h-[var(--bar)]" style={{ ["--bar" as string]: `${s.h * 3}px` }}>
-                <Dither shape={{ kind: "fill", density: s.d, fade: "up" }} cell={5} />
-              </div>
-            </li>
-          ))}
-          <li className="relative flex flex-col">
-            <i aria-hidden className="absolute -left-[25px] top-[13px] h-[9px] w-[9px] rounded-full border-2 border-accent bg-card ring-4 ring-card lg:hidden" />
-            <p className="text-[clamp(26px,2.6vw,40px)] font-medium tracking-[-0.04em] text-mute">Next</p>
-            <a href="#contact" className="u mt-1 self-start text-[17px] font-medium">The next one</a>
-            <div className="mt-4 hidden rounded-[14px] border border-dashed border-mute/40 lg:block lg:h-[270px]" />
-          </li>
-        </ol>
+        <StoryTimeline />
       </Slide>
 
       {/* 07 APPROACH: four words, each with its evidence */}
