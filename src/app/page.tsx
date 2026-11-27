@@ -14,11 +14,11 @@ import { AFFILIATIONS, NOTES, PROJECTS, SHIPPED } from "@/lib/data";
 import { WORK, getWork } from "@/lib/work";
 
 const STRIP = [
-  { name: "Trofficient", what: "Transit technology", href: "/work/trofficient", live: false },
-  { name: "Beagine", what: "Home-services marketplace", href: "/work/beagine", live: true },
-  { name: "Global Icons", what: "Where I work", href: "#experience", live: true },
-  { name: "VoIP", what: "Voice infrastructure", href: "/work/vop", live: true },
-  { name: "git-helper", what: "Git CLI on npm", href: "/work/git-helper", live: true },
+  { icon: "/work/icons/trofficient.png", name: "Trofficient", what: "Transit technology", href: "/work/trofficient", live: false },
+  { icon: "/work/icons/beagine.png", name: "Beagine", what: "Home-services marketplace", href: "/work/beagine", live: true },
+  { icon: "/work/icons/global-icons.svg", name: "Global Icons", what: "Where I work", href: "#experience", live: true },
+  { icon: "/work/icons/vop.svg", name: "VoIP", what: "Voice infrastructure", href: "/work/vop", live: true },
+  { icon: "/work/icons/git-helper.svg", name: "git-helper", what: "Git CLI on npm", href: "/work/git-helper", live: true },
 ];
 
 // Leslie's own principles (his profile README), each tied to the work that shows it
@@ -68,8 +68,9 @@ export default function Home() {
         </div>
         <ul className="mt-8 grid grid-cols-2 gap-x-5 gap-y-4 border-t border-line pt-6 sm:grid-cols-3 md:mt-10 md:pt-7 lg:grid-cols-5">
           {STRIP.map((s) => (
-            <li key={s.name}>
-              <Link href={s.href} className="group block">
+            <li key={s.name} className="group/li relative">
+              <Image src={s.icon} alt="" aria-hidden width={64} height={64} className="pointer-events-none absolute -left-1 top-1/2 h-14 w-14 -translate-y-1/2 select-none rounded-[22%] object-contain opacity-[0.16] transition-opacity duration-300 group-hover/li:opacity-30 md:h-16 md:w-16" />
+              <Link href={s.href} className="group relative block">
                 <span className="flex items-center gap-2 text-[17px] font-medium tracking-[-0.02em] md:text-[19px]">
                   <span className="u">{s.name}</span>
                   <i aria-hidden className={`h-2 w-2 rounded-full ${s.live ? "bg-accent" : "border-2 border-accent"}`} />
