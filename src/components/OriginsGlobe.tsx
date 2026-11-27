@@ -1,4 +1,5 @@
 "use client";
+import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import type { GeoPath, GeoPermissibleObjects, GeoProjection } from "d3-geo";
 import type { GlobeCls } from "@/lib/globe-data";
@@ -11,6 +12,10 @@ const ZOOM = 2.0;                                  // how far in it settles (1 =
 const SPIN_MS = 3000, ZOOM_MS = 1500;
 const D2R = Math.PI / 180;
 const VISITED = "Mali, Burkina Faso, Guinea, Liberia, Ivory Coast, Togo and Benin";
+// flags are flag-icons SVGs (MIT, see public/flags/LICENSE.txt), keyed by the country names in the map data
+const FLAG: Record<string, string> = { Gambia: "gm", "Sierra Leone": "sl", Nigeria: "ng", Ghana: "gh", Mali: "ml", "Burkina Faso": "bf", Guinea: "gn", Liberia: "lr", "Côte d'Ivoire": "ci", Togo: "tg", Benin: "bj" };
+const BEEN = [["Mali", "Mali"], ["Burkina Faso", "Burkina Faso"], ["Guinea", "Guinea"], ["Liberia", "Liberia"], ["Côte d'Ivoire", "Ivory Coast"], ["Togo", "Togo"], ["Benin", "Benin"]] as const;
+const FLY_MS = 1100;
 
 const SAY: Record<string, string> = { born: "Born in The Gambia", grew: "Grew up in Sierra Leone", descent: "Of Nigerian descent", living: "Living in Ghana" };
 type Feat = { name: string; cls: GlobeCls; geom: { type: "MultiPolygon"; coordinates: number[][][][] }; bbox: [number, number, number, number]; centroid: [number, number] };
@@ -28,9 +33,12 @@ export default function OriginsGlobe() {
   const cv = useRef<HTMLCanvasElement>(null);
   const tipEl = useRef<HTMLDivElement>(null);
   const [tip, setTip] = useState("");
+  const [tipFlag, setTipFlag] = useState("");
   const [ready, setReady] = useState(false);
   const replay = useRef<() => void>(() => {});
   const nudge = useRef<(dLon: number, dLat: number) => void>(() => {});
+  const fly = useRef<(name: string) => void>(() => {});
+  const mark = useRef<(name: string | null) => void>(() => {});
 
   useEffect(() => {
     const canvas = cv.current, wrap = box.current;
@@ -38,7 +46,8 @@ export default function OriginsGlobe() {
     let dead = false, raf = 0, W = 0, dpr = 1;
     const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
     const view = { lon: FOCUS.lon, lat: FOCUS.lat, k: reduce ? ZOOM : 1 };
-    let mode: "still" | "intro" = "still", t0 = 0, played = false;
+    let mode: "still" | "intro" | "fly" = "still", t0 = 0, played = false;
+    let from = { lon: 0, lat: 0, k: 1 }, to = { lon: 0, lat: 0, k: 1 }, flyIdx = -1;
     const vel = { x: 0, y: 0 };                                  // deg per ms, from a drag
     let drag: { x: number; y: number; t: number; moved: boolean; touch: boolean } | null = null;
     let hover = -1;
@@ -104,6 +113,10 @@ export default function OriginsGlobe() {
         const e = now - t0, s = clamp(e / SPIN_MS, 0, 1), z = clamp((e - SPIN_MS) / ZOOM_MS, 0, 1);
         view.lon = FOCUS.lon - 360 * (1 - ease(s)); view.lat = 22 + (FOCUS.lat - 22) * ease(s); view.k = 1 + (ZOOM - 1) * ease(z);
         if (e >= SPIN_MS + ZOOM_MS) { mode = "still"; view.lon = FOCUS.lon; view.lat = FOCUS.lat; view.k = ZOOM; } else again = true;
+      } else if (mode === "fly") {
+        const s = ease(clamp((now - t0) / FLY_MS, 0, 1));
+        view.lon = from.lon + (to.lon - from.lon) * s; view.lat = from.lat + (to.lat - from.lat) * s; view.k = from.k + (to.k - from.k) * s;
+        if (now - t0 >= FLY_MS) { mode = "still"; showTip(W / 2, W * 0.5, flyIdx); } else again = true;
       } else if (!drag && (Math.abs(vel.x) > 0.0004 || Math.abs(vel.y) > 0.0004)) {      // inertia after a drag
         const dt = Math.min(48, now - (last || now));
         view.lon -= vel.x * dt; view.lat = clamp(view.lat + vel.y * dt, -85, 85);
@@ -118,6 +131,16 @@ export default function OriginsGlobe() {
     const startIntro = () => { vel.x = vel.y = 0; mode = "intro"; t0 = performance.now(); view.k = 1; played = true; kick(); };
     replay.current = () => { if (reduce) { view.lon = FOCUS.lon; view.lat = FOCUS.lat; view.k = ZOOM; kick(); } else startIntro(); };
     nudge.current = (dLon, dLat) => { mode = "still"; view.lon += dLon; view.lat = clamp(view.lat + dLat, -85, 85); kick(); };
+
+    fly.current = (name) => {
+      const i = feats.findIndex((f) => f.name === name); if (i < 0) return;
+      const [lo, la] = feats[i].centroid; let dl = lo - view.lon; while (dl > 180) dl -= 360; while (dl < -180) dl += 360;
+      from = { lon: view.lon, lat: view.lat, k: view.k }; to = { lon: view.lon + dl, lat: clamp(la, -60, 60), k: Math.max(ZOOM, 2.6) };
+      vel.x = vel.y = 0; flyIdx = i; hover = i; mode = reduce ? "still" : "fly"; t0 = performance.now();
+      if (reduce) { view.lon = to.lon; view.lat = to.lat; view.k = to.k; showTip(W / 2, W * 0.5, i); } else { setTip(""); setTipFlag(""); }
+      kick();
+    };
+    mark.current = (name) => { hover = name ? feats.findIndex((f) => f.name === name) : -1; kick(); };
 
     const size = () => {
       const w = wrap.clientWidth; if (!w) return;
@@ -140,8 +163,8 @@ export default function OriginsGlobe() {
     const say = (i: number) => (i < 0 ? "" : SAY[feats[i].cls] ?? (feats[i].cls === "visited" ? `${feats[i].name}, visited` : feats[i].name));
     const point = (e: PointerEvent) => { const r = canvas.getBoundingClientRect(); return [e.clientX - r.left, e.clientY - r.top] as const; };
     const showTip = (x: number, y: number, i: number) => {
-      hover = i; const t = say(i);
-      setTip((o) => (o === t ? o : t));
+      hover = i; const t = say(i), fl = i < 0 ? "" : FLAG[feats[i].name] ?? "";
+      setTip((o) => (o === t ? o : t)); setTipFlag((o) => (o === fl ? o : fl));
       if (tipEl.current) tipEl.current.style.transform = `translate(${Math.min(x + 14, W - 160)}px, ${Math.max(y - 38, 4)}px)`;
       kick();
     };
@@ -158,7 +181,7 @@ export default function OriginsGlobe() {
       if (Math.abs(x - drag.x) + Math.abs(y - drag.y) > 3) drag.moved = true;
       view.lon -= dx * s; view.lat = clamp(view.lat + dy * s, -85, 85);
       vel.x = vel.x * 0.6 + ((dx * s) / dt) * 0.4; vel.y = vel.y * 0.6 + ((dy * s) / dt) * 0.4;
-      drag.x = x; drag.y = y; drag.t = now; hover = -1; setTip((o) => (o ? "" : o)); kick();
+      drag.x = x; drag.y = y; drag.t = now; hover = -1; setTip((o) => (o ? "" : o)); setTipFlag((o) => (o ? "" : o)); kick();
     };
     const up = (e: PointerEvent) => {
       if (!drag) return;
@@ -166,7 +189,7 @@ export default function OriginsGlobe() {
       if (wasTap) { vel.x = vel.y = 0; if (touch || e.pointerType === "pen") showTip(x, y, pick(x, y)); }
       else kick();
     };
-    const leave = () => { if (!drag) { hover = -1; setTip((o) => (o ? "" : o)); kick(); } };
+    const leave = () => { if (!drag) { hover = -1; setTip((o) => (o ? "" : o)); setTipFlag((o) => (o ? "" : o)); kick(); } };
     canvas.addEventListener("pointerdown", down); canvas.addEventListener("pointermove", move); canvas.addEventListener("pointerup", up); canvas.addEventListener("pointercancel", up); canvas.addEventListener("pointerleave", leave);
 
     const ro = new ResizeObserver(size); ro.observe(wrap);
@@ -206,7 +229,7 @@ export default function OriginsGlobe() {
             if (m[e.key]) { e.preventDefault(); nudge.current(...m[e.key]); } else if (e.key === "Home") { e.preventDefault(); replay.current(); }
           }}
           className="absolute inset-0 block w-full select-none rounded-full outline-offset-4" style={{ touchAction: "pan-y" }} />
-        <div ref={tipEl} aria-hidden className={`pointer-events-none absolute left-0 top-0 z-10 whitespace-nowrap rounded-full border border-line bg-bg px-3 py-1.5 text-[13px] font-medium tracking-[-0.01em] shadow-[0_8px_24px_-12px_rgba(0,0,0,.35)] transition-opacity duration-150 ${tip ? "opacity-100" : "opacity-0"}`}>{tip || " "}</div>
+        <div ref={tipEl} aria-hidden className={`pointer-events-none absolute left-0 top-0 z-10 whitespace-nowrap rounded-full border border-line bg-bg px-3 py-1.5 text-[13px] font-medium tracking-[-0.01em] shadow-[0_8px_24px_-12px_rgba(0,0,0,.35)] transition-opacity duration-150 ${tip ? "opacity-100" : "opacity-0"}`}>{tipFlag && <Image src={`/flags/${tipFlag}.svg`} alt="" width={20} height={15} unoptimized className="mr-2 inline-block h-[15px] w-5 rounded-[2px] object-cover align-[-2px]" />}{tip || " "}</div>
       </div>
       <div className="mx-auto mt-3 flex max-w-[600px] items-center justify-between gap-3">
         <p className="label text-mute">Drag to turn it</p>
@@ -214,7 +237,20 @@ export default function OriginsGlobe() {
           <svg width="12" height="12" viewBox="0 0 12 12" aria-hidden fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"><path d="M10.2 6A4.2 4.2 0 1 1 8.9 3M9 1v2.2H6.8" /></svg>Replay
         </button>
       </div>
-      <p className="mt-5 text-[clamp(22px,2vw,28px)] font-medium leading-[1.1] tracking-[-0.035em]">That is why I am building for Africa<span className="dot">.</span></p>
+      <div className="mx-auto mt-5 max-w-[600px]">
+        <p className="label text-mute">Been to</p>
+        <ul className="mt-3 flex flex-wrap gap-2">
+          {BEEN.map(([name, label]) => (
+            <li key={name}>
+              <button type="button" onClick={() => fly.current(name)} onMouseEnter={() => mark.current(name)} onMouseLeave={() => mark.current(null)} onFocus={() => mark.current(name)} onBlur={() => mark.current(null)}
+                aria-label={`${label}: turn the globe to it`} className="inline-flex h-9 items-center gap-2 rounded-full border border-line pl-2 pr-3.5 text-[14px] font-medium tracking-[-0.01em] transition-colors hover:border-ink">
+                <Image src={`/flags/${FLAG[name]}.svg`} alt="" width={22} height={16} unoptimized className="h-4 w-[22px] rounded-[3px] object-cover" />{label}
+              </button>
+            </li>
+          ))}
+        </ul>
+      </div>
+      <p className="mt-6 text-[clamp(22px,2vw,28px)] font-medium leading-[1.1] tracking-[-0.035em]">That is why I am building for Africa<span className="dot">.</span></p>
     </div>
   );
 }
