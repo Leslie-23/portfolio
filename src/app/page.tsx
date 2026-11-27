@@ -6,7 +6,6 @@ import WorkCard, { ownership } from "@/components/WorkCard";
 import ExperienceList from "@/components/ExperienceList";
 import AppMarquee from "@/components/AppMarquee";
 import StatMarquee from "@/components/StatMarquee";
-import Pricing from "@/components/Pricing";
 import CopyCommand from "@/components/CopyCommand";
 import Ask from "@/components/Ask";
 import { AFFILIATIONS, NOTES, PROJECTS, SHIPPED } from "@/lib/data";
@@ -260,11 +259,6 @@ export default function Home() {
             </div>
           </div>
         </div>
-      </Slide>
-
-      {/* PRICING */}
-      <Slide id="pricing" label="Pricing" deck>
-        <Pricing />
       </Slide>
 
       {/* 09 WRITING */}
