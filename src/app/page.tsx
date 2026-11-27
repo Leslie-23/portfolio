@@ -1,70 +1,278 @@
+import Image from "next/image";
 import Link from "next/link";
-import Hero from "@/components/Hero";
-import ShippedRail from "@/components/ShippedRail";
-import ProjectRow from "@/components/ProjectRow";
-import ScrollVelocity from "@/components/ScrollVelocity";
-import Affiliations from "@/components/Affiliations";
-import { Spec } from "@/components/Spec";
-import { PROJECTS, SHIPPED } from "@/lib/data";
+import Slide, { H } from "@/components/Slide";
+import Dither, { type Shape } from "@/components/Dither";
+import WorkCard from "@/components/WorkCard";
+import ExperienceList from "@/components/ExperienceList";
+import CopyCommand from "@/components/CopyCommand";
+import Ask from "@/components/Ask";
+import { AFFILIATIONS, NOTES, PROJECTS, SHIPPED } from "@/lib/data";
+import { WORK, getWork } from "@/lib/work";
 
-const LOOP = [
-  { n: "01", word: "Build.", tag: "BUILD", mark: false, line: `${PROJECTS.length} case studies and ${PROJECTS.filter((p) => p.live).length + SHIPPED.length} live sites and apps, from a step-challenge game to a voice platform I wrote from scratch.`, href: "/work", cta: "SEE THE WORK" },
-  { n: "02", word: "Test.", tag: "TEST", mark: false, line: "40 tests on the voice platform. 36 on the web crawler. A 40-game tournament to find out whether the chess bots were actually getting smarter.", href: "/work/four-man-chess", cta: "HOW I TESTED THE BOTS" },
-  { n: "03", word: "Question.", tag: "QUESTION", mark: false, line: "Why does every endpoint look offline? Because nothing ever checked that they were reachable. That bug took a full-stack rehearsal to find.", href: "/infra", cta: "THINGS THAT BIT ME" },
-  { n: "04", word: "Repeat.", tag: "REPEAT", mark: true, line: "The bench is where the next thing starts: experiments, half-built ideas and things I'm still breaking on purpose.", href: "/bench", cta: "GO TO THE BENCH" },
+const STRIP = [
+  { name: "Trofficient", what: "Transit technology", href: "/work/trofficient", live: false },
+  { name: "Beagine", what: "Home-services marketplace", href: "/work/beagine", live: true },
+  { name: "Global Icons", what: "Where I work", href: "#experience", live: true },
+  { name: "VoIP", what: "Voice infrastructure", href: "/work/vop", live: true },
+  { name: "git-helper", what: "Git CLI on npm", href: "/work/git-helper", live: true },
 ];
 
+// Leslie's own principles (his profile README), each tied to the work that shows it
+const THESIS: { tag: string; t: string; b: string; shape: Shape }[] = [
+  { tag: "Trofficient", t: "Ship the executable MVP, then layer", b: "I've killed my own over-engineered microservice plans when a monolith shipped faster. Architecture serves delivery, not the reverse.", shape: { kind: "sphere", cx: 0.5, cy: 1.05, r: 0.62 } },
+  { tag: "VoIP", t: "Backend by preference", b: "Full-stack by necessity. Most interested in what users never see: data models, payments and the failure modes nobody plans for.", shape: { kind: "rings", cx: 0.5, cy: 0.5 } },
+  { tag: "Beagine", t: "Ghana-first constraints", b: "Mobile Money over cards. Intermittent connectivity. Low-end devices. Here they aren't edge cases; they are the market.", shape: { kind: "fill", density: 0.62, fade: "down" } },
+];
+
+// Leslie's "loop", in his words, with the evidence behind each step
+const LOOP = [
+  { n: "01", w: "Build", line: `${PROJECTS.length} case studies and ${PROJECTS.filter((p) => p.live).length + SHIPPED.length} live sites and apps, from a step-challenge game to a voice platform.`, href: "/work", cta: "See the work" },
+  { n: "02", w: "Test", line: "40 tests on the voice platform. 36 on the web crawler. A 40-game tournament to find out whether the chess bots were actually getting smarter.", href: "/work/four-man-chess", cta: "The bot tournament" },
+  { n: "03", w: "Question", line: "Why does every endpoint look offline? Because nothing ever checked that they were reachable. That bug took a full-stack rehearsal to find.", href: "/about#infrastructure", cta: "What bit me" },
+  { n: "04", w: "Repeat", line: "Tools and experiments are where the next thing starts: half-built ideas and things I'm still breaking on purpose.", href: "/work?filter=Tools", cta: "Tools and experiments" },
+];
+
+const STORY = [
+  { y: "2022", t: "Joined GitHub", b: "Started a BSc in Information Technology at Regional Maritime University.", h: 18, d: 0.25 },
+  { y: "2023", t: "First code", b: "C++ console programs: payroll and trajectory calculators. Learning the fundamentals.", h: 30, d: 0.38 },
+  { y: "2024", t: "Breadth", b: "83 repositories in a year: React and MERN apps, e-commerce, school and church systems.", h: 44, d: 0.52 },
+  { y: "2025", t: "Mobile, AI, a company", b: "Expo apps, a speech-accessibility hackathon project and the first Trofficient build.", h: 58, d: 0.7 },
+  { y: "2026", t: "Systems and products", b: "VoIP, Beagine, StepPool, scrapy-mcp. A shift from apps to infrastructure and tools.", h: 74, d: 1 },
+];
+
+const NOTE_COVERS: Shape[] = [{ kind: "sphere", cx: 0.3, cy: 0.75, r: 0.55 }, { kind: "rings", cx: 0.7, cy: 0.4 }, { kind: "fill", density: 0.55, fade: "up" }];
+
 export default function Home() {
-  const featured = PROJECTS.slice(0, 3);
+  const featured = ["trofficient", "beagine", "vop", "steppool", "four-man-chess", "ai-sme"].map((s) => getWork(s)!);
+  const [lead, ...rest] = featured;
+  const scrapy = getWork("scrapy-mcp")!;
+  const orgs = AFFILIATIONS.slice(1);
+
   return (
     <>
-      <Hero />
+      {/* 01 COVER */}
+      <Slide id="cover" label="Leslie Paul Ajayi, profile 2026" deck className="lg:min-h-[calc(100svh-24px)]">
+        <div className="grid items-center gap-x-10 lg:grid-cols-[1.08fr_1fr]">
+          <div className="order-2 lg:order-1">
+            <p className="pill label mt-6 text-ink lg:mt-16">Software engineer · Accra, Ghana</p>
+            <H as="h1" className="t-hero mt-5 md:mt-6">Understand it. Then build it</H>
+            <p className="t-lead mt-5 max-w-[44ch] !text-ink md:mt-7">
+              I&apos;m Leslie Paul Ajayi: software engineer at Global Icons, founder of Trofficient and CTO of Beagine. I build systems that go to production, not demos that die in a repo.
+            </p>
+            <div className="mt-8 flex flex-wrap gap-3">
+              <Link href="/work" className="btn btn-solid">View the work</Link>
+              <a href="#contact" className="btn">Get in touch</a>
+            </div>
+          </div>
+          <div className="order-1 -mx-2 mt-4 h-[210px] sm:h-[340px] lg:order-2 lg:mx-0 lg:mt-0 lg:h-[min(640px,calc(100svh-300px))]">
+            <Dither shape={{ kind: "portrait", fit: "contain", align: 0.6 }} cell={3} label="Leslie Paul Ajayi, portrait rendered in green dots" />
+          </div>
+        </div>
+        <ul className="mt-8 grid grid-cols-2 gap-x-5 gap-y-4 border-t border-line pt-6 sm:grid-cols-3 md:mt-10 md:pt-7 lg:grid-cols-5">
+          {STRIP.map((s) => (
+            <li key={s.name}>
+              <Link href={s.href} className="group block">
+                <span className="flex items-center gap-2 text-[17px] font-medium tracking-[-0.02em] md:text-[19px]">
+                  <span className="u">{s.name}</span>
+                  <i aria-hidden className={`h-2 w-2 rounded-full ${s.live ? "bg-accent" : "border-2 border-accent"}`} />
+                </span>
+                <span className="mt-0.5 block text-[14px] leading-snug text-mute md:text-[15px]">{s.what}</span>
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </Slide>
 
-      <Spec name="Statement" id="QUIET" as="section" className="frame py-24 md:py-40">
-        <ul>
-          {LOOP.map((r) => (
-            <li key={r.word} className="grid12 items-end gap-y-3 border-t border-ink py-6 md:py-9">
-              <p className={`display col-span-6 text-[clamp(44px,8vw,132px)] md:col-span-7 ${r.mark ? "" : ""}`}>
-                {r.mark ? <span className="mark">{r.word}</span> : r.word}
-              </p>
-              <div className="col-span-6 md:col-span-4 md:col-start-9 md:pb-3">
-                <div className="mono text-mute">{r.n} / {r.tag}</div>
-                <p className="mt-2 max-w-[34ch] text-[clamp(16px,1.35vw,20px)] leading-snug text-graphite">{r.line}</p>
-                <Link href={r.href} className="mono link-u mt-3 inline-block" data-cursor="OPEN →">{r.cta} →</Link>
+      {/* 02 THESIS */}
+      <Slide id="thesis" label="Thesis" deck>
+        <div className="mt-7 grid gap-5 md:mt-12 md:gap-8 lg:grid-cols-[1fr_340px] lg:items-start">
+          <H className="t-slide max-w-[17ch]">I build systems that go to production, not demos that die in a repo</H>
+          <p className="t-lead lg:pt-3">Three working principles. They decide what I build, how I build it and what I leave out.</p>
+        </div>
+        <ul className="swipe mt-8 grid gap-3 md:mt-12 md:grid-cols-3">
+          {THESIS.map((c) => (
+            <li key={c.t} className="panel overflow-hidden">
+              <div className="h-[96px] md:h-[180px]"><Dither shape={c.shape} cell={5} /></div>
+              <div className="p-5 md:p-7">
+                <p className="label text-mute">{c.tag}</p>
+                <h3 className="t-card mt-3">{c.t}</h3>
+                <p className="mt-3 text-[16px] leading-relaxed text-body">{c.b}</p>
               </div>
             </li>
           ))}
         </ul>
-        <p className="mono mt-8 border-t border-ink pt-4 text-mute">
-          I want to know how things work, then I build them. The site you&apos;re on is one of them. Press <kbd className="border border-ink px-1 text-ink">I</kbd> to see how.
-        </p>
-      </Spec>
+      </Slide>
 
-      <ShippedRail />
-
-      <Spec name="SelectedWork" id="SELECTED_WORK" as="section" className="mt-28 md:mt-40">
-        <div className="frame grid12 pb-10">
-          <h2 className="display col-span-6 md:col-span-8 text-[clamp(40px,7vw,116px)]">Selected<br />assemblies.</h2>
-          <div className="mono col-span-6 mt-4 text-mute md:col-span-4 md:self-end md:text-right">FIG. 001 — 003 / OF {PROJECTS.length}</div>
+      {/* 03 WORK */}
+      <Slide id="work" label="Portfolio" deck>
+        <H className="t-slide mt-7 md:mt-12">What I founded, lead and built</H>
+        <div className="mt-7 grid gap-3 md:mt-10 md:grid-cols-6">
+          <div className="md:col-span-4 md:row-span-2"><WorkCard w={lead} big sizes="(min-width: 1024px) 55vw, 95vw" /></div>
+          <div className="swipe contents md:contents">
+            {rest.map((w) => <div key={w.slug} className="md:col-span-2"><WorkCard w={w} /></div>)}
+          </div>
         </div>
-        {featured.map((p, i) => <ProjectRow key={p.slug} project={p} index={i} />)}
-        <div className="frame border-t border-ink pt-6"><Link href="/work" className="btn mono" data-cursor="OPEN →">ALL {PROJECTS.length} ASSEMBLIES →</Link></div>
-      </Spec>
+        <Link href="/work" className="u mt-8 inline-block text-[17px] font-medium">See all {WORK.length} projects</Link>
+      </Slide>
 
-      <Affiliations className="mt-28 md:mt-44" />
+      {/* 04 EXPERIENCE */}
+      <Slide id="experience" label="Experience" deck>
+        <div className="mt-7 grid gap-5 md:mt-12 md:gap-8 lg:grid-cols-[1fr_340px] lg:items-end">
+          <H className="t-slide">Where I work, and what I own</H>
+          <p className="t-lead">Employer and client systems are confidential, so they stay at a public level here. My own products don&apos;t.</p>
+        </div>
+        <div className="mt-6 md:mt-10"><ExperienceList /></div>
+        <div className="mt-10">
+          <p className="label text-mute">Also affiliated with</p>
+          <ul className="mt-4 grid grid-cols-2 gap-2 md:grid-cols-4 md:gap-3">
+            {orgs.map((a) => (
+              <li key={a.id} className="panel flex flex-col items-start gap-3 p-4 md:flex-row md:items-center md:gap-4">
+                <Image src={a.img} alt="" width={a.w} height={a.h} className="h-8 w-auto max-w-[110px] object-contain md:h-10 md:max-w-[90px]" />
+                <div><p className="text-[16px] font-medium tracking-[-0.02em]">{a.name}</p>{a.note && <p className="text-[13px] text-mute">{a.note}</p>}</div>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </Slide>
 
-      <Spec name="BenchTeaser" id="THE_BENCH" as="section" className="frame grid12 mt-28 gap-y-8 md:mt-44">
-        <div className="col-span-6 md:col-span-6">
-          <div className="mono text-mute">STATUS / UNFINISHED BY DESIGN</div>
-          <h2 className="display mt-3 text-[clamp(40px,7vw,116px)]">The<br />bench.</h2>
-          <p className="mt-5 max-w-[40ch] text-graphite">Things I'm testing, breaking and figuring out. Some of them run right here on the page.</p>
-          <Link href="/bench" className="btn mono mt-6" data-cursor="OPEN →">GO TO THE BENCH →</Link>
+      {/* 05 NUMBERS */}
+      <Slide id="numbers" label="Numbers" deck dark>
+        <H className="t-slide mt-7 md:mt-12">Receipts, not adjectives</H>
+        <div className="mt-7 grid grid-cols-2 gap-2 md:mt-10 md:grid-cols-4 md:grid-rows-2 md:gap-3">
+          <div className="panel col-span-2 flex min-h-[210px] flex-col p-5 md:row-span-2 md:min-h-[300px] md:p-8">
+            <p className="label text-white/55">GitHub</p>
+            <p className="mt-auto text-[clamp(96px,16vw,240px)] font-medium leading-[0.85] tracking-[-0.06em]">158</p>
+            <p className="mt-3 text-[16px] text-white/70 md:mt-4 md:text-[18px]">repositories since 2022, 138 of them public</p>
+          </div>
+          {[
+            ["Case studies", String(PROJECTS.length), "products, each with its own write-up"],
+            ["VoIP platform", "40", "tests, the PostgreSQL ones on a disposable database"],
+            ["4-Man Chess", "25/40", "games won by the Advanced bot against three Hard bots; even is 10"],
+            ["npm-git-helper", "v3", "published on npm, now at 3.0.0"],
+          ].map(([k, n, l]) => (
+            <div key={k} className="panel flex min-h-[156px] flex-col p-4 md:min-h-[200px] md:p-6">
+              <p className="label text-white/55">{k}</p>
+              <p className="mt-auto pt-4 text-[clamp(40px,5vw,76px)] font-medium leading-none tracking-[-0.05em]">{n}</p>
+              <p className="mt-2 text-[13px] leading-snug text-white/65 md:text-[15px]">{l}</p>
+            </div>
+          ))}
         </div>
-        <div className="col-span-6 md:col-span-5 md:col-start-8 md:self-end">
-          <div className="mono mb-2 flex justify-between"><span>EXP. 002</span><span className="text-mute">PROMISING</span></div>
-          <ScrollVelocity />
+      </Slide>
+
+      {/* 06 STORY */}
+      <Slide id="story" label="Story" deck>
+        <H className="t-slide mt-7 md:mt-12 max-w-[15ch]">From console apps to companies</H>
+        <ol className="mt-8 grid gap-x-3 border-l border-line pl-5 max-lg:space-y-6 md:mt-12 lg:grid-cols-6 lg:items-end lg:gap-y-8 lg:border-0 lg:pl-0">
+          {STORY.map((s) => (
+            <li key={s.y} className="relative flex flex-col">
+              <i aria-hidden className="absolute -left-[25px] top-[13px] h-[9px] w-[9px] rounded-full bg-accent ring-4 ring-card lg:hidden" />
+              <p className="text-[clamp(26px,2.6vw,40px)] font-medium tracking-[-0.04em]">{s.y}</p>
+              <h3 className="mt-1 text-[17px] font-medium tracking-[-0.02em]">{s.t}</h3>
+              <p className="mt-2 text-[15px] leading-relaxed text-mute">{s.b}</p>
+              <div className="mt-4 hidden overflow-hidden rounded-[14px] lg:block lg:h-[var(--bar)]" style={{ ["--bar" as string]: `${s.h * 3}px` }}>
+                <Dither shape={{ kind: "fill", density: s.d, fade: "up" }} cell={5} />
+              </div>
+            </li>
+          ))}
+          <li className="relative flex flex-col">
+            <i aria-hidden className="absolute -left-[25px] top-[13px] h-[9px] w-[9px] rounded-full border-2 border-accent bg-card ring-4 ring-card lg:hidden" />
+            <p className="text-[clamp(26px,2.6vw,40px)] font-medium tracking-[-0.04em] text-mute">Next</p>
+            <a href="#contact" className="u mt-1 self-start text-[17px] font-medium">The next one</a>
+            <div className="mt-4 hidden rounded-[14px] border border-dashed border-mute/40 lg:block lg:h-[270px]" />
+          </li>
+        </ol>
+      </Slide>
+
+      {/* 07 APPROACH */}
+      <Slide id="approach" label="Approach" deck>
+        <div className="mt-7 grid gap-5 md:mt-12 md:gap-8 lg:grid-cols-[1fr_340px] lg:items-end">
+          <H className="t-slide">Build. Test. Question. Repeat</H>
+          <p className="t-lead">The loop I run on everything, with the evidence for each step.</p>
         </div>
-      </Spec>
+        <ol className="swipe mt-7 grid gap-3 md:mt-10 md:grid-cols-2 xl:grid-cols-4">
+          {LOOP.map((l) => (
+            <li key={l.w} className="panel flex flex-col p-5 md:p-7">
+              <p className="label text-mute">{l.n}</p>
+              <h3 className="mt-4 text-[clamp(32px,3vw,46px)] md:mt-6 font-medium tracking-[-0.045em]">{l.w}<span className="dot">.</span></h3>
+              <p className="mt-3 flex-1 text-[16px] leading-relaxed text-body">{l.line}</p>
+              <Link href={l.href} className="u mt-6 self-start text-[15px] font-medium">{l.cta}</Link>
+            </li>
+          ))}
+        </ol>
+      </Slide>
+
+      {/* 08 TOOLS */}
+      <Slide id="tools" label="Open source" deck>
+        <div className="mt-7 grid gap-5 md:mt-12 md:gap-8 lg:grid-cols-[1fr_340px] lg:items-end">
+          <H className="t-slide">Tools I built and gave away</H>
+          <p className="t-lead">Small, public and free. Each one started because I needed it.</p>
+        </div>
+        <div className="mt-7 divide-y divide-line border-y border-line md:mt-10">
+          <div className="grid gap-6 py-8 md:py-10 lg:grid-cols-2 lg:gap-8">
+            <div>
+              <p className="label text-mute">Node.js · Published on npm · v3.0.0</p>
+              <h3 className="t-big mt-3">git-helper</h3>
+              <p className="t-lead mt-3 max-w-[46ch]">The Git CLI that writes your commit messages. Stage, commit and push in one command; with a key set, Claude or GPT drafts the message from the staged diff.</p>
+              <CopyCommand cmd="npm i -g npm-git-helper" />
+              <div className="mt-6 flex gap-6 text-[15px] font-medium">
+                <a href="https://www.npmjs.com/package/npm-git-helper" target="_blank" rel="noopener noreferrer" className="u">View on npm</a>
+                <a href="https://github.com/Leslie-23/git-helper" target="_blank" rel="noopener noreferrer" className="u">Source on GitHub</a>
+              </div>
+            </div>
+            <div className="rounded-[16px] bg-night p-5 font-mono text-[12px] leading-[1.8] text-white/80 md:rounded-[18px] md:p-8 md:text-[13px] md:leading-[1.9]">
+              <p className="label text-white/45">What it does</p>
+              <ul className="mt-4 space-y-2">
+                <li><span className="text-accent">→</span> Stages, commits and pushes in one command</li>
+                <li><span className="text-accent">→</span> Drafts the commit message from the staged diff</li>
+                <li><span className="text-accent">→</span> Uses Claude or GPT, with your own key</li>
+              </ul>
+            </div>
+          </div>
+          <div className="grid gap-6 py-8 md:py-10 lg:grid-cols-2 lg:gap-8">
+            <div>
+              <p className="label text-mute">Python · MCP server · 36 tests</p>
+              <h3 className="t-big mt-3">scrapy-mcp</h3>
+              <p className="t-lead mt-3 max-w-[46ch]">{scrapy.blurb} Built around one question: can a language model get a reliable, safe pair of hands on the open web?</p>
+              <div className="mt-6 flex gap-6 text-[15px] font-medium">
+                <Link href="/work/scrapy-mcp" className="u">Read the case study</Link>
+                <a href={scrapy.repo} target="_blank" rel="noopener noreferrer" className="u">Source on GitHub</a>
+              </div>
+            </div>
+            <div className="rounded-[16px] bg-night p-5 font-mono text-[12px] leading-[1.8] text-white/80 md:rounded-[18px] md:p-8 md:text-[13px] md:leading-[1.9]">
+              <p className="label text-white/45">Three tools, one safety layer</p>
+              <ul className="mt-4 space-y-2">
+                <li><span className="text-accent">scrape_page</span> title, description, readable text, links</li>
+                <li><span className="text-accent">extract</span> values for named CSS or XPath selectors</li>
+                <li><span className="text-accent">crawl_site</span> same-host crawl, ≤50 pages, depth ≤3</li>
+                <li className="pt-2 text-white/55">Private, loopback and cloud-metadata addresses are refused, before the crawl and on every redirect.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </Slide>
+
+      {/* 09 WRITING */}
+      <Slide id="writing" label="Writing" deck>
+        <H className="t-slide mt-7 md:mt-12">What I learn, written down</H>
+        <ul className="swipe mt-7 grid gap-6 md:mt-10 md:grid-cols-3">
+          {NOTES.slice(0, 3).map((n, i) => (
+            <li key={n.slug}>
+              <Link href={`/notes/${n.slug}`} className="group block">
+                <div className="frame-img aspect-[16/10] bg-[#eef3ef]">
+                  <div className="absolute inset-0"><Dither shape={NOTE_COVERS[i]} cell={5} /></div>
+                </div>
+                <div className="label mt-4 flex justify-between text-mute"><span>{n.date}</span><span>{n.minutes} min read</span></div>
+                <h3 className="t-card mt-3 group-hover:text-accent-ink">{n.title}</h3>
+                <p className="mt-2 text-[15px] leading-relaxed text-mute">{n.summary}</p>
+              </Link>
+            </li>
+          ))}
+        </ul>
+        <Link href="/notes" className="btn btn-solid mt-8 md:mt-10">Read all {NOTES.length} notes</Link>
+      </Slide>
+
+      {/* 10 CONTACT */}
+      <Ask deck />
     </>
   );
 }

@@ -707,7 +707,7 @@ export type ExpStatus =
   | "WORKING"
   | "ABANDONED"
   | "PROMISING"
-  | "WHY DID I BUILD THIS?";
+  | "EXPLORATORY";
 
 export type Experiment = {
   id: string;
@@ -772,9 +772,9 @@ export const EXPERIMENTS: Experiment[] = [
   {
     id: "007",
     date: "2024.10",
-    status: "WHY DID I BUILD THIS?",
+    status: "EXPLORATORY",
     question: "Can a keyboard be a beat machine?",
-    result: "keyboardBeatMachine. It is exactly what it sounds like.",
+    result: "keyboardBeatMachine: the computer keyboard as a beat machine.",
     kind: "link",
     href: "https://github.com/Leslie-23/keyboardBeatMachine",
   },
@@ -783,20 +783,65 @@ export const EXPERIMENTS: Experiment[] = [
     date: "2024.10",
     status: "ABANDONED",
     question: "What does the Chrome dino game do when you stop playing fair?",
-    result: "ChromeDino-cheatCode. Answered. Moved on.",
+    result: "ChromeDino-cheatCode: a cheat code for the Chrome dino game. Question answered.",
     kind: "link",
     href: "https://github.com/Leslie-23/ChromeDino-cheatCode",
   },
 ];
 
 export const STATUS_TIPS: Record<ExpStatus, string> = {
-  TESTING: "currently poking it",
-  BROKEN: "on purpose. mostly.",
-  WORKING: "for now.",
-  ABANDONED: "answered. moved on.",
-  PROMISING: "don't tell it I said that",
-  "WHY DID I BUILD THIS?": "curiosity. next question.",
+  TESTING: "Under active investigation",
+  BROKEN: "Known to fail; kept for what it taught",
+  WORKING: "Does what the question asked",
+  ABANDONED: "Question answered; not pursued further",
+  PROMISING: "Worth taking further",
+  EXPLORATORY: "Built to understand something, not to ship",
 };
+
+/* ---------------- Experience ----------------
+   Sources: docs/designer-pack/BRIEF.md (sections 1 and 4) and Leslie's own resume.
+   Employer work is name + public description only. Client sites are NOT listed here until Leslie confirms (BRIEF §4). */
+export type Role = {
+  org: string; role: string; period: string; kind: "Employment" | "Founder" | "Leadership" | "Contribution";
+  summary: string; points?: string[]; stack?: string[]; href?: string; internal?: boolean; current?: boolean;
+};
+export const EXPERIENCE: Role[] = [
+  { org: "Global Icons", role: "Software Engineer", period: "Present", kind: "Employment", current: true, href: "https://globaliconsagency.com",
+    summary: "A technology company in Accra building digital systems for transport, education, public services, payments and governance.",
+    points: ["Production engineering inside an organisation whose systems are confidential, so this entry stays at a public level."] },
+  { org: "Beagine", role: "CTO", period: "2026", kind: "Leadership", current: true, href: "/work/beagine", internal: true,
+    summary: "A home-services marketplace for Ghana in three mobile apps. I own the technical direction and the architecture across all three apps and the backend, and build alongside the team.",
+    points: ["One monorepo: the three apps and the admin share UI, types, state and the API client.", "A mock/HTTP API layer with an OpenAPI contract, so the apps were built and tested before the backend was finished.", "Mobile Money and card payments, phone/OTP sign-in and Ghana Card verification for specialists."],
+    stack: ["Expo", "React Native", "TypeScript", "Node.js", "MongoDB", "Socket.IO", "Redis + BullMQ"] },
+  { org: "Trofficient", role: "Founder / Engineer", period: "2025 — Present", kind: "Founder", current: true, href: "/work/trofficient", internal: true,
+    summary: "Transit technology for Ghana's informal trotro network: real-time vehicle tracking, dynamic pricing and mobile-money payments. I design and build the product.",
+    points: ["Payments designed around mobile money from day one, not bolted onto a card flow.", "Killed a microservice plan when a monolith shipped faster.", "A self-managed production stack on Oracle Cloud: Docker Compose behind Caddy."],
+    stack: ["React Native", "TypeScript", "Node.js", "Docker", "Caddy"] },
+  { org: "NSS", role: "Caching system", period: "—", kind: "Contribution",
+    summary: "I worked on its caching system." },
+];
+export const EDUCATION = {
+  school: "Regional Maritime University", degree: "BSc Information Technology", period: "2022 — 2026",
+  awards: ["Best in IT Project Management", "Best in Data Structures"],
+};
+
+/* How Leslie works through a problem. The sequence, not a slogan. */
+export const APPROACH: { k: string; t: string; b: string }[] = [
+  { k: "01", t: "Understand", b: "Take the existing system apart first: the data model, the incentives, where it actually breaks." },
+  { k: "02", t: "Find the constraint", b: "Name the one thing that decides the design. In Ghana it's usually connectivity, devices or mobile money." },
+  { k: "03", t: "Ship the smallest real version", b: "An executable MVP in front of real users beats an architecture diagram. Monolith first." },
+  { k: "04", t: "Observe", b: "Watch it run in production. The failure modes nobody planned for are the interesting ones." },
+  { k: "05", t: "Layer", b: "Add structure where the load proves it's needed: queues, caches, services. Not before." },
+];
+
+/* What he's drawn to, each with the work that shows it. */
+export const INTERESTS: { t: string; b: string; proof: { label: string; href: string } }[] = [
+  { t: "Payments & money movement", b: "Mobile money rails, ledgers, reconciliation: the parts where a bug costs someone real money.", proof: { label: "Trofficient", href: "/work/trofficient" } },
+  { t: "Real-time systems", b: "Live state across unreliable networks: vehicle tracking, multiplayer, shared challenges.", proof: { label: "StepPool", href: "/work/steppool" } },
+  { t: "AI as infrastructure", b: "Models as a system primitive with tools and memory, not a chat box bolted on.", proof: { label: "Elena", href: "/work/elena" } },
+  { t: "Products for this market", b: "Software built around how Ghanaian households, businesses and commuters already work.", proof: { label: "Beagine", href: "/work/beagine" } },
+  { t: "Infrastructure you own", b: "Servers, networks and voice: the layer most products rent. Where most of the real bugs turn out to live.", proof: { label: "VoIP", href: "/work/vop" } },
+];
 
 /* ---------------- Toolkit ---------------- */
 export type ToolItem = { name: string; projects: string[]; also?: string[] };

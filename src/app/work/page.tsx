@@ -1,26 +1,29 @@
 import type { Metadata } from "next";
-import WorkIndex from "@/components/WorkIndex";
-import { Spec } from "@/components/Spec";
-import { PROJECTS, SHIPPED } from "@/lib/data";
+import { Suspense } from "react";
+import Slide, { H } from "@/components/Slide";
+import WorkDirectory from "@/components/WorkDirectory";
+import WorkCard from "@/components/WorkCard";
+import Ask from "@/components/Ask";
+import { WORK, CASE_COUNT } from "@/lib/work";
 
-export const metadata: Metadata = { title: "Work" };
+export const metadata: Metadata = { title: "Work", description: "Every project in one place: products Leslie founded or leads, systems work, client sites and open-source tools." };
 
 export default function Work() {
   return (
     <>
-      <Spec name="WorkHeader" id="CATALOGUE" as="header" className="frame grid12 py-16 md:py-24">
-        <div className="mono col-span-6 text-mute md:col-span-12">CATALOGUE / {PROJECTS.length} CASE STUDIES + {SHIPPED.length} SHIPPED</div>
-        <h1 className="display col-span-6 mt-4 text-[clamp(44px,8.4vw,148px)] md:col-span-10">Things<br />I've built.</h1>
-        <p className="col-span-6 mt-6 max-w-[44ch] text-graphite md:col-span-4 md:col-start-9 md:self-end">
-          Hover (or tap) a plate to take it apart. Click to go inside. Below the case studies: everything else that shipped, with live links.
-        </p>
-      </Spec>
-      <WorkIndex />
-      <Spec name="Packages" id="PUBLISHED" as="section" className="frame mt-16 flex flex-wrap items-baseline justify-between gap-3 border-t border-ink py-6">
-        <span className="mono text-mute">ALSO PUBLISHED</span>
-        <a href="https://www.npmjs.com/package/npm-git-helper" target="_blank" rel="noopener noreferrer" className="display link-u text-2xl" data-cursor="FOLLOW →">npm-git-helper ↗</a>
-        <span className="mono text-mute">GIT WORKFLOW TOOLING · ON NPM</span>
-      </Spec>
+      <Slide label="Work" className="md:min-h-[60svh]">
+        <div className="mt-7 grid gap-5 md:mt-10 md:gap-6 lg:grid-cols-[1fr_380px] lg:items-end">
+          <H as="h1" className="t-hero">Work</H>
+          <p className="t-lead">
+            All {WORK.length} projects in one place: products I founded or lead, {CASE_COUNT} case studies, live sites and the tools I gave away. Each one opens its own page.
+          </p>
+        </div>
+        {/* without JS (or before hydration) the whole directory is still there, unfiltered */}
+        <Suspense fallback={<ul className="mt-24 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">{WORK.map((w) => <li key={w.slug}><WorkCard w={w} row /></li>)}</ul>}>
+          <WorkDirectory items={WORK} />
+        </Suspense>
+      </Slide>
+      <Ask />
     </>
   );
 }

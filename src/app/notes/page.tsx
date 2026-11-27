@@ -1,30 +1,35 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import Slide, { H } from "@/components/Slide";
+import Dither, { type Shape } from "@/components/Dither";
+import Ask from "@/components/Ask";
 import { NOTES } from "@/lib/data";
-import { Spec } from "@/components/Spec";
 
-export const metadata: Metadata = { title: "Notes" };
+export const metadata: Metadata = { title: "Writing", description: "Short notes on engineering decisions, drawn from the projects they came from." };
+const COVERS: Shape[] = [{ kind: "sphere", cx: 0.3, cy: 0.75, r: 0.55 }, { kind: "rings", cx: 0.7, cy: 0.4 }, { kind: "fill", density: 0.55, fade: "up" }, { kind: "sphere", cx: 0.75, cy: 0.2, r: 0.5 }];
 
 export default function Notes() {
   return (
     <>
-      <Spec name="NotesHeader" id="NOTEBOOK" as="header" className="frame grid12 py-16 md:py-24">
-        <div className="mono col-span-6 text-mute md:col-span-12">TECHNICAL NOTEBOOK / {NOTES.length} ENTRIES</div>
-        <h1 className="display col-span-6 mt-4 text-[clamp(44px,8.4vw,148px)] md:col-span-10">Notes.</h1>
-        <p className="col-span-6 mt-6 max-w-[40ch] text-graphite md:col-span-4 md:col-start-9 md:self-end">Things I learned while building the things. Short, specific, occasionally wrong.</p>
-      </Spec>
-      <ul className="border-t border-ink">
-        {NOTES.map((n) => (
-          <li key={n.slug} className="border-b border-hair">
-            <Link href={`/notes/${n.slug}`} className="frame group grid12 items-baseline gap-y-2 py-8 hover:bg-paper-2" data-cursor="READ →">
-              <div className="mono col-span-6 text-mute md:col-span-2">NOTE {n.n}<br />{n.date}</div>
-              <h2 className="display col-span-6 text-[clamp(26px,3.6vw,56px)] !leading-[0.98] transition-transform group-hover:translate-x-2 group-hover:text-accent-ink md:col-span-7">{n.title}</h2>
-              <div className="mono col-span-6 text-mute md:col-span-3 md:text-right">READING TIME / {n.minutes} MIN</div>
-              <p className="col-span-6 max-w-[56ch] text-graphite md:col-span-7 md:col-start-3">{n.summary}</p>
-            </Link>
-          </li>
-        ))}
-      </ul>
+      <Slide label="Writing">
+        <div className="mt-7 grid gap-5 md:mt-10 md:gap-6 lg:grid-cols-[1fr_380px] lg:items-end">
+          <H as="h1" className="t-hero">Writing</H>
+          <p className="t-lead">Short notes on decisions I made while building, and why. Each one comes from a real project.</p>
+        </div>
+        <ul className="mt-8 grid gap-x-6 gap-y-10 md:mt-12 md:grid-cols-2 md:gap-y-12 xl:grid-cols-3">
+          {NOTES.map((n, i) => (
+            <li key={n.slug}>
+              <Link href={`/notes/${n.slug}`} className="group block">
+                <div className="frame-img aspect-[16/10] bg-[#eef3ef]"><div className="absolute inset-0"><Dither shape={COVERS[i % COVERS.length]} cell={5} /></div></div>
+                <div className="label mt-4 flex justify-between text-mute"><span>{n.date}</span><span>{n.minutes} min read</span></div>
+                <h2 className="t-card mt-3 group-hover:text-accent-ink">{n.title}</h2>
+                <p className="mt-2 text-[15px] leading-relaxed text-mute">{n.summary}</p>
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </Slide>
+      <Ask />
     </>
   );
 }
