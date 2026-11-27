@@ -1,31 +1,39 @@
 import type { Metadata, Viewport } from "next";
-import { Bebas_Neue, Inter, Geist_Mono } from "next/font/google";
+import { Mona_Sans, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import Shell from "@/components/Shell";
+import Rail from "@/components/Rail";
+import MobileBar from "@/components/MobileBar";
+import Reveal from "@/components/Reveal";
 
-const display = Bebas_Neue({ variable: "--font-display", subsets: ["latin"], weight: "400" });
-const body = Inter({ variable: "--font-body", subsets: ["latin"] });
-const mono = Geist_Mono({ variable: "--font-mono-label", subsets: ["latin"] });
+const sans = Mona_Sans({ variable: "--font-sans-face", subsets: ["latin"], weight: ["400", "500", "600"] });
+const mono = Geist_Mono({ variable: "--font-mono-face", subsets: ["latin"], weight: ["400", "500"] });
 
 const site = process.env.NODE_ENV === "production" ? "https://www.leslieajayi.com" : "http://localhost:3000";
-const description = "Leslie Paul Ajayi. Software engineer in Accra, building products and figuring out how things work underneath.";
+const title = "Leslie Paul Ajayi — Software engineer and founder";
+const description =
+  "Software engineer at Global Icons, founder of Trofficient and CTO of Beagine. I build systems that go to production, not demos that die in a repo. Accra, Ghana.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(site),
-  title: { default: "Leslie / Software Engineer", template: "%s / Leslie" },
+  title: { default: title, template: "%s — Leslie Paul Ajayi" },
   description,
-  openGraph: { type: "website", siteName: "Leslie / Software Engineer", title: "Leslie / Software Engineer", description, locale: "en_GH" },
-  twitter: { card: "summary_large_image", title: "Leslie / Software Engineer", description },
+  authors: [{ name: "Leslie Paul Ajayi" }],
+  openGraph: { type: "website", siteName: "Leslie Paul Ajayi", title, description, locale: "en_GH" },
+  twitter: { card: "summary_large_image", title, description },
 };
-export const viewport: Viewport = { themeColor: "#F2F0E9", width: "device-width", initialScale: 1 };
+export const viewport: Viewport = { themeColor: "#ecedeb", width: "device-width", initialScale: 1 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${display.variable} ${body.variable} ${mono.variable}`}>
+    <html lang="en" className={`${sans.variable} ${mono.variable}`}>
       <body>
-        <noscript><style>{`.intro{display:none!important}`}</style></noscript>
-        <a href="#main" className="mono sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[999] focus:bg-ink focus:px-3 focus:py-2 focus:text-paper">SKIP TO CONTENT</a>
-        <Shell>{children}</Shell>
+        <a href="#main" className="label sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-full focus:bg-ink focus:px-4 focus:py-2 focus:text-white">Skip to content</a>
+        <Rail />
+        <main id="main" className="px-2 pb-24 pt-2 sm:px-3 sm:pt-3 lg:ml-[var(--rail)] lg:pb-3 lg:pl-0">
+          <div className="flex flex-col gap-2 sm:gap-3">{children}</div>
+        </main>
+        <MobileBar />
+        <Reveal />
       </body>
     </html>
   );

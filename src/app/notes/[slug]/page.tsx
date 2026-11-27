@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
-import { Suspense } from "react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import Slide from "@/components/Slide";
+import Ask from "@/components/Ask";
 import { NOTES, getNote } from "@/lib/data";
-import { Spec } from "@/components/Spec";
 
 export function generateStaticParams() { return NOTES.map((n) => ({ slug: n.slug })); }
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
@@ -11,33 +11,31 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   return n ? { title: n.title, description: n.summary } : {};
 }
 
-export default function Page({ params }: { params: Promise<{ slug: string }> }) {
-  return <Suspense fallback={null}><Note params={params} /></Suspense>;
-}
-
-async function Note({ params }: { params: Promise<{ slug: string }> }) {
+export default async function Note({ params }: { params: Promise<{ slug: string }> }) {
   const n = getNote((await params).slug);
   if (!n) notFound();
   return (
-    <article className="frame grid12 gap-y-10 py-12 md:py-20">
-      <header className="col-span-6 md:col-span-12">
-        <Link href="/notes" className="mono link-u text-mute">← NOTES</Link>
-        <div className="mono mt-8 text-mute">NOTE {n.n} · {n.date} · {n.minutes} MIN</div>
-        <h1 className="display mt-3 max-w-[18ch] text-[clamp(36px,7vw,120px)]">{n.title}</h1>
-      </header>
-      <div className="col-span-6 md:col-span-7 md:col-start-1">
-        {n.body.map((p, i) => <p key={i} className="mb-6 max-w-[62ch] text-[19px] leading-[1.7] text-graphite">{p}</p>)}
-      </div>
-      <Spec as="aside" name="MarginColumn" id="MARGIN" className="col-span-6 md:col-span-4 md:col-start-9" aria-label="Margin notes">
-        <div className="space-y-6 md:sticky md:top-24">
-          {n.margin.map((m) => (
-            <div key={m.fig} className="border-l-2 border-accent pl-3">
-              <div className="mono text-accent-ink">{m.fig}</div>
-              <p className="mono mt-1 !normal-case !tracking-normal text-mute">{m.text}</p>
-            </div>
-          ))}
-        </div>
-      </Spec>
-    </article>
+    <>
+      <Slide label={`Note ${n.n}`}>
+        <article className="mx-auto max-w-[1080px]">
+          <Link href="/notes" className="u mt-8 inline-block text-[15px]">All writing</Link>
+          <p className="label mt-10 text-mute">{n.date} · {n.minutes} min read</p>
+          <h1 className="mt-4 max-w-[20ch] text-[clamp(40px,5.4vw,80px)] font-medium leading-[1.02] tracking-[-0.045em]">{n.title}<span className="dot">.</span></h1>
+          <p className="t-lead mt-6 max-w-[56ch]">{n.summary}</p>
+          <div className="mt-12 grid gap-12 border-t border-line pt-10 lg:grid-cols-[1fr_260px]">
+            <div className="max-w-[66ch] space-y-6 text-[18px] leading-[1.75] text-body">{n.body.map((p, i) => <p key={i}>{p}</p>)}</div>
+            <aside aria-label="Margin notes" className="space-y-5 lg:sticky lg:top-6 lg:self-start">
+              {n.margin.map((m) => (
+                <div key={m.fig} className="border-l-2 border-accent pl-4">
+                  <p className="label text-accent-ink">{m.fig}</p>
+                  <p className="mt-1 text-[14px] leading-relaxed text-mute">{m.text}</p>
+                </div>
+              ))}
+            </aside>
+          </div>
+        </article>
+      </Slide>
+      <Ask />
+    </>
   );
 }

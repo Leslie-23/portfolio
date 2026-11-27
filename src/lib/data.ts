@@ -799,20 +799,26 @@ export const STATUS_TIPS: Record<ExpStatus, string> = {
 };
 
 /* ---------------- Experience ----------------
-   Only what's already public: the site's own bio, the shipped list and Leslie's published resume.
-   No dates or titles that aren't stated there. */
-export type Role = { org: string; role: string; period: string; kind: "EMPLOYMENT" | "FOUNDER" | "CLIENT" | "CONTRIBUTION"; summary: string; href?: string; internal?: boolean; current?: boolean };
+   Sources: docs/designer-pack/BRIEF.md (sections 1 and 4) and Leslie's own resume.
+   Employer work is name + public description only. Client sites are NOT listed here until Leslie confirms (BRIEF §4). */
+export type Role = {
+  org: string; role: string; period: string; kind: "Employment" | "Founder" | "Leadership" | "Contribution";
+  summary: string; points?: string[]; stack?: string[]; href?: string; internal?: boolean; current?: boolean;
+};
 export const EXPERIENCE: Role[] = [
-  { org: "Global Icons", role: "Software Engineer", period: "PRESENT", kind: "EMPLOYMENT", current: true, href: "https://globaliconsagency.com",
-    summary: "A technology company in Accra building digital systems for transport, education, public services, payments and governance." },
-  { org: "Trofficient", role: "Founder & Engineering Lead", period: "2025 — PRESENT", kind: "FOUNDER", current: true, href: "/work/trofficient", internal: true,
-    summary: "Transit technology for Ghana's informal trotro network: real-time vehicle tracking, dynamic pricing and mobile-money payments." },
-  { org: "Captivating Home & Trading", role: "Engineering Lead", period: "2026", kind: "CLIENT", href: "https://captivatinghometrade.com",
-    summary: "Production platform for a retail operation: home appliances, electricity vending and currency exchange. Real inventory, live transactions." },
-  { org: "Sellis Beauty Spa", role: "Solo Engineer", period: "2026", kind: "CLIENT", href: "https://sellisspa.com",
-    summary: "Booking platform for a live spa business in Accra, end to end: customer booking flow, service management and operations tooling." },
-  { org: "NSS", role: "Caching system", period: "—", kind: "CONTRIBUTION",
-    summary: "Built a caching system for NSS." },
+  { org: "Global Icons", role: "Software Engineer", period: "Present", kind: "Employment", current: true, href: "https://globaliconsagency.com",
+    summary: "A technology company in Accra building digital systems for transport, education, public services, payments and governance.",
+    points: ["Production engineering inside an organisation whose systems are confidential, so this entry stays at a public level."] },
+  { org: "Beagine", role: "CTO", period: "2026", kind: "Leadership", current: true, href: "/work/beagine", internal: true,
+    summary: "A home-services marketplace for Ghana in three mobile apps. I own the technical direction and the architecture across all three apps and the backend, and build alongside the team.",
+    points: ["One monorepo: the three apps and the admin share UI, types, state and the API client.", "A mock/HTTP API layer with an OpenAPI contract, so the apps were built and tested before the backend was finished.", "Mobile Money and card payments, phone/OTP sign-in and Ghana Card verification for specialists."],
+    stack: ["Expo", "React Native", "TypeScript", "Node.js", "MongoDB", "Socket.IO", "Redis + BullMQ"] },
+  { org: "Trofficient", role: "Founder / Engineer", period: "2025 — Present", kind: "Founder", current: true, href: "/work/trofficient", internal: true,
+    summary: "Transit technology for Ghana's informal trotro network: real-time vehicle tracking, dynamic pricing and mobile-money payments. I design and build the product.",
+    points: ["Payments designed around mobile money from day one, not bolted onto a card flow.", "Killed a microservice plan when a monolith shipped faster.", "A self-managed production stack on Oracle Cloud: Docker Compose behind Caddy."],
+    stack: ["React Native", "TypeScript", "Node.js", "Docker", "Caddy"] },
+  { org: "NSS", role: "Caching system", period: "—", kind: "Contribution",
+    summary: "I worked on its caching system." },
 ];
 export const EDUCATION = {
   school: "Regional Maritime University", degree: "BSc Information Technology", period: "2022 — 2026",
@@ -833,7 +839,8 @@ export const INTERESTS: { t: string; b: string; proof: { label: string; href: st
   { t: "Payments & money movement", b: "Mobile money rails, ledgers, reconciliation: the parts where a bug costs someone real money.", proof: { label: "Trofficient", href: "/work/trofficient" } },
   { t: "Real-time systems", b: "Live state across unreliable networks: vehicle tracking, multiplayer, shared challenges.", proof: { label: "StepPool", href: "/work/steppool" } },
   { t: "AI as infrastructure", b: "Models as a system primitive with tools and memory, not a chat box bolted on.", proof: { label: "Elena", href: "/work/elena" } },
-  { t: "Products for this market", b: "Software built around how Ghanaian businesses and commuters already work.", proof: { label: "AI for SMEs", href: "/work/ai-sme" } },
+  { t: "Products for this market", b: "Software built around how Ghanaian households, businesses and commuters already work.", proof: { label: "Beagine", href: "/work/beagine" } },
+  { t: "Infrastructure you own", b: "Servers, networks and voice: the layer most products rent. Where most of the real bugs turn out to live.", proof: { label: "VoIP", href: "/work/vop" } },
 ];
 
 /* ---------------- Toolkit ---------------- */

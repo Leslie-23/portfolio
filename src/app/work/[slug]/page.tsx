@@ -1,158 +1,168 @@
 import type { Metadata } from "next";
-import { Suspense } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { PROJECTS, getProject, liveFor, type Block } from "@/lib/data";
-import Image from "next/image";
-import CaseHero from "@/components/CaseHero";
-import Deconstruct from "@/components/Deconstruct";
-import FlowDiagram from "@/components/FlowDiagram";
-import { Spec } from "@/components/Spec";
+import Slide from "@/components/Slide";
+import Dither from "@/components/Dither";
+import Ask from "@/components/Ask";
+import { ownership } from "@/components/WorkCard";
+import { WORK, getWork, sentence, type WorkItem } from "@/lib/work";
 
-export function generateStaticParams() { return PROJECTS.map((p) => ({ slug: p.slug })); }
+export function generateStaticParams() { return WORK.map((w) => ({ slug: w.slug })); }
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
-  const p = getProject((await params).slug);
-  return p ? { title: p.name, description: p.blurb } : {};
+  const w = getWork((await params).slug);
+  return w ? { title: w.name, description: w.blurb, openGraph: w.image ? { images: [w.image] } : undefined } : {};
 }
 
-// every case study keeps its own rhythm
-const RHYTHM: Record<string, ("big" | "cols" | "stack")[]> = {
-  trofficient: ["cols", "big", "stack", "cols", "cols"],
-  steppool: ["big", "stack", "big", "cols"],
-  "four-man-chess": ["cols", "cols", "big", "stack"],
-  "scrapy-mcp": ["big", "stack", "big"],
-  "ai-sme": ["cols", "stack", "big"],
-  elena: ["big", "cols", "stack"],
-};
 
-function Story({ b, kind, i }: { b: Block; kind: "big" | "cols" | "stack"; i: number }) {
-  if (kind === "big")
-    return (
-      <Spec name="Statement" id={b.label.replace(/\W+/g, "_")} className="frame grid12 border-t border-hair py-10 md:py-16">
-        <div className="mono col-span-6 text-mute md:col-span-12">{String(i + 1).padStart(2, "0")} / {b.label}</div>
-        <p className="display col-span-6 mt-4 text-[clamp(26px,4.4vw,72px)] !leading-[0.98] md:col-span-11">{b.body}</p>
-      </Spec>
-    );
-  if (kind === "stack")
-    return (
-      <Spec name="Callout" id={b.label.replace(/\W+/g, "_")} className="frame grid12 py-10">
-        <div className="col-span-6 border border-ink bg-paper-3 p-6 md:col-span-8 md:col-start-3 md:p-10">
-          <div className="mono flex justify-between text-mute"><span>{b.label}</span><span>N{i + 1}</span></div>
-          <p className="mt-4 text-[clamp(18px,1.9vw,26px)] leading-snug">{b.body}</p>
-        </div>
-      </Spec>
-    );
+function Row({ label, children }: { label: string; children: React.ReactNode }) {
   return (
-    <Spec name="TextBlock" id={b.label.replace(/\W+/g, "_")} className="frame grid12 border-t border-hair py-8 md:py-10">
-      <div className="mono col-span-6 text-mute md:col-span-3">{String(i + 1).padStart(2, "0")} / {b.label}</div>
-      <p className="col-span-6 mt-2 max-w-[60ch] text-[19px] leading-relaxed text-graphite md:col-span-7 md:col-start-5 md:mt-0">{b.body}</p>
-    </Spec>
+    <section className="grid gap-x-10 gap-y-4 border-t border-line py-10 md:grid-cols-[220px_1fr] md:py-12">
+      <h2 className="text-[clamp(24px,2.2vw,32px)] font-medium tracking-[-0.035em]">{label}</h2>
+      <div className="min-w-0">{children}</div>
+    </section>
   );
 }
 
-export default function Page({ params }: { params: Promise<{ slug: string }> }) {
-  return <Suspense fallback={null}><Case params={params} /></Suspense>;
+function Hero({ w }: { w: WorkItem }) {
+  const p = w.project;
+  if (w.phones && p?.gallery)
+    return (
+      <div className="panel flex items-center justify-center gap-[2.5%] overflow-hidden bg-[#e5ebe7] px-[6%] py-[5%]">
+        {p.gallery.slice(0, 4).map((g, i) => (
+          <div key={g.src} className={`relative w-[22%] overflow-hidden rounded-[12%/6%] border-[4px] border-ink bg-ink ${i === 3 ? "max-sm:hidden" : ""}`} style={{ aspectRatio: "1179 / 2556", transform: `translateY(${i % 2 ? "-3%" : "3%"})` }}>
+            <Image src={g.src} alt={`${w.name}: ${g.caption.toLowerCase()} screen`} fill sizes="22vw" className="object-cover object-top" priority={i < 2} />
+          </div>
+        ))}
+      </div>
+    );
+  if (w.image)
+    return (
+      <a href={w.live ?? w.repo} target="_blank" rel="noopener noreferrer" className="block" aria-label={`Open ${w.name}`}>
+        <div className="frame-img aspect-[16/9] !rounded-[18px] border border-line">
+          <Image src={w.image} alt={`${w.name}, the live product`} fill sizes="(min-width: 1024px) 80vw, 95vw" className="object-cover object-top" priority />
+        </div>
+      </a>
+    );
+  return <div className="panel h-[260px] overflow-hidden md:h-[360px]"><Dither shape={{ kind: "rings", cx: 0.75, cy: 0.35 }} cell={6} /></div>;
 }
 
-async function Case({ params }: { params: Promise<{ slug: string }> }) {
-  const p = getProject((await params).slug);
-  if (!p) notFound();
-  const idx = PROJECTS.findIndex((x) => x.slug === p.slug);
-  const next = PROJECTS[(idx + 1) % PROJECTS.length];
-  const rhythm = RHYTHM[p.slug] ?? [];
+export default async function Page({ params }: { params: Promise<{ slug: string }> }) {
+  const w = getWork((await params).slug);
+  if (!w) notFound();
+  const p = w.project;
+  const i = WORK.findIndex((x) => x.slug === w.slug);
+  const next = WORK[(i + 1) % WORK.length];
+  const meta = [
+    ["Role", w.role],
+    ["Category", w.category],
+    ["Year", w.year],
+    ["Status", w.status ? sentence(w.status) : "—"],
+  ];
+  // Trofficient's phone captures show personal data (BRIEF §4): only its public website captures appear here
+  const showPhones = !!p?.gallery && w.slug !== "trofficient";
+  const showWeb = !!p?.media && (!p.portrait || p.web);
 
   return (
-    <article>
-      <Spec name="CaseHeader" id={`FIG_${p.fig}`} as="header" className="frame grid12 py-10 md:py-16">
-        <div className="mono col-span-6 flex justify-between text-mute md:col-span-12">
-          <Link href="/work" className="link-u" data-cursor="← BACK">← WORK</Link>
-          <span>FIG. {p.fig} / {String(idx + 1).padStart(2, "0")} OF {String(PROJECTS.length).padStart(2, "0")}</span>
-        </div>
-        <h1 className="display col-span-6 mt-6 text-[clamp(40px,8vw,140px)] md:col-span-12">{p.name}</h1>
-        <p className="col-span-6 mt-6 max-w-[48ch] text-xl leading-snug md:col-span-6">{p.blurb}</p>
-        <dl className="mono col-span-6 mt-8 grid grid-cols-2 gap-x-6 gap-y-4 md:col-span-5 md:col-start-8 md:mt-6">
-          <div><dt className="text-mute">YEAR</dt><dd>{p.year}</dd></div>
-          <div><dt className="text-mute">ROLE</dt><dd>{p.role}</dd></div>
-          <div><dt className="text-mute">STATUS</dt><dd>{p.status}</dd></div>
-          <div><dt className="text-mute">CATEGORY</dt><dd>{p.categories.join(" / ")}</dd></div>
-          <div className="col-span-2"><dt className="text-mute">TECHNOLOGY</dt><dd>{p.stack.join(" · ")}</dd></div>
-          <div className="col-span-2 flex flex-wrap gap-3">
-            {liveFor(p.slug, p.live) && <a href={liveFor(p.slug, p.live)} target="_blank" rel="noopener noreferrer" className="btn" data-cursor="FOLLOW →">LIVE ↗</a>}
-            {p.repo && <a href={p.repo} target="_blank" rel="noopener noreferrer" className="btn" data-cursor="FOLLOW →">SOURCE ↗</a>}
+    <>
+      <Slide label={`Work · ${ownership(w.role)}`}>
+        <Link href="/work" className="u mt-8 inline-block text-[15px]">All work</Link>
+        <div className="mt-6 grid gap-6 lg:grid-cols-[1fr_auto] lg:items-end">
+          <div>
+            <h1 className="text-[clamp(48px,7.4vw,116px)] font-medium leading-[0.95] tracking-[-0.055em]">{w.name}</h1>
+            <p className="t-lead mt-5 max-w-[56ch]">{w.blurb}</p>
           </div>
-        </dl>
-      </Spec>
-
-      <section className="frame pb-16"><CaseHero project={p} /></section>
-
-      {p.story.map((b, i) => <Story key={b.label} b={b} i={i} kind={rhythm[i] ?? "cols"} />)}
-
-
-      {p.media && p.portrait && p.gallery && (
-        <Spec name="Screens" id="SCREENS" as="section" className="frame border-t border-ink py-10 md:py-16">
-          <div className="mono mb-6 text-mute">FIG. {p.fig}-A / THE APP, SCREEN BY SCREEN</div>
-          <ul className="grid grid-cols-2 gap-x-[var(--col-gap)] gap-y-8 md:grid-cols-3 lg:grid-cols-6">
-            {p.gallery.map((g) => (
-              <li key={g.src}>
-                <figure data-cursor="INSPECT" data-cursor-dim>
-                  <div className="relative aspect-[1179/2556] w-full overflow-hidden border border-ink bg-ink"><Image src={g.src} alt={`${p.name}: ${g.caption.toLowerCase()} screen`} fill sizes="(min-width: 1024px) 16vw, (min-width: 768px) 30vw, 46vw" className="object-cover object-top" /></div>
-                  <figcaption className="mono mt-2 text-mute">{g.caption}</figcaption>
-                </figure>
-              </li>
-            ))}
-          </ul>
-        </Spec>
-      )}
-      {p.media && (!p.portrait || p.web) && (
-        <Spec name="Screens" id="SCREENS" as="section" className="frame grid12 gap-y-6 border-t border-ink py-10 md:py-16">
-          <div className="mono col-span-6 text-mute md:col-span-12">FIG. {p.fig}-A / {p.portrait ? "THE WEBSITE" : "THE REAL THING, IN PRODUCTION"}</div>
-          <figure className={`col-span-6 ${p.desktopOnly ? "md:col-span-12" : "md:col-span-9"}`} data-cursor="INSPECT" data-cursor-dim>
-            <Image src={`/work/${p.media}/desktop.jpg`} alt={`${p.name} on desktop`} width={p.desktopOnly ? 1600 : 1440} height={p.desktopOnly ? 939 : 900} className="h-auto w-full border border-ink" />
-            <figcaption className="mono mt-2 flex justify-between text-mute"><span>{p.desktopOnly ? "TERMINAL" : "DESKTOP"}</span><span>{p.desktopOnly ? "120 × 28" : "1440 × 900"}</span></figcaption>
-          </figure>
-          {!p.desktopOnly && <figure className="col-span-6 md:col-span-3 md:self-end" data-cursor="INSPECT" data-cursor-dim>
-            <Image src={`/work/${p.media}/mobile.jpg`} alt={`${p.name} on a phone`} width={390} height={844} className="mx-auto h-auto w-full max-w-[260px] border border-ink md:max-w-none" />
-            <figcaption className="mono mt-2 flex justify-between text-mute"><span>MOBILE</span><span>390 × 844</span></figcaption>
-          </figure>}
-        </Spec>
-      )}
-
-      <Deconstruct project={p} />
-
-      <Spec name="SystemSection" id="SYSTEM" as="section" className="frame grid12 gap-y-10 py-12 md:py-20">
-        <div className="col-span-6 md:col-span-5">
-          <div className="mono text-mute">FIG. {p.fig}-B / SYSTEM</div>
-          <h2 className="display mt-3 text-[clamp(32px,5vw,80px)]">Top to<br />bottom.</h2>
-          <p className="mt-4 max-w-[34ch] text-graphite">Hover or focus a layer. Each one only talks to its neighbours.</p>
+          <div className="flex flex-wrap gap-3">
+            {w.live && <a href={w.live} target="_blank" rel="noopener noreferrer" className="btn btn-solid">{w.slug === "git-helper" ? "View on npm" : "Visit the live product"}</a>}
+            {w.repo && <a href={w.repo} target="_blank" rel="noopener noreferrer" className="btn">Source on GitHub</a>}
+          </div>
         </div>
-        <div className="col-span-6 md:col-span-7"><FlowDiagram project={p} /></div>
-      </Spec>
 
-      <Spec name="KeyDecisions" id="KEY_DECISIONS" as="section" className="frame border-t border-ink py-10 md:py-14">
-        <div className="mono mb-8 text-mute">KEY DECISIONS</div>
-        <ol>
-          {p.decisions.map((d, i) => (
-            <li key={d.title} className="grid12 border-t border-hair py-6">
-              <span className="mono col-span-1 text-accent-ink">D{i + 1}</span>
-              <h3 className="display col-span-5 text-[clamp(22px,2.6vw,38px)] !leading-[0.98] md:col-span-5">{d.title}</h3>
-              <p className="col-span-6 mt-3 text-graphite md:col-span-5 md:col-start-8 md:mt-0">{d.body}</p>
-            </li>
-          ))}
-        </ol>
-      </Spec>
+        <div className="mt-10"><Hero w={w} /></div>
 
-      <Spec name="Learnings" id="LEARNINGS" as="section" className="frame grid12 py-12 md:py-16">
-        <div className="mono col-span-6 text-mute md:col-span-3">LEARNED</div>
-        <p className="display col-span-6 text-[clamp(26px,4vw,64px)] !leading-[0.98] md:col-span-9">{p.learnings}</p>
-      </Spec>
+        <dl className="mt-10 grid grid-cols-2 gap-x-6 gap-y-5 md:grid-cols-4">
+          {meta.map(([k, v]) => <div key={k}><dt className="text-[13px] text-mute">{k}</dt><dd className="mt-1 text-[16px] font-medium tracking-[-0.01em]">{v}</dd></div>)}
+        </dl>
 
-      <Spec name="NextProject" id="NEXT" as="section" className="border-t border-ink">
-        <Link href={`/work/${next.slug}`} className="frame group flex items-end justify-between py-10" data-cursor="OPEN FIG. →">
-          <span><span className="mono text-mute">NEXT / FIG. {next.fig}</span><span className="display mt-2 block text-[clamp(36px,7vw,120px)] transition-transform group-hover:translate-x-3 group-hover:text-accent-ink">{next.name}</span></span>
-          <span className="display text-6xl">→</span>
+        <div className="mt-10">
+          {p ? (
+            <>
+              {p.story.map((b) => (
+                <Row key={b.label} label={sentence(b.label)}>
+                  <p className="max-w-[64ch] text-[18px] leading-[1.7] text-body">{b.body}</p>
+                </Row>
+              ))}
+              <Row label="How it's built">
+                <ol className="divide-y divide-line rounded-[16px] border border-line">
+                  {p.layers.map((l, k) => (
+                    <li key={l.key} className="grid gap-1 px-5 py-4 sm:grid-cols-[40px_1fr_1.3fr] sm:items-baseline">
+                      <span className="label text-accent-ink">{String(k + 1).padStart(2, "0")}</span>
+                      <span className="text-[16px] font-medium tracking-[-0.01em]">{sentence(l.label)}</span>
+                      <span className="text-[15px] text-mute">{l.detail}</span>
+                    </li>
+                  ))}
+                </ol>
+                <p className="mt-3 text-[13px] text-mute">Top: what the user touches. Bottom: what holds it up.</p>
+              </Row>
+              {p.decisions.length > 0 && (
+                <Row label="Key decisions">
+                  <ul className="grid gap-3 lg:grid-cols-2">
+                    {p.decisions.map((d) => (
+                      <li key={d.title} className="panel p-6">
+                        <h3 className="text-[19px] font-medium tracking-[-0.02em]">{d.title}</h3>
+                        <p className="mt-2 text-[16px] leading-relaxed text-body">{d.body}</p>
+                      </li>
+                    ))}
+                  </ul>
+                </Row>
+              )}
+              <Row label="What I learned"><p className="max-w-[46ch] text-[clamp(22px,2vw,28px)] font-medium leading-snug tracking-[-0.025em]">{p.learnings}</p></Row>
+            </>
+          ) : (
+            <Row label="Overview">
+              <p className="max-w-[64ch] text-[18px] leading-[1.7] text-body">{w.blurb}</p>
+              {w.note && <p className="mt-4 text-[15px] text-mute">{w.note}</p>}
+              <p className="mt-4 text-[15px] text-mute">A smaller build, so there&apos;s no full write-up. The {w.repo ? "source" : "live product"} is the best place to see it.</p>
+            </Row>
+          )}
+
+          {w.stack.length > 0 && (
+            <Row label="Stack">
+              <ul className="flex flex-wrap gap-2">{w.stack.map((s) => <li key={s} className="rounded-full border border-line px-3.5 py-1.5 text-[14px]">{s}</li>)}</ul>
+            </Row>
+          )}
+
+          {p && (showPhones || showWeb) && (
+            <Row label="Screens">
+              {showPhones && (
+                <ul className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
+                  {p.gallery!.map((g) => (
+                    <li key={g.src}>
+                      <div className="relative overflow-hidden rounded-[14px] border border-line bg-ink" style={{ aspectRatio: "1179 / 2556" }}>
+                        <Image src={g.src} alt={`${w.name}: ${g.caption.toLowerCase()} screen`} fill sizes="(min-width: 1024px) 18vw, 45vw" className="object-cover object-top" />
+                      </div>
+                      <p className="mt-2 text-[13px] text-mute">{sentence(g.caption)}</p>
+                    </li>
+                  ))}
+                </ul>
+              )}
+              {showWeb && (
+                <div className={`grid gap-3 ${p.desktopOnly ? "" : "md:grid-cols-[1fr_220px]"} ${showPhones ? "mt-6" : ""}`}>
+                  <div className="frame-img border border-line"><Image src={`/work/${p.media}/desktop.jpg`} alt={`${w.name} on desktop`} width={1440} height={900} className="h-auto w-full" /></div>
+                  {!p.desktopOnly && <div className="frame-img border border-line md:self-end"><Image src={`/work/${p.media}/mobile.jpg`} alt={`${w.name} on a phone`} width={390} height={844} className="h-auto w-full" /></div>}
+                </div>
+              )}
+            </Row>
+          )}
+        </div>
+
+        <Link href={`/work/${next.slug}`} className="group mt-6 flex items-end justify-between gap-6 border-t border-line pt-8">
+          <span><span className="text-[13px] text-mute">Next project</span><span className="mt-1 block text-[clamp(28px,3.4vw,48px)] font-medium tracking-[-0.045em] group-hover:text-accent-ink">{next.name}</span></span>
+          <span className="text-[28px] transition-transform group-hover:translate-x-1" aria-hidden>→</span>
         </Link>
-      </Spec>
-    </article>
+      </Slide>
+      <Ask />
+    </>
   );
 }
