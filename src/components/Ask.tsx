@@ -1,6 +1,6 @@
 import { PERSON } from "@/lib/data";
 import Slide, { H } from "./Slide";
-import AfricaMap from "./AfricaMap";
+import OriginsGlobe from "./OriginsGlobe";
 import Clock from "./Clock";
 
 const LINKS = [
@@ -14,7 +14,7 @@ const LINKS = [
 export default function Ask({ deck = false }: { deck?: boolean }) {
   return (
     <Slide id="contact" label="Contact" deck={deck} className="overflow-hidden">
-      <div className="relative grid gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,520px)] lg:items-end lg:gap-16">
+      <div className="relative grid gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,600px)] lg:items-end lg:gap-16">
       <div>
         <p className="pill label mt-8 text-ink md:mt-16">Based in Accra, Ghana</p>
         <H className="t-hero mt-6 !text-[clamp(44px,5.6vw,92px)]">Have a problem worth solving?</H>
@@ -38,7 +38,7 @@ export default function Ask({ deck = false }: { deck?: boolean }) {
           <Clock />
         </div>
       </div>
-      <div className="max-w-[560px] lg:max-w-none"><p className="label mb-4 text-mute">Where I am from, and where I build</p><AfricaMap /></div>
+      <div className="max-w-[560px] lg:max-w-none"><p className="label mb-2 text-mute">Where I am from, and where I build</p><OriginsGlobe /></div>
       </div>
     </Slide>
   );
