@@ -1,5 +1,5 @@
 /* The 400 crew. Everything here comes from the crew's own site (https://400-omega.vercel.app/: Crew, Story and Track record
-   pages), read on 27 Nov 2026. Nothing is added. Roles, ownership lists and dates are as that site states them.
+   pages), read on 27 Nov 2026. Nothing is added. Roles, ownership lists and dates are as that site states them, except Leslie's role, which Leslie corrected on 27 Nov 2026: Leslie is the backend person on most projects.
    The crew's site has no member photos yet, so the page shows initials, not stand-ins. */
 
 export const CREW_SITE = "https://400-omega.vercel.app";
@@ -29,10 +29,10 @@ export const CREW: Member[] = [
   },
   {
     id: "leslie", name: "Leslie", me: true,
-    usually: "Full-stack, DevOps and releases",
-    owns: ["Deploys", "Play Store and TestFlight releases", "Trofficient (founder)"],
-    stack: ["Full-stack", "DevOps", "CI and releases"],
-    bio: "I deploy everything. Founder of Trofficient, full-stack and DevOps, and the one who gets builds through the Play Store and TestFlight. Two mottos: forgiveness over permission, and tiny commits.",
+    usually: "Backend, full-stack, DevOps and releases",
+    owns: ["The backend, on most projects", "Deploys", "Play Store and TestFlight releases", "Trofficient (founder)"],
+    stack: ["Backend", "Full-stack", "DevOps", "CI and releases"],
+    bio: "I'm the backend person on most of our projects: the APIs, the data and the servers behind the screens. I also deploy everything, and I get the builds through the Play Store and TestFlight. Founder of Trofficient. Two mottos: forgiveness over permission, and tiny commits.",
     motto: "I smell a rebase.",
   },
   {
@@ -74,7 +74,7 @@ export const BIG: Big[] = [
   {
     name: "Trofficient", slug: "trofficient", what: "Transit technology for Ghana's tro-tro routes. Commuter and driver apps on the App Store; Android in closed testing.",
     parts: [
-      { who: ["leslie"], did: "Founded it, dropped the first working demo into the chat, and gets the builds through the stores." },
+      { who: ["leslie"], did: "Founded it, dropped the first working demo into the chat, and runs the backend and the store releases." },
       { who: ["joyce"], did: "Booked the first real ride, and wrote the game plan for the Ministry of Transport visit." },
       { who: ["joyce", "leslie"], did: "Presented it at the Ministry of Transport on 7 October 2026." },
       { who: ["leslie", "elton"], did: "Met the Metro Mass directors on 1 June 2026." },
@@ -85,7 +85,7 @@ export const BIG: Big[] = [
     name: "Beagine", slug: "beagine", what: "Find, book and track verified engineering professionals. Beagine for customers and Beagine Pro for specialists, both on the App Store.",
     parts: [
       { who: ["elton"], did: "Co-founder. Interfaces and mobile, mostly in Expo and React Native." },
-      { who: ["leslie"], did: "CTO. Deploys and releases." },
+      { who: ["leslie"], did: "CTO. The technical direction, the architecture and the shared backend, plus deploys and releases." },
       { who: ["joyce", "leslie"], did: "Presented it with Trofficient at the Ministry of Transport." },
       { who: "crew", did: "Beagine and Beagine Pro went live on the App Store on 7 July 2026." },
     ],
