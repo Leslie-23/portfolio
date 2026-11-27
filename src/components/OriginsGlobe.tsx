@@ -1,4 +1,5 @@
 "use client";
+import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import type { GeoPath, GeoPermissibleObjects, GeoProjection } from "d3-geo";
 import type { GlobeCls } from "@/lib/globe-data";
@@ -11,13 +12,18 @@ const ZOOM = 2.0;                                  // how far in it settles (1 =
 const SPIN_MS = 3000, ZOOM_MS = 1500;
 const D2R = Math.PI / 180;
 const VISITED = "Mali, Burkina Faso, Guinea, Liberia, Ivory Coast, Togo and Benin";
+// flags are flag-icons SVGs (MIT, see public/flags/LICENSE.txt), keyed by the country names in the map data
+const FLAG: Record<string, string> = { Gambia: "gm", "Sierra Leone": "sl", Nigeria: "ng", Ghana: "gh", Mali: "ml", "Burkina Faso": "bf", Guinea: "gn", Liberia: "lr", "Côte d'Ivoire": "ci", Togo: "tg", Benin: "bj" };
+const BEEN = [["Mali", "Mali"], ["Burkina Faso", "Burkina Faso"], ["Guinea", "Guinea"], ["Liberia", "Liberia"], ["Côte d'Ivoire", "Ivory Coast"], ["Togo", "Togo"], ["Benin", "Benin"]] as const;
+// countries that wear their flag on the globe: the places visited, plus the four countries of the story: Gambia, Sierra Leone, Nigeria and Ghana
+const WEAR = new Set<string>([...BEEN.map(([n]) => n), "Nigeria", "Sierra Leone", "Ghana", "Gambia"]);
 
 const SAY: Record<string, string> = { born: "Born in The Gambia", grew: "Grew up in Sierra Leone", descent: "Of Nigerian descent", living: "Living in Ghana" };
 type Feat = { name: string; cls: GlobeCls; geom: { type: "MultiPolygon"; coordinates: number[][][][] }; bbox: [number, number, number, number]; centroid: [number, number] };
 // where each story country's name is written when zoomed in: offset in px, and the text colour
 const LABEL: Record<string, { text: string; dx: number; dy: number; on: "ink" | "bg" | "out" }> = {
   Gambia: { text: "THE GAMBIA", dx: -4, dy: -15, on: "out" }, "Sierra Leone": { text: "SIERRA LEONE", dx: -8, dy: 26, on: "out" },
-  Ghana: { text: "GHANA", dx: 0, dy: 0, on: "ink" }, Nigeria: { text: "NIGERIA", dx: 0, dy: 4, on: "bg" },
+  Ghana: { text: "GHANA", dx: 0, dy: 26, on: "out" }, Nigeria: { text: "NIGERIA", dx: 0, dy: 4, on: "out" },
 };
 
 const ease = (t: number) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
@@ -28,6 +34,7 @@ export default function OriginsGlobe() {
   const cv = useRef<HTMLCanvasElement>(null);
   const tipEl = useRef<HTMLDivElement>(null);
   const [tip, setTip] = useState("");
+  const [tipFlag, setTipFlag] = useState("");
   const [ready, setReady] = useState(false);
   const replay = useRef<() => void>(() => {});
   const nudge = useRef<(dLon: number, dLat: number) => void>(() => {});
@@ -42,6 +49,7 @@ export default function OriginsGlobe() {
     const vel = { x: 0, y: 0 };                                  // deg per ms, from a drag
     let drag: { x: number; y: number; t: number; moved: boolean; touch: boolean } | null = null;
     let hover = -1;
+    const flags: Record<string, HTMLCanvasElement> = {};          // each visited country's flag, rendered once and painted onto it
     let feats: Feat[] = [], proj: GeoProjection, path: GeoPath, geoContains: (o: object, p: [number, number]) => boolean, geoDistance: (a: [number, number], b: [number, number]) => number;
     let sphere: GeoPermissibleObjects, grat: GeoPermissibleObjects, shade: HTMLCanvasElement | null = null;
     const css = getComputedStyle(wrap);
@@ -75,7 +83,18 @@ export default function OriginsGlobe() {
         ctx.globalAlpha = f.cls === "visited" ? 0.4 : 1;
         ctx.fillStyle = f.cls === "living" || f.cls === "visited" ? C.accent : f.cls === "land" ? (i === hover ? "#cdd1cb" : "#dcdfda") : C.ink;
         ctx.fill(); ctx.globalAlpha = 1;
-        ctx.strokeStyle = C.bg; ctx.lineWidth = f.cls === "land" ? 0.8 : 1.5; ctx.lineJoin = "round"; ctx.stroke();
+        const fl = WEAR.has(f.name) ? flags[f.name] : undefined;
+        if (fl) {                                                       // the flag, fitted to the country and clipped to its outline
+          const [[x0, y0], [x1, y1]] = path.bounds(f.geom);
+          if (x1 > x0 && y1 > y0 && isFinite(x0 + x1 + y0 + y1)) {
+            ctx.save(); ctx.beginPath(); path(f.geom); ctx.clip();
+            const sc = Math.max((x1 - x0) / 320, (y1 - y0) / 240), w = 320 * sc, h = 240 * sc;
+            ctx.drawImage(fl, x0 + (x1 - x0 - w) / 2, y0 + (y1 - y0 - h) / 2, w, h); ctx.restore();
+          }
+        }
+        let lw = f.cls === "land" ? 0.8 : f.cls === "visited" ? 1.5 : 2;
+        if (lw === 2) { const [[a0, b0], [a1, b1]] = path.bounds(f.geom); lw = clamp(Math.min(a1 - a0, b1 - b0) / 12, 0.7, 2); }   // a sliver like the Gambia gets a hairline, so its flag shows
+        ctx.strokeStyle = f.cls === "land" || f.cls === "visited" ? C.bg : C.ink; ctx.lineWidth = lw; ctx.lineJoin = "round"; ctx.stroke();
       });
       if (hover >= 0 && feats[hover].cls !== "land") { ctx.beginPath(); path(feats[hover].geom); ctx.strokeStyle = C.ink; ctx.lineWidth = 2; ctx.stroke(); }
       if (shade) { ctx.save(); ctx.beginPath(); ctx.arc(W / 2, W / 2, R, 0, Math.PI * 2); ctx.clip(); ctx.drawImage(shade, 0, 0, W, W); ctx.restore(); }
@@ -140,8 +159,8 @@ export default function OriginsGlobe() {
     const say = (i: number) => (i < 0 ? "" : SAY[feats[i].cls] ?? (feats[i].cls === "visited" ? `${feats[i].name}, visited` : feats[i].name));
     const point = (e: PointerEvent) => { const r = canvas.getBoundingClientRect(); return [e.clientX - r.left, e.clientY - r.top] as const; };
     const showTip = (x: number, y: number, i: number) => {
-      hover = i; const t = say(i);
-      setTip((o) => (o === t ? o : t));
+      hover = i; const t = say(i), fl = i < 0 ? "" : FLAG[feats[i].name] ?? "";
+      setTip((o) => (o === t ? o : t)); setTipFlag((o) => (o === fl ? o : fl));
       if (tipEl.current) tipEl.current.style.transform = `translate(${Math.min(x + 14, W - 160)}px, ${Math.max(y - 38, 4)}px)`;
       kick();
     };
@@ -158,7 +177,7 @@ export default function OriginsGlobe() {
       if (Math.abs(x - drag.x) + Math.abs(y - drag.y) > 3) drag.moved = true;
       view.lon -= dx * s; view.lat = clamp(view.lat + dy * s, -85, 85);
       vel.x = vel.x * 0.6 + ((dx * s) / dt) * 0.4; vel.y = vel.y * 0.6 + ((dy * s) / dt) * 0.4;
-      drag.x = x; drag.y = y; drag.t = now; hover = -1; setTip((o) => (o ? "" : o)); kick();
+      drag.x = x; drag.y = y; drag.t = now; hover = -1; setTip((o) => (o ? "" : o)); setTipFlag((o) => (o ? "" : o)); kick();
     };
     const up = (e: PointerEvent) => {
       if (!drag) return;
@@ -166,7 +185,7 @@ export default function OriginsGlobe() {
       if (wasTap) { vel.x = vel.y = 0; if (touch || e.pointerType === "pen") showTip(x, y, pick(x, y)); }
       else kick();
     };
-    const leave = () => { if (!drag) { hover = -1; setTip((o) => (o ? "" : o)); kick(); } };
+    const leave = () => { if (!drag) { hover = -1; setTip((o) => (o ? "" : o)); setTipFlag((o) => (o ? "" : o)); kick(); } };
     canvas.addEventListener("pointerdown", down); canvas.addEventListener("pointermove", move); canvas.addEventListener("pointerup", up); canvas.addEventListener("pointercancel", up); canvas.addEventListener("pointerleave", leave);
 
     const ro = new ResizeObserver(size); ro.observe(wrap);
@@ -185,6 +204,13 @@ export default function OriginsGlobe() {
       }).sort((a, b) => order[a.cls] - order[b.cls]);
       ctx = canvas.getContext("2d")!;
       path = d3.geoPath(proj, ctx);
+      WEAR.forEach((name) => {                                        // the flags load after the globe is up, and appear as they arrive
+        fetch(`/flags/${FLAG[name]}.svg`).then((res) => res.text()).then((svg) => {
+          const img = new window.Image();
+          img.onload = () => { const c = document.createElement("canvas"); c.width = 320; c.height = 240; c.getContext("2d")!.drawImage(img, 0, 0, 320, 240); flags[name] = c; kick(); };
+          img.src = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(svg.replace("<svg ", '<svg width="640" height="480" '));
+        }).catch(() => {});
+      });
       setReady(true); size(); canvas.style.cursor = "grab";
       if (!reduce) {
         const io = new IntersectionObserver(([en]) => { if (en.isIntersecting && !played && !dead) { startIntro(); io.disconnect(); } }, { threshold: 0.5 });
@@ -206,13 +232,7 @@ export default function OriginsGlobe() {
             if (m[e.key]) { e.preventDefault(); nudge.current(...m[e.key]); } else if (e.key === "Home") { e.preventDefault(); replay.current(); }
           }}
           className="absolute inset-0 block w-full select-none rounded-full outline-offset-4" style={{ touchAction: "pan-y" }} />
-        <div ref={tipEl} aria-hidden className={`pointer-events-none absolute left-0 top-0 z-10 whitespace-nowrap rounded-full border border-line bg-bg px-3 py-1.5 text-[13px] font-medium tracking-[-0.01em] shadow-[0_8px_24px_-12px_rgba(0,0,0,.35)] transition-opacity duration-150 ${tip ? "opacity-100" : "opacity-0"}`}>{tip || " "}</div>
-      </div>
-      <div className="mx-auto mt-3 flex max-w-[600px] items-center justify-between gap-3">
-        <p className="label text-mute">Drag to turn it</p>
-        <button type="button" onClick={() => replay.current()} className="label inline-flex h-8 items-center gap-2 rounded-full border border-line px-3 text-mute transition-colors hover:border-ink hover:text-ink">
-          <svg width="12" height="12" viewBox="0 0 12 12" aria-hidden fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"><path d="M10.2 6A4.2 4.2 0 1 1 8.9 3M9 1v2.2H6.8" /></svg>Replay
-        </button>
+        <div ref={tipEl} aria-hidden className={`pointer-events-none absolute left-0 top-0 z-10 whitespace-nowrap rounded-full border border-line bg-bg px-3 py-1.5 text-[13px] font-medium tracking-[-0.01em] shadow-[0_8px_24px_-12px_rgba(0,0,0,.35)] transition-opacity duration-150 ${tip ? "opacity-100" : "opacity-0"}`}>{tipFlag && <Image src={`/flags/${tipFlag}.svg`} alt="" width={20} height={15} unoptimized className="mr-2 inline-block h-[15px] w-5 rounded-[2px] object-cover align-[-2px]" />}{tip || " "}</div>
       </div>
       <p className="mt-5 text-[clamp(22px,2vw,28px)] font-medium leading-[1.1] tracking-[-0.035em]">That is why I am building for Africa<span className="dot">.</span></p>
     </div>
