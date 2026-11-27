@@ -150,6 +150,11 @@ export default function BustBuild({ className = "" }: { className?: string }) {
       const cssW = box.width * (1 + pad * 2), cssH = box.height * (1 + pad * 2);
       for (const c of [glCanvas, overlay]) {
         c.style.left = c.style.top = `${-pad * 100}%`; c.style.width = c.style.height = `${(1 + pad * 2) * 100}%`;
+        // facets start outside the canvas: fade its outer edge so they dissolve in rather than appearing at a hard line
+        const f = ((pad / (1 + pad * 2)) * 85).toFixed(1), e = (100 - +f).toFixed(1);
+        const m = `linear-gradient(to right,transparent,#000 ${f}%,#000 ${e}%,transparent),linear-gradient(to bottom,transparent,#000 ${f}%,#000 ${e}%,transparent)`;
+        c.style.maskImage = m; c.style.maskComposite = "intersect";
+        c.style.setProperty("-webkit-mask-image", m); c.style.setProperty("-webkit-mask-composite", "source-in");
         c.width = Math.round(cssW * dp); c.height = Math.round(cssH * dp);
       }
       const gl = glCanvas.getContext("webgl", { premultipliedAlpha: true, alpha: true, antialias: false });
@@ -162,7 +167,8 @@ export default function BustBuild({ className = "" }: { className?: string }) {
       // the real portrait, a little soft: shrunk, then stretched back up. This is the picture on every facet.
       const small = document.createElement("canvas"); small.width = BLUR_W; small.height = Math.round((BLUR_W * photo.height) / photo.width);
       small.getContext("2d")!.drawImage(photo, 0, 0, small.width, small.height);
-      const soft = document.createElement("canvas"); soft.width = Math.min(Math.round(box.width * dpr0), tier === 2 ? 1400 : 720);   // the picture on the facets is soft anyway: no need for more than this soft.height = Math.round((soft.width * photo.height) / photo.width);
+      const soft = document.createElement("canvas"); soft.width = Math.min(Math.round(box.width * dpr0), tier === 2 ? 1400 : 720);   // the picture on the facets is soft anyway: no need for more than this
+      soft.height = Math.round((soft.width * photo.height) / photo.width);
       const sx = soft.getContext("2d")!; sx.imageSmoothingEnabled = true; sx.imageSmoothingQuality = "high"; sx.drawImage(small, 0, 0, soft.width, soft.height);
 
       type Tri = { a: number; b: number; c: number; cx: number; cy: number; d: number; ang: number; t0: number; dur: number; rot: number; label?: string };
