@@ -38,19 +38,20 @@ export function Cover({ w, big = false, sizes }: { w: WorkItem; big?: boolean; s
   );
 }
 
-export default function WorkCard({ w, big = false, sizes = "(min-width: 1024px) 30vw, 90vw" }: { w: WorkItem; big?: boolean; sizes?: string }) {
+/** `row`: on phones the card becomes a compact list row (thumbnail left, text right) so a long directory stays scannable. */
+export default function WorkCard({ w, big = false, row = false, sizes = "(min-width: 1024px) 30vw, 90vw" }: { w: WorkItem; big?: boolean; row?: boolean; sizes?: string }) {
   return (
-    <Link href={`/work/${w.slug}`} className="group panel flex h-full flex-col p-2 transition-colors hover:bg-[#ececea]">
-      <Cover w={w} big={big} sizes={sizes} />
-      <div className={`flex flex-1 flex-col ${big ? "p-4 md:p-6" : "p-3 md:p-4"}`}>
-        <div className="label flex items-center justify-between gap-3 text-mute">
+    <Link href={`/work/${w.slug}`} className={`group panel flex h-full flex-col p-2 transition-colors hover:bg-[#ececea] ${row ? "max-md:flex-row max-md:items-center max-md:gap-1" : ""}`}>
+      <div className={row ? "max-md:w-[42%] max-md:shrink-0" : ""}><Cover w={w} big={big} sizes={sizes} /></div>
+      <div className={`flex min-w-0 flex-1 flex-col ${big ? "p-3 pb-4 md:p-6" : "p-3 pb-4 md:p-4"} ${row ? "max-md:py-1 max-md:pb-1 max-md:pr-1" : ""}`}>
+        <div className={`label flex items-center justify-between gap-3 text-mute ${row ? "max-md:!text-[10px]" : ""}`}>
           <span className="flex items-center gap-2"><i className="h-[7px] w-[7px] rounded-full bg-accent" aria-hidden />{ownership(w.role)}</span>
           <span>{w.year}</span>
         </div>
-        <h3 className={`${big ? "t-big" : "t-card"} mt-2`}>{w.name}</h3>
-        <p className="mt-1 text-[15px] text-mute">{w.category}</p>
+        <h3 className={`${big ? "t-big" : "t-card"} mt-2 ${row ? "max-md:mt-1 max-md:!text-[19px] max-md:leading-tight" : ""}`}>{w.name}</h3>
+        <p className={`mt-1 text-[15px] text-mute ${row ? "max-md:mt-0.5 max-md:text-[13px] max-md:leading-snug" : ""}`}>{w.category}</p>
         {big && <p className="mt-3 max-w-[52ch] text-[15px] leading-relaxed text-body">{w.blurb}</p>}
-        <span className="mt-auto pt-3 text-[14px] font-medium opacity-0 transition-opacity group-hover:opacity-100 group-focus-visible:opacity-100">{w.tier === "case" ? "Read the case study →" : "View details →"}</span>
+        <span className="mt-auto hidden pt-3 text-[14px] font-medium opacity-0 md:block transition-opacity group-hover:opacity-100 group-focus-visible:opacity-100">{w.tier === "case" ? "Read the case study →" : "View details →"}</span>
       </div>
     </Link>
   );

@@ -12,11 +12,11 @@ export default function Notes() {
   return (
     <>
       <Slide label="Writing">
-        <div className="mt-10 grid gap-6 lg:grid-cols-[1fr_380px] lg:items-end">
+        <div className="mt-7 grid gap-5 md:mt-10 md:gap-6 lg:grid-cols-[1fr_380px] lg:items-end">
           <H as="h1" className="t-hero">Writing</H>
           <p className="t-lead">Short notes on decisions I made while building, and why. Each one comes from a real project.</p>
         </div>
-        <ul className="mt-12 grid gap-x-6 gap-y-12 md:grid-cols-2 xl:grid-cols-3">
+        <ul className="mt-8 grid gap-x-6 gap-y-10 md:mt-12 md:grid-cols-2 md:gap-y-12 xl:grid-cols-3">
           {NOTES.map((n, i) => (
             <li key={n.slug}>
               <Link href={`/notes/${n.slug}`} className="group block">

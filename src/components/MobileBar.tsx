@@ -27,7 +27,7 @@ export default function MobileBar() {
 
   return (
     <>
-      <div className="fixed inset-x-0 bottom-0 z-40 border-t border-line bg-card/95 backdrop-blur lg:hidden">
+      <div className="fixed inset-x-0 bottom-0 z-40 border-t border-line bg-card/95 pb-[env(safe-area-inset-bottom)] backdrop-blur lg:hidden">
         <div className="flex h-16 items-center justify-between gap-3 px-4">
           <Link href="/" aria-label="Home" className="shrink-0 overflow-hidden rounded-[10px]"><Image src="/brand/leslie-avatar-1024.png" alt="" width={36} height={36} /></Link>
           {home ? (

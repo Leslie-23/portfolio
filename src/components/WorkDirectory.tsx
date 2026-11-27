@@ -15,7 +15,7 @@ export default function WorkDirectory({ items }: { items: WorkItem[] }) {
 
   return (
     <>
-      <div role="group" aria-label="Filter projects" className="mt-10 flex flex-wrap gap-x-5 gap-y-2 border-b border-line pb-4 text-[15px]">
+      <div role="group" aria-label="Filter projects" className="-mx-[var(--pad)] mt-7 flex gap-x-5 overflow-x-auto whitespace-nowrap border-b border-line px-[var(--pad)] pb-4 text-[15px] [scrollbar-width:none] md:mx-0 md:mt-10 md:flex-wrap md:gap-y-2 md:overflow-visible md:px-0">
         {(["All", ...FILTERS] as const).map((v) => (
           <button key={v} onClick={() => set(v)} aria-pressed={f === v}
             className={`relative pb-1 transition-colors ${f === v ? "text-ink" : "text-mute hover:text-ink"}`}>
@@ -25,8 +25,8 @@ export default function WorkDirectory({ items }: { items: WorkItem[] }) {
         ))}
       </div>
       <p className="sr-only" aria-live="polite">{list.length} projects shown</p>
-      <ul className="mt-8 grid gap-x-3 gap-y-3 sm:grid-cols-2 lg:grid-cols-3">
-        {list.map((w) => <li key={w.slug}><WorkCard w={w} /></li>)}
+      <ul className="mt-5 grid gap-2 sm:grid-cols-2 md:mt-8 md:gap-3 lg:grid-cols-3">
+        {list.map((w) => <li key={w.slug}><WorkCard w={w} row /></li>)}
       </ul>
     </>
   );

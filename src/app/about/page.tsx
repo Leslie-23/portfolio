@@ -27,14 +27,14 @@ export default function About() {
   return (
     <>
       <Slide label="About">
-        <div className="mt-10 grid gap-6 lg:grid-cols-[1fr_380px] lg:items-end">
+        <div className="mt-7 grid gap-5 md:mt-10 md:gap-6 lg:grid-cols-[1fr_380px] lg:items-end">
           <H as="h1" className="t-hero">About</H>
           <p className="t-lead">The person behind the work: how I think, where I work, what I build with, and what I&apos;ve learned the hard way.</p>
         </div>
 
         {/* profile */}
-        <div className="mt-12 grid gap-8 border-t border-line pt-10 md:grid-cols-[minmax(240px,380px)_1fr]">
-          <div className="panel relative aspect-[4/5] overflow-hidden bg-[#e7ece9]">
+        <div className="mt-8 grid gap-6 border-t border-line pt-8 md:mt-12 md:grid-cols-[minmax(240px,380px)_1fr] md:gap-8 md:pt-10">
+          <div className="panel relative aspect-[5/4] overflow-hidden bg-[#e7ece9] md:aspect-[4/5]">
             <Image src="/portrait/leslie.png" alt="Leslie Paul Ajayi, a faceted greyscale portrait" fill sizes="(min-width: 768px) 380px, 90vw" className="object-contain object-bottom" priority />
           </div>
           <div>
@@ -55,18 +55,18 @@ export default function About() {
       </Slide>
 
       <Slide label="How I think">
-        <H className="t-slide mt-10 max-w-[16ch]">I keep asking why, until I can build it</H>
-        <ul className="mt-10 grid gap-3 md:grid-cols-3">
+        <H className="t-slide mt-7 md:mt-10 max-w-[16ch]">I keep asking why, until I can build it</H>
+        <ul className="swipe mt-7 grid gap-3 md:mt-10 md:grid-cols-3">
           {THINKING.map((x) => (
-            <li key={x.t} className="panel flex flex-col p-6 md:p-7">
+            <li key={x.t} className="panel flex flex-col p-5 md:p-7">
               <h3 className="t-card">{x.t}</h3>
               <p className="mt-3 flex-1 text-[16px] leading-relaxed text-body">{x.b}</p>
               <Link href={x.link.href} className="u mt-5 self-start text-[15px] font-medium">See it in {x.link.label}</Link>
             </li>
           ))}
         </ul>
-        <h3 className="mt-14 text-[clamp(24px,2.2vw,32px)] font-medium tracking-[-0.035em]">Problem solving, as a sequence</h3>
-        <ol className="mt-6 grid gap-6 border-t-2 border-ink pt-6 sm:grid-cols-2 lg:grid-cols-5">
+        <h3 className="mt-10 text-[clamp(24px,2.2vw,32px)] font-medium tracking-[-0.035em] md:mt-14">Problem solving, as a sequence</h3>
+        <ol className="mt-5 grid gap-5 border-t-2 border-ink pt-5 sm:grid-cols-2 md:mt-6 md:gap-6 md:pt-6 lg:grid-cols-5">
           {APPROACH.map((s) => (
             <li key={s.k}>
               <p className="label text-accent-ink">{s.k}</p>
@@ -78,10 +78,10 @@ export default function About() {
       </Slide>
 
       <Slide id="experience" label="Experience">
-        <H className="t-slide mt-10">Experience</H>
-        <div className="mt-10"><ExperienceList /></div>
+        <H className="t-slide mt-7 md:mt-10">Experience</H>
+        <div className="mt-6 md:mt-10"><ExperienceList /></div>
         <p className="label mt-10 text-mute">Organisations</p>
-        <ul className="mt-4 grid grid-cols-2 gap-3 md:grid-cols-5">
+        <ul className="mt-4 grid grid-cols-2 gap-2 md:grid-cols-5 md:gap-3">
           {AFFILIATIONS.map((a) => (
             <li key={a.id} className="panel flex flex-col gap-3 p-4">
               <Image src={a.img} alt="" width={a.w} height={a.h} className="h-10 w-auto max-w-[100px] object-contain object-left" />
@@ -92,20 +92,20 @@ export default function About() {
       </Slide>
 
       <Slide label="Capabilities">
-        <div className="mt-10 grid gap-6 lg:grid-cols-[1fr_380px] lg:items-end">
+        <div className="mt-7 grid gap-5 md:mt-10 md:gap-6 lg:grid-cols-[1fr_380px] lg:items-end">
           <H className="t-slide">What I build with</H>
           <p className="t-lead">Grouped by what it&apos;s for, and linked to the work where I used it. No percentages.</p>
         </div>
-        <div className="mt-10 grid gap-x-8 gap-y-10 md:grid-cols-2 xl:grid-cols-4">
+        <div className="mt-7 grid grid-cols-2 gap-x-5 gap-y-8 md:mt-10 md:gap-x-8 md:gap-y-10 xl:grid-cols-4">
           {TOOLKIT.map((g) => (
             <div key={g.id}>
-              <h3 className="border-b border-line pb-3 text-[19px] font-medium tracking-[-0.02em]">{SKILL_LABEL[g.id] ?? g.label}</h3>
+              <h3 className="border-b border-line pb-2 text-[16px] font-medium tracking-[-0.02em] md:pb-3 md:text-[19px]">{SKILL_LABEL[g.id] ?? g.label}</h3>
               <ul className="mt-3 space-y-3">
                 {g.items.filter(publicEvidence).map((it) => {
                   const used = it.projects.map((s) => getWork(s)).filter(Boolean).slice(0, 3);
                   return (
                     <li key={it.name}>
-                      <p className="text-[15px] font-medium">{it.name}</p>
+                      <p className="text-[14px] font-medium leading-snug md:text-[15px]">{it.name}</p>
                       <p className="text-[13px] leading-relaxed text-mute">
                         {used.length > 0 ? used.map((w, k) => <span key={w!.slug}>{k > 0 && ", "}<Link href={`/work/${w!.slug}`} className="hover:text-ink hover:underline">{w!.name}</Link></span>) : it.also?.join(", ")}
                         {it.projects.length > 3 && ` +${it.projects.length - 3}`}
@@ -120,13 +120,13 @@ export default function About() {
       </Slide>
 
       <Slide id="infrastructure" label="Infrastructure">
-        <div className="mt-10 grid gap-6 lg:grid-cols-[1fr_380px] lg:items-end">
+        <div className="mt-7 grid gap-5 md:mt-10 md:gap-6 lg:grid-cols-[1fr_380px] lg:items-end">
           <H className="t-slide">Servers, networks and delivery</H>
           <p className="t-lead">From my own projects only. Each line traces to a real config or doc in the repo.</p>
         </div>
-        <div className="mt-10 grid gap-3 md:grid-cols-2">
+        <div className="mt-7 grid gap-3 md:mt-10 md:grid-cols-2">
           {INFRA.map((g) => (
-            <section key={g.id} className="panel p-6 md:p-7">
+            <section key={g.id} className="panel p-5 md:p-7">
               <h3 className="label text-accent-ink">{g.label}</h3>
               <p className="mt-2 text-[15px] text-mute">{g.blurb}</p>
               <ul className="mt-5 space-y-4">
@@ -135,10 +135,10 @@ export default function About() {
             </section>
           ))}
         </div>
-        <h3 className="mt-14 text-[clamp(24px,2.2vw,32px)] font-medium tracking-[-0.035em]">Things that bit me</h3>
+        <h3 className="mt-10 text-[clamp(24px,2.2vw,32px)] font-medium tracking-[-0.035em] md:mt-14">Things that bit me</h3>
         <ol className="mt-6 divide-y divide-line border-y border-line">
           {LESSONS.map((l) => (
-            <li key={l.n} className="grid gap-2 py-6 md:grid-cols-[220px_1fr]">
+            <li key={l.n} className="grid gap-1.5 py-5 md:grid-cols-[220px_1fr] md:gap-2 md:py-6">
               <p className="label pt-1 text-mute">{l.from}</p>
               <div><p className="text-[18px] font-medium tracking-[-0.02em]">{l.head}</p><p className="mt-1.5 max-w-[68ch] text-[16px] leading-relaxed text-body">{l.body}</p></div>
             </li>
@@ -147,10 +147,10 @@ export default function About() {
       </Slide>
 
       <Slide label="Interests">
-        <H className="t-slide mt-10">What I&apos;m drawn to</H>
-        <ul className="mt-10 grid gap-3 sm:grid-cols-2 xl:grid-cols-5">
+        <H className="t-slide mt-7 md:mt-10">What I&apos;m drawn to</H>
+        <ul className="swipe mt-7 grid gap-3 sm:grid-cols-2 md:mt-10 xl:grid-cols-5">
           {INTERESTS.map((x) => (
-            <li key={x.t} className="panel flex flex-col p-6">
+            <li key={x.t} className="panel flex flex-col p-5 md:p-6">
               <h3 className="text-[20px] font-medium leading-tight tracking-[-0.025em]">{x.t}</h3>
               <p className="mt-3 flex-1 text-[15px] leading-relaxed text-body">{x.b}</p>
               <Link href={x.proof.href} className="u mt-5 self-start text-[14px] font-medium">{x.proof.label}</Link>

@@ -57,17 +57,31 @@ body {
 
 /* ---------- surfaces ---------- */
 .slide {
+  --pad: clamp(20px, 4vw, 56px);
   position: relative;
   background: var(--card);
   border-radius: 28px;
-  padding: clamp(24px, 4vw, 56px);
+  padding: var(--pad);
   scroll-margin-top: 12px;
 }
 .slide-dark { background: var(--night); color: #ecedee; }
 .slide-dark .t-lead { color: rgba(236, 237, 238, 0.62); }
 .panel { background: var(--soft); border-radius: 18px; }
 .slide-dark .panel { background: var(--night-card); }
-@media (max-width: 767px) { .slide { border-radius: 22px; } .panel { border-radius: 14px; } }
+@media (max-width: 767px) { .slide { border-radius: 22px; padding-block: 24px 28px; } .panel { border-radius: 14px; } }
+
+/* phones: a row of cards becomes a swipeable strip, bleeding to the slide edge with the next card peeking in */
+@media (max-width: 767px) {
+  .swipe {
+    display: flex !important; gap: 10px; overflow-x: auto; scroll-snap-type: x mandatory; overscroll-behavior-x: contain;
+    margin-inline: calc(-1 * var(--pad)); padding-inline: var(--pad); scroll-padding-inline: var(--pad);
+    scrollbar-width: none;
+  }
+  .swipe::-webkit-scrollbar { display: none; }
+  .swipe > * { flex: 0 0 84%; scroll-snap-align: start; min-width: 0; }
+  .swipe-hint { display: flex; }
+}
+.swipe-hint { display: none; }
 
 /* ---------- controls ---------- */
 .btn {

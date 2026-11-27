@@ -54,9 +54,9 @@ export default function Home() {
       <Slide id="cover" label="Leslie Paul Ajayi, profile 2026" deck className="lg:min-h-[calc(100svh-24px)]">
         <div className="grid items-center gap-x-10 lg:grid-cols-[1.08fr_1fr]">
           <div className="order-2 lg:order-1">
-            <p className="pill label mt-8 text-ink lg:mt-16">Software engineer · Accra, Ghana</p>
-            <H as="h1" className="t-hero mt-6">Understand it. Then build it</H>
-            <p className="t-lead mt-7 max-w-[44ch] !text-ink">
+            <p className="pill label mt-6 text-ink lg:mt-16">Software engineer · Accra, Ghana</p>
+            <H as="h1" className="t-hero mt-5 md:mt-6">Understand it. Then build it</H>
+            <p className="t-lead mt-5 max-w-[44ch] !text-ink md:mt-7">
               I&apos;m Leslie Paul Ajayi: software engineer at Global Icons, founder of Trofficient and CTO of Beagine. I build systems that go to production, not demos that die in a repo.
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
@@ -68,15 +68,15 @@ export default function Home() {
             <Dither shape={{ kind: "portrait", fit: "contain", align: 0.6 }} cell={3} label="Leslie Paul Ajayi, portrait rendered in green dots" />
           </div>
         </div>
-        <ul className="mt-10 grid grid-cols-2 gap-x-6 gap-y-5 border-t border-line pt-7 sm:grid-cols-3 lg:grid-cols-5">
+        <ul className="mt-8 grid grid-cols-2 gap-x-5 gap-y-4 border-t border-line pt-6 sm:grid-cols-3 md:mt-10 md:pt-7 lg:grid-cols-5">
           {STRIP.map((s) => (
             <li key={s.name}>
               <Link href={s.href} className="group block">
-                <span className="flex items-center gap-2 text-[19px] font-medium tracking-[-0.02em]">
+                <span className="flex items-center gap-2 text-[17px] font-medium tracking-[-0.02em] md:text-[19px]">
                   <span className="u">{s.name}</span>
                   <i aria-hidden className={`h-2 w-2 rounded-full ${s.live ? "bg-accent" : "border-2 border-accent"}`} />
                 </span>
-                <span className="mt-1 block text-[15px] text-mute">{s.what}</span>
+                <span className="mt-0.5 block text-[14px] leading-snug text-mute md:text-[15px]">{s.what}</span>
               </Link>
             </li>
           ))}
@@ -85,15 +85,15 @@ export default function Home() {
 
       {/* 02 THESIS */}
       <Slide id="thesis" label="Thesis" deck>
-        <div className="mt-12 grid gap-8 lg:grid-cols-[1fr_340px] lg:items-start">
+        <div className="mt-7 grid gap-5 md:mt-12 md:gap-8 lg:grid-cols-[1fr_340px] lg:items-start">
           <H className="t-slide max-w-[17ch]">I build systems that go to production, not demos that die in a repo</H>
           <p className="t-lead lg:pt-3">Three working principles. They decide what I build, how I build it and what I leave out.</p>
         </div>
-        <ul className="mt-12 grid gap-3 md:grid-cols-3">
+        <ul className="swipe mt-8 grid gap-3 md:mt-12 md:grid-cols-3">
           {THESIS.map((c) => (
             <li key={c.t} className="panel overflow-hidden">
-              <div className="h-[150px] md:h-[180px]"><Dither shape={c.shape} cell={5} /></div>
-              <div className="p-6 md:p-7">
+              <div className="h-[96px] md:h-[180px]"><Dither shape={c.shape} cell={5} /></div>
+              <div className="p-5 md:p-7">
                 <p className="label text-mute">{c.tag}</p>
                 <h3 className="t-card mt-3">{c.t}</h3>
                 <p className="mt-3 text-[16px] leading-relaxed text-body">{c.b}</p>
@@ -105,27 +105,29 @@ export default function Home() {
 
       {/* 03 WORK */}
       <Slide id="work" label="Portfolio" deck>
-        <H className="t-slide mt-12">What I founded, lead and built</H>
-        <div className="mt-10 grid gap-3 md:grid-cols-6">
+        <H className="t-slide mt-7 md:mt-12">What I founded, lead and built</H>
+        <div className="mt-7 grid gap-3 md:mt-10 md:grid-cols-6">
           <div className="md:col-span-4 md:row-span-2"><WorkCard w={lead} big sizes="(min-width: 1024px) 55vw, 95vw" /></div>
-          {rest.map((w) => <div key={w.slug} className="md:col-span-2"><WorkCard w={w} /></div>)}
+          <div className="swipe contents md:contents">
+            {rest.map((w) => <div key={w.slug} className="md:col-span-2"><WorkCard w={w} /></div>)}
+          </div>
         </div>
         <Link href="/work" className="u mt-8 inline-block text-[17px] font-medium">See all {WORK.length} projects</Link>
       </Slide>
 
       {/* 04 EXPERIENCE */}
       <Slide id="experience" label="Experience" deck>
-        <div className="mt-12 grid gap-8 lg:grid-cols-[1fr_340px] lg:items-end">
+        <div className="mt-7 grid gap-5 md:mt-12 md:gap-8 lg:grid-cols-[1fr_340px] lg:items-end">
           <H className="t-slide">Where I work, and what I own</H>
           <p className="t-lead">Employer and client systems are confidential, so they stay at a public level here. My own products don&apos;t.</p>
         </div>
-        <div className="mt-10"><ExperienceList /></div>
+        <div className="mt-6 md:mt-10"><ExperienceList /></div>
         <div className="mt-10">
           <p className="label text-mute">Also affiliated with</p>
-          <ul className="mt-4 grid grid-cols-2 gap-3 md:grid-cols-4">
+          <ul className="mt-4 grid grid-cols-2 gap-2 md:grid-cols-4 md:gap-3">
             {orgs.map((a) => (
-              <li key={a.id} className="panel flex items-center gap-4 p-4">
-                <Image src={a.img} alt="" width={a.w} height={a.h} className="h-10 w-auto max-w-[90px] object-contain" />
+              <li key={a.id} className="panel flex flex-col items-start gap-3 p-4 md:flex-row md:items-center md:gap-4">
+                <Image src={a.img} alt="" width={a.w} height={a.h} className="h-8 w-auto max-w-[110px] object-contain md:h-10 md:max-w-[90px]" />
                 <div><p className="text-[16px] font-medium tracking-[-0.02em]">{a.name}</p>{a.note && <p className="text-[13px] text-mute">{a.note}</p>}</div>
               </li>
             ))}
@@ -135,12 +137,12 @@ export default function Home() {
 
       {/* 05 NUMBERS */}
       <Slide id="numbers" label="Numbers" deck dark>
-        <H className="t-slide mt-12">Receipts, not adjectives</H>
-        <div className="mt-10 grid gap-3 md:grid-cols-4 md:grid-rows-2">
-          <div className="panel flex min-h-[300px] flex-col p-6 md:col-span-2 md:row-span-2 md:p-8">
+        <H className="t-slide mt-7 md:mt-12">Receipts, not adjectives</H>
+        <div className="mt-7 grid grid-cols-2 gap-2 md:mt-10 md:grid-cols-4 md:grid-rows-2 md:gap-3">
+          <div className="panel col-span-2 flex min-h-[210px] flex-col p-5 md:row-span-2 md:min-h-[300px] md:p-8">
             <p className="label text-white/55">GitHub</p>
-            <p className="mt-auto text-[clamp(110px,16vw,240px)] font-medium leading-[0.85] tracking-[-0.06em]">158</p>
-            <p className="mt-4 text-[18px] text-white/70">repositories since 2022, 138 of them public</p>
+            <p className="mt-auto text-[clamp(96px,16vw,240px)] font-medium leading-[0.85] tracking-[-0.06em]">158</p>
+            <p className="mt-3 text-[16px] text-white/70 md:mt-4 md:text-[18px]">repositories since 2022, 138 of them public</p>
           </div>
           {[
             ["Case studies", String(PROJECTS.length), "products, each with its own write-up"],
@@ -148,10 +150,10 @@ export default function Home() {
             ["4-Man Chess", "25/40", "games won by the Advanced bot against three Hard bots; even is 10"],
             ["npm-git-helper", "v3", "published on npm, now at 3.0.0"],
           ].map(([k, n, l]) => (
-            <div key={k} className="panel flex min-h-[200px] flex-col p-6">
+            <div key={k} className="panel flex min-h-[156px] flex-col p-4 md:min-h-[200px] md:p-6">
               <p className="label text-white/55">{k}</p>
-              <p className="mt-auto text-[clamp(48px,5vw,76px)] font-medium leading-none tracking-[-0.05em]">{n}</p>
-              <p className="mt-2 text-[15px] leading-snug text-white/65">{l}</p>
+              <p className="mt-auto pt-4 text-[clamp(40px,5vw,76px)] font-medium leading-none tracking-[-0.05em]">{n}</p>
+              <p className="mt-2 text-[13px] leading-snug text-white/65 md:text-[15px]">{l}</p>
             </div>
           ))}
         </div>
@@ -159,37 +161,39 @@ export default function Home() {
 
       {/* 06 STORY */}
       <Slide id="story" label="Story" deck>
-        <H className="t-slide mt-12 max-w-[15ch]">From console apps to companies</H>
-        <ol className="mt-12 grid gap-x-3 gap-y-8 sm:grid-cols-3 lg:grid-cols-6 lg:items-end">
+        <H className="t-slide mt-7 md:mt-12 max-w-[15ch]">From console apps to companies</H>
+        <ol className="mt-8 grid gap-x-3 border-l border-line pl-5 max-lg:space-y-6 md:mt-12 lg:grid-cols-6 lg:items-end lg:gap-y-8 lg:border-0 lg:pl-0">
           {STORY.map((s) => (
-            <li key={s.y} className="flex flex-col">
-              <p className="text-[clamp(30px,2.6vw,40px)] font-medium tracking-[-0.04em]">{s.y}</p>
+            <li key={s.y} className="relative flex flex-col">
+              <i aria-hidden className="absolute -left-[25px] top-[13px] h-[9px] w-[9px] rounded-full bg-accent ring-4 ring-card lg:hidden" />
+              <p className="text-[clamp(26px,2.6vw,40px)] font-medium tracking-[-0.04em]">{s.y}</p>
               <h3 className="mt-1 text-[17px] font-medium tracking-[-0.02em]">{s.t}</h3>
               <p className="mt-2 text-[15px] leading-relaxed text-mute">{s.b}</p>
-              <div className="mt-4 h-16 overflow-hidden rounded-[14px] lg:h-[var(--bar)]" style={{ ["--bar" as string]: `${s.h * 3}px` }}>
+              <div className="mt-4 hidden overflow-hidden rounded-[14px] lg:block lg:h-[var(--bar)]" style={{ ["--bar" as string]: `${s.h * 3}px` }}>
                 <Dither shape={{ kind: "fill", density: s.d, fade: "up" }} cell={5} />
               </div>
             </li>
           ))}
-          <li className="flex flex-col">
-            <p className="text-[clamp(30px,2.6vw,40px)] font-medium tracking-[-0.04em] text-mute">Next</p>
+          <li className="relative flex flex-col">
+            <i aria-hidden className="absolute -left-[25px] top-[13px] h-[9px] w-[9px] rounded-full border-2 border-accent bg-card ring-4 ring-card lg:hidden" />
+            <p className="text-[clamp(26px,2.6vw,40px)] font-medium tracking-[-0.04em] text-mute">Next</p>
             <a href="#contact" className="u mt-1 self-start text-[17px] font-medium">The next one</a>
-            <div className="mt-4 h-16 rounded-[14px] border border-dashed border-mute/40 lg:h-[270px]" />
+            <div className="mt-4 hidden rounded-[14px] border border-dashed border-mute/40 lg:block lg:h-[270px]" />
           </li>
         </ol>
       </Slide>
 
       {/* 07 APPROACH */}
       <Slide id="approach" label="Approach" deck>
-        <div className="mt-12 grid gap-8 lg:grid-cols-[1fr_340px] lg:items-end">
+        <div className="mt-7 grid gap-5 md:mt-12 md:gap-8 lg:grid-cols-[1fr_340px] lg:items-end">
           <H className="t-slide">Build. Test. Question. Repeat</H>
           <p className="t-lead">The loop I run on everything, with the evidence for each step.</p>
         </div>
-        <ol className="mt-10 grid gap-3 md:grid-cols-2 xl:grid-cols-4">
+        <ol className="swipe mt-7 grid gap-3 md:mt-10 md:grid-cols-2 xl:grid-cols-4">
           {LOOP.map((l) => (
-            <li key={l.w} className="panel flex flex-col p-6 md:p-7">
+            <li key={l.w} className="panel flex flex-col p-5 md:p-7">
               <p className="label text-mute">{l.n}</p>
-              <h3 className="mt-6 text-[clamp(34px,3vw,46px)] font-medium tracking-[-0.045em]">{l.w}<span className="dot">.</span></h3>
+              <h3 className="mt-4 text-[clamp(32px,3vw,46px)] md:mt-6 font-medium tracking-[-0.045em]">{l.w}<span className="dot">.</span></h3>
               <p className="mt-3 flex-1 text-[16px] leading-relaxed text-body">{l.line}</p>
               <Link href={l.href} className="u mt-6 self-start text-[15px] font-medium">{l.cta}</Link>
             </li>
@@ -199,12 +203,12 @@ export default function Home() {
 
       {/* 08 TOOLS */}
       <Slide id="tools" label="Open source" deck>
-        <div className="mt-12 grid gap-8 lg:grid-cols-[1fr_340px] lg:items-end">
+        <div className="mt-7 grid gap-5 md:mt-12 md:gap-8 lg:grid-cols-[1fr_340px] lg:items-end">
           <H className="t-slide">Tools I built and gave away</H>
           <p className="t-lead">Small, public and free. Each one started because I needed it.</p>
         </div>
-        <div className="mt-10 divide-y divide-line border-y border-line">
-          <div className="grid gap-8 py-10 lg:grid-cols-2">
+        <div className="mt-7 divide-y divide-line border-y border-line md:mt-10">
+          <div className="grid gap-6 py-8 md:py-10 lg:grid-cols-2 lg:gap-8">
             <div>
               <p className="label text-mute">Node.js · Published on npm · v3.0.0</p>
               <h3 className="t-big mt-3">git-helper</h3>
@@ -215,7 +219,7 @@ export default function Home() {
                 <a href="https://github.com/Leslie-23/git-helper" target="_blank" rel="noopener noreferrer" className="u">Source on GitHub</a>
               </div>
             </div>
-            <div className="rounded-[18px] bg-night p-6 font-mono text-[13px] leading-[1.9] text-white/80 md:p-8">
+            <div className="rounded-[16px] bg-night p-5 font-mono text-[12px] leading-[1.8] text-white/80 md:rounded-[18px] md:p-8 md:text-[13px] md:leading-[1.9]">
               <p className="label text-white/45">What it does</p>
               <ul className="mt-4 space-y-2">
                 <li><span className="text-accent">→</span> Stages, commits and pushes in one command</li>
@@ -224,7 +228,7 @@ export default function Home() {
               </ul>
             </div>
           </div>
-          <div className="grid gap-8 py-10 lg:grid-cols-2">
+          <div className="grid gap-6 py-8 md:py-10 lg:grid-cols-2 lg:gap-8">
             <div>
               <p className="label text-mute">Python · MCP server · 36 tests</p>
               <h3 className="t-big mt-3">scrapy-mcp</h3>
@@ -234,7 +238,7 @@ export default function Home() {
                 <a href={scrapy.repo} target="_blank" rel="noopener noreferrer" className="u">Source on GitHub</a>
               </div>
             </div>
-            <div className="rounded-[18px] bg-night p-6 font-mono text-[13px] leading-[1.9] text-white/80 md:p-8">
+            <div className="rounded-[16px] bg-night p-5 font-mono text-[12px] leading-[1.8] text-white/80 md:rounded-[18px] md:p-8 md:text-[13px] md:leading-[1.9]">
               <p className="label text-white/45">Three tools, one safety layer</p>
               <ul className="mt-4 space-y-2">
                 <li><span className="text-accent">scrape_page</span> title, description, readable text, links</li>
@@ -249,8 +253,8 @@ export default function Home() {
 
       {/* 09 WRITING */}
       <Slide id="writing" label="Writing" deck>
-        <H className="t-slide mt-12">What I learn, written down</H>
-        <ul className="mt-10 grid gap-6 md:grid-cols-3">
+        <H className="t-slide mt-7 md:mt-12">What I learn, written down</H>
+        <ul className="swipe mt-7 grid gap-6 md:mt-10 md:grid-cols-3">
           {NOTES.slice(0, 3).map((n, i) => (
             <li key={n.slug}>
               <Link href={`/notes/${n.slug}`} className="group block">
@@ -264,7 +268,7 @@ export default function Home() {
             </li>
           ))}
         </ul>
-        <Link href="/notes" className="btn btn-solid mt-10">Read all {NOTES.length} notes</Link>
+        <Link href="/notes" className="btn btn-solid mt-8 md:mt-10">Read all {NOTES.length} notes</Link>
       </Slide>
 
       {/* 10 CONTACT */}

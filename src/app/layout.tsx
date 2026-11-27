@@ -21,7 +21,7 @@ export const metadata: Metadata = {
   openGraph: { type: "website", siteName: "Leslie Paul Ajayi", title, description, locale: "en_GH" },
   twitter: { card: "summary_large_image", title, description },
 };
-export const viewport: Viewport = { themeColor: "#ecedeb", width: "device-width", initialScale: 1 };
+export const viewport: Viewport = { themeColor: "#ecedeb", width: "device-width", initialScale: 1, viewportFit: "cover" };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -29,7 +29,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body>
         <a href="#main" className="label sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-full focus:bg-ink focus:px-4 focus:py-2 focus:text-white">Skip to content</a>
         <Rail />
-        <main id="main" className="px-2 pb-24 pt-2 sm:px-3 sm:pt-3 lg:ml-[var(--rail)] lg:pb-3 lg:pl-0">
+        <main id="main" className="px-2 pb-[calc(5.5rem+env(safe-area-inset-bottom))] pt-2 sm:px-3 sm:pt-3 lg:ml-[var(--rail)] lg:pb-3 lg:pl-0">
           <div className="flex flex-col gap-2 sm:gap-3">{children}</div>
         </main>
         <MobileBar />

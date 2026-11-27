@@ -18,7 +18,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 
 function Row({ label, children }: { label: string; children: React.ReactNode }) {
   return (
-    <section className="grid gap-x-10 gap-y-4 border-t border-line py-10 md:grid-cols-[220px_1fr] md:py-12">
+    <section className="grid gap-x-10 gap-y-3 border-t border-line py-7 md:grid-cols-[220px_1fr] md:gap-y-4 md:py-12">
       <h2 className="text-[clamp(24px,2.2vw,32px)] font-medium tracking-[-0.035em]">{label}</h2>
       <div className="min-w-0">{children}</div>
     </section>
@@ -29,9 +29,9 @@ function Hero({ w }: { w: WorkItem }) {
   const p = w.project;
   if (w.phones && p?.gallery)
     return (
-      <div className="panel flex items-center justify-center gap-[2.5%] overflow-hidden bg-[#e5ebe7] px-[6%] py-[5%]">
+      <div className="panel flex items-center justify-center gap-[3%] overflow-hidden bg-[#e5ebe7] px-[5%] py-[6%] md:gap-[2.5%] md:px-[6%] md:py-[5%]">
         {p.gallery.slice(0, 4).map((g, i) => (
-          <div key={g.src} className={`relative w-[22%] overflow-hidden rounded-[12%/6%] border-[4px] border-ink bg-ink ${i === 3 ? "max-sm:hidden" : ""}`} style={{ aspectRatio: "1179 / 2556", transform: `translateY(${i % 2 ? "-3%" : "3%"})` }}>
+          <div key={g.src} className={`relative w-[30%] overflow-hidden rounded-[12%/6%] border-[3px] border-ink bg-ink sm:w-[22%] sm:border-[4px] ${i === 3 ? "max-sm:hidden" : ""}`} style={{ aspectRatio: "1179 / 2556", transform: `translateY(${i % 2 ? "-3%" : "3%"})` }}>
             <Image src={g.src} alt={`${w.name}: ${g.caption.toLowerCase()} screen`} fill sizes="22vw" className="object-cover object-top" priority={i < 2} />
           </div>
         ))}
@@ -67,21 +67,21 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
   return (
     <>
       <Slide label={`Work · ${ownership(w.role)}`}>
-        <Link href="/work" className="u mt-8 inline-block text-[15px]">All work</Link>
+        <Link href="/work" className="u mt-6 inline-block text-[15px] md:mt-8">All work</Link>
         <div className="mt-6 grid gap-6 lg:grid-cols-[1fr_auto] lg:items-end">
           <div>
             <h1 className="text-[clamp(48px,7.4vw,116px)] font-medium leading-[0.95] tracking-[-0.055em]">{w.name}</h1>
             <p className="t-lead mt-5 max-w-[56ch]">{w.blurb}</p>
           </div>
-          <div className="flex flex-wrap gap-3">
+          <div className="flex flex-wrap gap-2 md:gap-3">
             {w.live && <a href={w.live} target="_blank" rel="noopener noreferrer" className="btn btn-solid">{w.slug === "git-helper" ? "View on npm" : "Visit the live product"}</a>}
             {w.repo && <a href={w.repo} target="_blank" rel="noopener noreferrer" className="btn">Source on GitHub</a>}
           </div>
         </div>
 
-        <div className="mt-10"><Hero w={w} /></div>
+        <div className="mt-7 md:mt-10"><Hero w={w} /></div>
 
-        <dl className="mt-10 grid grid-cols-2 gap-x-6 gap-y-5 md:grid-cols-4">
+        <dl className="mt-7 grid grid-cols-2 gap-x-6 gap-y-4 md:mt-10 md:grid-cols-4 md:gap-y-5">
           {meta.map(([k, v]) => <div key={k}><dt className="text-[13px] text-mute">{k}</dt><dd className="mt-1 text-[16px] font-medium tracking-[-0.01em]">{v}</dd></div>)}
         </dl>
 
@@ -90,7 +90,7 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
             <>
               {p.story.map((b) => (
                 <Row key={b.label} label={sentence(b.label)}>
-                  <p className="max-w-[64ch] text-[18px] leading-[1.7] text-body">{b.body}</p>
+                  <p className="max-w-[64ch] text-[17px] leading-[1.7] text-body md:text-[18px]">{b.body}</p>
                 </Row>
               ))}
               <Row label="How it's built">
@@ -109,7 +109,7 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
                 <Row label="Key decisions">
                   <ul className="grid gap-3 lg:grid-cols-2">
                     {p.decisions.map((d) => (
-                      <li key={d.title} className="panel p-6">
+                      <li key={d.title} className="panel p-5 md:p-6">
                         <h3 className="text-[19px] font-medium tracking-[-0.02em]">{d.title}</h3>
                         <p className="mt-2 text-[16px] leading-relaxed text-body">{d.body}</p>
                       </li>

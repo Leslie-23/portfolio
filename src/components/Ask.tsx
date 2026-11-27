@@ -18,7 +18,7 @@ export default function Ask({ deck = false }: { deck?: boolean }) {
         <Dither shape={{ kind: "sphere", cx: 0.82, cy: 1.05, r: 0.95 }} cell={4} />
       </div>
       <div className="relative max-w-[980px]">
-        <p className="pill label mt-12 text-ink md:mt-16">Based in Accra, Ghana</p>
+        <p className="pill label mt-8 text-ink md:mt-16">Based in Accra, Ghana</p>
         <H className="t-hero mt-6 !text-[clamp(50px,7.2vw,116px)]">Have a problem worth solving?</H>
         <p className="t-lead mt-7 max-w-[46ch] !text-ink">
           I&apos;m interested in engineering roles, product collaborations and well-scoped builds. Email is the fastest way to reach me.
@@ -27,15 +27,15 @@ export default function Ask({ deck = false }: { deck?: boolean }) {
           <a href={`mailto:${PERSON.email}`} className="btn btn-solid">{PERSON.email}</a>
           <a href={PERSON.links.linkedin} target="_blank" rel="noopener noreferrer" className="btn">LinkedIn</a>
         </div>
-        <ul className="mt-10 grid gap-x-8 gap-y-6 border-t border-line pt-8 sm:grid-cols-2 md:grid-cols-4 md:max-w-none">
+        <ul className="mt-8 grid grid-cols-2 gap-x-6 gap-y-5 border-t border-line pt-6 md:mt-10 md:grid-cols-4 md:gap-x-8 md:pt-8">
           {LINKS.map((l) => (
             <li key={l.k}>
               <a href={l.href} target="_blank" rel="noopener noreferrer" className="u text-[17px] font-medium">{l.k}</a>
-              <p className="mt-1 text-[14px] text-mute">{l.v}</p>
+              <p className="mt-1 text-[13px] leading-snug text-mute md:text-[14px]">{l.v}</p>
             </li>
           ))}
         </ul>
-        <div className="label mt-12 flex justify-between gap-4 text-mute">
+        <div className="label mt-10 flex flex-wrap justify-between gap-x-4 gap-y-1 text-mute md:mt-12">
           <span>© {PERSON.year} Leslie Paul Ajayi</span>
           <Clock />
         </div>
