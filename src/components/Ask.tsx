@@ -24,6 +24,7 @@ export default function Ask({ deck = false }: { deck?: boolean }) {
         <div className="mt-7 flex flex-wrap gap-3">
           <a href={`mailto:${PERSON.email}`} className="btn btn-solid">{PERSON.email}</a>
           <a href={PERSON.links.linkedin} target="_blank" rel="noopener noreferrer" className="btn">LinkedIn</a>
+          <a href="/Leslie-Paul-Ajayi-CV.pdf" download className="btn">Download CV<span className="label ml-2 text-mute">PDF</span></a>
         </div>
         <ul className="mt-8 grid grid-cols-2 gap-x-6 gap-y-5 border-t border-line pt-6 md:mt-10 md:grid-cols-4 md:gap-x-8 md:pt-8">
           {LINKS.map((l) => (
