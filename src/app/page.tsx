@@ -7,6 +7,7 @@ import ExperienceList from "@/components/ExperienceList";
 import AppMarquee from "@/components/AppMarquee";
 import StoryTimeline from "@/components/StoryTimeline";
 import BustBuild from "@/components/BustBuild";
+import AfricaMark from "@/components/AfricaMark";
 import StatMarquee from "@/components/StatMarquee";
 import CopyCommand from "@/components/CopyCommand";
 import Ask from "@/components/Ask";
@@ -85,6 +86,7 @@ export default function Home() {
       {/* 02 PRINCIPLES: dark, loud and ruled. The type is the graphic. */}
       <Slide id="thesis" label="Principles / 02" deck dark className="overflow-hidden">
         <div aria-hidden className="pointer-events-none absolute inset-0 opacity-[0.05] [background-image:linear-gradient(90deg,#fff_1px,transparent_1px)] [background-size:25%_100%]" />
+        <AfricaMark className="right-[-8%] top-[4%] h-[62%] w-auto text-accent opacity-[0.13] md:right-[2%] md:h-[78%]" />
         <div className="relative">
           <h2 className="mt-8 text-[clamp(40px,8.4vw,144px)] font-semibold uppercase leading-[0.86] tracking-[-0.06em] md:mt-14">
             I build systems that go to <span className="text-accent">production.</span>
