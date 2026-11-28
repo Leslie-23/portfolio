@@ -1,6 +1,6 @@
 /* The 400 crew. Everything here comes from the crew's own site (https://400-omega.vercel.app/: Crew, Story and Track record
    pages), read on 27 Nov 2026. Nothing is added. Roles, ownership lists and dates are as that site states them, except Leslie's role, which Leslie corrected on 27 Nov 2026: Leslie is the backend person on most projects.
-   The crew's site has no member photos yet, so the page shows initials, not stand-ins. */
+   The busts are faceted portraits made from photos Leslie supplied on 28 Nov 2026 (public/team, built with scripts/build-crew-bust.mjs). */
 
 export const CREW_SITE = "https://400-omega.vercel.app";
 
@@ -15,11 +15,12 @@ export type Member = {
   motto: string;
   href?: string;               // a link the crew's own site gives for them
   me?: true;
+  bust: { src: string; w: number; h: number };   // the faceted portrait
 };
 
 export const CREW: Member[] = [
   {
-    id: "joyce", name: "Joyce", also: "Mama J",
+    id: "joyce", name: "Joyce", also: "Mama J", bust: { src: "/team/joyce.png", w: 828, h: 842 },
     usually: "Partnerships, clients, pitches and frontend",
     owns: ["Partnerships", "Landing clients", "Pitches", "The group fund"],
     stack: ["UI", "Frontend", "Backend when it's needed"],
@@ -28,7 +29,7 @@ export const CREW: Member[] = [
     href: "https://www.joyceelli.com",
   },
   {
-    id: "leslie", name: "Leslie", me: true,
+    id: "leslie", name: "Leslie", me: true, bust: { src: "/portrait/leslie.png", w: 687, h: 1083 },
     usually: "Backend, full-stack, DevOps and releases",
     owns: ["The backend, on most projects", "Deploys", "Play Store and TestFlight releases", "Trofficient (founder)"],
     stack: ["Backend", "Full-stack", "DevOps", "CI and releases"],
@@ -36,7 +37,7 @@ export const CREW: Member[] = [
     motto: "I smell a rebase.",
   },
   {
-    id: "elton", name: "Elton", also: "Nii Marmah",
+    id: "elton", name: "Elton", also: "Nii Marmah", bust: { src: "/team/elton.png", w: 1000, h: 1061 },
     usually: "Frontend, product and system design",
     owns: ["Interfaces", "Mobile apps", "Design reviews", "Beagine (co-founder)"],
     stack: ["Expo", "React Native", "Frontend", "Product design"],
@@ -45,7 +46,7 @@ export const CREW: Member[] = [
     href: "https://bio-ten-nu.vercel.app",
   },
   {
-    id: "efo", name: "Efo", also: "Selorm",
+    id: "efo", name: "Efo", also: "Selorm", bust: { src: "/team/efo.png", w: 853, h: 885 },
     usually: "Database, QA and client delivery",
     owns: ["Data models", "QA and bug-finding", "Keeping client work on track", "Hardware fixes"],
     stack: ["Databases", "Backend", "QA", "Hardware"],
