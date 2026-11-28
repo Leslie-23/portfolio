@@ -1,3 +1,4 @@
+import { PERSON } from "@/lib/data";
 import { PRICE_DRIVERS, PRICE_OTHER, PRICE_RUNNING } from "@/lib/pricing";
 
 /** What the estimate leaves out or depends on: other ways of working, what moves the price, and costs after launch. */
@@ -11,7 +12,10 @@ export default function PricingExtras() {
             <li key={o.name} className="panel flex flex-col p-5 md:p-7">
               <h3 className="text-[20px] font-medium tracking-[-0.03em]">{o.name}</h3>
               <p className="mt-2 flex-1 text-[15px] leading-relaxed text-body">{o.what}</p>
-              <p className="mt-5 text-[clamp(26px,2.4vw,36px)] font-medium tracking-[-0.04em]">{o.price}</p>
+              <div className="mt-5 flex flex-wrap items-center gap-x-5 gap-y-3">
+                <a href={`mailto:${PERSON.email}?subject=${encodeURIComponent(o.subject)}`} className="btn btn-solid">{o.cta}</a>
+                <p className="label text-mute">{o.price}</p>
+              </div>
             </li>
           ))}
         </ul>

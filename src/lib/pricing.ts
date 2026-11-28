@@ -11,8 +11,8 @@ export const PRICE_PROJECTS = [
 ];
 
 export const PRICE_OTHER = [
-  { name: "Consulting and contract engineering", what: "A day or hourly rate for embedded engineering, reviews and architecture work. Agreed per engagement.", price: "On request" },
-  { name: "Retainer", what: "Monthly maintenance or part-time engineering for a product that's already live.", price: "On request" },
+  { name: "Consulting and contract engineering", what: "A day or hourly rate for embedded engineering, reviews and architecture work. Agreed per engagement.", price: "On request", cta: "Ask for a rate", subject: "Consulting / contract engineering enquiry" },
+  { name: "Retainer", what: "Monthly maintenance or part-time engineering for a product that's already live.", price: "On request", cta: "Discuss a retainer", subject: "Retainer enquiry" },
 ];
 
 export const PRICE_MODES = [
