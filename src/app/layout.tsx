@@ -8,11 +8,13 @@ import Elena from "@/components/Elena";
 import { PERSON, TOOLKIT, publicEvidence } from "@/lib/data";
 import { WORK } from "@/lib/work";
 import { TRACKS } from "@/lib/music";
+import JsonLd from "@/components/JsonLd";
+import { SITE_URL, PERSON_LD, WEBSITE_LD } from "@/lib/seo";
 
 const sans = Mona_Sans({ variable: "--font-sans-face", subsets: ["latin"], weight: ["400", "500", "600"] });
 const mono = Geist_Mono({ variable: "--font-mono-face", subsets: ["latin"], weight: ["400", "500"] });
 
-const site = process.env.NODE_ENV === "production" ? "https://www.leslieajayi.com" : "http://localhost:3000";
+const site = process.env.NODE_ENV === "production" ? SITE_URL : "http://localhost:3000";
 const title = "Leslie Paul Ajayi — Software engineer and founder";
 const description =
   "Software engineer at Global Icons, founder of Trofficient and CTO of Beagine. I build systems that go to production, not demos that die in a repo. Accra, Ghana.";
@@ -21,9 +23,14 @@ export const metadata: Metadata = {
   metadataBase: new URL(site),
   title: { default: title, template: "%s — Leslie Paul Ajayi" },
   description,
-  authors: [{ name: "Leslie Paul Ajayi" }],
-  openGraph: { type: "website", siteName: "Leslie Paul Ajayi", title, description, locale: "en_GH" },
-  twitter: { card: "summary_large_image", title, description },
+  applicationName: "Leslie Paul Ajayi",
+  authors: [{ name: "Leslie Paul Ajayi", url: SITE_URL }],
+  creator: "Leslie Paul Ajayi",
+  keywords: ["Leslie Paul Ajayi", "software engineer Ghana", "software engineer Accra", "Trofficient", "Beagine", "Global Icons", "mobile app developer Ghana", "full-stack developer Accra"],
+  alternates: { canonical: "./" },
+  robots: { index: true, follow: true, googleBot: { index: true, follow: true, "max-image-preview": "large", "max-snippet": -1, "max-video-preview": -1 } },
+  openGraph: { type: "website", siteName: "Leslie Paul Ajayi", title, description, locale: "en_GH", url: "./" },
+  twitter: { card: "summary_large_image", title, description, creator: "@LesliePaulAjayi" },
 };
 export const viewport: Viewport = { themeColor: "#ecedeb", width: "device-width", initialScale: 1, viewportFit: "cover" };
 
@@ -40,6 +47,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en" className={`${sans.variable} ${mono.variable}`}>
       <body>
+        <JsonLd data={[PERSON_LD, WEBSITE_LD]} />
         <a href="#main" className="label sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-full focus:bg-ink focus:px-4 focus:py-2 focus:text-white">Skip to content</a>
         <TopBar />
         <main id="main" className="pt-[var(--bar)]">{children}</main>
