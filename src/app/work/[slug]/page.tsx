@@ -30,7 +30,7 @@ function Hero({ w }: { w: WorkItem }) {
     return (
       <div className="panel flex items-center justify-center gap-[3%] overflow-hidden bg-[#e5ebe7] px-[5%] py-[6%] md:gap-[2.5%] md:px-[6%] md:py-[5%]">
         {w.phones.slice(0, 4).map((src, i) => (
-          <div key={src} className={`relative w-[30%] overflow-hidden rounded-[12%/6%] border-[3px] border-ink bg-ink sm:w-[22%] sm:border-[4px] ${i === 3 ? "max-sm:hidden" : ""}`} style={{ aspectRatio: "1179 / 2556", transform: `translateY(${i % 2 ? "-3%" : "3%"})` }}>
+          <div key={src} className={`relative w-[30%] overflow-hidden rounded-[12%/6%] border-[2px] border-ink bg-ink sm:w-[22%] sm:border-[2.5px] ${i === 3 ? "max-sm:hidden" : ""}`} style={{ aspectRatio: "1179 / 2556", transform: `translateY(${i % 2 ? "-3%" : "3%"})` }}>
             <Image src={src} alt={`${w.name}: a screen from the app`} fill sizes="22vw" className="object-cover object-top" priority={i < 2} />
           </div>
         ))}
