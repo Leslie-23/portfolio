@@ -7,6 +7,7 @@ import ExperienceList from "@/components/ExperienceList";
 import AppMarquee from "@/components/AppMarquee";
 import StoryTimeline from "@/components/StoryTimeline";
 import BustBuild from "@/components/BustBuild";
+import AfricaA from "@/components/AfricaA";
 import StatMarquee from "@/components/StatMarquee";
 import CopyCommand from "@/components/CopyCommand";
 import Ask from "@/components/Ask";
@@ -53,7 +54,7 @@ export default function Home() {
         <div className="relative z-10 grid items-center gap-x-10 lg:grid-cols-[1.7fr_1fr]">
           <div className="order-2 lg:order-1">
             <p className="pill label mt-6 text-ink lg:mt-16">Software engineer · Accra, Ghana</p>
-            <H as="h1" className="t-hero mt-5 !text-[clamp(28px,8.4vw,40px)] md:mt-6 md:!text-[clamp(39px,5.1vw,84px)]">Built for Africa.<br />Systems for society.<br />Engineered for impact</H>
+            <H as="h1" className="t-hero mt-5 !text-[clamp(28px,8.4vw,40px)] md:mt-6 md:!text-[clamp(39px,5.1vw,84px)]">Built for Afric<AfricaA />.<br />Systems for society.<br />Engineered for impact</H>
             <p className="t-lead mt-5 max-w-[44ch] !text-ink md:mt-7">
               I&apos;m Leslie Paul Ajayi: software engineer at Global Icons, founder of Trofficient and CTO of Beagine. I build systems that go to production, not demos that die in a repo.
             </p>
