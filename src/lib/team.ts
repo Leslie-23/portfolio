@@ -1,6 +1,6 @@
 /* The 400 crew. Everything here comes from the crew's own site (https://400-omega.vercel.app/: Crew, Story and Track record
    pages), read on 27 Nov 2026. Nothing is added. Roles, ownership lists and dates are as that site states them, except Leslie's role, which Leslie corrected on 27 Nov 2026: Leslie is the backend person on most projects.
-   The busts are faceted portraits made from photos Leslie supplied on 28 Nov 2026 (public/team, built with scripts/build-elena-bust.mjs). */
+   The busts are faceted portraits made from photos Leslie supplied on 28 Nov 2026 (public/team, built with scripts/build-crew-bust.mjs). */
 
 export const CREW_SITE = "https://400-omega.vercel.app";
 

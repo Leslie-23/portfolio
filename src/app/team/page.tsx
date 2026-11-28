@@ -11,6 +11,7 @@ export const metadata: Metadata = {
 };
 
 const byId = (id: Member["id"]) => CREW.find((m) => m.id === id)!;
+const POSTER = (["efo", "leslie", "joyce", "elton"] as const).map(byId);   // the poster's order
 const Who = ({ m }: { m: Member }) => (
   <span className={`inline-flex h-7 items-center gap-1.5 rounded-full border px-2.5 text-[13px] font-medium ${m.me ? "border-ink bg-ink text-bg" : "border-line bg-bg text-ink"}`}>{m.me && <i aria-hidden className="h-[6px] w-[6px] rounded-full bg-accent" />}{m.name}</span>
 );
@@ -18,7 +19,14 @@ const Who = ({ m }: { m: Member }) => (
 export default function TeamPage() {
   return (
     <>
-      <Slide label="Team">
+      <Slide label="Team" className="relative isolate overflow-hidden">
+        {/* the four of us, lightly, like a film poster: Selorm, Leslie, Joyce, Elton */}
+        <div aria-hidden className="pointer-events-none absolute inset-x-0 bottom-0 -z-10 flex h-[64%] items-end justify-center px-0 opacity-[0.2] mix-blend-multiply [-webkit-mask-image:linear-gradient(to_top,transparent_0%,#000_22%,#000_100%)] [mask-image:linear-gradient(to_top,transparent_0%,#000_22%,#000_100%)] md:h-[92%] md:px-0">
+          {POSTER.map((m, i) => (
+            <Image key={m.id} src={m.bust.src} alt="" width={m.bust.w} height={m.bust.h} priority={i < 2} sizes="(min-width: 1024px) 32vw, 40vw"
+              className={`h-full w-auto min-w-0 max-w-[46%] shrink object-contain object-bottom md:max-w-[34%] ${i ? "-ml-[15%] md:-ml-[5%]" : ""} ${i % 2 ? "" : "h-[88%]"}`} />
+          ))}
+        </div>
         <div className="mt-7 grid gap-5 md:mt-10 md:gap-8 lg:grid-cols-[1fr_400px] lg:items-end">
           <H as="h1" className="t-hero">A crew of four</H>
           <p className="t-lead">
