@@ -46,11 +46,11 @@ export const CREW: Member[] = [
     href: "https://bio-ten-nu.vercel.app",
   },
   {
-    id: "efo", name: "Efo", also: "Selorm", bust: { src: "/team/efo.png", w: 853, h: 885 },
+    id: "efo", name: "Selorm", also: "Efo", bust: { src: "/team/efo.png", w: 853, h: 885 },
     usually: "Database, QA and client delivery",
     owns: ["Data models", "QA and bug-finding", "Keeping client work on track", "Hardware fixes"],
     stack: ["Databases", "Backend", "QA", "Hardware"],
-    bio: "Efo runs the database side, QA and bug-finding, and keeps client work on track. Efo also coined the house motto: ELK. Execute, Learn and Keep growing.",
+    bio: "Selorm runs the database side, QA and bug-finding, and keeps client work on track. He also coined the house motto: ELK. Execute, Learn and Keep growing.",
     motto: "More are still being cooked.",
   },
 ];
@@ -124,6 +124,6 @@ export const RECEIPTS = [
 export const HOUSE_RULES = [
   { t: "No boss. Whoever is closest takes the lead.", b: "There are no fixed titles. Whoever is closest to the problem leads it, and on the next project it is someone else." },
   { t: "100 each.", b: "That is the whole story behind the name, and it is still the deal." },
-  { t: "ELK.", b: "Execute, Learn and Keep growing. Efo coined it, and it stuck." },
+  { t: "ELK.", b: "Execute, Learn and Keep growing. Selorm coined it, and it stuck." },
   { t: "Show a working product.", b: "We are not pitching random app ideas. We are presenting working products." },
 ];
