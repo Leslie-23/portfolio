@@ -6,13 +6,25 @@ import Slide from "@/components/Slide";
 import Dither from "@/components/Dither";
 import Ask from "@/components/Ask";
 import { ownership } from "@/components/WorkCard";
+import JsonLd from "@/components/JsonLd";
 import { WORK, getWork, sentence, type WorkItem } from "@/lib/work";
+import { SITE_URL, abs, breadcrumbLd } from "@/lib/seo";
 
 export function generateStaticParams() { return WORK.map((w) => ({ slug: w.slug })); }
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const w = getWork((await params).slug);
-  return w ? { title: w.name, description: w.blurb, openGraph: w.image ? { images: [w.image] } : undefined } : {};
+  if (!w) return {};
+  const url = `/work/${w.slug}`;
+  const images = w.image ? [w.image] : undefined;
+  return {
+    title: w.name,
+    description: w.blurb,
+    alternates: { canonical: url },
+    // openGraph/twitter replace the layout's objects wholesale, so restate what must survive
+    openGraph: { type: "website", url, title: w.name, description: w.blurb, siteName: "Leslie Paul Ajayi", locale: "en_GH", images },
+    twitter: { card: "summary_large_image", title: w.name, description: w.blurb, images },
+  };
 }
 
 
@@ -100,6 +112,22 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
 
   return (
     <>
+      <JsonLd data={[
+        {
+          "@type": "CreativeWork",
+          name: w.name,
+          description: w.blurb,
+          url: abs(`/work/${w.slug}`),
+          genre: w.category,
+          dateCreated: w.year,
+          keywords: w.stack.join(", "),
+          ...(w.image ? { image: w.image.startsWith("http") ? w.image : abs(w.image) } : {}),
+          // "contributor", not "creator": the role field states real ownership and this must not inflate it
+          contributor: { "@id": `${SITE_URL}/#person` },
+          ...(w.live ? { sameAs: [w.live] } : {}),
+        },
+        breadcrumbLd([{ name: "Home", path: "/" }, { name: "Work", path: "/work" }, { name: w.name, path: `/work/${w.slug}` }]),
+      ]} />
       <Slide label={`Work · ${ownership(w.role)}`}>
         <Link href="/work" className="u mt-6 inline-block text-[15px] md:mt-8">All work</Link>
         <div className="mt-6 grid gap-6 lg:grid-cols-[1fr_auto] lg:items-end">

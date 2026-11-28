@@ -3,12 +3,22 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import Slide from "@/components/Slide";
 import Ask from "@/components/Ask";
+import JsonLd from "@/components/JsonLd";
 import { NOTES, getNote } from "@/lib/data";
+import { SITE_URL, abs, isoDate, breadcrumbLd } from "@/lib/seo";
 
 export function generateStaticParams() { return NOTES.map((n) => ({ slug: n.slug })); }
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const n = getNote((await params).slug);
-  return n ? { title: n.title, description: n.summary } : {};
+  if (!n) return {};
+  const url = `/notes/${n.slug}`;
+  return {
+    title: n.title,
+    description: n.summary,
+    alternates: { canonical: url },
+    openGraph: { type: "article", url, title: n.title, description: n.summary, publishedTime: isoDate(n.date), authors: ["Leslie Paul Ajayi"], siteName: "Leslie Paul Ajayi", locale: "en_GH", images: ["/opengraph-image.png"] },
+    twitter: { card: "summary_large_image", title: n.title, description: n.summary, images: ["/twitter-image.png"] },
+  };
 }
 
 export default async function Note({ params }: { params: Promise<{ slug: string }> }) {
@@ -16,6 +26,21 @@ export default async function Note({ params }: { params: Promise<{ slug: string 
   if (!n) notFound();
   return (
     <>
+      <JsonLd data={[
+        {
+          "@type": "BlogPosting",
+          headline: n.title,
+          description: n.summary,
+          datePublished: isoDate(n.date),
+          dateModified: isoDate(n.date),
+          mainEntityOfPage: abs(`/notes/${n.slug}`),
+          image: abs("/opengraph-image.png"),
+          author: { "@id": `${SITE_URL}/#person` },
+          publisher: { "@id": `${SITE_URL}/#person` },
+          inLanguage: "en",
+        },
+        breadcrumbLd([{ name: "Home", path: "/" }, { name: "Writing", path: "/notes" }, { name: n.title, path: `/notes/${n.slug}` }]),
+      ]} />
       <Slide label={`Note ${n.n}`}>
         <article className="mx-auto max-w-[1080px]">
           <Link href="/notes" className="u mt-8 inline-block text-[15px]">All writing</Link>
