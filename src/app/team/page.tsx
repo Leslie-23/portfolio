@@ -1,3 +1,4 @@
+import Image from "next/image";
 import type { Metadata } from "next";
 import Link from "next/link";
 import Ask from "@/components/Ask";
@@ -10,9 +11,6 @@ export const metadata: Metadata = {
 };
 
 const byId = (id: Member["id"]) => CREW.find((m) => m.id === id)!;
-const Initial = ({ m, size = 44 }: { m: Member; size?: number }) => (
-  <span aria-hidden className={`grid shrink-0 place-items-center rounded-full font-medium ${m.me ? "bg-ink text-bg" : "bg-[#e7ece9] text-ink"}`} style={{ width: size, height: size, fontSize: size * 0.42 }}>{m.name[0]}</span>
-);
 const Who = ({ m }: { m: Member }) => (
   <span className={`inline-flex h-7 items-center gap-1.5 rounded-full border px-2.5 text-[13px] font-medium ${m.me ? "border-ink bg-ink text-bg" : "border-line bg-bg text-ink"}`}>{m.me && <i aria-hidden className="h-[6px] w-[6px] rounded-full bg-accent" />}{m.name}</span>
 );
@@ -43,8 +41,10 @@ export default function TeamPage() {
         <ul className="swipe mt-8 grid gap-3 md:mt-12 md:grid-cols-2 xl:grid-cols-4">
           {CREW.map((m) => (
             <li key={m.id} className={`panel flex flex-col p-5 md:p-6 ${m.me ? "ring-1 ring-ink" : ""}`}>
+              <div aria-hidden className="relative -mx-5 -mt-5 mb-5 h-[210px] overflow-hidden rounded-t-[inherit] bg-[#eef1ee] md:-mx-6 md:-mt-6 md:h-[230px]">
+                <Image src={m.bust.src} alt="" width={m.bust.w} height={m.bust.h} sizes="(min-width: 1280px) 25vw, (min-width: 768px) 50vw, 85vw" className="absolute inset-x-0 bottom-0 mx-auto h-full w-auto max-w-full object-contain object-bottom" />
+              </div>
               <div className="flex items-center gap-3">
-                <Initial m={m} size={48} />
                 <div>
                   <h3 className="text-[22px] font-medium leading-none tracking-[-0.03em]">{m.name}{m.me && <span className="label ml-2 text-accent-ink">That&apos;s me</span>}</h3>
                   {m.also && <p className="mt-1 text-[13px] text-mute">&ldquo;{m.also}&rdquo; in the chat</p>}
