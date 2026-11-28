@@ -688,6 +688,10 @@ export type Shipped = {
   live: string;
   repo?: string;
   stack?: string[];
+  /** honest context shown on the page, e.g. where the project started */
+  note?: string;
+  /** screenshots under /public/work/<slug>/shots; `phone` ones are shown in a phone-shaped frame */
+  shots?: { file: string; caption: string; phone?: true }[];
 };
 
 export const SHIPPED: Shipped[] = [
@@ -696,7 +700,40 @@ export const SHIPPED: Shipped[] = [
   { slug: "captivating-home", name: "Captivating Home & Trading", year: "2026", kind: "RETAIL PLATFORM", categories: ["WEB", "PRODUCT"], blurb: "Platform for a Ghanaian retail operation: home appliances, electricity vending and currency exchange. Live on its own domain.", live: "https://captivatinghometrade.com" },
   { slug: "nenecollectionz", name: "Nene Collectionz", year: "2026", kind: "STOREFRONT", categories: ["WEB"], blurb: "Wigs, wholesale and retail from Spintex, Accra: braided wigs, frontals and glueless units, ordered on WhatsApp and shipped worldwide.", live: "https://nene-collectionz.leslieajayi27.workers.dev/" },
   { slug: "rate-desk", name: "GHS to NGN Rate Desk", year: "2026", kind: "INTERNAL TOOL", categories: ["WEB", "SYSTEMS"], blurb: "Internal rate calculator with MongoDB-backed shared rates, so a whole team quotes the same number.", live: "https://rate-calc-kappa.vercel.app", repo: "https://github.com/Leslie-23/rateCalc", stack: ["Node.js", "MongoDB"] },
-  { slug: "ecommerce", name: "PAL Shop", year: "2024", kind: "WEB APP", categories: ["WEB", "PRODUCT"], blurb: "E-commerce app where you can buy goods and sell them, with accounts, a cart and a checkout flow.", live: "https://paltech-e-commerce.netlify.app", stack: ["React"] },
+  {
+    slug: "ecommerce", name: "PAL Shop", year: "2024", kind: "WEB APP", categories: ["WEB", "PRODUCT"],
+    blurb: "An online shop: a public catalogue with filters, product pages and reviews, then cart, checkout, orders and a wishlist for customers, and an admin for products and orders. Redesigned in 2026.",
+    live: "https://shop.leslieajayi.com",
+    stack: ["React", "MUI", "Redux Toolkit", "Node.js", "Express", "MongoDB", "Docker"],
+    note: "Based on Rishi Bakshii's open-source MERN e-commerce project. The 2026 work is mine: a new interface and design system, a public catalogue, fixes to the checkout and image handling, and moving it to my own server.",
+    shots: [
+      { file: "home.jpg", caption: "THE CATALOGUE" },
+      { file: "product.jpg", caption: "A PRODUCT, WITH REVIEWS" },
+      { file: "cart.jpg", caption: "CART" },
+      { file: "orders.jpg", caption: "ORDERS" },
+      { file: "admin.jpg", caption: "ADMIN: PRODUCTS" },
+      { file: "login.jpg", caption: "SIGN IN" },
+      { file: "phone-home.jpg", caption: "ON A PHONE", phone: true },
+      { file: "phone-product.jpg", caption: "A PRODUCT, ON A PHONE", phone: true },
+    ],
+  },
+  {
+    slug: "school-management", name: "School Management System", year: "2024", kind: "WEB APP", categories: ["WEB", "PRODUCT"],
+    blurb: "Dashboards for the admin, the teachers and the students of a school: classes, subjects, attendance, marks, notices and complaints. Redesigned in 2026.",
+    live: "https://school.leslieajayi.com", repo: "https://github.com/Leslie-23/School-Management-System",
+    stack: ["React", "MUI", "Redux Toolkit", "Node.js", "Express", "MongoDB", "Docker"],
+    note: "Based on an open-source MERN school-management project. The 2026 work is mine: a new interface and design system, hashing the admin passwords (they were stored as plain text), a realistic demo school, and moving it to my own server. Try it with the demo buttons on the sign-in page.",
+    shots: [
+      { file: "dashboard.jpg", caption: "ADMIN DASHBOARD" },
+      { file: "students.jpg", caption: "STUDENTS" },
+      { file: "student-home.jpg", caption: "A STUDENT'S HOME" },
+      { file: "teacher-class.jpg", caption: "A TEACHER'S CLASS" },
+      { file: "login.jpg", caption: "SIGN IN" },
+      { file: "home.jpg", caption: "THE FRONT DOOR" },
+      { file: "phone-dashboard.jpg", caption: "ON A PHONE", phone: true },
+      { file: "phone-students.jpg", caption: "STUDENTS, AS CARDS", phone: true },
+    ],
+  },
   { slug: "grilli", name: "Grilli", year: "2024", kind: "TEMPLATE", categories: ["WEB"], blurb: "A restaurant landing page, hand-built in HTML and CSS.", live: "https://web-plusplus.vercel.app", repo: "https://github.com/Leslie-23/web-plusplus" },
   { slug: "dev-ex", name: "Dev Ex", year: "2025", kind: "WEB APP", categories: ["WEB", "EXPERIMENTS"], blurb: "Daily coding challenges for every skill level, with progress tracking, leaderboards and AI-powered feedback.", live: "https://leslie23-dev-experience2k25.netlify.app", repo: "https://github.com/Leslie-23/DEV-experience" },
 ];
