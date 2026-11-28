@@ -20,7 +20,7 @@ export type Member = {
 
 export const CREW: Member[] = [
   {
-    id: "joyce", name: "Joyce", also: "Mama J", bust: { src: "/team/joyce.png", w: 900, h: 778 },
+    id: "joyce", name: "Joyce", also: "Mama J", bust: { src: "/team/joyce.png", w: 828, h: 842 },
     usually: "Partnerships, clients, pitches and frontend",
     owns: ["Partnerships", "Landing clients", "Pitches", "The group fund"],
     stack: ["UI", "Frontend", "Backend when it's needed"],
@@ -37,7 +37,7 @@ export const CREW: Member[] = [
     motto: "I smell a rebase.",
   },
   {
-    id: "elton", name: "Elton", also: "Nii Marmah", bust: { src: "/team/elton.png", w: 900, h: 774 },
+    id: "elton", name: "Elton", also: "Nii Marmah", bust: { src: "/team/elton.png", w: 1000, h: 1061 },
     usually: "Frontend, product and system design",
     owns: ["Interfaces", "Mobile apps", "Design reviews", "Beagine (co-founder)"],
     stack: ["Expo", "React Native", "Frontend", "Product design"],
@@ -46,7 +46,7 @@ export const CREW: Member[] = [
     href: "https://bio-ten-nu.vercel.app",
   },
   {
-    id: "efo", name: "Efo", also: "Selorm", bust: { src: "/team/efo.png", w: 900, h: 855 },
+    id: "efo", name: "Efo", also: "Selorm", bust: { src: "/team/efo.png", w: 853, h: 885 },
     usually: "Database, QA and client delivery",
     owns: ["Data models", "QA and bug-finding", "Keeping client work on track", "Hardware fixes"],
     stack: ["Databases", "Backend", "QA", "Hardware"],
