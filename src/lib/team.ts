@@ -37,7 +37,7 @@ export const CREW: Member[] = [
     motto: "I smell a rebase.",
   },
   {
-    id: "elton", name: "Elton", also: "Nii Marmah", bust: { src: "/team/elton.png", w: 1000, h: 1061 },
+    id: "elton", name: "Elton", also: "Nii Marmah", bust: { src: "/team/elton.png", w: 820, h: 917 },
     usually: "Frontend, product and system design",
     owns: ["Interfaces", "Mobile apps", "Design reviews", "Beagine (co-founder)"],
     stack: ["Expo", "React Native", "Frontend", "Product design"],
