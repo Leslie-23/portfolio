@@ -24,14 +24,14 @@ function Choice({ type, name, checked, onChange, title, body, aside }: {
   return (
     <label className="relative block cursor-pointer">
       <input type={type} name={name} checked={checked} onChange={onChange} className="peer sr-only" />
-      <span className="flex h-full flex-col rounded-[16px] border border-line bg-card p-4 transition-colors peer-checked:border-ink peer-checked:bg-soft peer-hover:border-ink/50 peer-focus-visible:outline peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-accent-ink md:p-5">
+      <span className="flex h-full flex-col rounded-[16px] border border-line bg-card p-3 transition-colors sm:p-4 peer-checked:border-ink peer-checked:bg-soft peer-hover:border-ink/50 peer-focus-visible:outline peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-accent-ink md:p-5">
         <span className="flex items-start justify-between gap-3">
-          <span className="text-[17px] font-medium leading-snug tracking-[-0.02em]">{title}</span>
+          <span className="text-[15px] font-medium leading-snug tracking-[-0.02em] sm:text-[17px]">{title}</span>
           <i aria-hidden className={`mt-1 grid h-[18px] w-[18px] shrink-0 place-items-center border-2 ${type === "radio" ? "rounded-full" : "rounded-[5px]"} ${checked ? "border-ink bg-ink" : "border-mute/50"}`}>
             {checked && <i className={`block bg-white ${type === "radio" ? "h-[6px] w-[6px] rounded-full" : "h-[8px] w-[8px] rounded-[2px]"}`} />}
           </i>
         </span>
-        <span className="mt-1.5 text-[14px] leading-relaxed text-mute">{body}</span>
+        <span className="mt-1 text-[13px] leading-snug text-mute sm:mt-1.5 sm:text-[14px] sm:leading-relaxed">{body}</span>
         {aside && <span className="mt-3 text-[14px] font-medium text-body">{aside}</span>}
       </span>
     </label>
@@ -106,13 +106,22 @@ export default function PriceConfigurator() {
           <Step n="02" title="What are you building?" setRef={(el) => { refs.current[1] = el; }}>
             <div className="grid gap-3 sm:grid-cols-2">
               {BASE.map((x) => <Choice key={x.id} type="radio" name="type" checked={sel.type === x.id} onChange={() => pick("type", x.id, 1)} title={x.label} body={x.what} aside={`From ${cedi(x.from)}`} />)}
+              {/* doesn't touch the estimate: a custom build can't be priced from boxes, so it goes straight to a conversation */}
+              <a href={`mailto:${PERSON.email}?subject=${encodeURIComponent("Custom project")}`} className="group flex h-full flex-col rounded-[16px] border border-ink bg-ink p-4 text-white transition-colors hover:bg-ink/90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-ink md:p-5">
+                <span className="flex items-start justify-between gap-3">
+                  <span className="text-[17px] font-medium leading-snug tracking-[-0.02em]">Custom</span>
+                  <span aria-hidden className="mt-0.5 transition-transform group-hover:translate-x-0.5">→</span>
+                </span>
+                <span className="mt-1.5 text-[14px] leading-relaxed text-white/65">Something that doesn&apos;t fit the options here. Tell me what you need and I&apos;ll scope it and quote it.</span>
+                <span className="mt-3 text-[14px] font-medium">Let&apos;s talk</span>
+              </a>
             </div>
           </Step>
         )}
 
         {shown > 2 && (
           <Step n="03" title="What should it do?" hint="Tick everything you need. Leave it empty if you only need the basics." setRef={(el) => { refs.current[2] = el; }}>
-            <div className="grid gap-3 sm:grid-cols-2">
+            <div className="grid grid-cols-2 gap-2.5 md:gap-3">
               {FEATURES.map((f) => <Choice key={f.id} type="checkbox" name="features" checked={sel.features.includes(f.id)} onChange={() => toggle(f.id)} title={f.label} body={f.what} />)}
             </div>
             {shown === 3 && <button type="button" onClick={() => advance(2)} className="btn btn-solid mt-6">{sel.features.length ? "Continue" : "Nothing extra, continue"}</button>}
