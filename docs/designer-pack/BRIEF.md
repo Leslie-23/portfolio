@@ -13,7 +13,7 @@
 - **Founder:** Trofficient (transit technology for Ghana's informal *trotro* network). **CTO:** Beagine (home-services marketplace).
 - **Education:** BSc Information Technology, Regional Maritime University.
 - **On GitHub since:** January 2022. Bio: "Software Engineer | Web Developer | Programmer".
-- **Contact:** leslieajayi27@gmail.com  ·  GitHub https://github.com/Leslie-23  ·  LinkedIn https://www.linkedin.com/in/leslie-paul-ajayi-45a725279  ·  X https://x.com/_iam_leslie
+- **Contact:** leslieajayi27@gmail.com  ·  GitHub https://github.com/Leslie-23  ·  LinkedIn https://www.linkedin.com/in/leslie-paul-ajayi-45a725279  ·  X https://x.com/LesliePaulAjayi
 - **Domain:** `www.leslieajayi.com` is live (HTTPS). He plans per-app subdomains on it (e.g. `steppool.leslieajayi.com`).
 
 **In his words (from his profile README):** "Software engineer. I build systems that go to production, not demos that die in a repo." Three working principles:

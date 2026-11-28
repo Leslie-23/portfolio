@@ -12,7 +12,7 @@ export const PERSON = {
   links: {
     github: "https://github.com/Leslie-23",
     linkedin: "https://www.linkedin.com/in/leslie-paul-ajayi-45a725279",
-    x: "https://x.com/_iam_leslie",
+    x: "https://x.com/LesliePaulAjayi",
   },
 };
 
