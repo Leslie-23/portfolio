@@ -124,7 +124,8 @@ const shapeFor = (ch: string): [number, number] => {
   return [0.06, 0];
 };
 
-export default function LiveBust({ onReady, onLost }: { onReady: () => void; onLost: () => void }) {
+/** `ambient` is the phone version: no speech bubble and no talking, only the eyes drifting and slow blinks, at a lower frame rate. */
+export default function LiveBust({ onReady, onLost, ambient = false }: { onReady: () => void; onLost: () => void; ambient?: boolean }) {
   const cv = useRef<HTMLCanvasElement>(null);
   const [said, setSaid] = useState("");
   const [talking, setTalking] = useState(false);
@@ -200,7 +201,7 @@ export default function LiveBust({ onReady, onLost }: { onReady: () => void; onL
         if (cancelled) return;
         raf = requestAnimationFrame(frame);
         if (!visible || document.hidden) { last = now / 1000; return; }
-        if (phone && now - lastDraw < 30) return;                   // 30 fps is plenty for a faint background
+        if ((phone || ambient) && now - lastDraw < (ambient ? 40 : 30)) return;   // a faint background needs no more than ~24 to 30 fps
         lastDraw = now;
         const t = now / 1000, dt = Math.min(0.05, t - last); last = t;
 
@@ -208,8 +209,8 @@ export default function LiveBust({ onReady, onLost }: { onReady: () => void; onL
         const box = canvas.parentElement!.getBoundingClientRect();
         const fx = box.left + box.width * 0.5, fy = box.top + box.height * 0.42;
         let tx: number, ty: number;
-        if (t - mouse.seen < 4) { tx = clamp((mouse.x - fx) / (innerWidth * 0.45), -1, 1); ty = clamp((mouse.y - fy) / (innerHeight * 0.45), -1, 1); }
-        else { tx = Math.sin(t * 0.37) * 0.35 + Math.sin(t * 0.91) * 0.15; ty = Math.sin(t * 0.29 + 1) * 0.18; }
+        if (!ambient && t - mouse.seen < 4) { tx = clamp((mouse.x - fx) / (innerWidth * 0.45), -1, 1); ty = clamp((mouse.y - fy) / (innerHeight * 0.45), -1, 1); }
+        else { const a = ambient ? 0.8 : 1; tx = (Math.sin(t * 0.37) * 0.35 + Math.sin(t * 0.91) * 0.15) * a; ty = Math.sin(t * 0.29 + 1) * 0.18 * a; }
         const ke = 1 - Math.exp(-dt * 9);
         st.gx += (tx - st.gx) * ke; st.gy += (ty - st.gy) * ke;
 
@@ -218,7 +219,7 @@ export default function LiveBust({ onReady, onLost }: { onReady: () => void; onL
         if (st.blinkAt >= 0) {
           const k = (t - st.blinkAt) / 0.2;
           st.blink = k < 1 ? Math.sin(k * Math.PI) : 0;
-          if (k >= 1) { st.blinkAt = -1; st.nextBlink = t + (Math.random() < 0.18 ? 0.25 : 2.4 + Math.random() * 3.2); }
+          if (k >= 1) { st.blinkAt = -1; st.nextBlink = t + (Math.random() < (ambient ? 0.1 : 0.18) ? 0.25 : (ambient ? 3 : 2.4) + Math.random() * 3.2); }
         }
 
         // speech: the mouth follows the letters being typed
@@ -242,7 +243,7 @@ export default function LiveBust({ onReady, onLost }: { onReady: () => void; onL
         gl.uniform1f(uBreath, Math.sin(t * 1.3));
         gl.clearColor(0, 0, 0, 0); gl.clear(gl.COLOR_BUFFER_BIT);
         gl.drawElements(gl.TRIANGLES, idx.length, gl.UNSIGNED_SHORT, 0);
-        if (first) { first = false; onReady(); setTimeout(() => !cancelled && say(0), 900); }
+        if (first) { first = false; onReady(); if (!ambient) setTimeout(() => !cancelled && say(0), 900); }
       };
       raf = requestAnimationFrame(frame);
       cleanup.push(() => ro.disconnect());
@@ -254,10 +255,14 @@ export default function LiveBust({ onReady, onLost }: { onReady: () => void; onL
     addEventListener("pointermove", move, { passive: true });
     const io = new IntersectionObserver(([e]) => { visible = e.isIntersecting; }); io.observe(canvas.parentElement!);
     return () => { cancelled = true; cancelAnimationFrame(raf); removeEventListener("pointermove", move); canvas.removeEventListener("webglcontextlost", lose); io.disconnect(); cleanup.forEach((f) => f()); };
-  }, [onReady, onLost]);
+  }, [onReady, onLost, ambient]);
 
   const poke = useCallback(() => speak.current(), []);
 
+  if (ambient) return (
+    <canvas ref={cv} aria-hidden className="pointer-events-none absolute z-10"
+      style={{ left: `${-PAD * 100}%`, top: `${-PAD * 100}%`, width: `${(1 + PAD * 2) * 100}%`, height: `${(1 + PAD * 2) * 100}%` }} />
+  );
   return (
     <>
       <canvas ref={cv} aria-hidden onClick={poke} className="absolute z-10 cursor-pointer"
