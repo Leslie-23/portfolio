@@ -89,13 +89,13 @@ export default function BustBuild({ className = "" }: { className?: string }) {
   const cv = useRef<HTMLCanvasElement>(null);          // labels and glints, drawn flat over the GPU layer
   const glc = useRef<HTMLCanvasElement>(null);         // the triangles
   const [state, setState] = useState<"pending" | "playing" | "done">("pending");
-  const [isDesktop, setIsDesktop] = useState(false);   // the animated bust is for screens with a cursor; on phones it is only a faint background
+  const [life, setLife] = useState<"" | "full" | "ambient">("");   // full: desktops. ambient: capable phones get blinks and drifting eyes, nothing more. "" = the still portrait
   const [live, setLive] = useState(false);             // the animated portrait has taken over from the still one
   const onLive = useCallback(() => setLive(true), []);
   const onLost = useCallback(() => { setLive(false); note("webgl context lost: showing the still portrait"); }, []);   // phones reclaim the GPU under memory pressure
 
   useEffect(() => {
-    const q = matchMedia("(min-width: 1024px)"), f = () => setIsDesktop(q.matches && perfTier() > 0);   // the living bust is for desktops that can afford it
+    const q = matchMedia("(min-width: 1024px)"), f = () => { const t = perfTier(); setLife(q.matches ? (t > 0 ? "full" : "") : t === 2 ? "ambient" : ""); };   // desktops that can afford it get everything; only the most capable phones get the quiet version
     f(); q.addEventListener("change", f);
     return () => q.removeEventListener("change", f);
   }, []);
@@ -308,7 +308,7 @@ export default function BustBuild({ className = "" }: { className?: string }) {
       <Image src="/portrait/leslie.png" alt="Leslie Paul Ajayi, a faceted greyscale portrait" fill priority sizes="(min-width: 1024px) 40vw, 70vw"
         className="bust-img object-contain object-bottom" style={{ opacity: state === "done" && !live ? 1 : 0, transition: state === "done" ? "opacity .6s ease" : "none" }} />
       <noscript><style>{`.bust-img{opacity:1!important}`}</style></noscript>
-      {state === "done" && isDesktop && <LiveBust onReady={onLive} onLost={onLost} />}
+      {state === "done" && life && <LiveBust ambient={life === "ambient"} onReady={onLive} onLost={onLost} />}
       <canvas ref={glc} aria-hidden className="pointer-events-none absolute z-10" style={layer} />
       <canvas ref={cv} aria-hidden className="pointer-events-none absolute z-10" style={layer} />
     </div>
