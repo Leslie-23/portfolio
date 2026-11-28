@@ -61,6 +61,35 @@ function Hero({ w }: { w: WorkItem }) {
 
 const APP_ICON: Record<string, string> = { "Rider app": "/work/icons/trofficient.png", "Driver app": "/work/icons/trofficient-driver.png" };
 
+/** Desktop screenshots in a grid, then phone screenshots in phone-shaped frames. For the smaller builds that have no full write-up. */
+function Shots({ shots, name }: { shots: NonNullable<WorkItem["shots"]>; name: string }) {
+  const wide = shots.filter((x) => !x.phone), phones = shots.filter((x) => x.phone);
+  return (
+    <div className="space-y-9">
+      <ul className="grid gap-x-3 gap-y-6 md:grid-cols-2">
+        {wide.map((g, i) => (
+          <li key={g.src} className={i === 0 ? "md:col-span-2" : ""}>
+            <div className="frame-img border border-line"><Image src={g.src} alt={`${name}: ${g.caption.toLowerCase()}`} width={1280} height={800} sizes={i === 0 ? "(min-width: 1024px) 80vw, 95vw" : "(min-width: 1024px) 40vw, 95vw"} className="h-auto w-full" /></div>
+            <p className="mt-2 text-[13px] text-mute">{sentence(g.caption)}</p>
+          </li>
+        ))}
+      </ul>
+      {phones.length > 0 && (
+        <ul className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+          {phones.map((g) => (
+            <li key={g.src}>
+              <div className="relative overflow-hidden rounded-[14px] border border-line bg-ink" style={{ aspectRatio: "390 / 844" }}>
+                <Image src={g.src} alt={`${name}: ${g.caption.toLowerCase()}`} fill sizes="(min-width: 1024px) 18vw, 45vw" className="object-cover object-top" />
+              </div>
+              <p className="mt-2 text-[13px] text-mute">{sentence(g.caption)}</p>
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  );
+}
+
 /** Phone screens, grouped by app when a project ships more than one (Trofficient: rider and driver). */
 function Screens({ gallery, name }: { gallery: NonNullable<WorkItem["gallery"]>; name: string }) {
   const groups: { app?: string; items: typeof gallery }[] = [];
@@ -185,7 +214,7 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
             <Row label="Overview">
               <p className="max-w-[64ch] text-[18px] leading-[1.7] text-body">{w.blurb}</p>
               {w.note && <p className="mt-4 text-[15px] text-mute">{w.note}</p>}
-              <p className="mt-4 text-[15px] text-mute">A smaller build, so there&apos;s no full write-up. The {w.repo ? "source" : "live product"} is the best place to see it.</p>
+              {!w.shots?.length && <p className="mt-4 text-[15px] text-mute">A smaller build, so there&apos;s no full write-up. The {w.repo ? "source" : "live product"} is the best place to see it.</p>}
             </Row>
           )}
 
@@ -194,6 +223,8 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
               <ul className="flex flex-wrap gap-2">{w.stack.map((s) => <li key={s} className="rounded-full border border-line px-3.5 py-1.5 text-[14px]">{s}</li>)}</ul>
             </Row>
           )}
+
+          {!p && !!w.shots?.length && <Row label="Screens"><Shots shots={w.shots} name={w.name} /></Row>}
 
           {(showPhones || (p && showWeb)) && (
             <Row label="Screens">

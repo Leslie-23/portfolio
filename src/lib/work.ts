@@ -23,6 +23,7 @@ export type WorkItem = {
   tier: "case" | "site" | "tool";
   project?: Project;
   note?: string;      // honest caveat, e.g. a deployment of someone else's software
+  shots?: { src: string; caption: string; phone?: true }[]; // desktop and phone screenshots for the detail page
 };
 
 const CATEGORY: Record<string, string> = {
@@ -71,6 +72,7 @@ const fromShipped = (s: (typeof SHIPPED)[number]): WorkItem => ({
   category: s.kind.charAt(0) + s.kind.slice(1).toLowerCase(),
   role: SITE_ROLE[s.slug] ?? "Engineer", blurb: s.blurb, stack: s.stack ?? [], filters: toFilters(s.categories),
   status: "LIVE", live: s.live, repo: s.repo, image: `/work/${s.slug}/desktop.jpg`, tier: "site",
+  note: s.note, shots: s.shots?.map((x) => ({ src: `/work/${s.slug}/shots/${x.file}`, caption: x.caption, phone: x.phone })),
 });
 
 /* Tools and experiments, from BRIEF §8. Each links to its public repo. Private or unconfirmed ones are left out. */
