@@ -1,4 +1,5 @@
 "use client";
+import AfricaA from "./AfricaA";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -36,7 +37,7 @@ export default function TopBar() {
       <div className="mx-auto flex h-[var(--bar)] max-w-[1400px] items-center justify-between px-5 sm:px-8">
         <Link href="/" className="flex items-center gap-3" aria-label="Leslie Paul Ajayi, home">
           <Image src="/brand/leslie-avatar-1024.png" alt="" width={32} height={32} priority className="rounded-[9px]" />
-          <span className="text-[16px] font-medium tracking-[-0.02em]">Leslie Paul Ajayi</span>
+          <span className="text-[16px] font-medium tracking-[-0.02em]">Leslie Paul Aj<AfricaA className="!mx-[0.04em] !h-[0.64em] !align-[0]" />yi</span>
         </Link>
 
         <nav aria-label="Primary" className="hidden items-center gap-8 text-[15px] md:flex">
@@ -70,7 +71,7 @@ export default function TopBar() {
         <div className="relative flex h-[var(--bar)] shrink-0 items-center justify-between border-b border-line px-5">
           <Link href="/" className="flex items-center gap-3" aria-label="Leslie Paul Ajayi, home">
             <Image src="/brand/leslie-avatar-1024.png" alt="" width={32} height={32} className="rounded-[9px]" />
-            <span className="text-[16px] font-medium tracking-[-0.02em]">Leslie Paul Ajayi</span>
+            <span className="text-[16px] font-medium tracking-[-0.02em]">Leslie Paul Aj<AfricaA className="!mx-[0.04em] !h-[0.64em] !align-[0]" />yi</span>
           </Link>
           <button onClick={() => setOpen(false)} aria-label="Close menu" autoFocus className="grid h-10 w-10 place-items-center rounded-full border border-line">
             <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round"><path d="M3 3l10 10M13 3L3 13" /></svg>
