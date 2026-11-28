@@ -20,17 +20,10 @@ export default function TeamPage() {
   return (
     <>
       <Slide label="Team" className="relative isolate overflow-hidden">
-        {/* the four of us, lightly, like a film poster: Selorm, Leslie, Joyce, Elton */}
-        <div aria-hidden className="pointer-events-none absolute inset-x-0 bottom-0 -z-10 flex h-[64%] items-end justify-center px-0 opacity-[0.2] mix-blend-multiply [-webkit-mask-image:linear-gradient(to_top,transparent_0%,#000_22%,#000_100%)] [mask-image:linear-gradient(to_top,transparent_0%,#000_22%,#000_100%)] md:h-[92%] md:px-0">
-          {POSTER.map((m, i) => (
-            <Image key={m.id} src={m.bust.src} alt="" width={m.bust.w} height={m.bust.h} priority={i < 2} sizes="(min-width: 1024px) 32vw, 40vw"
-              className={`h-full w-auto min-w-0 max-w-[46%] shrink object-contain object-bottom md:max-w-[34%] ${i ? "-ml-[15%] md:-ml-[5%]" : ""} ${i % 2 ? "" : "h-[88%]"}`} />
-          ))}
-        </div>
         <div className="mt-7 grid gap-5 md:mt-10 md:gap-8 lg:grid-cols-[1fr_400px] lg:items-end">
           <H as="h1" className="t-hero">A crew of four</H>
           <p className="t-lead">
-            400 is the product crew I put together with three friends from university. It began as a semester group chat. On 14 October 2025 I said we should run the projects as a company, and we did.
+            400 is the product crew I put together with three friends from university. It began as a semester group chat. On 14 October 2025 we decided to run the projects as a company, and we did.
           </p>
         </div>
         <ul className="mt-8 grid grid-cols-2 gap-x-5 gap-y-6 border-t border-line pt-6 md:mt-12 md:grid-cols-4 md:pt-8">
@@ -41,6 +34,13 @@ export default function TeamPage() {
             </li>
           ))}
         </ul>
+        {/* the four of us, lightly, like a film poster: Selorm, Leslie, Joyce, Elton */}
+        <div aria-hidden className="pointer-events-none relative mt-8 flex h-[210px] items-end justify-center px-0 opacity-[0.28] mix-blend-multiply md:absolute md:inset-x-0 md:bottom-0 md:-z-10 md:mt-0 md:h-[92%] md:opacity-[0.2] [-webkit-mask-image:linear-gradient(to_top,transparent_0%,#000_22%,#000_100%)] [mask-image:linear-gradient(to_top,transparent_0%,#000_22%,#000_100%)] md:px-0">
+          {POSTER.map((m, i) => (
+            <Image key={m.id} src={m.bust.src} alt="" width={m.bust.w} height={m.bust.h} priority={i < 2} sizes="(min-width: 1024px) 32vw, 40vw"
+              className={`h-full w-auto min-w-0 max-w-[46%] shrink object-contain object-bottom md:max-w-[34%] ${i ? "-ml-[7%] md:-ml-[1%]" : ""} ${i % 2 ? "" : "h-[88%]"}`} style={{ zIndex: POSTER.length - i, position: "relative" }} />
+          ))}
+        </div>
       </Slide>
 
       <Slide label="The crew, and what each person owns" id="crew">

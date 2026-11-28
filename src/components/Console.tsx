@@ -143,7 +143,7 @@ function Terminal({ data, onClose, go, surprise }: { data: ConsoleData; onClose:
       case "ls": return ["work/  team/  writing/  about/  pricing/  contact/"];
       case "projects": return cases.map((w) => `${w.slug.padEnd(16)} ${w.name}: ${w.category}`).concat(["", "open <name> to read one."]);
       case "stack": return data.stack.map((g) => `${g.group.toLowerCase().padEnd(11)} ${g.items.join(", ")}`);
-      case "team": return ["400: four people from Accra, no boss. Joyce, Leslie, Elton, Efo.", "I am the backend person on most of the projects. open team"];
+      case "team": return ["400: four people from Accra, no boss. Joyce, Leslie, Elton, Selorm.", "I am the backend person on most of the projects. open team"];
       case "open": case "cd": {
         if (!arg) return ["open what? try: open work, open team, open trofficient"];
         const page = ROUTES[arg.replace(/\/$/, "")];
