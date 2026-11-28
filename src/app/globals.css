@@ -164,3 +164,9 @@ a:hover .frame-img img { transform: scale(1.015); }
   .eq-on i:nth-child(2) { animation-delay: -.3s; } .eq-on i:nth-child(3) { animation-delay: -.6s; } .eq-on i:nth-child(4) { animation-delay: -.15s; }
   @keyframes eq { from { transform: scaleY(.35); } to { transform: scaleY(1.1); } }
 }
+
+/* Elena: the ring she draws round whatever she points at, and her entrance */
+@keyframes elena-ring { 0%, 100% { opacity: .95; transform: scale(1); } 50% { opacity: .35; transform: scale(1.05); } }
+@keyframes elena-in { from { opacity: 0; transform: translateY(18px) scale(.94); } to { opacity: 1; transform: none; } }
+.elena-in { animation: elena-in .6s cubic-bezier(.2,.8,.2,1) both; }
+@media (prefers-reduced-motion: reduce) { .elena-in { animation: none; } }

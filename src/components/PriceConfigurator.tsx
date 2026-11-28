@@ -51,6 +51,12 @@ export default function PriceConfigurator() {
     setTimeout(() => refs.current[from + 1]?.scrollIntoView({ behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "start" }), 60);
   };
   useEffect(() => { refs.current = refs.current.slice(0, TOTAL); }, []);
+  // arriving with ?type=mobile (Elena sends people this way): pick what they are building and show both steps
+  useEffect(() => {
+    const t = new URLSearchParams(location.search).get("type");
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- the address is only known on the client
+    if (t && BASE.some((b) => b.id === t)) { setSel((s) => ({ ...s, type: t })); setShown((n) => Math.max(n, 2)); }
+  }, []);
   const pick = <K extends keyof Selection>(k: K, v: Selection[K], step: number) => { setSel((s) => ({ ...s, [k]: v })); if (step + 1 >= shown) advance(step); };
   const toggle = (id: string) => setSel((s) => ({ ...s, features: s.features.includes(id) ? s.features.filter((x) => x !== id) : [...s.features, id] }));
 
@@ -89,7 +95,7 @@ export default function PriceConfigurator() {
 
   return (
     <div className="mt-8 grid gap-10 pb-24 md:mt-14 lg:grid-cols-[1fr_390px] lg:gap-14 lg:pb-0">
-      <form onSubmit={(e) => e.preventDefault()} className="space-y-9 md:space-y-12" aria-label="Project estimate">
+      <form id="builder" onSubmit={(e) => e.preventDefault()} className="space-y-9 md:space-y-12" aria-label="Project estimate">
         <Step n="01" title="How big is it?" hint="A screen is a page or view, such as sign-in, a product list or checkout." setRef={(el) => { refs.current[0] = el; }}>
           <div className="grid gap-3 md:grid-cols-3">
             {SIZES.map((x) => <Choice key={x.id} type="radio" name="size" checked={sel.size === x.id} onChange={() => pick("size", x.id, 0)} title={x.label} body={x.what} />)}

@@ -4,6 +4,7 @@ import "./globals.css";
 import TopBar from "@/components/TopBar";
 import Reveal from "@/components/Reveal";
 import Console, { type ConsoleData } from "@/components/Console";
+import Elena from "@/components/Elena";
 import { PERSON, TOOLKIT, publicEvidence } from "@/lib/data";
 import { WORK } from "@/lib/work";
 import { TRACKS } from "@/lib/music";
@@ -44,6 +45,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <main id="main" className="pt-[var(--bar)]">{children}</main>
         <Reveal />
         <Console data={consoleData} />
+        <Elena />
       </body>
     </html>
   );
