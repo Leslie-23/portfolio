@@ -23,7 +23,7 @@ export default function TeamPage() {
         <div className="mt-7 grid gap-5 md:mt-10 md:gap-8 lg:grid-cols-[1fr_400px] lg:items-end">
           <H as="h1" className="t-hero">A crew of four</H>
           <p className="t-lead">
-            400 is the product crew I put together with three friends from university. It began as a semester group chat. On 14 October 2025 I said we should run the projects as a company, and we did.
+            400 is the product crew I put together with three friends from university. It began as a semester group chat. On 14 October 2025 we decided to run the projects as a company, and we did.
           </p>
         </div>
         <ul className="mt-8 grid grid-cols-2 gap-x-5 gap-y-6 border-t border-line pt-6 md:mt-12 md:grid-cols-4 md:pt-8">
