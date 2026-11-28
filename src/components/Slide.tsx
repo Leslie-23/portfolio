@@ -1,10 +1,10 @@
 /** A page section: full width, a quiet mono label, no card and no counter. */
 export default function Slide({
-  id, label, dark = false, className = "", children,
-}: { id?: string; label: string; deck?: boolean; dark?: boolean; className?: string; children: React.ReactNode }) {
+  id, label, labelNode, dark = false, className = "", children,
+}: { id?: string; label: string; labelNode?: React.ReactNode; deck?: boolean; dark?: boolean; className?: string; children: React.ReactNode }) {
   return (
     <section id={id} aria-label={label} className={`slide reveal ${dark ? "slide-dark" : ""} ${className}`}>
-      <div className={`label ${dark ? "text-white/55" : "text-mute"}`}>{label}</div>
+      <div className={`label ${dark ? "text-white/55" : "text-mute"}`}>{labelNode ?? label}</div>
       {children}
     </section>
   );

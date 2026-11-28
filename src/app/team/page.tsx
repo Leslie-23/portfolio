@@ -19,7 +19,7 @@ const Who = ({ m }: { m: Member }) => (
 export default function TeamPage() {
   return (
     <>
-      <Slide label="Team" className="relative isolate overflow-hidden">
+      <Slide label="Team" labelNode={<><b className="font-bold [font-variant:small-caps] text-ink">400</b><span aria-hidden className="mx-2 text-line">·</span>Team</>} className="relative isolate overflow-hidden">
         <div className="mt-7 grid gap-5 md:mt-10 md:gap-8 lg:grid-cols-[1fr_400px] lg:items-end">
           <H as="h1" className="t-hero">A crew of four</H>
           <p className="t-lead">
@@ -79,6 +79,11 @@ export default function TeamPage() {
           {BIG.map((b) => (
             <li key={b.name} className="grid gap-5 border-b border-line py-7 md:grid-cols-[minmax(240px,0.8fr)_1.4fr] md:gap-10 md:py-9">
               <div>
+                {b.icon && (
+                  <span className="relative mb-4 block h-14 w-14 overflow-hidden rounded-[22%] border border-line bg-white">
+                    <Image src={b.icon.src} alt={`${b.name} logo`} fill sizes="56px" className={b.icon.contain ? "object-contain p-1.5" : "object-cover"} />
+                  </span>
+                )}
                 <h3 className="t-big">{b.name}</h3>
                 <p className="mt-3 max-w-[40ch] text-[16px] leading-relaxed text-body">{b.what}</p>
                 {b.slug && <Link href={`/work/${b.slug}`} className="u mt-4 inline-block text-[15px] font-medium">The case study</Link>}

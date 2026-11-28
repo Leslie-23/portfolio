@@ -70,10 +70,10 @@ export const TEAM_STORY: { date: string; t: string; b: string; quote?: string; k
 ];
 
 /** The big ones, and who did what on each. Only what the crew's site attributes. */
-export type Big = { name: string; slug?: string; what: string; parts: { who: Member["id"][] | "crew"; did: string }[] };
+export type Big = { name: string; slug?: string; icon?: { src: string; contain?: true }; what: string; parts: { who: Member["id"][] | "crew"; did: string }[] };
 export const BIG: Big[] = [
   {
-    name: "Trofficient", slug: "trofficient", what: "Transit technology for Ghana's tro-tro routes. Commuter and driver apps on the App Store; Android in closed testing.",
+    name: "Trofficient", slug: "trofficient", icon: { src: "/work/icons/trofficient.png" }, what: "Transit technology for Ghana's tro-tro routes. Commuter and driver apps on the App Store; Android in closed testing.",
     parts: [
       { who: ["leslie"], did: "Founded it, dropped the first working demo into the chat, and runs the backend and the store releases." },
       { who: ["joyce"], did: "Booked the first real ride, and wrote the game plan for the Ministry of Transport visit." },
@@ -83,7 +83,7 @@ export const BIG: Big[] = [
     ],
   },
   {
-    name: "Beagine", slug: "beagine", what: "Find, book and track verified engineering professionals. Beagine for customers and Beagine Pro for specialists, both on the App Store.",
+    name: "Beagine", slug: "beagine", icon: { src: "/work/icons/beagine.png" }, what: "Find, book and track verified engineering professionals. Beagine for customers and Beagine Pro for specialists, both on the App Store.",
     parts: [
       { who: ["elton"], did: "Co-founder. Interfaces and mobile, mostly in Expo and React Native." },
       { who: ["leslie"], did: "CTO. The technical direction, the architecture and the shared backend, plus deploys and releases." },
@@ -92,21 +92,21 @@ export const BIG: Big[] = [
     ],
   },
   {
-    name: "UniCliq and Campus Connect", slug: "campus-connect", what: "The social hub for university students: from a naming session to a working build in about a week, then web, then TestFlight.",
+    name: "UniCliq and Campus Connect", slug: "campus-connect", icon: { src: "/work/icons/campus-connect.png" }, what: "The social hub for university students: from a naming session to a working build in about a week, then web, then TestFlight.",
     parts: [
       { who: ["elton"], did: "Designed the UniCliq logo." },
       { who: "crew", did: "Built in about a week, live on the web on 5 November 2025, then into TestFlight as Campus Connect." },
     ],
   },
   {
-    name: "Sellis Beauty Spa", what: "The crew's first paid client: a live website, in use by the client.",
+    name: "Sellis Beauty Spa", icon: { src: "/work/icons/sellis.png", contain: true }, what: "The crew's first paid client: a live website, in use by the client.",
     parts: [
       { who: ["joyce"], did: "Landed the client on 30 March 2026." },
       { who: "crew", did: "Live since 7 May 2026, and in use by the client." },
     ],
   },
   {
-    name: "Skill Academy", what: "Coding, robotics and AI for schools in Accra. The site is live, and the first workshop ran at De-Masters Academy on 23 October 2026.",
+    name: "Skill Academy", icon: { src: "/work/icons/skill-academy.png" }, what: "Coding, robotics and AI for schools in Accra. The site is live, and the first workshop ran at De-Masters Academy on 23 October 2026.",
     parts: [
       { who: "crew", did: "The site went up on 30 September 2026. The first workshop followed on two Arduino kits, for JHS 1 to 3." },
     ],
